@@ -6,7 +6,15 @@
   "repository": "git@github.com:josephroquedev/myLeaderboard.git",
   "author": "Joseph Roque <contact@josephroque.ca>",
   "license": "MIT",
+  "scripts": {
+    "build": "yarn build-tsc && yarn build-browser && yarn build-clean",
+    "build-tsc": "tsc js/index.ts",
+    "build-browser": "browserify js/index.js -o dist/bundle.js",
+    "build-clean": "rm -f js/index.js",
+    "clean": "rm -rf dist/"
+  },
   "dependencies": {
+    "browserify": "^16.2.3",
     "typescript": "^3.5.2"
   }
 }
