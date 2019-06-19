@@ -1,0 +1,12 @@
+{
+  "name": "myLeaderboard",
+  "version": "1.0.0",
+  "description": "iLeaderboard, meet myLeaderboard",
+  "main": "index.js",
+  "repository": "git@github.com:josephroquedev/myLeaderboard.git",
+  "author": "Joseph Roque <contact@josephroque.ca>",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^3.5.2"
+  }
+}
