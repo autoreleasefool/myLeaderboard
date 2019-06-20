@@ -8,9 +8,12 @@ export class Octo {
     private repo: any;
 
     private constructor() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
         // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
-        this.octo = new Octokat({token: "0c0e108b89e8cfbe1682eb0f030affc8a278cd63"});
-        this.repo = this.octo.repos("josephroquedev", "myLeaderboard");
+        this.octo = new Octokat({ token });
+        this.repo = this.octo.repos("Shopify", "myLeaderboard");
     }
 
     public static getInstance(): Octo {
