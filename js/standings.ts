@@ -43,101 +43,101 @@ export async function fetchStandings(game: Game): Promise<Standings> {
     return parseRawStandings(game, rawStandings);
 }
 
-interface BestRecord { player?: Player, record: number }
+interface HighlightedRecord { player?: Player, record: number }
 
 function parseRawStandings(game: Game, contents: string): Standings {
     let json: RawStandings = JSON.parse(contents.toLowerCase());
     let players: Array<Player> = [];
-    let playerRecords: Map<Player, Record> = new Map();
-    let matchRecords: Map<Player, Map<Player, Record>> = new Map();
+    let overallRecords: Map<Player, Record> = new Map();
+    let headToHeadRecords: Map<Player, Map<Player, Record>> = new Map();
 
-    let bestRecord: BestRecord = { player: null, record: -Infinity };
-    let worstRecord: BestRecord = { player: null, record: Infinity };
+    let bestRecords: Array<HighlightedRecord> = [{ player: null, record: -Infinity }];
+    let worstRecords: Array<HighlightedRecord> = [{ player: null, record: Infinity }];
     for (let player in json) {
         players.push(player);
-        let playerRecord: Record = { wins: 0, losses: 0, ties: 0, isBest: false, isWorst: false };
+        let playerOverallRecord: Record = { wins: 0, losses: 0, ties: 0, isBest: false, isWorst: false };
 
-        let bestOpponentRecord: BestRecord = { player: null, record: -Infinity };
-        let worstOpponentRecord: BestRecord = { player: null, record: Infinity };
+        let bestOpponentRecords: Array<HighlightedRecord> = [{ player: null, record: -Infinity }];
+        let worstOpponentRecords: Array<HighlightedRecord> = [{ player: null, record: Infinity }];
         for (let opponent in json[player]) {
             const rawRecord = json[player][opponent];
             const [wins, losses, ties] = rawRecord.split("-").map(x => parseInt(x));
 
-            if (matchRecords.has(player) == false) {
-                matchRecords.set(player, new Map());
+            if (headToHeadRecords.has(player) == false) {
+                headToHeadRecords.set(player, new Map());
             }
 
-            let matchRecord = matchRecords.get(player);
-            matchRecord.set(opponent, { wins, losses, ties, isBest: false, isWorst: false });
-            matchRecords.set(player, matchRecord);
+            let playerRecords = headToHeadRecords.get(player);
+            playerRecords.set(opponent, { wins, losses, ties, isBest: false, isWorst: false });
 
-            playerRecord.wins += wins;
-            playerRecord.losses += losses;
-            playerRecord.ties += ties;
+            playerOverallRecord.wins += wins;
+            playerOverallRecord.losses += losses;
+            playerOverallRecord.ties += ties;
 
             const totalGames = wins + losses + ties;
             const winRate = totalGames > 0 ? wins / totalGames : 0;
-            if (winRate > bestOpponentRecord.record) {
-                bestOpponentRecord = { player: opponent, record: winRate };
-            }
-            if (winRate < worstOpponentRecord.record) {
-                worstOpponentRecord = { player: opponent, record: winRate };
-            }
+            updateHighlightedRecords({ player: opponent, record: winRate}, bestOpponentRecords, worstOpponentRecords);
         }
 
-        console.log(worstOpponentRecord);
+        let playerRecords = headToHeadRecords.get(player);
+        let opponents = Object.keys(json[player]);
+        markBestAndWorstRecords(playerRecords, opponents, bestOpponentRecords, worstOpponentRecords);
 
-        for (let opponent in json[player]) {
-            if (opponent == bestOpponentRecord.player) {
-                let matchRecord = matchRecords.get(player);
-                let opponentRecord = matchRecord.get(opponent)
-                matchRecord.set(opponent, { ...opponentRecord, isBest: true });
-                matchRecords.set(player, matchRecord);
-            }
+        overallRecords.set(player, playerOverallRecord);
 
-            if (opponent == worstOpponentRecord.player) {
-                let matchRecord = matchRecords.get(player);
-                let opponentRecord = matchRecord.get(opponent)
-                matchRecord.set(opponent, { ...opponentRecord, isWorst: true });
-                matchRecords.set(player, matchRecord);
-            }
-        }
-
-        playerRecords.set(player, playerRecord);
-
-        const totalGames = playerRecord.wins + playerRecord.losses + playerRecord.ties
-        const winRate = totalGames > 0 ? playerRecord.wins / totalGames : 0;
-        if (winRate >  bestRecord.record) {
-            bestRecord = { player, record: winRate };
-        }
-        if (winRate < worstRecord.record) {
-            worstRecord = { player, record: winRate };
-        }
+        const totalGames = playerOverallRecord.wins + playerOverallRecord.losses + playerOverallRecord.ties
+        const winRate = totalGames > 0 ? playerOverallRecord.wins / totalGames : 0;
+        updateHighlightedRecords({ player, record: winRate }, bestRecords, worstRecords);
     }
 
-    console.log(worstRecord);
-
-    for (let player in json) {
-        if (player === bestRecord.player) {
-            let record = playerRecords.get(player);
-            record.isBest = true;
-            playerRecords.set(player, record);
-        }
-        if (player == worstRecord.player) {
-            let record = playerRecords.get(player);
-            record.isWorst = true;
-            playerRecords.set(player, record);
-        }
-    }
+    markBestAndWorstRecords(overallRecords, players, bestRecords, worstRecords);
 
     players.sort();
 
     return {
         game,
         players,
-        playerRecords,
-        records: matchRecords,
+        playerRecords: overallRecords,
+        records: headToHeadRecords,
     };
+}
+
+function markBestAndWorstRecords(records: Map<Player, Record>, players: Array<Player>, bestRecords: Array<HighlightedRecord>, worstRecords: Array<HighlightedRecord>) {
+    console.log(bestRecords);
+    console.log(worstRecords);
+    for (let player of players) {
+        let playerRecord = records.get(player)
+
+        for (let best of bestRecords) {
+            if (best.player == player) {
+                playerRecord.isBest = true
+                break;
+            }
+        }
+
+        for (let worst of worstRecords) {
+            if (worst.player == player) {
+                playerRecord.isWorst = true
+                break;
+            }
+        }
+    }
+}
+
+function updateHighlightedRecords(record: HighlightedRecord, bestRecords: Array<HighlightedRecord>, worstRecords: Array<HighlightedRecord>) {
+    if (record.record > bestRecords[0].record) {
+        bestRecords.length = 0;
+        bestRecords.push(record);
+    } else if (record.record == bestRecords[0].record) {
+        bestRecords.push(record);
+    }
+
+    if (record.record < worstRecords[0].record) {
+        worstRecords.length = 0;
+        worstRecords.push(record);
+    } else if (record.record == worstRecords[0].record) {
+        worstRecords.push(record)
+    }
 }
 
 export function formatRecord(record: Record): string {

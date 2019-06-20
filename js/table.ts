@@ -1,4 +1,5 @@
 import { Game, Standings, Player, formatRecord } from "./standings";
+import { VERSION } from "./versioning";
 
 export function buildStandingsTable(game: Game, standings: Standings): string {
     return `
@@ -40,7 +41,7 @@ function buildStandingsTableHeader(standings: Standings): string {
     }
 
     let header = "<thead>";
-    header += buildCell("");
+    header += buildCell(`${VERSION}`);
     header += buildCell("Total");
 
     for (let player of standings.players) {
