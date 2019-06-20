@@ -2,79 +2,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const standings_1 = require("./standings");
+const table_1 = require("./table");
+const octo_1 = require("./octo");
 let standingsTables = new Map();
-function buildStandingsTable(game, standings) {
-    return `
-    <div class="standings-table">
-        <div class="Polaris-Page">
-            ${buildStandingsTableTitle(game)}
-            <div class="Polaris-Page__Content">
-                <div class="Polaris-Card">
-                    <div class="">
-                        <div class="Polaris-DataTable">
-                            <table class="Polaris-DataTable__Table">
-                                ${buildStandingsTableHeader(standings)}
-                                ${buildStandingsTableBody(standings)}
-                            </table>
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </div>
-    `;
-}
-function buildStandingsTableTitle(game) {
-    return `
-    <div class="Polaris-Page-Header">
-        <div class="Polaris-Page-Header__TitleAndRollup">
-            <div class="Polaris-Page-Header__Title">
-                <div>
-                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">${game}</h1>
-                </div>
-            </div>
-        </div>
-    </div>`;
-}
-function buildStandingsTableHeader(standings) {
-    function buildCell(content) {
-        return `<th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col">${content}</th>`;
-    }
-    let header = "<thead>";
-    header += buildCell("");
-    header += buildCell("Total");
-    for (let player of standings.players) {
-        header += buildCell(player);
-    }
-    header += "</thead>";
-    return header;
-}
-function buildStandingsTableBody(standings) {
-    let body = "<tbody>";
-    for (let player of standings.players) {
-        body += buildStandingsTableRow(player, standings);
-    }
-    body += "</tbody>";
-    return body;
-}
-function buildStandingsTableRow(player, standings) {
-    function buildCell(content) {
-        return `<td class="Polaris-DataTable__Cell">${content}</td>`;
-    }
-    let row = `<tr class="Polaris-DataTable__TableRow">`;
-    row += buildCell(player);
-    row += buildCell(standings_1.formatRecord(standings.playerRecords.get(player)));
-    for (let opponent of standings.players) {
-        if (player == opponent) {
-            row += buildCell("--");
-        }
-        let recordAgainstOpponent = standings.records.get(player).get(opponent);
-        if (recordAgainstOpponent != null) {
-            row += buildCell(standings_1.formatRecord(recordAgainstOpponent));
-        }
-    }
-    row += "</tr>";
-    return row;
-}
 function renderStandings() {
     let standings = "";
     let games = Array.from(standingsTables.keys()).sort();
@@ -83,18 +13,57 @@ function renderStandings() {
     }
     document.querySelector(".standings").innerHTML = standings;
 }
+function updateAvatar(user) {
+    let nameRegex = new RegExp(`@${user.login}`, "gi");
+    document.body.innerHTML = document.body.innerHTML.replace(nameRegex, `<img class="avatar" src="${user.avatarUrl}" />`);
+}
 window.onload = () => {
     for (let gameName in standings_1.Game) {
         const game = gameName;
         standings_1.fetchStandings(game)
             .then((standings) => {
-            standingsTables.set(game, buildStandingsTable(game, standings));
+            standingsTables.set(game, table_1.buildStandingsTable(game, standings));
             renderStandings();
         });
     }
+    standings_1.fetchPlayers()
+        .then(players => {
+        for (let player of players) {
+            octo_1.Octo.user(player.substr(1))
+                .then(user => {
+                console.log(user);
+                updateAvatar(user);
+            });
+        }
+    });
 };
 
-},{"./standings":4}],2:[function(require,module,exports){
+},{"./octo":2,"./standings":4,"./table":5}],2:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Octokat = require("./octokat.js");
+class Octo {
+    constructor() {
+        // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
+        this.octo = new Octokat({ token: "0c0e108b89e8cfbe1682eb0f030affc8a278cd63" });
+        this.repo = this.octo.repos("josephroquedev", "myLeaderboard");
+    }
+    static getInstance() {
+        if (Octo.instance == null) {
+            Octo.instance = new Octo();
+        }
+        return Octo.instance;
+    }
+    static user(name) {
+        return Octo.getInstance().octo.users(name).fetch();
+    }
+    static contents(path) {
+        return Octo.getInstance().repo.contents(path).read();
+    }
+}
+exports.Octo = Octo;
+
+},{"./octokat.js":3}],3:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
     if (typeof exports === 'object' && typeof module === 'object')
         module.exports = factory();
@@ -2206,29 +2175,7 @@ window.onload = () => {
 });
 
 
-},{}],3:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Octokat = require("./octokat.js");
-class Repo {
-    constructor() {
-        // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
-        let octo = new Octokat({ token: "0c0e108b89e8cfbe1682eb0f030affc8a278cd63" });
-        this.repo = octo.repos("josephroquedev", "myLeaderboard");
-    }
-    static getInstance() {
-        if (Repo.instance == null) {
-            Repo.instance = new Repo();
-        }
-        return Repo.instance;
-    }
-    static contents(path) {
-        return Repo.getInstance().repo.contents(path).read();
-    }
-}
-exports.Repo = Repo;
-
-},{"./octokat.js":2}],4:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2239,27 +2186,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const repo_1 = require("./repo");
+const octo_1 = require("./octo");
 var Game;
 (function (Game) {
     Game["Hive"] = "Hive";
     Game["Patchwork"] = "Patchwork";
 })(Game = exports.Game || (exports.Game = {}));
+function fetchPlayers() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let rawPlayers = yield octo_1.Octo.contents("names.txt");
+        return parseRawPlayers(rawPlayers);
+    });
+}
+exports.fetchPlayers = fetchPlayers;
+function parseRawPlayers(contents) {
+    let players = contents.toLowerCase().split("\n").filter(x => x.length > 0);
+    return players.sort();
+}
 function fetchStandings(game) {
     return __awaiter(this, void 0, void 0, function* () {
-        let rawStandings = yield repo_1.Repo.contents(`standings/${game}.json`);
+        let rawStandings = yield octo_1.Octo.contents(`standings/${game}.json`);
         return parseRawStandings(game, rawStandings);
     });
 }
 exports.fetchStandings = fetchStandings;
 function parseRawStandings(game, contents) {
-    let json = JSON.parse(contents);
+    let json = JSON.parse(contents.toLowerCase());
     let players = [];
     let playerRecords = new Map();
     let matchRecords = new Map();
+    let bestRecord = { player: null, record: -Infinity };
     for (let player in json) {
         players.push(player);
-        let playerRecord = { wins: 0, losses: 0, ties: 0 };
+        let playerRecord = { wins: 0, losses: 0, ties: 0, isBest: false };
         for (let opponent in json[player]) {
             const rawRecord = json[player][opponent];
             const [wins, losses, ties] = rawRecord.split("-").map(x => parseInt(x));
@@ -2267,14 +2226,29 @@ function parseRawStandings(game, contents) {
                 matchRecords.set(player, new Map());
             }
             let matchRecord = matchRecords.get(player);
-            matchRecord.set(opponent, { wins, losses, ties });
+            matchRecord.set(opponent, { wins, losses, ties, isBest: false });
             matchRecords.set(player, matchRecord);
             playerRecord.wins += wins;
             playerRecord.losses += losses;
             playerRecord.ties += ties;
         }
         playerRecords.set(player, playerRecord);
+        const totalGames = playerRecord.wins + playerRecord.losses + playerRecord.ties;
+        let winRate = totalGames > 0 ? playerRecord.wins / totalGames : 0;
+        if (winRate > bestRecord.record) {
+            bestRecord = { player, record: winRate };
+        }
     }
+    if (bestRecord.player != null) {
+        for (let player in json) {
+            if (player === bestRecord.player) {
+                let record = playerRecords.get(player);
+                record.isBest = true;
+                playerRecords.set(player, record);
+            }
+        }
+    }
+    console.log(bestRecord);
     players.sort();
     return {
         game,
@@ -2292,4 +2266,83 @@ function formatRecord(record) {
 }
 exports.formatRecord = formatRecord;
 
-},{"./repo":3}]},{},[1]);
+},{"./octo":2}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const standings_1 = require("./standings");
+function buildStandingsTable(game, standings) {
+    return `
+    <div class="standings-table">
+        <div class="Polaris-Page">
+            ${buildStandingsTableTitle(game)}
+            <div class="Polaris-Page__Content">
+                <div class="Polaris-Card">
+                    <div class="">
+                        <div class="Polaris-DataTable">
+                            <table class="Polaris-DataTable__Table">
+                                ${buildStandingsTableHeader(standings)}
+                                ${buildStandingsTableBody(standings)}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    `;
+}
+exports.buildStandingsTable = buildStandingsTable;
+function buildStandingsTableTitle(game) {
+    return `
+    <div class="Polaris-Page-Header">
+        <div class="Polaris-Page-Header__TitleAndRollup">
+            <div class="Polaris-Page-Header__Title">
+                <div>
+                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">${game}</h1>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+function buildStandingsTableHeader(standings) {
+    function buildCell(content) {
+        return `<th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col">${content}</th>`;
+    }
+    let header = "<thead>";
+    header += buildCell("");
+    header += buildCell("Total");
+    for (let player of standings.players) {
+        header += buildCell(player);
+    }
+    header += "</thead>";
+    return header;
+}
+function buildStandingsTableBody(standings) {
+    let body = "<tbody>";
+    for (let player of standings.players) {
+        body += buildStandingsTableRow(player, standings);
+    }
+    body += "</tbody>";
+    return body;
+}
+function buildStandingsTableRow(player, standings) {
+    function buildCell(content, best = false) {
+        return `<td class="Polaris-DataTable__Cell ${best ? "player-record--best" : ""}">${content}</td>`;
+    }
+    let row = `<tr class="Polaris-DataTable__TableRow">`;
+    row += buildCell(player);
+    let playerRecord = standings.playerRecords.get(player);
+    row += buildCell(standings_1.formatRecord(playerRecord), playerRecord.isBest);
+    for (let opponent of standings.players) {
+        if (player == opponent) {
+            row += buildCell("--");
+        }
+        let recordAgainstOpponent = standings.records.get(player).get(opponent);
+        if (recordAgainstOpponent != null) {
+            row += buildCell(standings_1.formatRecord(recordAgainstOpponent));
+        }
+    }
+    row += "</tr>";
+    return row;
+}
+
+},{"./standings":4}]},{},[1]);

@@ -6,11 +6,16 @@ body {
     color: #F4F6F8;
     margin: 0px;
     margin-top: 8px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .Polaris-Page {
     max-width: 100%;
+    width: auto;
+}
+
+.Polaris-DataTable__Table {
+    width: auto;
 }
 
 .Polaris-Card {
@@ -18,10 +23,20 @@ body {
 }
 
 th {
-    height: 44px;
+    height: 52px;
 }
 
 tr {
-    height: 44px;
+    height: 52px;
 }
 
+.player-record--best {
+    background-color: rgba(0, 255, 0, 0.05);
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    padding: 2px;
+    border-radius: 50%;
+}

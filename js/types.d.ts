@@ -1,3 +1,9 @@
+export interface User {
+    login: string;
+    avatarUrl: string;
+    name: string;
+}
+
 export interface Author {
     date: string;
     name: string;

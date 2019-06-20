@@ -63,13 +63,15 @@ function buildStandingsTableBody(standings: Standings): string {
 }
 
 function buildStandingsTableRow(player: Player, standings: Standings): string {
-    function buildCell(content: string): string {
-        return `<td class="Polaris-DataTable__Cell">${content}</td>`;
+    function buildCell(content: string, best: boolean = false): string {
+        return `<td class="Polaris-DataTable__Cell ${best ? "player-record--best" : ""}">${content}</td>`;
     }
 
     let row = `<tr class="Polaris-DataTable__TableRow">`;
     row += buildCell(player);
-    row += buildCell(formatRecord(standings.playerRecords.get(player)));
+
+    let playerRecord = standings.playerRecords.get(player);
+    row += buildCell(formatRecord(playerRecord), playerRecord.isBest);
 
     for (let opponent of standings.players) {
         if (player == opponent) {
