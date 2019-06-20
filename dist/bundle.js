@@ -2303,19 +2303,10 @@ function updateHighlightedRecords(record, bestRecords, worstRecords) {
         worstRecords.push(record);
     }
 }
-function formatRecord(record) {
-    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
-    if (record.ties > 0) {
-        format += `-<span class="record--value record--ties">${record.ties}</span>`;
-    }
-    return format;
-}
-exports.formatRecord = formatRecord;
 
 },{"./octo":2}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const standings_1 = require("./standings");
 const versioning_1 = require("./versioning");
 function buildStandingsTable(game, standings) {
     return `
@@ -2378,21 +2369,28 @@ function buildStandingsTableRow(player, standings) {
     let row = `<tr class="Polaris-DataTable__TableRow">`;
     row += buildCell(player);
     let playerRecord = standings.playerRecords.get(player);
-    row += buildCell(standings_1.formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst);
+    row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst);
     for (let opponent of standings.players) {
         if (player == opponent) {
             row += buildCell("--");
         }
         let recordAgainstOpponent = standings.records.get(player).get(opponent);
         if (recordAgainstOpponent != null) {
-            row += buildCell(standings_1.formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
+            row += buildCell(formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
         }
     }
     row += "</tr>";
     return row;
 }
+function formatRecord(record) {
+    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
+    if (record.ties > 0) {
+        format += `-<span class="record--value record--ties">${record.ties}</span>`;
+    }
+    return format;
+}
 
-},{"./standings":4,"./versioning":6}],6:[function(require,module,exports){
+},{"./versioning":6}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VERSION = "v4.0";

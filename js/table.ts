@@ -1,4 +1,4 @@
-import { Game, Standings, Player, formatRecord } from "./standings";
+import { Game, Standings, Player, Record } from "./standings";
 import { VERSION } from "./versioning";
 
 export function buildStandingsTable(game: Game, standings: Standings): string {
@@ -87,4 +87,12 @@ function buildStandingsTableRow(player: Player, standings: Standings): string {
 
     row += "</tr>";
     return row;
+}
+
+function formatRecord(record: Record): string {
+    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
+    if (record.ties > 0) {
+        format += `-<span class="record--value record--ties">${record.ties}</span>`;
+    }
+    return format;
 }

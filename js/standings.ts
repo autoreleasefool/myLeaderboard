@@ -150,11 +150,3 @@ function updateHighlightedRecords(record: HighlightedRecord, bestRecords: Array<
         worstRecords.push(record)
     }
 }
-
-export function formatRecord(record: Record): string {
-    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
-    if (record.ties > 0) {
-        format += `-<span class="record--value record--ties">${record.ties}</span>`;
-    }
-    return format;
-}
