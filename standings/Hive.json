@@ -22,9 +22,9 @@
     "@Campbell-Scott": {
         "@aimeejoelleanderson": "0-0-0",
         "@Caiopia": "0-0-0",
-        "@dannbeaus": "1-0-0",
+        "@dannbeaus": "0-0-0",
         "@g-Off": "0-0-0",
-        "@josephroquedev": "1-0-0",
+        "@josephroquedev": "0-0-0",
         "@Kiesco08": "0-0-0",
         "@mori-ahk": "0-0-0",
         "@nabilmaad": "0-0-0"
@@ -32,7 +32,7 @@
     "@dannbeaus": {
         "@aimeejoelleanderson": "0-0-0",
         "@Caiopia": "0-0-0",
-        "@Campbell-Scott": "0-1-0",
+        "@Campbell-Scott": "0-0-0",
         "@g-Off": "0-0-0",
         "@josephroquedev": "0-0-0",
         "@Kiesco08": "0-0-0",
@@ -52,11 +52,11 @@
     "@josephroquedev": {
         "@aimeejoelleanderson": "0-0-0",
         "@Caiopia": "0-0-0",
-        "@Campbell-Scott": "0-1-0",
+        "@Campbell-Scott": "0-0-0",
         "@dannbeaus": "0-0-0",
         "@g-Off": "0-0-0",
         "@Kiesco08": "0-0-0",
-        "@mori-ahk": "1-0-0",
+        "@mori-ahk": "0-0-0",
         "@nabilmaad": "0-0-0"
     },
     "@Kiesco08": {
@@ -75,7 +75,7 @@
         "@Campbell-Scott": "0-0-0",
         "@dannbeaus": "0-0-0",
         "@g-Off": "0-0-0",
-        "@josephroquedev": "0-1-0",
+        "@josephroquedev": "0-0-0",
         "@Kiesco08": "0-0-0",
         "@nabilmaad": "0-0-0"
     },
