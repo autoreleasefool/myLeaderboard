@@ -11,15 +11,15 @@ body {
 
 .Polaris-Page {
     max-width: 100%;
-    width: auto;
-}
-
-.Polaris-DataTable__Table {
-    width: auto;
+    max-width: 1000px;
 }
 
 .Polaris-Card {
     background-color: rgba(255, 255, 255, 0.05);
+}
+
+.Polaris-DataTable__Cell--header {
+    color: #F4F6F8;
 }
 
 th {
@@ -30,8 +30,17 @@ tr {
     height: 52px;
 }
 
+.Polaris-DataTable__Cell {
+    text-align: center;
+    vertical-align: inherit;
+}
+
 .player-record--best {
-    background-color: rgba(0, 255, 0, 0.05);
+    background-color: rgba(0, 180, 0, 0.2);
+}
+
+.player-record--worst {
+    background-color: rgba(180, 0, 0, 0.2);
 }
 
 .avatar {

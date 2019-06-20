@@ -2220,9 +2220,12 @@ function parseRawStandings(game, contents) {
     let playerRecords = new Map();
     let matchRecords = new Map();
     let bestRecord = { player: null, record: -Infinity };
+    let worstRecord = { player: null, record: Infinity };
     for (let player in json) {
         players.push(player);
-        let playerRecord = { wins: 0, losses: 0, ties: 0, isBest: false };
+        let playerRecord = { wins: 0, losses: 0, ties: 0, isBest: false, isWorst: false };
+        let bestOpponentRecord = { player: null, record: -Infinity };
+        let worstOpponentRecord = { player: null, record: Infinity };
         for (let opponent in json[player]) {
             const rawRecord = json[player][opponent];
             const [wins, losses, ties] = rawRecord.split("-").map(x => parseInt(x));
@@ -2230,26 +2233,56 @@ function parseRawStandings(game, contents) {
                 matchRecords.set(player, new Map());
             }
             let matchRecord = matchRecords.get(player);
-            matchRecord.set(opponent, { wins, losses, ties, isBest: false });
+            matchRecord.set(opponent, { wins, losses, ties, isBest: false, isWorst: false });
             matchRecords.set(player, matchRecord);
             playerRecord.wins += wins;
             playerRecord.losses += losses;
             playerRecord.ties += ties;
+            const totalGames = wins + losses + ties;
+            const winRate = totalGames > 0 ? wins / totalGames : 0;
+            if (winRate > bestOpponentRecord.record) {
+                bestOpponentRecord = { player: opponent, record: winRate };
+            }
+            if (winRate < worstOpponentRecord.record) {
+                worstOpponentRecord = { player: opponent, record: winRate };
+            }
+        }
+        console.log(worstOpponentRecord);
+        for (let opponent in json[player]) {
+            if (opponent == bestOpponentRecord.player) {
+                let matchRecord = matchRecords.get(player);
+                let opponentRecord = matchRecord.get(opponent);
+                matchRecord.set(opponent, Object.assign({}, opponentRecord, { isBest: true }));
+                matchRecords.set(player, matchRecord);
+            }
+            if (opponent == worstOpponentRecord.player) {
+                let matchRecord = matchRecords.get(player);
+                let opponentRecord = matchRecord.get(opponent);
+                matchRecord.set(opponent, Object.assign({}, opponentRecord, { isWorst: true }));
+                matchRecords.set(player, matchRecord);
+            }
         }
         playerRecords.set(player, playerRecord);
         const totalGames = playerRecord.wins + playerRecord.losses + playerRecord.ties;
-        let winRate = totalGames > 0 ? playerRecord.wins / totalGames : 0;
+        const winRate = totalGames > 0 ? playerRecord.wins / totalGames : 0;
         if (winRate > bestRecord.record) {
             bestRecord = { player, record: winRate };
         }
+        if (winRate < worstRecord.record) {
+            worstRecord = { player, record: winRate };
+        }
     }
-    if (bestRecord.player != null) {
-        for (let player in json) {
-            if (player === bestRecord.player) {
-                let record = playerRecords.get(player);
-                record.isBest = true;
-                playerRecords.set(player, record);
-            }
+    console.log(worstRecord);
+    for (let player in json) {
+        if (player === bestRecord.player) {
+            let record = playerRecords.get(player);
+            record.isBest = true;
+            playerRecords.set(player, record);
+        }
+        if (player == worstRecord.player) {
+            let record = playerRecords.get(player);
+            record.isWorst = true;
+            playerRecords.set(player, record);
         }
     }
     players.sort();
@@ -2328,20 +2361,20 @@ function buildStandingsTableBody(standings) {
     return body;
 }
 function buildStandingsTableRow(player, standings) {
-    function buildCell(content, best = false) {
-        return `<td class="Polaris-DataTable__Cell ${best ? "player-record--best" : ""}">${content}</td>`;
+    function buildCell(content, best = false, worst = false) {
+        return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}">${content}</td>`;
     }
     let row = `<tr class="Polaris-DataTable__TableRow">`;
     row += buildCell(player);
     let playerRecord = standings.playerRecords.get(player);
-    row += buildCell(standings_1.formatRecord(playerRecord), playerRecord.isBest);
+    row += buildCell(standings_1.formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst);
     for (let opponent of standings.players) {
         if (player == opponent) {
             row += buildCell("--");
         }
         let recordAgainstOpponent = standings.records.get(player).get(opponent);
         if (recordAgainstOpponent != null) {
-            row += buildCell(standings_1.formatRecord(recordAgainstOpponent));
+            row += buildCell(standings_1.formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
         }
     }
     row += "</tr>";

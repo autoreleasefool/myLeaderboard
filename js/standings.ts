@@ -12,6 +12,7 @@ export interface Record {
     losses: number;
     ties: number;
     isBest: boolean;
+    isWorst: boolean;
 }
 
 export interface Standings {
@@ -42,17 +43,22 @@ export async function fetchStandings(game: Game): Promise<Standings> {
     return parseRawStandings(game, rawStandings);
 }
 
+interface BestRecord { player?: Player, record: number }
+
 function parseRawStandings(game: Game, contents: string): Standings {
     let json: RawStandings = JSON.parse(contents.toLowerCase());
     let players: Array<Player> = [];
     let playerRecords: Map<Player, Record> = new Map();
     let matchRecords: Map<Player, Map<Player, Record>> = new Map();
 
-    let bestRecord: { player?: Player, record: number } = { player: null, record: -Infinity };
+    let bestRecord: BestRecord = { player: null, record: -Infinity };
+    let worstRecord: BestRecord = { player: null, record: Infinity };
     for (let player in json) {
         players.push(player);
-        let playerRecord: Record = { wins: 0, losses: 0, ties: 0, isBest: false };
+        let playerRecord: Record = { wins: 0, losses: 0, ties: 0, isBest: false, isWorst: false };
 
+        let bestOpponentRecord: BestRecord = { player: null, record: -Infinity };
+        let worstOpponentRecord: BestRecord = { player: null, record: Infinity };
         for (let opponent in json[player]) {
             const rawRecord = json[player][opponent];
             const [wins, losses, ties] = rawRecord.split("-").map(x => parseInt(x));
@@ -62,30 +68,65 @@ function parseRawStandings(game: Game, contents: string): Standings {
             }
 
             let matchRecord = matchRecords.get(player);
-            matchRecord.set(opponent, { wins, losses, ties, isBest: false });
+            matchRecord.set(opponent, { wins, losses, ties, isBest: false, isWorst: false });
             matchRecords.set(player, matchRecord);
 
             playerRecord.wins += wins;
             playerRecord.losses += losses;
             playerRecord.ties += ties;
+
+            const totalGames = wins + losses + ties;
+            const winRate = totalGames > 0 ? wins / totalGames : 0;
+            if (winRate > bestOpponentRecord.record) {
+                bestOpponentRecord = { player: opponent, record: winRate };
+            }
+            if (winRate < worstOpponentRecord.record) {
+                worstOpponentRecord = { player: opponent, record: winRate };
+            }
+        }
+
+        console.log(worstOpponentRecord);
+
+        for (let opponent in json[player]) {
+            if (opponent == bestOpponentRecord.player) {
+                let matchRecord = matchRecords.get(player);
+                let opponentRecord = matchRecord.get(opponent)
+                matchRecord.set(opponent, { ...opponentRecord, isBest: true });
+                matchRecords.set(player, matchRecord);
+            }
+
+            if (opponent == worstOpponentRecord.player) {
+                let matchRecord = matchRecords.get(player);
+                let opponentRecord = matchRecord.get(opponent)
+                matchRecord.set(opponent, { ...opponentRecord, isWorst: true });
+                matchRecords.set(player, matchRecord);
+            }
         }
 
         playerRecords.set(player, playerRecord);
 
         const totalGames = playerRecord.wins + playerRecord.losses + playerRecord.ties
-        let winRate = totalGames > 0 ? playerRecord.wins / totalGames : 0;
+        const winRate = totalGames > 0 ? playerRecord.wins / totalGames : 0;
         if (winRate >  bestRecord.record) {
             bestRecord = { player, record: winRate };
         }
+        if (winRate < worstRecord.record) {
+            worstRecord = { player, record: winRate };
+        }
     }
 
-    if (bestRecord.player != null) {
-        for (let player in json) {
-            if (player === bestRecord.player) {
-                let record = playerRecords.get(player);
-                record.isBest = true;
-                playerRecords.set(player, record);
-            }
+    console.log(worstRecord);
+
+    for (let player in json) {
+        if (player === bestRecord.player) {
+            let record = playerRecords.get(player);
+            record.isBest = true;
+            playerRecords.set(player, record);
+        }
+        if (player == worstRecord.player) {
+            let record = playerRecords.get(player);
+            record.isWorst = true;
+            playerRecords.set(player, record);
         }
     }
 
