@@ -2251,16 +2251,26 @@ function parseRawStandings(game, contents) {
     }
     markBestAndWorstRecords(overallRecords, players, bestRecords, worstRecords);
     players.sort();
-    return {
-        game,
-        players,
-        playerRecords: overallRecords,
-        records: headToHeadRecords,
-    };
+    let standings = { game, players, playerRecords: overallRecords, records: headToHeadRecords };
+    stripUnplayedPlayers(standings);
+    return standings;
+}
+function stripUnplayedPlayers(standings) {
+    let players = Array.from(standings.players);
+    for (let player of players) {
+        let playerRecord = standings.playerRecords.get(player);
+        if (playerRecord.wins + playerRecord.losses + playerRecord.ties == 0) {
+            standings.players = standings.players.filter(x => x !== player);
+            standings.playerRecords.delete(player);
+            standings.records.delete(player);
+            for (let opponent of standings.players) {
+                let opponentRecord = standings.records.get(opponent);
+                opponentRecord.delete(player);
+            }
+        }
+    }
 }
 function markBestAndWorstRecords(records, players, bestRecords, worstRecords) {
-    console.log(bestRecords);
-    console.log(worstRecords);
     for (let player of players) {
         let playerRecord = records.get(player);
         for (let best of bestRecords) {

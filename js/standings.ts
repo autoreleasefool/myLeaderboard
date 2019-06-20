@@ -94,17 +94,28 @@ function parseRawStandings(game: Game, contents: string): Standings {
 
     players.sort();
 
-    return {
-        game,
-        players,
-        playerRecords: overallRecords,
-        records: headToHeadRecords,
-    };
+    let standings: Standings = { game, players, playerRecords: overallRecords, records: headToHeadRecords };
+    stripUnplayedPlayers(standings);
+    return standings;
+}
+
+function stripUnplayedPlayers(standings: Standings) {
+    let players = Array.from(standings.players);
+    for (let player of players) {
+        let playerRecord = standings.playerRecords.get(player);
+        if (playerRecord.wins + playerRecord.losses + playerRecord.ties == 0) {
+            standings.players = standings.players.filter(x => x !== player);
+            standings.playerRecords.delete(player);
+            standings.records.delete(player);
+            for (let opponent of standings.players) {
+                let opponentRecord = standings.records.get(opponent);
+                opponentRecord.delete(player);
+            }
+        }
+    }
 }
 
 function markBestAndWorstRecords(records: Map<Player, Record>, players: Array<Player>, bestRecords: Array<HighlightedRecord>, worstRecords: Array<HighlightedRecord>) {
-    console.log(bestRecords);
-    console.log(worstRecords);
     for (let player of players) {
         let playerRecord = records.get(player)
 
