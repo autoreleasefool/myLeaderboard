@@ -61,10 +61,20 @@ function parseRawStandings(game: Game, contents: string): Standings {
         playerRecords.set(player, playerRecord);
     }
 
+    players.sort();
+
     return {
         game,
         players,
         playerRecords,
         records: matchRecords,
     };
+}
+
+export function formatRecord(record: Record): string {
+    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
+    if (record.ties > 0) {
+        format += `-<span class="record--value record--ties">${record.ties}</span>`;
+    }
+    return format;
 }

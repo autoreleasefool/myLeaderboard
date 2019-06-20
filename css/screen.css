@@ -9,13 +9,19 @@ body {
     overflow: hidden;
 }
 
-td {
-    font-size: 18px;
-    line-height: 22px;
-    font-weight: 400;
-    height:54px;
+.Polaris-Page {
+    max-width: 100%;
 }
 
-table {
-    padding-left: 72px;
+.Polaris-Card {
+    background-color: rgba(255, 255, 255, 0.05);
 }
+
+th {
+    height: 44px;
+}
+
+tr {
+    height: 44px;
+}
+
