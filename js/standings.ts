@@ -1,4 +1,4 @@
-import { Repo } from "./repo";
+import { Octo } from "./octo";
 
 export type Player = string;
 
@@ -27,7 +27,7 @@ export interface RawStandings {
 }
 
 export async function fetchStandings(game: Game): Promise<Standings> {
-    let rawStandings = await Repo.contents(`standings/${game}.json`);
+    let rawStandings = await Octo.contents(`standings/${game}.json`);
     return parseRawStandings(game, rawStandings);
 }
 
