@@ -13,29 +13,33 @@ function renderStandings() {
     }
     document.querySelector(".standings").innerHTML = standings;
 }
-function updateAvatar(user) {
-    let nameRegex = new RegExp(`@${user.login}`, "gi");
-    document.body.innerHTML = document.body.innerHTML.replace(nameRegex, `<img class="avatar" src="${user.avatarUrl}" />`);
-}
-window.onload = () => {
-    for (let gameName in standings_1.Game) {
-        const game = gameName;
-        standings_1.fetchStandings(game)
-            .then((standings) => {
-            standingsTables.set(game, table_1.buildStandingsTable(game, standings));
-            renderStandings();
-        });
-    }
+function updateAvatars() {
     standings_1.fetchPlayers()
         .then(players => {
         for (let player of players) {
             octo_1.Octo.user(player.substr(1))
                 .then(user => {
-                console.log(user);
                 updateAvatar(user);
             });
         }
     });
+}
+function updateAvatar(user) {
+    let nameRegex = new RegExp(`@${user.login}`, "gi");
+    document.body.innerHTML = document.body.innerHTML.replace(nameRegex, `<img class="avatar" src="${user.avatarUrl}" />`);
+}
+window.onload = () => {
+    let standingsPromises = [];
+    for (let gameName in standings_1.Game) {
+        const game = gameName;
+        standingsPromises.push(standings_1.fetchStandings(game)
+            .then((standings) => {
+            standingsTables.set(game, table_1.buildStandingsTable(game, standings));
+            renderStandings();
+        }));
+    }
+    Promise.all(standingsPromises)
+        .then(updateAvatars);
 };
 
 },{"./octo":2,"./standings":4,"./table":5}],2:[function(require,module,exports){
@@ -2248,7 +2252,6 @@ function parseRawStandings(game, contents) {
             }
         }
     }
-    console.log(bestRecord);
     players.sort();
     return {
         game,

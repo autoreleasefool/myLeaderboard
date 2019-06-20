@@ -15,29 +15,36 @@ function renderStandings() {
     document.querySelector(".standings").innerHTML = standings;
 }
 
+function updateAvatars() {
+    fetchPlayers()
+        .then(players => {
+            for (let player of players) {
+                Octo.user(player.substr(1))
+                    .then(user => {
+                        updateAvatar(user);
+                    })
+            }
+        });
+}
+
 function updateAvatar(user: User) {
     let nameRegex = new RegExp(`@${user.login}`, "gi")
     document.body.innerHTML = document.body.innerHTML.replace(nameRegex, `<img class="avatar" src="${user.avatarUrl}" />`)
 }
 
 window.onload = () => {
+    let standingsPromises: Array<Promise<any>> = [];
     for (let gameName in Game) {
         const game = gameName as Game;
-        fetchStandings(game)
+        standingsPromises.push(fetchStandings(game)
             .then((standings) => {
                 standingsTables.set(game, buildStandingsTable(game, standings));
                 renderStandings();
-            })
+            }));
     }
 
-    fetchPlayers()
-        .then(players => {
-            for (let player of players) {
-                Octo.user(player.substr(1))
-                    .then(user => {
-                        console.log(user);
-                        updateAvatar(user);
-                    })
-            }
-        });
+    Promise.all(standingsPromises)
+        .then(updateAvatars)
+
+
 }

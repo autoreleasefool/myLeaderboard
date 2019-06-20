@@ -88,7 +88,6 @@ function parseRawStandings(game: Game, contents: string): Standings {
             }
         }
     }
-    console.log(bestRecord);
 
     players.sort();
 
