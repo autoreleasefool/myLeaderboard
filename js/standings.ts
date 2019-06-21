@@ -1,6 +1,10 @@
 import { Octo } from "./octo";
 
-export type Player = string;
+export interface Player {
+    username: string;
+    name: string;
+    graveyard?: boolean;
+}
 
 export enum Game {
     Hive = "Hive",
@@ -17,9 +21,9 @@ export interface Record {
 
 export interface Standings {
     game: Game;
-    players: Array<Player>;
-    playerRecords: Map<Player, Record>;
-    records: Map<Player, Map<Player, Record>>;
+    playerNames: Array<string>;
+    playerRecords: Map<string, Record>;
+    records: Map<string, Map<string, Record>>;
 }
 
 export interface RawStandings {
@@ -29,13 +33,13 @@ export interface RawStandings {
 }
 
 export async function fetchPlayers(): Promise<Array<Player>> {
-    let rawPlayers = await Octo.contents("names.txt");
+    let rawPlayers = await Octo.contents("players.json");
     return parseRawPlayers(rawPlayers);
 }
 
 function parseRawPlayers(contents: string): Array<Player> {
-    let players: Array<Player> = contents.toLowerCase().split("\n").filter(x => x.length > 0)
-    return players.sort()
+    let players: Array<Player> = JSON.parse(contents);
+    return players.sort((first, second): number => first.name.toLowerCase().localeCompare(second.name.toLowerCase()));
 }
 
 export async function fetchStandings(game: Game): Promise<Standings> {
@@ -43,22 +47,22 @@ export async function fetchStandings(game: Game): Promise<Standings> {
     return parseRawStandings(game, rawStandings);
 }
 
-interface HighlightedRecord { player?: Player, record: number }
+interface HighlightedRecord { playerName?: string, record: number }
 
 function parseRawStandings(game: Game, contents: string): Standings {
     let json: RawStandings = JSON.parse(contents.toLowerCase());
-    let players: Array<Player> = [];
-    let overallRecords: Map<Player, Record> = new Map();
-    let headToHeadRecords: Map<Player, Map<Player, Record>> = new Map();
+    let playerNames: Array<string> = [];
+    let overallRecords: Map<string, Record> = new Map();
+    let headToHeadRecords: Map<string, Map<string, Record>> = new Map();
 
-    let bestRecords: Array<HighlightedRecord> = [{ player: null, record: -Infinity }];
-    let worstRecords: Array<HighlightedRecord> = [{ player: null, record: Infinity }];
+    let bestRecords: Array<HighlightedRecord> = [{ playerName: null, record: -Infinity }];
+    let worstRecords: Array<HighlightedRecord> = [{ playerName: null, record: Infinity }];
     for (let player in json) {
-        players.push(player);
+        playerNames.push(player);
         let playerOverallRecord: Record = { wins: 0, losses: 0, ties: 0, isBest: false, isWorst: false };
 
-        let bestOpponentRecords: Array<HighlightedRecord> = [{ player: null, record: -Infinity }];
-        let worstOpponentRecords: Array<HighlightedRecord> = [{ player: null, record: Infinity }];
+        let bestOpponentRecords: Array<HighlightedRecord> = [{ playerName: null, record: -Infinity }];
+        let worstOpponentRecords: Array<HighlightedRecord> = [{ playerName: null, record: Infinity }];
         for (let opponent in json[player]) {
             const rawRecord = json[player][opponent];
             const [wins, losses, ties] = rawRecord.split("-").map(x => parseInt(x));
@@ -76,7 +80,7 @@ function parseRawStandings(game: Game, contents: string): Standings {
 
             const totalGames = wins + losses + ties;
             const winRate = totalGames > 0 ? wins / totalGames : 0;
-            updateHighlightedRecords({ player: opponent, record: winRate}, bestOpponentRecords, worstOpponentRecords);
+            updateHighlightedRecords({ playerName: opponent, record: winRate}, bestOpponentRecords, worstOpponentRecords);
         }
 
         let playerRecords = headToHeadRecords.get(player);
@@ -87,47 +91,47 @@ function parseRawStandings(game: Game, contents: string): Standings {
 
         const totalGames = playerOverallRecord.wins + playerOverallRecord.losses + playerOverallRecord.ties
         const winRate = totalGames > 0 ? playerOverallRecord.wins / totalGames : 0;
-        updateHighlightedRecords({ player, record: winRate }, bestRecords, worstRecords);
+        updateHighlightedRecords({ playerName: player, record: winRate }, bestRecords, worstRecords);
     }
 
-    markBestAndWorstRecords(overallRecords, players, bestRecords, worstRecords);
+    markBestAndWorstRecords(overallRecords, playerNames, bestRecords, worstRecords);
 
-    players.sort();
+    playerNames.sort();
 
-    let standings: Standings = { game, players, playerRecords: overallRecords, records: headToHeadRecords };
+    let standings: Standings = { game, playerNames, playerRecords: overallRecords, records: headToHeadRecords };
     stripUnplayedPlayers(standings);
     return standings;
 }
 
 function stripUnplayedPlayers(standings: Standings) {
-    let players = Array.from(standings.players);
-    for (let player of players) {
-        let playerRecord = standings.playerRecords.get(player);
+    let playerNames = Array.from(standings.playerNames);
+    for (let playerName of playerNames) {
+        let playerRecord = standings.playerRecords.get(playerName);
         if (playerRecord.wins + playerRecord.losses + playerRecord.ties == 0) {
-            standings.players = standings.players.filter(x => x !== player);
-            standings.playerRecords.delete(player);
-            standings.records.delete(player);
-            for (let opponent of standings.players) {
+            standings.playerNames = standings.playerNames.filter(x => x !== playerName);
+            standings.playerRecords.delete(playerName);
+            standings.records.delete(playerName);
+            for (let opponent of standings.playerNames) {
                 let opponentRecord = standings.records.get(opponent);
-                opponentRecord.delete(player);
+                opponentRecord.delete(playerName);
             }
         }
     }
 }
 
-function markBestAndWorstRecords(records: Map<Player, Record>, players: Array<Player>, bestRecords: Array<HighlightedRecord>, worstRecords: Array<HighlightedRecord>) {
-    for (let player of players) {
-        let playerRecord = records.get(player)
+function markBestAndWorstRecords(records: Map<string, Record>, players: Array<string>, bestRecords: Array<HighlightedRecord>, worstRecords: Array<HighlightedRecord>) {
+    for (let playerName of players) {
+        let playerRecord = records.get(playerName)
 
         for (let best of bestRecords) {
-            if (best.player == player) {
+            if (best.playerName == playerName) {
                 playerRecord.isBest = true
                 break;
             }
         }
 
         for (let worst of worstRecords) {
-            if (worst.player == player) {
+            if (worst.playerName == playerName) {
                 playerRecord.isWorst = true
                 break;
             }

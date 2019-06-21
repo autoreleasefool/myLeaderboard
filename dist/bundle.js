@@ -17,7 +17,7 @@ function updateAvatars() {
     standings_1.fetchPlayers()
         .then(players => {
         for (let player of players) {
-            octo_1.Octo.user(player.substr(1))
+            octo_1.Octo.user(player.username.substr(1))
                 .then(user => {
                 updateAvatar(user);
             });
@@ -2200,14 +2200,14 @@ var Game;
 })(Game = exports.Game || (exports.Game = {}));
 function fetchPlayers() {
     return __awaiter(this, void 0, void 0, function* () {
-        let rawPlayers = yield octo_1.Octo.contents("names.txt");
+        let rawPlayers = yield octo_1.Octo.contents("players.json");
         return parseRawPlayers(rawPlayers);
     });
 }
 exports.fetchPlayers = fetchPlayers;
 function parseRawPlayers(contents) {
-    let players = contents.toLowerCase().split("\n").filter(x => x.length > 0);
-    return players.sort();
+    let players = JSON.parse(contents);
+    return players.sort((first, second) => first.name.toLowerCase().localeCompare(second.name.toLowerCase()));
 }
 function fetchStandings(game) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -2218,16 +2218,16 @@ function fetchStandings(game) {
 exports.fetchStandings = fetchStandings;
 function parseRawStandings(game, contents) {
     let json = JSON.parse(contents.toLowerCase());
-    let players = [];
+    let playerNames = [];
     let overallRecords = new Map();
     let headToHeadRecords = new Map();
-    let bestRecords = [{ player: null, record: -Infinity }];
-    let worstRecords = [{ player: null, record: Infinity }];
+    let bestRecords = [{ playerName: null, record: -Infinity }];
+    let worstRecords = [{ playerName: null, record: Infinity }];
     for (let player in json) {
-        players.push(player);
+        playerNames.push(player);
         let playerOverallRecord = { wins: 0, losses: 0, ties: 0, isBest: false, isWorst: false };
-        let bestOpponentRecords = [{ player: null, record: -Infinity }];
-        let worstOpponentRecords = [{ player: null, record: Infinity }];
+        let bestOpponentRecords = [{ playerName: null, record: -Infinity }];
+        let worstOpponentRecords = [{ playerName: null, record: Infinity }];
         for (let opponent in json[player]) {
             const rawRecord = json[player][opponent];
             const [wins, losses, ties] = rawRecord.split("-").map(x => parseInt(x));
@@ -2241,7 +2241,7 @@ function parseRawStandings(game, contents) {
             playerOverallRecord.ties += ties;
             const totalGames = wins + losses + ties;
             const winRate = totalGames > 0 ? wins / totalGames : 0;
-            updateHighlightedRecords({ player: opponent, record: winRate }, bestOpponentRecords, worstOpponentRecords);
+            updateHighlightedRecords({ playerName: opponent, record: winRate }, bestOpponentRecords, worstOpponentRecords);
         }
         let playerRecords = headToHeadRecords.get(player);
         let opponents = Object.keys(json[player]);
@@ -2249,40 +2249,40 @@ function parseRawStandings(game, contents) {
         overallRecords.set(player, playerOverallRecord);
         const totalGames = playerOverallRecord.wins + playerOverallRecord.losses + playerOverallRecord.ties;
         const winRate = totalGames > 0 ? playerOverallRecord.wins / totalGames : 0;
-        updateHighlightedRecords({ player, record: winRate }, bestRecords, worstRecords);
+        updateHighlightedRecords({ playerName: player, record: winRate }, bestRecords, worstRecords);
     }
-    markBestAndWorstRecords(overallRecords, players, bestRecords, worstRecords);
-    players.sort();
-    let standings = { game, players, playerRecords: overallRecords, records: headToHeadRecords };
+    markBestAndWorstRecords(overallRecords, playerNames, bestRecords, worstRecords);
+    playerNames.sort();
+    let standings = { game, playerNames, playerRecords: overallRecords, records: headToHeadRecords };
     stripUnplayedPlayers(standings);
     return standings;
 }
 function stripUnplayedPlayers(standings) {
-    let players = Array.from(standings.players);
-    for (let player of players) {
-        let playerRecord = standings.playerRecords.get(player);
+    let playerNames = Array.from(standings.playerNames);
+    for (let playerName of playerNames) {
+        let playerRecord = standings.playerRecords.get(playerName);
         if (playerRecord.wins + playerRecord.losses + playerRecord.ties == 0) {
-            standings.players = standings.players.filter(x => x !== player);
-            standings.playerRecords.delete(player);
-            standings.records.delete(player);
-            for (let opponent of standings.players) {
+            standings.playerNames = standings.playerNames.filter(x => x !== playerName);
+            standings.playerRecords.delete(playerName);
+            standings.records.delete(playerName);
+            for (let opponent of standings.playerNames) {
                 let opponentRecord = standings.records.get(opponent);
-                opponentRecord.delete(player);
+                opponentRecord.delete(playerName);
             }
         }
     }
 }
 function markBestAndWorstRecords(records, players, bestRecords, worstRecords) {
-    for (let player of players) {
-        let playerRecord = records.get(player);
+    for (let playerName of players) {
+        let playerRecord = records.get(playerName);
         for (let best of bestRecords) {
-            if (best.player == player) {
+            if (best.playerName == playerName) {
                 playerRecord.isBest = true;
                 break;
             }
         }
         for (let worst of worstRecords) {
-            if (worst.player == player) {
+            if (worst.playerName == playerName) {
                 playerRecord.isWorst = true;
                 break;
             }
@@ -2350,7 +2350,7 @@ function buildStandingsTableHeader(standings) {
     let header = "<thead>";
     header += buildCell(`${versioning_1.VERSION}`);
     header += buildCell("Total", true);
-    for (let player of standings.players) {
+    for (let player of standings.playerNames) {
         header += buildCell(player);
     }
     header += "</thead>";
@@ -2358,25 +2358,25 @@ function buildStandingsTableHeader(standings) {
 }
 function buildStandingsTableBody(standings) {
     let body = "<tbody>";
-    for (let player of standings.players) {
+    for (let player of standings.playerNames) {
         body += buildStandingsTableRow(player, standings);
     }
     body += "</tbody>";
     return body;
 }
-function buildStandingsTableRow(player, standings) {
+function buildStandingsTableRow(playerName, standings) {
     function buildCell(content, best = false, worst = false, isTotal = false) {
         return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}${isTotal ? " player-record--total" : ""}">${content}</td>`;
     }
     let row = `<tr class="Polaris-DataTable__TableRow">`;
-    row += buildCell(player);
-    let playerRecord = standings.playerRecords.get(player);
+    row += buildCell(playerName);
+    let playerRecord = standings.playerRecords.get(playerName);
     row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
-    for (let opponent of standings.players) {
-        if (player == opponent) {
+    for (let opponent of standings.playerNames) {
+        if (playerName == opponent) {
             row += buildCell("--");
         }
-        let recordAgainstOpponent = standings.records.get(player).get(opponent);
+        let recordAgainstOpponent = standings.records.get(playerName).get(opponent);
         if (recordAgainstOpponent != null) {
             row += buildCell(formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
         }

@@ -19,7 +19,7 @@ function updateAvatars() {
     fetchPlayers()
         .then(players => {
             for (let player of players) {
-                Octo.user(player.substr(1))
+                Octo.user(player.username.substr(1))
                     .then(user => {
                         updateAvatar(user);
                     })

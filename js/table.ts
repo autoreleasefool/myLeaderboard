@@ -44,7 +44,7 @@ function buildStandingsTableHeader(standings: Standings): string {
     header += buildCell(`${VERSION}`);
     header += buildCell("Total", true);
 
-    for (let player of standings.players) {
+    for (let player of standings.playerNames) {
         header += buildCell(player);
     }
 
@@ -55,7 +55,7 @@ function buildStandingsTableHeader(standings: Standings): string {
 function buildStandingsTableBody(standings: Standings): string {
     let body = "<tbody>";
 
-    for (let player of standings.players) {
+    for (let player of standings.playerNames) {
         body += buildStandingsTableRow(player, standings);
     }
 
@@ -63,23 +63,23 @@ function buildStandingsTableBody(standings: Standings): string {
     return body;
 }
 
-function buildStandingsTableRow(player: Player, standings: Standings): string {
+function buildStandingsTableRow(playerName: string, standings: Standings): string {
     function buildCell(content: string, best: boolean = false, worst: boolean = false, isTotal: boolean = false): string {
         return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}${isTotal ? " player-record--total" : ""}">${content}</td>`;
     }
 
     let row = `<tr class="Polaris-DataTable__TableRow">`;
-    row += buildCell(player);
+    row += buildCell(playerName);
 
-    let playerRecord = standings.playerRecords.get(player);
+    let playerRecord = standings.playerRecords.get(playerName);
     row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
 
-    for (let opponent of standings.players) {
-        if (player == opponent) {
+    for (let opponent of standings.playerNames) {
+        if (playerName == opponent) {
             row += buildCell("--");
         }
 
-        let recordAgainstOpponent = standings.records.get(player).get(opponent);
+        let recordAgainstOpponent = standings.records.get(playerName).get(opponent);
         if (recordAgainstOpponent != null) {
             row += buildCell(formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
         }
