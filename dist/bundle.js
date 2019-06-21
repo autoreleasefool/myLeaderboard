@@ -1,48 +1,148 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const versioning_1 = require("./versioning");
+function formatRecord(record) {
+    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
+    if (record.ties > 0) {
+        format += `-<span class="record--value record--ties">${record.ties}</span>`;
+    }
+    return format;
+}
+class GameStandings {
+    constructor(game, standings, players) {
+        this.game = game;
+        this.standings = standings;
+        this.players = players;
+    }
+    buildTable() {
+        return `
+        <div class="standings-table">
+            <div class="Polaris-Page">
+                ${this.buildStandingsTableTitle()}
+                <div class="Polaris-Page__Content">
+                    <div class="Polaris-Card">
+                        <div class="">
+                            <div class="Polaris-DataTable">
+                                <table class="Polaris-DataTable__Table">
+                                    ${this.buildStandingsTableHeader()}
+                                    ${this.buildStandingsTableBody()}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        `;
+    }
+    buildStandingsTableTitle() {
+        return `
+        <div class="Polaris-Page-Header">
+            <div class="Polaris-Page-Header__TitleAndRollup">
+                <div class="Polaris-Page-Header__Title">
+                    <div>
+                        <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">${this.game}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+    buildStandingsTableHeader() {
+        function buildCell(content, isTotal = false) {
+            return `<th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header${isTotal ? " player-record--total" : ""}" scope="col">${content}</th>`;
+        }
+        let header = "<thead>";
+        header += buildCell(`${versioning_1.VERSION}`);
+        header += buildCell("Total", true);
+        for (let player of this.standings.playerNames) {
+            header += buildCell(player);
+        }
+        header += "</thead>";
+        return header;
+    }
+    buildStandingsTableBody() {
+        let body = "<tbody>";
+        for (let player of this.standings.playerNames) {
+            body += this.buildStandingsTableRow(player);
+        }
+        body += "</tbody>";
+        return body;
+    }
+    buildStandingsTableRow(playerName) {
+        function buildCell(content, best = false, worst = false, isTotal = false) {
+            return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}${isTotal ? " player-record--total" : ""}">${content}</td>`;
+        }
+        let row = `<tr class="Polaris-DataTable__TableRow">`;
+        row += buildCell(playerName);
+        let playerRecord = this.standings.playerRecords.get(playerName);
+        row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
+        for (let opponent of this.standings.playerNames) {
+            if (playerName == opponent) {
+                row += buildCell("--");
+            }
+            let recordAgainstOpponent = this.standings.records.get(playerName).get(opponent);
+            if (recordAgainstOpponent != null) {
+                row += buildCell(formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
+            }
+        }
+        row += "</tr>";
+        return row;
+    }
+}
+exports.GameStandings = GameStandings;
+
+},{"./versioning":6}],2:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const standings_1 = require("./standings");
-const table_1 = require("./table");
+const gameStandings_1 = require("./gameStandings");
 const octo_1 = require("./octo");
 let standingsTables = new Map();
+let players = [];
 function renderStandings() {
     let standings = "";
     let games = Array.from(standingsTables.keys()).sort();
     for (let game of games) {
-        standings += standingsTables.get(game);
+        standings += standingsTables.get(game).buildTable();
     }
     document.querySelector(".standings").innerHTML = standings;
 }
 function updateAvatars() {
-    standings_1.fetchPlayers()
-        .then(players => {
-        for (let player of players) {
-            octo_1.Octo.user(player.username.substr(1))
-                .then(user => {
-                updateAvatar(user);
-            });
-        }
-    });
+    for (let player of players) {
+        octo_1.Octo.user(player.username.substr(1))
+            .then(user => {
+            updateAvatar(user);
+        });
+    }
 }
 function updateAvatar(user) {
     let nameRegex = new RegExp(`@${user.login}`, "gi");
     document.body.innerHTML = document.body.innerHTML.replace(nameRegex, `<img class="avatar" src="${user.avatarUrl}" />`);
 }
-window.onload = () => {
+window.onload = () => __awaiter(this, void 0, void 0, function* () {
+    players = yield standings_1.fetchPlayers();
     let standingsPromises = [];
     for (let gameName in standings_1.Game) {
         const game = gameName;
         standingsPromises.push(standings_1.fetchStandings(game)
             .then((standings) => {
-            standingsTables.set(game, table_1.buildStandingsTable(game, standings));
+            standingsTables.set(game, new gameStandings_1.GameStandings(game, standings, players));
             renderStandings();
         }));
     }
-    Promise.all(standingsPromises)
-        .then(updateAvatars);
-};
+    yield Promise.all(standingsPromises);
+    updateAvatars();
+});
 
-},{"./octo":2,"./standings":4,"./table":5}],2:[function(require,module,exports){
+},{"./gameStandings":1,"./octo":3,"./standings":5}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Octokat = require("./octokat.js");
@@ -69,7 +169,7 @@ class Octo {
 }
 exports.Octo = Octo;
 
-},{"./octokat.js":3}],3:[function(require,module,exports){
+},{"./octokat.js":4}],4:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
     if (typeof exports === 'object' && typeof module === 'object')
         module.exports = factory();
@@ -2181,7 +2281,7 @@ exports.Octo = Octo;
 });
 
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2306,95 +2406,9 @@ function updateHighlightedRecords(record, bestRecords, worstRecords) {
     }
 }
 
-},{"./octo":2}],5:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const versioning_1 = require("./versioning");
-function buildStandingsTable(game, standings) {
-    return `
-    <div class="standings-table">
-        <div class="Polaris-Page">
-            ${buildStandingsTableTitle(game)}
-            <div class="Polaris-Page__Content">
-                <div class="Polaris-Card">
-                    <div class="">
-                        <div class="Polaris-DataTable">
-                            <table class="Polaris-DataTable__Table">
-                                ${buildStandingsTableHeader(standings)}
-                                ${buildStandingsTableBody(standings)}
-                            </table>
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </div>
-    `;
-}
-exports.buildStandingsTable = buildStandingsTable;
-function buildStandingsTableTitle(game) {
-    return `
-    <div class="Polaris-Page-Header">
-        <div class="Polaris-Page-Header__TitleAndRollup">
-            <div class="Polaris-Page-Header__Title">
-                <div>
-                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">${game}</h1>
-                </div>
-            </div>
-        </div>
-    </div>`;
-}
-function buildStandingsTableHeader(standings) {
-    function buildCell(content, isTotal = false) {
-        return `<th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header${isTotal ? " player-record--total" : ""}" scope="col">${content}</th>`;
-    }
-    let header = "<thead>";
-    header += buildCell(`${versioning_1.VERSION}`);
-    header += buildCell("Total", true);
-    for (let player of standings.playerNames) {
-        header += buildCell(player);
-    }
-    header += "</thead>";
-    return header;
-}
-function buildStandingsTableBody(standings) {
-    let body = "<tbody>";
-    for (let player of standings.playerNames) {
-        body += buildStandingsTableRow(player, standings);
-    }
-    body += "</tbody>";
-    return body;
-}
-function buildStandingsTableRow(playerName, standings) {
-    function buildCell(content, best = false, worst = false, isTotal = false) {
-        return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}${isTotal ? " player-record--total" : ""}">${content}</td>`;
-    }
-    let row = `<tr class="Polaris-DataTable__TableRow">`;
-    row += buildCell(playerName);
-    let playerRecord = standings.playerRecords.get(playerName);
-    row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
-    for (let opponent of standings.playerNames) {
-        if (playerName == opponent) {
-            row += buildCell("--");
-        }
-        let recordAgainstOpponent = standings.records.get(playerName).get(opponent);
-        if (recordAgainstOpponent != null) {
-            row += buildCell(formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
-        }
-    }
-    row += "</tr>";
-    return row;
-}
-function formatRecord(record) {
-    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
-    if (record.ties > 0) {
-        format += `-<span class="record--value record--ties">${record.ties}</span>`;
-    }
-    return format;
-}
-
-},{"./versioning":6}],6:[function(require,module,exports){
+},{"./octo":3}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VERSION = "v4.0";
 
-},{}]},{},[1]);
+},{}]},{},[2]);
