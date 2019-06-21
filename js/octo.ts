@@ -13,7 +13,7 @@ export class Octo {
 
         // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
         this.octo = new Octokat({ token });
-        this.repo = this.octo.repos("Shopify", "myLeaderboard");
+        this.repo = this.octo.repos("josephroquedev", "myLeaderboard");
     }
 
     public static getInstance(): Octo {

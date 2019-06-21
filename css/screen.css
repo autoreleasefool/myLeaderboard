@@ -14,7 +14,11 @@ body {
 }
 
 .Polaris-Card {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgb(43, 53, 63);
+}
+
+.Polaris-DataTable__Table {
+    border-collapse: collapse;
 }
 
 .Polaris-DataTable__Cell--header {
@@ -24,6 +28,7 @@ body {
 .Polaris-DataTable__Cell {
     padding-left: 0;
     padding-right: 0;
+    border: solid 1px rgb(66, 73, 82);
 }
 
 .Polaris-DataTable__TableRow:hover .Polaris-DataTable__Cell {
