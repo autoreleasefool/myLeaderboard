@@ -31,6 +31,10 @@ body {
     border: solid 1px rgb(66, 73, 82);
 }
 
+.Polaris-DataTable__Cell.player-record--total {
+    border-right: solid 2px rgb(87, 96, 109);
+}
+
 .Polaris-DataTable__TableRow:hover .Polaris-DataTable__Cell {
     background-color: #212B35;
 }

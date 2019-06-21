@@ -36,13 +36,13 @@ function buildStandingsTableTitle(game: Game): string {
 }
 
 function buildStandingsTableHeader(standings: Standings): string {
-    function buildCell(content): string {
-        return `<th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col">${content}</th>`;
+    function buildCell(content, isTotal: boolean = false): string {
+        return `<th data-polaris-header-cell="true" class="Polaris-DataTable__Cell Polaris-DataTable__Cell--header${isTotal ? " player-record--total" : ""}" scope="col">${content}</th>`;
     }
 
     let header = "<thead>";
     header += buildCell(`${VERSION}`);
-    header += buildCell("Total");
+    header += buildCell("Total", true);
 
     for (let player of standings.players) {
         header += buildCell(player);
@@ -64,15 +64,15 @@ function buildStandingsTableBody(standings: Standings): string {
 }
 
 function buildStandingsTableRow(player: Player, standings: Standings): string {
-    function buildCell(content: string, best: boolean = false, worst: boolean = false): string {
-        return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}">${content}</td>`;
+    function buildCell(content: string, best: boolean = false, worst: boolean = false, isTotal: boolean = false): string {
+        return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}${isTotal ? " player-record--total" : ""}">${content}</td>`;
     }
 
     let row = `<tr class="Polaris-DataTable__TableRow">`;
     row += buildCell(player);
 
     let playerRecord = standings.playerRecords.get(player);
-    row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst);
+    row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
 
     for (let opponent of standings.players) {
         if (player == opponent) {
