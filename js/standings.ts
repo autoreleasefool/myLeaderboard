@@ -34,7 +34,7 @@ export async function fetchStandings(game: Game): Promise<Standings> {
 interface HighlightedRecord { playerName?: string, record: number }
 
 function parseRawStandings(game: Game, contents: string): Standings {
-    let json: RawStandings = JSON.parse(contents.toLowerCase());
+    let json: RawStandings = JSON.parse(contents);
     let playerNames: Array<string> = [];
     let overallRecords: Map<string, Record> = new Map();
     let headToHeadRecords: Map<string, Map<string, Record>> = new Map();
@@ -80,7 +80,7 @@ function parseRawStandings(game: Game, contents: string): Standings {
 
     markBestAndWorstRecords(overallRecords, playerNames, bestRecords, worstRecords);
 
-    playerNames.sort();
+    playerNames.sort((first, second): number => first.toLowerCase().localeCompare(second.toLowerCase()));
 
     let standings: Standings = { game, playerNames, playerRecords: overallRecords, records: headToHeadRecords };
     stripUnplayedPlayers(standings);

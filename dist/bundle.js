@@ -2,18 +2,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const versioning_1 = require("./versioning");
-function formatRecord(record) {
-    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
-    if (record.ties > 0) {
-        format += `-<span class="record--value record--ties">${record.ties}</span>`;
-    }
-    return format;
-}
 class GameStandings {
     constructor(game, standings, players) {
         this.game = game;
         this.standings = standings;
-        this.players = players;
+        this.players = new Map();
+        for (let player of players) {
+            this.players.set(player.username, player);
+        }
     }
     buildTable() {
         return `
@@ -31,6 +27,7 @@ class GameStandings {
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
         `;
@@ -54,44 +51,64 @@ class GameStandings {
         let header = "<thead>";
         header += buildCell(`${versioning_1.VERSION}`);
         header += buildCell("Total", true);
-        for (let player of this.standings.playerNames) {
-            header += buildCell(player);
+        for (let playerName of this.standings.playerNames) {
+            const player = this.findPlayer(playerName);
+            if (player.banished !== true) {
+                header += buildCell(player.renderAvatar());
+            }
         }
         header += "</thead>";
         return header;
     }
     buildStandingsTableBody() {
         let body = "<tbody>";
-        for (let player of this.standings.playerNames) {
-            body += this.buildStandingsTableRow(player);
+        for (let playerName of this.standings.playerNames) {
+            const player = this.findPlayer(playerName);
+            if (player.banished !== true) {
+                body += this.buildStandingsTableRow(player);
+            }
         }
         body += "</tbody>";
         return body;
     }
-    buildStandingsTableRow(playerName) {
+    buildStandingsTableRow(player) {
         function buildCell(content, best = false, worst = false, isTotal = false) {
             return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}${isTotal ? " player-record--total" : ""}">${content}</td>`;
         }
         let row = `<tr class="Polaris-DataTable__TableRow">`;
-        row += buildCell(playerName);
-        let playerRecord = this.standings.playerRecords.get(playerName);
-        row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
-        for (let opponent of this.standings.playerNames) {
-            if (playerName == opponent) {
+        row += buildCell(player.renderAvatar());
+        let playerRecord = this.standings.playerRecords.get(player.username);
+        row += buildCell(this.formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
+        for (let opponentName of this.standings.playerNames) {
+            if (player.username == opponentName) {
                 row += buildCell("--");
             }
-            let recordAgainstOpponent = this.standings.records.get(playerName).get(opponent);
+            const opponent = this.findPlayer(opponentName);
+            if (opponent.banished === true) {
+                continue;
+            }
+            let recordAgainstOpponent = this.standings.records.get(player.username).get(opponentName);
             if (recordAgainstOpponent != null) {
-                row += buildCell(formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
+                row += buildCell(this.formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
             }
         }
         row += "</tr>";
         return row;
     }
+    findPlayer(playerName) {
+        return this.players.get(playerName);
+    }
+    formatRecord(record) {
+        let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
+        if (record.ties > 0) {
+            format += `-<span class="record--value record--ties">${record.ties}</span>`;
+        }
+        return format;
+    }
 }
 exports.GameStandings = GameStandings;
 
-},{"./versioning":6}],2:[function(require,module,exports){
+},{"./versioning":8}],2:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -103,8 +120,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const standings_1 = require("./standings");
+const player_1 = require("./player");
 const gameStandings_1 = require("./gameStandings");
-const octo_1 = require("./octo");
+const shadowRealm_1 = require("./shadowRealm");
 let standingsTables = new Map();
 let players = [];
 function renderStandings() {
@@ -115,20 +133,13 @@ function renderStandings() {
     }
     document.querySelector(".standings").innerHTML = standings;
 }
-function updateAvatars() {
-    for (let player of players) {
-        octo_1.Octo.user(player.username.substr(1))
-            .then(user => {
-            updateAvatar(user);
-        });
-    }
-}
-function updateAvatar(user) {
-    let nameRegex = new RegExp(`@${user.login}`, "gi");
-    document.body.innerHTML = document.body.innerHTML.replace(nameRegex, `<img class="avatar" src="${user.avatarUrl}" />`);
+function renderShadowRealm() {
+    let banishedPlayers = players.filter(player => player.banished === true);
+    let shadowRealm = new shadowRealm_1.ShadowRealm(banishedPlayers);
+    document.querySelector(".shadowRealm").innerHTML = shadowRealm.build();
 }
 window.onload = () => __awaiter(this, void 0, void 0, function* () {
-    players = yield standings_1.fetchPlayers();
+    players = yield player_1.fetchPlayers();
     let standingsPromises = [];
     for (let gameName in standings_1.Game) {
         const game = gameName;
@@ -139,10 +150,10 @@ window.onload = () => __awaiter(this, void 0, void 0, function* () {
         }));
     }
     yield Promise.all(standingsPromises);
-    updateAvatars();
+    renderShadowRealm();
 });
 
-},{"./gameStandings":1,"./octo":3,"./standings":5}],3:[function(require,module,exports){
+},{"./gameStandings":1,"./player":5,"./shadowRealm":6,"./standings":7}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Octokat = require("./octokat.js");
@@ -161,6 +172,9 @@ class Octo {
         return Octo.instance;
     }
     static user(name) {
+        if (name.charAt(0) === "@") {
+            name = name.substr(1);
+        }
         return Octo.getInstance().octo.users(name).fetch();
     }
     static contents(path) {
@@ -2293,22 +2307,98 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const octo_1 = require("./octo");
-var Game;
-(function (Game) {
-    Game["Hive"] = "Hive";
-    Game["Patchwork"] = "Patchwork";
-})(Game = exports.Game || (exports.Game = {}));
 function fetchPlayers() {
     return __awaiter(this, void 0, void 0, function* () {
         let rawPlayers = yield octo_1.Octo.contents("players.json");
-        return parseRawPlayers(rawPlayers);
+        let basicPlayers = parseRawPlayers(rawPlayers);
+        let avatars = new Map();
+        for (let player of basicPlayers) {
+            let user = yield octo_1.Octo.user(player.username);
+            avatars.set(player.username, user.avatarUrl);
+        }
+        return basicPlayers.map(player => new Player(player.username, player.name, avatars.get(player.username), player.graveyard === true));
     });
 }
 exports.fetchPlayers = fetchPlayers;
 function parseRawPlayers(contents) {
     let players = JSON.parse(contents);
-    return players.sort((first, second) => first.name.toLowerCase().localeCompare(second.name.toLowerCase()));
+    players.sort((first, second) => first.name.toLowerCase().localeCompare(second.name.toLowerCase()));
+    return players;
 }
+class Player {
+    constructor(username, name, avatar, banished = false) {
+        this.username = username;
+        this.displayName = name;
+        this.avatar = avatar;
+        this.banished = banished;
+    }
+    renderAvatar() {
+        return `<img class="avatar" alt="${this.displayName}" src="${this.avatar}" />`;
+    }
+    renderTombstone() {
+        return `<img class="avatar tombstone" alt="${this.displayName}" src="${this.avatar}" />`;
+    }
+}
+exports.Player = Player;
+
+},{"./octo":3}],6:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class ShadowRealm {
+    constructor(banishedPlayers) {
+        this.banishedPlayers = banishedPlayers;
+    }
+    build() {
+        return `
+        <div class="Polaris-Page">
+            ${this.buildTitle()}
+            <div class="Polaris-Page__Content">
+                <div class="shadow-realm-tombstones">
+                    ${this.buildTombstones()}
+                </div>
+            </div>
+        </div>
+        `;
+    }
+    buildTitle() {
+        return `
+        <div class="Polaris-Page-Header">
+            <div class="Polaris-Page-Header__TitleAndRollup">
+                <div class="Polaris-Page-Header__Title">
+                    <div>
+                        <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge">Shadow Realm</h1>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+    buildTombstones() {
+        let tombstones = "";
+        for (let player of this.banishedPlayers) {
+            tombstones += player.renderTombstone();
+        }
+        return tombstones;
+    }
+}
+exports.ShadowRealm = ShadowRealm;
+
+},{}],7:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const octo_1 = require("./octo");
+var Game;
+(function (Game) {
+    Game["Hive"] = "Hive";
+    Game["Patchwork"] = "Patchwork";
+})(Game = exports.Game || (exports.Game = {}));
 function fetchStandings(game) {
     return __awaiter(this, void 0, void 0, function* () {
         let rawStandings = yield octo_1.Octo.contents(`standings/${game}.json`);
@@ -2317,7 +2407,7 @@ function fetchStandings(game) {
 }
 exports.fetchStandings = fetchStandings;
 function parseRawStandings(game, contents) {
-    let json = JSON.parse(contents.toLowerCase());
+    let json = JSON.parse(contents);
     let playerNames = [];
     let overallRecords = new Map();
     let headToHeadRecords = new Map();
@@ -2352,7 +2442,7 @@ function parseRawStandings(game, contents) {
         updateHighlightedRecords({ playerName: player, record: winRate }, bestRecords, worstRecords);
     }
     markBestAndWorstRecords(overallRecords, playerNames, bestRecords, worstRecords);
-    playerNames.sort();
+    playerNames.sort((first, second) => first.toLowerCase().localeCompare(second.toLowerCase()));
     let standings = { game, playerNames, playerRecords: overallRecords, records: headToHeadRecords };
     stripUnplayedPlayers(standings);
     return standings;
@@ -2406,7 +2496,7 @@ function updateHighlightedRecords(record, bestRecords, worstRecords) {
     }
 }
 
-},{"./octo":3}],6:[function(require,module,exports){
+},{"./octo":3}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VERSION = "v4.0";

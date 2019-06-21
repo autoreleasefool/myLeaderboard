@@ -61,8 +61,11 @@ export class GameStandings {
         header += buildCell(`${VERSION}`);
         header += buildCell("Total", true);
 
-        for (let player of this.standings.playerNames) {
-            header += buildCell(player);
+        for (let playerName of this.standings.playerNames) {
+            const player = this.findPlayer(playerName);
+            if (player.banished !== true) {
+                header += buildCell(player.renderAvatar());
+            }
         }
 
         header += "</thead>";
@@ -72,8 +75,11 @@ export class GameStandings {
     private buildStandingsTableBody(): string {
         let body = "<tbody>";
 
-        for (let player of this.standings.playerNames) {
-            body += this.buildStandingsTableRow(player);
+        for (let playerName of this.standings.playerNames) {
+            const player = this.findPlayer(playerName);
+            if (player.banished !== true) {
+                body += this.buildStandingsTableRow(player);
+            }
         }
 
         body += "</tbody>";
@@ -96,7 +102,12 @@ export class GameStandings {
                 row += buildCell("--");
             }
 
-            let recordAgainstOpponent = this.standings.records.get(playerName).get(opponent);
+            const opponent = this.findPlayer(opponentName);
+            if (opponent.banished === true) {
+                continue;
+            }
+
+            let recordAgainstOpponent = this.standings.records.get(player.username).get(opponentName);
             if (recordAgainstOpponent != null) {
                 row += buildCell(this.formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
             }

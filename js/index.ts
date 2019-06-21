@@ -3,6 +3,7 @@ import { fetchPlayers, Player } from "./player";
 import { GameStandings } from "./gameStandings";
 import { Octo } from "./octo";
 import { User } from "./types";
+import { ShadowRealm } from "./shadowRealm";
 
 let standingsTables: Map<Game, GameStandings> = new Map();
 let players: Array<Player> = [];
@@ -17,18 +18,10 @@ function renderStandings() {
     document.querySelector(".standings").innerHTML = standings;
 }
 
-function updateAvatars() {
-    for (let player of players) {
-        Octo.user(player.username.substr(1))
-            .then(user => {
-                updateAvatar(user);
-            })
-    }
-}
-
-function updateAvatar(user: User) {
-    let nameRegex = new RegExp(`@${user.login}`, "gi")
-    document.body.innerHTML = document.body.innerHTML.replace(nameRegex, `<img class="avatar" src="${user.avatarUrl}" />`)
+function renderShadowRealm() {
+    let banishedPlayers = players.filter(player => player.banished === true);
+    let shadowRealm = new ShadowRealm(banishedPlayers);
+    document.querySelector(".shadowRealm").innerHTML = shadowRealm.build();
 }
 
 window.onload = async () => {
@@ -45,4 +38,5 @@ window.onload = async () => {
     }
 
     await Promise.all(standingsPromises);
+    renderShadowRealm();
 }

@@ -6,7 +6,7 @@ body {
     color: #F4F6F8;
     margin: 0px;
     margin-top: 8px;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .Polaris-Page {
@@ -67,6 +67,14 @@ tr {
 .avatar {
     width: 48px;
     height: 48px;
-    padding: 2px;
+    margin: 2px;
     border-radius: 50%;
+}
+
+.tombstone {
+    margin-right: 8px;
+}
+
+.shadowRealm {
+    margin-bottom: 16px;
 }
