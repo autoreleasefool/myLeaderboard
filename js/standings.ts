@@ -1,11 +1,5 @@
 import { Octo } from "./octo";
 
-export interface Player {
-    username: string;
-    name: string;
-    graveyard?: boolean;
-}
-
 export enum Game {
     Hive = "Hive",
     Patchwork = "Patchwork",
@@ -30,16 +24,6 @@ export interface RawStandings {
     [key: string]: {
         [key: string]: string;
     };
-}
-
-export async function fetchPlayers(): Promise<Array<Player>> {
-    let rawPlayers = await Octo.contents("players.json");
-    return parseRawPlayers(rawPlayers);
-}
-
-function parseRawPlayers(contents: string): Array<Player> {
-    let players: Array<Player> = JSON.parse(contents);
-    return players.sort((first, second): number => first.name.toLowerCase().localeCompare(second.name.toLowerCase()));
 }
 
 export async function fetchStandings(game: Game): Promise<Standings> {

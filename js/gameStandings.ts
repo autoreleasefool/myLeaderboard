@@ -1,26 +1,21 @@
-import { Game, Standings, Player, Record } from "./standings";
+import { Game, Standings, Record } from "./standings";
+import { Player } from "./player";
 import { VERSION } from "./versioning";
-
-function formatRecord(record: Record): string {
-    let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
-    if (record.ties > 0) {
-        format += `-<span class="record--value record--ties">${record.ties}</span>`;
-    }
-    return format;
-}
 
 export class GameStandings {
     private game: Game;
     private standings: Standings;
-    private players: Array<Player>
+    private players: Map<string, Player>;
 
     constructor(game: Game, standings: Standings, players: Array<Player>) {
         this.game = game;
         this.standings = standings;
-        this.players = players;
+
+        this.players = new Map();
+        for (let player of players) {
+            this.players.set(player.username, player);
+        }
     }
-
-
 
     buildTable(): string {
         return `
@@ -38,6 +33,7 @@ export class GameStandings {
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
         `;
@@ -84,29 +80,41 @@ export class GameStandings {
         return body;
     }
 
-    private buildStandingsTableRow(playerName: string): string {
+    private buildStandingsTableRow(player: Player): string {
         function buildCell(content: string, best: boolean = false, worst: boolean = false, isTotal: boolean = false): string {
             return `<td class="Polaris-DataTable__Cell${best ? " player-record--best" : ""}${worst ? " player-record--worst" : ""}${isTotal ? " player-record--total" : ""}">${content}</td>`;
         }
 
         let row = `<tr class="Polaris-DataTable__TableRow">`;
-        row += buildCell(playerName);
+        row += buildCell(player.renderAvatar());
 
-        let playerRecord = this.standings.playerRecords.get(playerName);
-        row += buildCell(formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
+        let playerRecord = this.standings.playerRecords.get(player.username);
+        row += buildCell(this.formatRecord(playerRecord), playerRecord.isBest, playerRecord.isWorst, true);
 
-        for (let opponent of this.standings.playerNames) {
-            if (playerName == opponent) {
+        for (let opponentName of this.standings.playerNames) {
+            if (player.username == opponentName) {
                 row += buildCell("--");
             }
 
             let recordAgainstOpponent = this.standings.records.get(playerName).get(opponent);
             if (recordAgainstOpponent != null) {
-                row += buildCell(formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
+                row += buildCell(this.formatRecord(recordAgainstOpponent), recordAgainstOpponent.isBest, recordAgainstOpponent.isWorst);
             }
         }
 
         row += "</tr>";
         return row;
+    }
+
+    private findPlayer(playerName: string): Player | undefined {
+        return this.players.get(playerName);
+    }
+
+    private formatRecord(record: Record): string {
+        let format = `<span class="record--value record--wins">${record.wins}</span>-<span class="record--value record--losses">${record.losses}</span>`;
+        if (record.ties > 0) {
+            format += `-<span class="record--value record--ties">${record.ties}</span>`;
+        }
+        return format;
     }
 }

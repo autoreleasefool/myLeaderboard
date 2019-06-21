@@ -1,4 +1,5 @@
-import { Game, fetchStandings, fetchPlayers, Player } from "./standings";
+import { Game, fetchStandings } from "./standings";
+import { fetchPlayers, Player } from "./player";
 import { GameStandings } from "./gameStandings";
 import { Octo } from "./octo";
 import { User } from "./types";
@@ -44,5 +45,4 @@ window.onload = async () => {
     }
 
     await Promise.all(standingsPromises);
-    updateAvatars();
 }

@@ -25,6 +25,9 @@ export class Octo {
     }
 
     public static user(name: string): Promise<User> {
+        if (name.charAt(0) === "@") {
+            name = name.substr(1);
+        }
         return Octo.getInstance().octo.users(name).fetch();
     }
 
