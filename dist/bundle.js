@@ -1,6 +1,13 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+function handleApiCall() {
+}
+exports.handleApiCall = handleApiCall;
+
+},{}],2:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const versioning_1 = require("./versioning");
 class GameStandings {
     constructor(game, standings, players) {
@@ -108,7 +115,7 @@ class GameStandings {
 }
 exports.GameStandings = GameStandings;
 
-},{"./versioning":8}],2:[function(require,module,exports){
+},{"./versioning":10}],3:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -123,8 +130,37 @@ const standings_1 = require("./standings");
 const player_1 = require("./player");
 const gameStandings_1 = require("./gameStandings");
 const shadowRealm_1 = require("./shadowRealm");
+const utils_1 = require("./utils");
+const api_1 = require("./api");
+// Routing
+window.onload = () => {
+    const currentPage = utils_1.getCurrentPage();
+    if (currentPage == "dashboard.html") {
+        loadDashboard();
+    }
+    else if (currentPage == "api.html") {
+        loadApi();
+    }
+};
+// Dashboard
 let standingsTables = new Map();
 let players = [];
+function loadDashboard() {
+    return __awaiter(this, void 0, void 0, function* () {
+        players = yield player_1.fetchPlayers();
+        let standingsPromises = [];
+        for (let gameName in standings_1.Game) {
+            const game = gameName;
+            standingsPromises.push(standings_1.fetchStandings(game)
+                .then((standings) => {
+                standingsTables.set(game, new gameStandings_1.GameStandings(game, standings, players));
+                renderStandings();
+            }));
+        }
+        yield Promise.all(standingsPromises);
+        renderShadowRealm();
+    });
+}
 function renderStandings() {
     let standings = "";
     let games = Array.from(standingsTables.keys()).sort();
@@ -138,29 +174,21 @@ function renderShadowRealm() {
     let shadowRealm = new shadowRealm_1.ShadowRealm(banishedPlayers);
     document.querySelector(".shadowRealm").innerHTML = shadowRealm.build();
 }
-window.onload = () => __awaiter(this, void 0, void 0, function* () {
-    players = yield player_1.fetchPlayers();
-    let standingsPromises = [];
-    for (let gameName in standings_1.Game) {
-        const game = gameName;
-        standingsPromises.push(standings_1.fetchStandings(game)
-            .then((standings) => {
-            standingsTables.set(game, new gameStandings_1.GameStandings(game, standings, players));
-            renderStandings();
-        }));
-    }
-    yield Promise.all(standingsPromises);
-    renderShadowRealm();
-});
+// Api
+function loadApi() {
+    return __awaiter(this, void 0, void 0, function* () {
+        api_1.handleApiCall();
+    });
+}
 
-},{"./gameStandings":1,"./player":5,"./shadowRealm":6,"./standings":7}],3:[function(require,module,exports){
+},{"./api":1,"./gameStandings":2,"./player":6,"./shadowRealm":7,"./standings":8,"./utils":9}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("./utils");
 const Octokat = require("./octokat.js");
 class Octo {
     constructor() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+        const token = utils_1.getParam("token");
         // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
         this.octo = new Octokat({ token });
         this.repo = this.octo.repos("josephroquedev", "myLeaderboard");
@@ -183,7 +211,7 @@ class Octo {
 }
 exports.Octo = Octo;
 
-},{"./octokat.js":4}],4:[function(require,module,exports){
+},{"./octokat.js":5,"./utils":9}],5:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
     if (typeof exports === 'object' && typeof module === 'object')
         module.exports = factory();
@@ -2295,7 +2323,7 @@ exports.Octo = Octo;
 });
 
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2341,7 +2369,7 @@ class Player {
 }
 exports.Player = Player;
 
-},{"./octo":3}],6:[function(require,module,exports){
+},{"./octo":4}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ShadowRealm {
@@ -2382,7 +2410,7 @@ class ShadowRealm {
 }
 exports.ShadowRealm = ShadowRealm;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2496,9 +2524,24 @@ function updateHighlightedRecords(record, bestRecords, worstRecords) {
     }
 }
 
-},{"./octo":3}],8:[function(require,module,exports){
+},{"./octo":4}],9:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function getParam(key) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(key);
+}
+exports.getParam = getParam;
+function getCurrentPage() {
+    const fullPath = window.location.pathname;
+    const components = fullPath.split("/");
+    return components[components.length - 1];
+}
+exports.getCurrentPage = getCurrentPage;
+
+},{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VERSION = "v4.0";
 
-},{}]},{},[2]);
+},{}]},{},[3]);

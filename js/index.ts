@@ -1,12 +1,42 @@
 import { Game, fetchStandings } from "./standings";
 import { fetchPlayers, Player } from "./player";
 import { GameStandings } from "./gameStandings";
-import { Octo } from "./octo";
-import { User } from "./types";
 import { ShadowRealm } from "./shadowRealm";
+import { getCurrentPage } from "./utils";
+import { handleApiCall } from "./api";
+
+// Routing
+
+window.onload = () => {
+    const currentPage = getCurrentPage()
+    if (currentPage == "dashboard.html") {
+        loadDashboard();
+    } else if (currentPage == "api.html") {
+        loadApi();
+    }
+}
+
+// Dashboard
 
 let standingsTables: Map<Game, GameStandings> = new Map();
 let players: Array<Player> = [];
+
+async function loadDashboard() {
+    players = await fetchPlayers();
+
+    let standingsPromises: Array<Promise<any>> = [];
+    for (let gameName in Game) {
+        const game = gameName as Game;
+        standingsPromises.push(fetchStandings(game)
+            .then((standings) => {
+                standingsTables.set(game, new GameStandings(game, standings, players));
+                renderStandings();
+            }));
+    }
+
+    await Promise.all(standingsPromises);
+    renderShadowRealm();
+}
 
 function renderStandings() {
     let standings = "";
@@ -24,19 +54,8 @@ function renderShadowRealm() {
     document.querySelector(".shadowRealm").innerHTML = shadowRealm.build();
 }
 
-window.onload = async () => {
-    players = await fetchPlayers();
+// Api
 
-    let standingsPromises: Array<Promise<any>> = [];
-    for (let gameName in Game) {
-        const game = gameName as Game;
-        standingsPromises.push(fetchStandings(game)
-            .then((standings) => {
-                standingsTables.set(game, new GameStandings(game, standings, players));
-                renderStandings();
-            }));
-    }
-
-    await Promise.all(standingsPromises);
-    renderShadowRealm();
+async function loadApi() {
+    handleApiCall();
 }

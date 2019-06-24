@@ -1,4 +1,5 @@
 import { User } from "./types";
+import { getParam } from "./utils";
 import * as Octokat from "./octokat.js";
 
 export class Octo {
@@ -8,8 +9,7 @@ export class Octo {
     private repo: any;
 
     private constructor() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+        const token = getParam("token");
 
         // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
         this.octo = new Octokat({ token });
