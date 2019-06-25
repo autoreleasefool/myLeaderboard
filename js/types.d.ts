@@ -1,3 +1,10 @@
+export interface Blob {
+    content: string;
+    encoding: string;
+    path: string;
+    sha: string;
+}
+
 export interface User {
     login: string;
     avatarUrl: string;

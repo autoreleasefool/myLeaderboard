@@ -1,11 +1,123 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const octo_1 = require("./octo");
+const utils_1 = require("./utils");
+const standings_1 = require("./standings");
 function handleApiCall() {
+    const endpoint = utils_1.getParam("endpoint");
+    if (endpoint == "addPlayer") {
+        addPlayer();
+    }
+    else if (endpoint == "record") {
+        recordGame();
+    }
 }
 exports.handleApiCall = handleApiCall;
+// Add player
+function addPlayer() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (validateInputExists(["username", "name", "token"]) === false) {
+            return;
+        }
+        let filesToWrite = [];
+        let playerUsername = utils_1.getParam("username");
+        const playerName = utils_1.getParam("name");
+        if (playerUsername.charAt(0) !== "@") {
+            playerUsername = `@${playerUsername}`;
+        }
+        let playerList = yield writeablePlayerListWithAddedPlayer(playerName, playerUsername);
+        filesToWrite.push(playerList);
+        for (let gameName in standings_1.Game) {
+            const game = gameName;
+            const gameStandings = yield writeableGameStandingsWithNewPlayer(playerUsername, game);
+            filesToWrite.push(gameStandings);
+        }
+        octo_1.Octo.write(filesToWrite);
+    });
+}
+function writeablePlayerListWithAddedPlayer(name, username) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const filename = "players.json";
+        const playersBlob = yield octo_1.Octo.info(filename);
+        const rawPlayers = atob(playersBlob.content);
+        let players = JSON.parse(rawPlayers);
+        players.push({
+            name,
+            username,
+        });
+        return {
+            path: filename,
+            contents: JSON.stringify(players, undefined, 4),
+            sha: playersBlob.sha,
+            message: `Adding player "${username}" to players`,
+        };
+    });
+}
+function writeableGameStandingsWithNewPlayer(username, game) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let filename = `standings/${game}.json`;
+        const gameStandingsBlob = yield octo_1.Octo.info(filename);
+        const rawGameStandings = atob(gameStandingsBlob.content);
+        let gameStandings = JSON.parse(rawGameStandings);
+        let playerRecord = {};
+        for (let existingPlayer of Object.keys(gameStandings)) {
+            playerRecord[existingPlayer] = { wins: 0, losses: 0, ties: 0 };
+            gameStandings[existingPlayer][username] = { wins: 0, losses: 0, ties: 0 };
+        }
+        gameStandings[username] = playerRecord;
+        return {
+            path: filename,
+            contents: JSON.stringify(gameStandings, undefined, 4),
+            sha: gameStandingsBlob.sha,
+            message: `Adding player "${username}" to ${game}`,
+        };
+    });
+}
+// Record game
+function recordGame() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (validateInputExists(["players", "winners", "game", "token"]) === false) {
+            return;
+        }
+        const players = JSON.parse(utils_1.getParam("players"));
+        const winners = JSON.parse(utils_1.getParam("winners"));
+        const game = utils_1.getParam("game");
+    });
+}
+// Form validation
+function validateInputExists(params) {
+    for (let param of params) {
+        let value = utils_1.getParam(param);
+        if (value == null || value.length === 0) {
+            const [errorTitle, errorMessage] = missingParamError(param);
+            displayApiError(errorTitle, errorMessage);
+            return false;
+        }
+    }
+    return true;
+}
+// Error handling
+function displayApiError(errorTitle, errorMessage) {
+    let errorHTML = `<div class="error"><h1 class="error-title">${errorTitle}</h1><p>${errorMessage}</p></div>`;
+    document.querySelector('.api-output').innerHTML = errorHTML;
+}
+function missingParamError(param) {
+    return [
+        "Missing param!",
+        `The "${param}" param was missing.`,
+    ];
+}
 
-},{}],2:[function(require,module,exports){
+},{"./octo":4,"./standings":8,"./utils":9}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const versioning_1 = require("./versioning");
@@ -183,6 +295,14 @@ function loadApi() {
 
 },{"./api":1,"./gameStandings":2,"./player":6,"./shadowRealm":7,"./standings":8,"./utils":9}],4:[function(require,module,exports){
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 const Octokat = require("./octokat.js");
@@ -207,6 +327,22 @@ class Octo {
     }
     static contents(path) {
         return Octo.getInstance().repo.contents(path).read();
+    }
+    static info(path) {
+        return Octo.getInstance().repo.contents(path).fetch();
+    }
+    static write(writeables) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let writeable of writeables) {
+                yield Octo.getInstance().repo
+                    .contents(writeable.path)
+                    .add({
+                    message: (writeable.message != null) ? writeable.message : `Updating ${writeable.path}`,
+                    content: btoa(writeable.contents),
+                    sha: writeable.sha,
+                });
+            }
+        });
     }
 }
 exports.Octo = Octo;

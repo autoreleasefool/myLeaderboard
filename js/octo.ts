@@ -1,6 +1,13 @@
-import { User } from "./types";
+import { Blob, User } from "./types";
 import { getParam } from "./utils";
 import * as Octokat from "./octokat.js";
+
+export interface Writeable {
+    path: string;
+    sha: string;
+    contents: string;
+    message?: string;
+}
 
 export class Octo {
     private static instance: Octo;
@@ -33,5 +40,21 @@ export class Octo {
 
     public static contents(path: string): Promise<string> {
         return Octo.getInstance().repo.contents(path).read();
+    }
+
+    public static info(path: string): Promise<Blob> {
+        return Octo.getInstance().repo.contents(path).fetch();
+    }
+
+    public static async write(writeables: Array<Writeable>): Promise<void> {
+        for (let writeable of writeables) {
+            await Octo.getInstance().repo
+                .contents(writeable.path)
+                .add({
+                    message: (writeable.message != null) ? writeable.message : `Updating ${writeable.path}`,
+                    content: btoa(writeable.contents),
+                    sha: writeable.sha,
+                });
+        }
     }
 }

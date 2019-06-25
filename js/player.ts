@@ -1,6 +1,6 @@
 import { Octo } from "./octo";
 
-interface BasicPlayer {
+export interface BasicPlayer {
     username: string;
     name: string;
     graveyard?: boolean;
