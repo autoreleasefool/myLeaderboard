@@ -97,8 +97,8 @@ function validateInputExists(params: Array<string>): boolean {
     for (let param of params) {
         let value = getParam(param);
         if (value == null || value.length === 0) {
-            const [errorTitle, errorMessage] = missingParamError(param);
-            displayApiError(errorTitle, errorMessage);
+            const apiError = missingParamError(param);
+            displayApiError(apiError);
             return false;
         }
     }
@@ -108,14 +108,19 @@ function validateInputExists(params: Array<string>): boolean {
 
 // Error handling
 
-function displayApiError(errorTitle: string, errorMessage: string) {
-    let errorHTML = `<div class="error"><h1 class="error-title">${errorTitle}</h1><p>${errorMessage}</p></div>`;
+interface ApiError {
+    title: string;
+    message: string;
+}
+
+function displayApiError(error: ApiError) {
+    let errorHTML = `<div class="error"><h1 class="error-title">${error.title}</h1><p>${error.message}</p></div>`;
     document.querySelector('.api-output').innerHTML = errorHTML;
 }
 
-function missingParamError(param: string): Array<string> {
-    return [
-        "Missing param!",
-        `The "${param}" param was missing.`,
-    ];
+function missingParamError(param: string): ApiError {
+    return {
+        title: "Missing param!",
+        message: `The "${param}" param was missing.`,
+    };
 }
