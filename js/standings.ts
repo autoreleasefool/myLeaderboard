@@ -9,8 +9,8 @@ export interface Record {
     wins: number;
     losses: number;
     ties: number;
-    isBest: boolean;
-    isWorst: boolean;
+    isBest?: boolean;
+    isWorst?: boolean;
 }
 
 export interface Standings {
@@ -22,7 +22,7 @@ export interface Standings {
 
 export interface RawStandings {
     [key: string]: {
-        [key: string]: string;
+        [key: string]: Record;
     };
 }
 
@@ -48,8 +48,7 @@ function parseRawStandings(game: Game, contents: string): Standings {
         let bestOpponentRecords: Array<HighlightedRecord> = [{ playerName: null, record: -Infinity }];
         let worstOpponentRecords: Array<HighlightedRecord> = [{ playerName: null, record: Infinity }];
         for (let opponent in json[player]) {
-            const rawRecord = json[player][opponent];
-            const [wins, losses, ties] = rawRecord.split("-").map(x => parseInt(x));
+            const { wins, losses, ties } = json[player][opponent];
 
             if (headToHeadRecords.has(player) == false) {
                 headToHeadRecords.set(player, new Map());

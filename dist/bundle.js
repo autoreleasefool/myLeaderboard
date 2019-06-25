@@ -2447,8 +2447,7 @@ function parseRawStandings(game, contents) {
         let bestOpponentRecords = [{ playerName: null, record: -Infinity }];
         let worstOpponentRecords = [{ playerName: null, record: Infinity }];
         for (let opponent in json[player]) {
-            const rawRecord = json[player][opponent];
-            const [wins, losses, ties] = rawRecord.split("-").map(x => parseInt(x));
+            const { wins, losses, ties } = json[player][opponent];
             if (headToHeadRecords.has(player) == false) {
                 headToHeadRecords.set(player, new Map());
             }
