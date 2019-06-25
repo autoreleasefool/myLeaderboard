@@ -6,6 +6,10 @@ export interface BasicPlayer {
     graveyard?: boolean;
 }
 
+export function basicPlayerSort(first: BasicPlayer, second: BasicPlayer): number {
+    return first.name.toLowerCase().localeCompare(second.name.toLowerCase())
+}
+
 export async function fetchPlayers(): Promise<Array<Player>> {
     let rawPlayers = await Octo.contents("players.json");
     let basicPlayers = parseRawPlayers(rawPlayers);
@@ -19,7 +23,7 @@ export async function fetchPlayers(): Promise<Array<Player>> {
 
 function parseRawPlayers(contents: string): Array<BasicPlayer> {
     let players: Array<BasicPlayer> = JSON.parse(contents);
-    players.sort((first, second): number => first.name.toLowerCase().localeCompare(second.name.toLowerCase()));
+    players.sort(basicPlayerSort);
     return players
 }
 

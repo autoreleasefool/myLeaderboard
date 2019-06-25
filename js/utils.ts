@@ -8,3 +8,7 @@ export function getCurrentPage(): string {
     const components = fullPath.split("/");
     return components[components.length - 1];
 }
+
+export function nameSort(first: string, second: string): number {
+    return first.toLowerCase().localeCompare(second.toLowerCase());
+}

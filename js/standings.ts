@@ -1,4 +1,5 @@
 import { Octo } from "./octo";
+import { nameSort } from "./utils";
 
 export enum Game {
     Hive = "Hive",
@@ -79,7 +80,7 @@ function parseRawStandings(game: Game, contents: string): Standings {
 
     markBestAndWorstRecords(overallRecords, playerNames, bestRecords, worstRecords);
 
-    playerNames.sort((first, second): number => first.toLowerCase().localeCompare(second.toLowerCase()));
+    playerNames.sort(nameSort);
 
     let standings: Standings = { game, playerNames, playerRecords: overallRecords, records: headToHeadRecords };
     stripUnplayedPlayers(standings);

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const octo_1 = require("./octo");
 const utils_1 = require("./utils");
 const standings_1 = require("./standings");
+const player_1 = require("./player");
 function handleApiCall() {
     const endpoint = utils_1.getParam("endpoint");
     if (endpoint == "addPlayer") {
@@ -88,9 +89,99 @@ function recordGame() {
         if (validateInputExists(["players", "winners", "game", "token"]) === false) {
             return;
         }
-        const players = JSON.parse(utils_1.getParam("players"));
-        const winners = JSON.parse(utils_1.getParam("winners"));
+        const gamePlayers = new Set(JSON.parse(utils_1.getParam("players")));
+        const gameWinners = new Set(JSON.parse(utils_1.getParam("winners")));
         const game = utils_1.getParam("game");
+        const players = yield player_1.fetchPlayers();
+        if (validatePlayersExist(gamePlayers, players) === false) {
+            return;
+        }
+        if (validatePlayersExist(gameWinners, players) === false) {
+            return;
+        }
+        let filesToWrite = [];
+        const updatedStandings = yield writeableGameStandingsWithUpdate(gamePlayers, gameWinners, game);
+        filesToWrite.push(updatedStandings);
+        const updatedLog = yield writeablePlayLog(gamePlayers, gameWinners, game);
+        filesToWrite.push(updatedLog);
+        octo_1.Octo.write(filesToWrite);
+    });
+}
+var GameResult;
+(function (GameResult) {
+    GameResult[GameResult["WON"] = 0] = "WON";
+    GameResult[GameResult["LOST"] = 1] = "LOST";
+    GameResult[GameResult["TIED"] = 2] = "TIED";
+})(GameResult || (GameResult = {}));
+function writeableGameStandingsWithUpdate(players, winners, game) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let filename = `standings/${game}.json`;
+        const gameStandingsBlob = yield octo_1.Octo.info(filename);
+        const rawGameStandings = atob(gameStandingsBlob.content);
+        let gameStandings = JSON.parse(rawGameStandings);
+        for (let player of players) {
+            let result;
+            if (winners.size === players.size) {
+                result = GameResult.TIED;
+            }
+            else if (winners.has(player)) {
+                result = GameResult.WON;
+            }
+            else {
+                result = GameResult.LOST;
+            }
+            for (let opponent of players) {
+                if (opponent === player) {
+                    continue;
+                }
+                switch (result) {
+                    case GameResult.WON:
+                        gameStandings[player][opponent].wins += 1;
+                        break;
+                    case GameResult.LOST:
+                        gameStandings[player][opponent].losses += 1;
+                        break;
+                    case GameResult.TIED:
+                        gameStandings[player][opponent].ties += 1;
+                        break;
+                }
+            }
+        }
+        const playerList = Array.from(players).sort(utils_1.nameSort).join(", ");
+        return {
+            path: filename,
+            contents: JSON.stringify(gameStandings, undefined, 4),
+            sha: gameStandingsBlob.sha,
+            message: `Recording game between ${playerList}`,
+        };
+    });
+}
+function writeablePlayLog(players, winners, game) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let filename = "data/play_log.txt";
+        const playLogBlob = yield octo_1.Octo.info(filename);
+        let playLogText = atob(playLogBlob.content);
+        const today = new Date();
+        const playerArray = Array.from(players).sort(utils_1.nameSort);
+        const winnerArray = Array.from(winners).sort(utils_1.nameSort);
+        const playerList = playerArray.length == 2 ? playerArray.join(" vs ") : "[" + playerArray.join(", ") + "]";
+        let winnerList = "";
+        if (winnerArray.length === playerArray.length) {
+            winnerList = "tie";
+        }
+        else if (winnerArray.length > 1) {
+            winnerList = "[" + winnerArray.join(", ") + "]";
+        }
+        else if (winnerArray.length === 1) {
+            winnerList = winnerArray[0];
+        }
+        playLogText += `\n${today}: Game of ${game}. Players: ${playerList}. Winners: ${winnerList}.`;
+        return {
+            path: filename,
+            contents: playLogText,
+            sha: playLogBlob.sha,
+            message: `Logging game between ${playerList}`,
+        };
     });
 }
 // Form validation
@@ -98,26 +189,48 @@ function validateInputExists(params) {
     for (let param of params) {
         let value = utils_1.getParam(param);
         if (value == null || value.length === 0) {
-            const [errorTitle, errorMessage] = missingParamError(param);
-            displayApiError(errorTitle, errorMessage);
+            const apiError = missingParamError(param);
+            displayApiError(apiError);
             return false;
         }
     }
     return true;
 }
-// Error handling
-function displayApiError(errorTitle, errorMessage) {
-    let errorHTML = `<div class="error"><h1 class="error-title">${errorTitle}</h1><p>${errorMessage}</p></div>`;
+function validatePlayersExist(players, validPlayers) {
+    for (let validatingPlayer of players) {
+        let playerFound = false;
+        for (let player of validPlayers) {
+            if (validatingPlayer === player.username) {
+                playerFound = true;
+                break;
+            }
+        }
+        if (playerFound === false) {
+            const apiError = nonExistentPlayerError(validatingPlayer);
+            displayApiError(apiError);
+            return false;
+        }
+    }
+    return true;
+}
+function displayApiError(error) {
+    let errorHTML = `<div class="error"><h1 class="error-title">${error.title}</h1><p>${error.message}</p></div>`;
     document.querySelector('.api-output').innerHTML = errorHTML;
 }
 function missingParamError(param) {
-    return [
-        "Missing param!",
-        `The "${param}" param was missing.`,
-    ];
+    return {
+        title: "Missing param!",
+        message: `The "${param}" param was missing.`,
+    };
+}
+function nonExistentPlayerError(playerName) {
+    return {
+        title: "Player does not exist!",
+        message: `The player "${playerName}" does not exist and must be added before any of their games can be recorded.`,
+    };
 }
 
-},{"./octo":4,"./standings":8,"./utils":9}],2:[function(require,module,exports){
+},{"./octo":4,"./player":6,"./standings":8,"./utils":9}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const versioning_1 = require("./versioning");
@@ -2471,6 +2584,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const octo_1 = require("./octo");
+function basicPlayerSort(first, second) {
+    return first.name.toLowerCase().localeCompare(second.name.toLowerCase());
+}
+exports.basicPlayerSort = basicPlayerSort;
 function fetchPlayers() {
     return __awaiter(this, void 0, void 0, function* () {
         let rawPlayers = yield octo_1.Octo.contents("players.json");
@@ -2486,7 +2603,7 @@ function fetchPlayers() {
 exports.fetchPlayers = fetchPlayers;
 function parseRawPlayers(contents) {
     let players = JSON.parse(contents);
-    players.sort((first, second) => first.name.toLowerCase().localeCompare(second.name.toLowerCase()));
+    players.sort(basicPlayerSort);
     return players;
 }
 class Player {
@@ -2558,6 +2675,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const octo_1 = require("./octo");
+const utils_1 = require("./utils");
 var Game;
 (function (Game) {
     Game["Hive"] = "Hive";
@@ -2605,7 +2723,7 @@ function parseRawStandings(game, contents) {
         updateHighlightedRecords({ playerName: player, record: winRate }, bestRecords, worstRecords);
     }
     markBestAndWorstRecords(overallRecords, playerNames, bestRecords, worstRecords);
-    playerNames.sort((first, second) => first.toLowerCase().localeCompare(second.toLowerCase()));
+    playerNames.sort(utils_1.nameSort);
     let standings = { game, playerNames, playerRecords: overallRecords, records: headToHeadRecords };
     stripUnplayedPlayers(standings);
     return standings;
@@ -2659,7 +2777,7 @@ function updateHighlightedRecords(record, bestRecords, worstRecords) {
     }
 }
 
-},{"./octo":4}],9:[function(require,module,exports){
+},{"./octo":4,"./utils":9}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function getParam(key) {
@@ -2673,6 +2791,10 @@ function getCurrentPage() {
     return components[components.length - 1];
 }
 exports.getCurrentPage = getCurrentPage;
+function nameSort(first, second) {
+    return first.toLowerCase().localeCompare(second.toLowerCase());
+}
+exports.nameSort = nameSort;
 
 },{}],10:[function(require,module,exports){
 "use strict";
