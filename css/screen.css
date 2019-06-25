@@ -78,3 +78,12 @@ tr {
 .shadowRealm {
     margin-bottom: 16px;
 }
+
+.api-output {
+    display: flex;
+    justify-content: center;
+}
+
+.error-title {
+    color: #ce0000;
+}
