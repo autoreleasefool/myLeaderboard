@@ -47,6 +47,7 @@
     },
     {
         "username": "@see-mack",
-        "name": "Chris Mack"
+        "name": "Chris Mack",
+        "graveyard": true
     }
 ]
