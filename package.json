@@ -1,19 +1,31 @@
 {
-  "name": "myLeaderboard",
-  "version": "1.0.0",
-  "description": "iLeaderboard, meet myLeaderboard",
-  "main": "index.js",
-  "repository": "git@github.com:josephroquedev/myLeaderboard.git",
-  "author": "Joseph Roque <contact@josephroque.ca>",
-  "license": "MIT",
-  "scripts": {
-    "build": "yarn build-tsc && yarn build-browser",
-    "build-tsc": "tsc",
-    "build-browser": "browserify dist/index.js -o dist/bundle.js",
-    "clean": "rm -rf dist/"
-  },
+  "name": "my-leaderboard",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "browserify": "^16.2.3",
-    "typescript": "^3.5.2"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
