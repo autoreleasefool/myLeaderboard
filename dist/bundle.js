@@ -102,8 +102,6 @@ function recordGame() {
         let filesToWrite = [];
         const updatedStandings = yield writeableGameStandingsWithUpdate(gamePlayers, gameWinners, game);
         filesToWrite.push(updatedStandings);
-        const updatedLog = yield writeablePlayLog(gamePlayers, gameWinners, game);
-        filesToWrite.push(updatedLog);
         octo_1.Octo.write(filesToWrite);
     });
 }
@@ -153,34 +151,6 @@ function writeableGameStandingsWithUpdate(players, winners, game) {
             contents: JSON.stringify(gameStandings, undefined, 4),
             sha: gameStandingsBlob.sha,
             message: `Recording game between ${playerList}`,
-        };
-    });
-}
-function writeablePlayLog(players, winners, game) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let filename = "data/play_log.txt";
-        const playLogBlob = yield octo_1.Octo.info(filename);
-        let playLogText = atob(playLogBlob.content);
-        const today = new Date();
-        const playerArray = Array.from(players).sort(utils_1.nameSort);
-        const winnerArray = Array.from(winners).sort(utils_1.nameSort);
-        const playerList = playerArray.length == 2 ? playerArray.join(" vs ") : "[" + playerArray.join(", ") + "]";
-        let winnerList = "";
-        if (winnerArray.length === playerArray.length) {
-            winnerList = "tie";
-        }
-        else if (winnerArray.length > 1) {
-            winnerList = "[" + winnerArray.join(", ") + "]";
-        }
-        else if (winnerArray.length === 1) {
-            winnerList = winnerArray[0];
-        }
-        playLogText += `\n${today}: Game of ${game}. Players: ${playerList}. Winners: ${winnerList}.`;
-        return {
-            path: filename,
-            contents: playLogText,
-            sha: playLogBlob.sha,
-            message: `Logging game between ${playerList}`,
         };
     });
 }

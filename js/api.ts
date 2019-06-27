@@ -104,9 +104,6 @@ async function recordGame() {
     const updatedStandings = await writeableGameStandingsWithUpdate(gamePlayers, gameWinners, game);
     filesToWrite.push(updatedStandings);
 
-    const updatedLog = await writeablePlayLog(gamePlayers, gameWinners, game);
-    filesToWrite.push(updatedLog);
-
     Octo.write(filesToWrite);
 }
 
@@ -159,35 +156,6 @@ async function writeableGameStandingsWithUpdate(players: Set<string>, winners: S
         sha: gameStandingsBlob.sha,
         message: `Recording game between ${playerList}`,
     };
-}
-
-async function writeablePlayLog(players: Set<string>, winners: Set<string>, game: Game): Promise<Writeable> {
-    let filename = "data/play_log.txt";
-    const playLogBlob = await Octo.info(filename);
-    let playLogText = atob(playLogBlob.content);
-
-    const today = new Date();
-    const playerArray = Array.from(players).sort(nameSort);
-    const winnerArray = Array.from(winners).sort(nameSort);
-
-    const playerList = playerArray.length == 2 ? playerArray.join(" vs ") : "[" + playerArray.join(", ") + "]";
-
-    let winnerList: string = "";
-    if (winnerArray.length === playerArray.length) {
-        winnerList = "tie";
-    } else if (winnerArray.length > 1) {
-        winnerList = "[" + winnerArray.join(", ") + "]";
-    } else if (winnerArray.length === 1) {
-        winnerList = winnerArray[0]
-    }
-    playLogText += `\n${today}: Game of ${game}. Players: ${playerList}. Winners: ${winnerList}.`;
-
-    return {
-        path: filename,
-        contents: playLogText,
-        sha: playLogBlob.sha,
-        message: `Logging game between ${playerList}`,
-    }
 }
 
 // Form validation
