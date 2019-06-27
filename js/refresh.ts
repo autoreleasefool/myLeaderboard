@@ -17,6 +17,4 @@ async function refreshLoop() {
     } catch(error) {
         console.log(error);
     }
-
-    setInterval(refreshLoop, REFRESH_TIME);
 }
