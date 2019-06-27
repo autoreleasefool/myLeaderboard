@@ -4,6 +4,7 @@ import { GameStandings } from "./gameStandings";
 import { ShadowRealm } from "./shadowRealm";
 import { getCurrentPage } from "./utils";
 import { handleApiCall } from "./api";
+import { startRefreshLoop } from "./refresh";
 
 // Routing
 
@@ -36,6 +37,8 @@ async function loadDashboard() {
 
     await Promise.all(standingsPromises);
     renderShadowRealm();
+
+    startRefreshLoop();
 }
 
 function renderStandings() {

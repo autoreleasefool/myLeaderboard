@@ -230,7 +230,7 @@ function nonExistentPlayerError(playerName) {
     };
 }
 
-},{"./octo":4,"./player":6,"./standings":8,"./utils":9}],2:[function(require,module,exports){
+},{"./octo":4,"./player":6,"./standings":9,"./utils":10}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const versioning_1 = require("./versioning");
@@ -340,7 +340,7 @@ class GameStandings {
 }
 exports.GameStandings = GameStandings;
 
-},{"./versioning":10}],3:[function(require,module,exports){
+},{"./versioning":11}],3:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -357,6 +357,7 @@ const gameStandings_1 = require("./gameStandings");
 const shadowRealm_1 = require("./shadowRealm");
 const utils_1 = require("./utils");
 const api_1 = require("./api");
+const refresh_1 = require("./refresh");
 // Routing
 window.onload = () => {
     const currentPage = utils_1.getCurrentPage();
@@ -384,6 +385,7 @@ function loadDashboard() {
         }
         yield Promise.all(standingsPromises);
         renderShadowRealm();
+        refresh_1.startRefreshLoop();
     });
 }
 function renderStandings() {
@@ -406,7 +408,7 @@ function loadApi() {
     });
 }
 
-},{"./api":1,"./gameStandings":2,"./player":6,"./shadowRealm":7,"./standings":8,"./utils":9}],4:[function(require,module,exports){
+},{"./api":1,"./gameStandings":2,"./player":6,"./refresh":7,"./shadowRealm":8,"./standings":9,"./utils":10}],4:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -432,18 +434,35 @@ class Octo {
         }
         return Octo.instance;
     }
+    // Repo
+    static commits(since) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const commitInfo = (since == null) ?
+                yield Octo.getInstance().repo.commits.fetch()
+                : yield Octo.getInstance().repo.commits.fetch({ since: since.toISOString() });
+            const commits = commitInfo.items;
+            let commitDetails = [];
+            for (let commit of commits) {
+                commitDetails.push(commit.commit);
+            }
+            return commitDetails;
+        });
+    }
+    // Users
     static user(name) {
         if (name.charAt(0) === "@") {
             name = name.substr(1);
         }
         return Octo.getInstance().octo.users(name).fetch();
     }
+    // File Contents
     static contents(path) {
         return Octo.getInstance().repo.contents(path).read();
     }
     static info(path) {
         return Octo.getInstance().repo.contents(path).fetch();
     }
+    // Writing
     static write(writeables) {
         return __awaiter(this, void 0, void 0, function* () {
             for (let writeable of writeables) {
@@ -460,7 +479,7 @@ class Octo {
 }
 exports.Octo = Octo;
 
-},{"./octokat.js":5,"./utils":9}],5:[function(require,module,exports){
+},{"./octokat.js":5,"./utils":10}],5:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
     if (typeof exports === 'object' && typeof module === 'object')
         module.exports = factory();
@@ -2624,6 +2643,40 @@ exports.Player = Player;
 
 },{"./octo":4}],7:[function(require,module,exports){
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const octo_1 = require("./octo");
+const REFRESH_TIME = 20 * 1000;
+let startTime;
+function startRefreshLoop() {
+    startTime = new Date();
+    setInterval(refreshLoop, REFRESH_TIME);
+}
+exports.startRefreshLoop = startRefreshLoop;
+function refreshLoop() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let commits = yield octo_1.Octo.commits(startTime);
+            if (commits.length > 0) {
+                location.reload();
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+        setInterval(refreshLoop, REFRESH_TIME);
+    });
+}
+
+},{"./octo":4}],8:[function(require,module,exports){
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ShadowRealm {
     constructor(banishedPlayers) {
@@ -2663,7 +2716,7 @@ class ShadowRealm {
 }
 exports.ShadowRealm = ShadowRealm;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2777,7 +2830,7 @@ function updateHighlightedRecords(record, bestRecords, worstRecords) {
     }
 }
 
-},{"./octo":4,"./utils":9}],9:[function(require,module,exports){
+},{"./octo":4,"./utils":10}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function getParam(key) {
@@ -2796,7 +2849,7 @@ function nameSort(first, second) {
 }
 exports.nameSort = nameSort;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VERSION = "v4.0";
