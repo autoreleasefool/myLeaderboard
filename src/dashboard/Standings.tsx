@@ -15,6 +15,13 @@ interface Record {
     isWorst?: boolean;
 }
 
+interface RecordHighlight {
+    player: string | undefined;
+    winRate: number;
+    losses: number;
+    wins: number;
+}
+
 interface GamePlayer {
     username: string;
     total: Record;
@@ -99,6 +106,8 @@ class Standings extends React.Component<Props, State> {
             };
         }).sort((first, second) => first.username.toLowerCase().localeCompare(second.username.toLowerCase()));
 
+        this._highlightRecords(gamePlayers);
+
         this.setState({
             gamePlayers,
             banishedPlayers,
@@ -116,36 +125,87 @@ class Standings extends React.Component<Props, State> {
         return new Set(players.filter(player => isBanished(player)).map(player => player.username));
     }
 
-    _mapPlayerNamesToPlayers(players: Array<Player>): Map<string, Player> {
-        let map: Map<string, Player> = new Map();
+    _highlightRecords(players: Array<GamePlayer>) {
+        let worstRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
+        let bestRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
+
         for (let player of players) {
-            map.set(player.username, player);
+            const totalGames = player.total.wins + player.total.losses + player.total.ties
+            const winRate = player.total.wins / totalGames;
+
+            const playerRecordForHighlight = { player: player.username, winRate, losses: player.total.losses, wins: player.total.wins };
+            this._updateHighlightedRecords(playerRecordForHighlight, bestRecords, worstRecords);
+
+            let worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
+            let bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
+            for (let opponent of player.records.keys()) {
+                const vsRecord = player.records.get(opponent)!;
+                const totalGames = vsRecord.wins + vsRecord.losses + vsRecord.ties;
+                const winRate = vsRecord.wins / totalGames;
+
+                const vsRecordForHighlight = { player: opponent, winRate, losses: vsRecord.losses, wins: vsRecord.wins };
+                this._updateHighlightedRecords(vsRecordForHighlight, bestVsRecords, worstVsRecords);
+            }
+
+            this._markBestAndWorstRecords(player.records, bestVsRecords, worstVsRecords)
         }
-        return map;
+
+        let playerTotals: Map<string, Record> = new Map();
+        for (let player of players) {
+            playerTotals.set(player.username, player.total);
+        }
+        this._markBestAndWorstRecords(playerTotals, bestRecords, worstRecords);
     }
 
-    _formatRecord(record: Record, overall: boolean): ReactNode {
-        return (
-            <div className={overall ? "overall-record" : "record"}>
-                <span className="record--value record--wins">{record.wins}</span>
-                {"-"}
-                <span className="record--value record--losses">{record.losses}</span>
-                {record.ties > 0
-                    ? (
-                        <span>
-                            {"-"}
-                            <span className="record--value record--ties">{record.ties}</span>
-                        </span>
-                    )
-                    : null
+    _updateHighlightedRecords(record: RecordHighlight, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
+        if (record.winRate > bestRecords[0].winRate) {
+            bestRecords.length = 0;
+            bestRecords.push(record);
+        } else if (record.winRate === bestRecords[0].winRate) {
+            if (record.wins > bestRecords[0].wins) {
+                bestRecords.length = 0;
+                bestRecords.push(record);
+            } else if (record.wins === bestRecords[0].wins) {
+                bestRecords.push(record);
+            }
+        }
+
+        if (record.winRate < worstRecords[0].winRate) {
+            worstRecords.length = 0;
+            worstRecords.push(record);
+        } else if (record.winRate === worstRecords[0].winRate) {
+            if (record.losses > worstRecords[0].losses) {
+                worstRecords.length = 0;
+                worstRecords.push(record);
+            } else if (record.losses === bestRecords[0].losses) {
+                worstRecords.push(record);
+            }
+        }
+    }
+
+    _markBestAndWorstRecords(records: Map<string, Record>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
+        for (let player of records.keys()) {
+            const playerRecord = records.get(player)!;
+
+            for (let best of bestRecords) {
+                if (best.player === player) {
+                    playerRecord.isBest = true;
+                    break;
                 }
-            </div>
-        );
+            }
+
+            for (let worst of worstRecords) {
+                if (worst.player === player) {
+                    playerRecord.isWorst = true;
+                    break;
+                }
+            }
+        }
     }
 
     render() {
         const { game, players } = this.props;
-        const { gamePlayers, banishedPlayers } = this.state;
+        const { gamePlayers } = this.state;
         const namesToPlayers = this._mapPlayerNamesToPlayers(players);
 
         return (
@@ -177,6 +237,47 @@ class Standings extends React.Component<Props, State> {
                     />
                 </Card>
             </Page>
+        );
+    }
+
+    _mapPlayerNamesToPlayers(players: Array<Player>): Map<string, Player> {
+        let map: Map<string, Player> = new Map();
+        for (let player of players) {
+            map.set(player.username, player);
+        }
+        return map;
+    }
+
+    _formatRecord(record: Record, overall: boolean): ReactNode {
+        let classNames: Array<string> = ["record"];
+
+        if (overall) {
+            classNames.push("record--overall");
+        }
+
+        if (record.isWorst) {
+            classNames.push("record--worst");
+        }
+
+        if (record.isBest) {
+            classNames.push("record--best");
+        }
+
+        return (
+            <div className={classNames.join(" ")}>
+                <span className="record--value record--wins">{record.wins}</span>
+                {"-"}
+                <span className="record--value record--losses">{record.losses}</span>
+                {record.ties > 0
+                    ? (
+                        <span>
+                            {"-"}
+                            <span className="record--value record--ties">{record.ties}</span>
+                        </span>
+                    )
+                    : null
+                }
+            </div>
         );
     }
 }
