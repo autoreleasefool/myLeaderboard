@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { AppProvider } from '@shopify/polaris';
 import Dashboard from './dashboard/Dashboard';
+import './index.css';
 
-ReactDOM.render(<Dashboard />, document.getElementById('root'));
+ReactDOM.render(
+    <AppProvider>
+        <Dashboard />
+    </AppProvider>,
+    document.getElementById('root')
+);

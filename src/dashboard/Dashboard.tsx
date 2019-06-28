@@ -1,24 +1,22 @@
 import React from 'react';
+import { Player } from '../utils/Octo';
+import { allGames } from '../game/Game';
+import Standings from './Standings';
 import './Dashboard.css';
 
-function Dashboard() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface Props {
+    players: Array<Player>;
+}
+
+function Dashboard(props: Props) {
+    return (
+        <div>
+            {allGames().map(game => {
+                return <Standings game={game} players={props.players} />;
+            })}
+            {/* <ShadowRealm></ShadowRealm> */}
+        </div>
+    );
 }
 
 export default Dashboard;
