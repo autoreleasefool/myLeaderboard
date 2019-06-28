@@ -1,13 +1,10 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@import url('https://cdn.shopify.com/shopify-marketing_assets/builds/30.6.0/marketing_assets/builds/shopify-sans.css');
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+body {
+    font-family: ShopifySans, Arial, sans-serif !important;
+    background-color: #212B35;
+    color: #F4F6F8;
+    margin: 0px;
+    margin-top: 8px;
+    overflow: hidden;
 }

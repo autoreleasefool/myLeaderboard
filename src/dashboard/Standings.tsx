@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Game } from '../game/Game';
 import { Page, Card, DataTable, ColumnContentType } from '@shopify/polaris';
 import Octo, { Player } from '../utils/Octo';
@@ -123,8 +123,23 @@ class Standings extends React.Component<Props, State> {
         return map;
     }
 
-    _formatRecord(record: Record): string {
-        return `${record.wins}-${record.losses}-${record.ties}`;
+    _formatRecord(record: Record, overall: boolean): ReactNode {
+        return (
+            <div className={overall ? "overall-record" : "record"}>
+                <span className="record--value record--wins">{record.wins}</span>
+                {"-"}
+                <span className="record--value record--losses">{record.losses}</span>
+                {record.ties > 0
+                    ? (
+                        <span>
+                            {"-"}
+                            <span className="record--value record--ties">{record.ties}</span>
+                        </span>
+                    )
+                    : null
+                }
+            </div>
+        );
     }
 
     render() {
@@ -139,21 +154,21 @@ class Standings extends React.Component<Props, State> {
                         columnContentTypes={gamePlayers.map(_ => 'text' as ColumnContentType)}
                         headings={[]}
                         rows={[
-                            ['v5.0', '', ...gamePlayers.map(player => <PlayerView player={namesToPlayers.get(player.username)!} />)],
+                            ['v5.0', 'Total', ...gamePlayers.map(player => <PlayerView player={namesToPlayers.get(player.username)!} />)],
                             ...gamePlayers.map(player => {
-                                let recordCells: Array<string> = [];
+                                let recordCells: Array<ReactNode> = [];
                                 for (let opponent of gamePlayers) {
                                     if (opponent.username === player.username) {
-                                        recordCells.push("--");
+                                        recordCells.push("—");
                                         continue;
                                     }
 
-                                    recordCells.push(this._formatRecord(player.records.get(opponent.username)!))
+                                    recordCells.push(this._formatRecord(player.records.get(opponent.username)!, false))
                                 }
 
                                 return [
                                     <PlayerView key={player.username} player={namesToPlayers.get(player.username)!} />,
-                                    this._formatRecord(player.total),
+                                    this._formatRecord(player.total, true),
                                     ...recordCells,
                                 ]
                             })
