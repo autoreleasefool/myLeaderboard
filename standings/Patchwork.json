@@ -88,7 +88,7 @@
             "ties": 0
         },
         "@mori-ahk": {
-            "wins": 0,
+            "wins": 1,
             "losses": 0,
             "ties": 0
         },
@@ -145,7 +145,7 @@
             "ties": 0
         },
         "@mori-ahk": {
-            "wins": 0,
+            "wins": 1,
             "losses": 0,
             "ties": 0
         },
@@ -406,12 +406,12 @@
         },
         "@Caiopia": {
             "wins": 0,
-            "losses": 0,
+            "losses": 1,
             "ties": 0
         },
         "@Campbell-Scott": {
             "wins": 0,
-            "losses": 0,
+            "losses": 1,
             "ties": 0
         },
         "@dannbeaus": {
