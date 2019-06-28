@@ -5,6 +5,7 @@ import Octo, { Player } from '../utils/Octo';
 import { isBanished } from './shadowRealm/ShadowRealm';
 import { PlayerView } from '../components/PlayerView';
 import './Standings.css';
+import Version from '../components/Version';
 
 interface Record {
     wins: number;
@@ -154,7 +155,7 @@ class Standings extends React.Component<Props, State> {
                         columnContentTypes={gamePlayers.map(_ => 'text' as ColumnContentType)}
                         headings={[]}
                         rows={[
-                            ['v5.0', 'Total', ...gamePlayers.map(player => <PlayerView player={namesToPlayers.get(player.username)!} />)],
+                            [<Version />, 'Total', ...gamePlayers.map(player => <PlayerView player={namesToPlayers.get(player.username)!} />)],
                             ...gamePlayers.map(player => {
                                 let recordCells: Array<ReactNode> = [];
                                 for (let opponent of gamePlayers) {
