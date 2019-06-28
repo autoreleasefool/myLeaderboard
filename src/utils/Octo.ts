@@ -1,18 +1,11 @@
-import { getParam } from './Params';
 import * as Octokat from 'octokat';
+import { getParam } from './Params';
 
 export interface Player {
     username: string;
     displayName: string;
     lastPlayed: Date;
     avatar: string;
-}
-
-interface Blob {
-    content: string;
-    encoding: string;
-    path: string;
-    sha: string;
 }
 
 interface BasicPlayer {
@@ -28,6 +21,14 @@ interface GitHubUser {
 }
 
 class Octo {
+    public static getInstance(): Octo {
+        if (Octo.instance == null) {
+            Octo.instance = new Octo();
+        }
+
+        return Octo.instance;
+    }
+
     private static instance: Octo;
 
     private octo: any;
@@ -40,49 +41,41 @@ class Octo {
 
         // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
         this.octo = new Octokat({ token });
-        this.repo = this.octo.repos("josephroquedev", "myLeaderboard");
+        this.repo = this.octo.repos('josephroquedev', 'myLeaderboard');
     }
 
-    public static getInstance(): Octo {
-        if (Octo.instance == null) {
-            Octo.instance = new Octo();
-        }
-
-        return Octo.instance;
-    }
-
-    clearCache() {
+    public clearCache() {
         this.userCache.clear();
         this.contentsCache.clear();
     }
 
     // Users
 
-    async players(): Promise<Array<Player>> {
-        const contents = await this.contents("players.json");
+    public async players(): Promise<Array<Player>> {
+        const contents = await this.contents('players.json');
         const basicPlayers: Array<BasicPlayer> = JSON.parse(contents);
 
-        let promises: Array<Promise<GitHubUser>> = [];
-        for (let basicPlayer of basicPlayers) {
+        const promises: Array<Promise<GitHubUser>> = [];
+        for (const basicPlayer of basicPlayers) {
             promises.push(this.user(basicPlayer.username));
         }
 
-        let users = await Promise.all(promises);
+        const users = await Promise.all(promises);
 
-        let players: Array<Player> = [];
+        const players: Array<Player> = [];
         for (let i = 0; i < basicPlayers.length; i++) {
             players.push({
-                username: basicPlayers[i].username,
+                avatar: users[i].avatarUrl,
                 displayName: basicPlayers[i].displayName,
                 lastPlayed: new Date(basicPlayers[i].lastPlayed),
-                avatar: users[i].avatarUrl,
+                username: basicPlayers[i].username,
             });
         }
         return players;
     }
 
-    async user(name: string): Promise<GitHubUser> {
-        if (name.charAt(0) === "@") {
+    public async user(name: string): Promise<GitHubUser> {
+        if (name.charAt(0) === '@') {
             name = name.substr(1);
         }
 
@@ -99,11 +92,11 @@ class Octo {
 
     // Contents
 
-    async contents(filename: string): Promise<string> {
+    public async contents(filename: string): Promise<string> {
         if (this.contentsCache.has(filename)) {
             return this.contentsCache.get(filename)!;
         } else {
-            let contents = await this.repo.contents(filename).read();
+            const contents = await this.repo.contents(filename).read();
             this.contentsCache.set(filename, contents);
             return contents;
         }

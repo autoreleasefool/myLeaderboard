@@ -1,15 +1,15 @@
 import React from 'react';
-import { Player } from '../utils/Octo';
 import { allGames } from '../game/Game';
-import Standings from './Standings';
+import { Player } from '../utils/Octo';
 import './Dashboard.css';
+import Standings from './Standings';
 
 interface Props {
     players: Array<Player>;
 }
 
 class Dashboard extends React.Component<Props> {
-    render() {
+    public render() {
         return (
             <div>
                 {allGames().map(game => {

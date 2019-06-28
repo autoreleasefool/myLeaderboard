@@ -1,4 +1,4 @@
-import { Player } from "../../utils/Octo";
+import { Player } from '../../utils/Octo';
 
 function freshness(daysSinceLastPlayed: number): number {
     if (daysSinceLastPlayed < 7) {

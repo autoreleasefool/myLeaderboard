@@ -1,6 +1,6 @@
 import React from 'react';
-import Octo, { Player } from './utils/Octo';
 import Dashboard from './dashboard/Dashboard';
+import Octo, { Player } from './utils/Octo';
 
 interface State {
     players: Array<Player>;
@@ -14,13 +14,13 @@ class App extends React.Component<{}, State> {
         };
     }
 
-    componentDidMount() {
+    public componentDidMount() {
         Octo.getInstance().players().then(players => {
             this.setState( { players });
-        })
+        });
     }
 
-    render() {
+    public render() {
         return (
             <div>
                 <Dashboard players={this.state.players} />

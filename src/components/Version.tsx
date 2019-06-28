@@ -5,7 +5,7 @@ const minorVersion = 0;
 const patchVersion = 0;
 
 function Version() {
-    return <p>{`v${majorVersion}.${minorVersion}.${patchVersion}`}</p>
+    return <p>{`v${majorVersion}.${minorVersion}.${patchVersion}`}</p>;
 }
 
 export default Version;

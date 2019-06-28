@@ -6,7 +6,9 @@ interface Props {
     player: Player;
 }
 
-export function PlayerView(props: Props) {
+function PlayerView(props: Props) {
     const { player } = props;
-    return <img src={player.avatar} alt={player.displayName} className="avatar" />;
+    return <img src={player.avatar} alt={player.displayName} className='avatar' />;
 }
+
+export default PlayerView;

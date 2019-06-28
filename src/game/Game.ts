@@ -1,12 +1,14 @@
 export enum Game {
-    Hive = "Hive",
-    Patchwork = "Patchwork",
+    Hive = 'Hive',
+    Patchwork = 'Patchwork',
 }
 
 export function allGames(): Array<Game> {
-    let games: Array<Game> = [];
+    const games: Array<Game> = [];
     for (const game in Game) {
-        games.push(game as Game);
+        if (Game.hasOwnProperty(game)) {
+            games.push(game as Game);
+        }
     }
 
     return games;
