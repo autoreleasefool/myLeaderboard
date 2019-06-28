@@ -2,6 +2,7 @@ import React from 'react';
 import { allGames } from '../game/Game';
 import { Player } from '../utils/Octo';
 import './Dashboard.css';
+import ShadowRealm from './shadowRealm/ShadowRealm';
 import Standings from './Standings';
 
 interface Props {
@@ -15,7 +16,7 @@ class Dashboard extends React.Component<Props> {
                 {allGames().map(game => {
                     return <Standings key={game} game={game} players={this.props.players} />;
                 })}
-                {/* <ShadowRealm></ShadowRealm> */}
+                <ShadowRealm />
             </div>
         );
     }
