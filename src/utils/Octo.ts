@@ -1,10 +1,24 @@
 import { getParam } from './Params';
 import * as Octokat from '../_deps/octokat';
 
-export interface User {
+export interface Player {
     username: string;
     displayName: string;
+    lastPlayed: Date;
     avatar: string;
+}
+
+interface Blob {
+    content: string;
+    encoding: string;
+    path: string;
+    sha: string;
+}
+
+interface BasicPlayer {
+    username: string;
+    displayName: string;
+    lastPlayed: string;
 }
 
 interface GitHubUser {
@@ -18,6 +32,8 @@ class Octo {
 
     private octo: any;
     private repo: any;
+    private userCache: Map<string, GitHubUser> = new Map();
+    private contentsCache: Map<string, string> = new Map();
 
     private constructor() {
         const token = getParam('token');
@@ -37,17 +53,55 @@ class Octo {
 
     // Users
 
-    async user(name: string): Promise<User> {
+    async players(): Promise<Array<Player>> {
+        const contents = await this.contents("players.json");
+        const basicPlayers: Array<BasicPlayer> = JSON.parse(contents);
+
+        let promises: Array<Promise<GitHubUser>> = [];
+        for (let basicPlayer of basicPlayers) {
+            promises.push(this.user(basicPlayer.username));
+        }
+
+        let users = await Promise.all(promises);
+
+        let players: Array<Player> = [];
+        for (let i = 0; i < basicPlayers.length; i++) {
+            players.push({
+                username: basicPlayers[i].username,
+                displayName: basicPlayers[i].displayName,
+                lastPlayed: new Date(basicPlayers[i].lastPlayed),
+                avatar: users[i].avatarUrl,
+            });
+        }
+        return players;
+    }
+
+    async user(name: string): Promise<GitHubUser> {
         if (name.charAt(0) === "@") {
             name = name.substr(1);
         }
 
-        let user: GitHubUser = await this.octo.users(name).fetch();
-        return {
-            username: user.login,
-            avatar: user.avatarUrl,
-            displayName: user.name,
-        };
+        let user: GitHubUser;
+        if (this.userCache.has(name)) {
+            user = this.userCache.get(name)!;
+        } else {
+            user = await this.octo.users(name).fetch();
+            this.userCache.set(name, user);
+        }
+
+        return user;
+    }
+
+    // Contents
+
+    async contents(filename: string): Promise<string> {
+        if (this.contentsCache.has(filename)) {
+            return this.contentsCache.get(filename)!;
+        } else {
+            let contents = await this.repo.contents(filename).read();
+            this.contentsCache.set(filename, contents);
+            return contents;
+        }
     }
 }
 
