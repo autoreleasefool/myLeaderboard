@@ -1,5 +1,5 @@
 import { getParam } from './Params';
-import * as Octokat from '../_deps/octokat';
+import * as Octokat from 'octokat';
 
 export interface Player {
     username: string;
@@ -49,6 +49,11 @@ class Octo {
         }
 
         return Octo.instance;
+    }
+
+    clearCache() {
+        this.userCache.clear();
+        this.contentsCache.clear();
     }
 
     // Users

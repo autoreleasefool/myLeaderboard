@@ -6,7 +6,7 @@ interface Props {
     player: Player;
 }
 
-function PlayerView(props: Props) {
+export function PlayerView(props: Props) {
     const { player } = props;
-    return <img src={player.avatar} alt={player.displayName} />;
+    return <img src={player.avatar} alt={player.displayName} className="avatar" />;
 }

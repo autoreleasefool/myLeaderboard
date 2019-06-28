@@ -8,15 +8,17 @@ interface Props {
     players: Array<Player>;
 }
 
-function Dashboard(props: Props) {
-    return (
-        <div>
-            {allGames().map(game => {
-                return <Standings game={game} players={props.players} />;
-            })}
-            {/* <ShadowRealm></ShadowRealm> */}
-        </div>
-    );
+class Dashboard extends React.Component<Props> {
+    render() {
+        return (
+            <div>
+                {allGames().map(game => {
+                    return <Standings key={game} game={game} players={this.props.players} />;
+                })}
+                {/* <ShadowRealm></ShadowRealm> */}
+            </div>
+        );
+    }
 }
 
 export default Dashboard;
