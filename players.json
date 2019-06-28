@@ -1,53 +1,62 @@
 [
     {
         "username": "@aimeejoelleanderson",
-        "name": "Aimée Anderson"
+        "displayName": "Aimée Anderson",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@Caiopia",
-        "name": "Caio Lima"
+        "displayName": "Caio Lima",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@Campbell-Scott",
-        "name": "Scott Campbell"
+        "displayName": "Scott Campbell",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@dannbeaus",
-        "name": "Dann Beauregard"
+        "displayName": "Dann Beauregard",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@g-Off",
-        "name": "Geoff Foster"
+        "displayName": "Geoff Foster",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@josephroquedev",
-        "name": "Joseph Roque"
+        "displayName": "Joseph Roque",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@Kiesco08",
-        "name": "Franck Mamboue"
+        "displayName": "Franck Mamboue",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@mori-ahk",
-        "name": "Mori Ahmadi"
+        "displayName": "Mori Ahmadi",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@nabilmaad",
-        "name": "Nabil Maadarani"
+        "displayName": "Nabil Maadarani",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@RyanBillard",
-        "name": "Ryan Billard",
-        "graveyard": true
+        "displayName": "Ryan Billard",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@ArielSD",
-        "name": "Ariel Scott-Dicker",
-        "graveyard": true
+        "displayName": "Ariel Scott-Dicker",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     },
     {
         "username": "@see-mack",
-        "name": "Chris Mack",
-        "graveyard": true
+        "displayName": "Chris Mack",
+        "lastPlayed": "2019-05-01T00:00:00.000Z"
     }
 ]
