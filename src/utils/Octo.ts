@@ -20,6 +20,30 @@ interface GitHubUser {
     name: string;
 }
 
+interface Author {
+    name: string;
+    email: string;
+    date: string;
+}
+
+interface Commit {
+    author: Author;
+    committer: Author;
+    message: string;
+}
+
+interface CommitItem {
+    sha: string;
+    commit: Commit;
+}
+
+interface Writeable {
+    path: string;
+    sha: string;
+    contents: string;
+    message?: string;
+}
+
 class Octo {
     public static getInstance(): Octo {
         if (Octo.instance == null) {
@@ -99,6 +123,32 @@ class Octo {
             const contents = await this.repo.contents(filename).read();
             this.contentsCache.set(filename, contents);
             return contents;
+        }
+    }
+
+    // Repo
+
+    public async commits(since?: Date): Promise<Array<Commit>> {
+        const commitInfo = (since == null)
+            ? await this.repo.commits.fetch()
+            : await this.repo.commits.fetch({ since: since.toISOString() });
+
+        const commitItems: Array<CommitItem> = commitInfo.items;
+        const commits: Array<Commit> = [];
+        for (const commit of commitItems) {
+            commits.push(commit.commit);
+        }
+        return commits;
+    }
+
+    public async write(writeables: Array<Writeable>): Promise<void> {
+        for (const writeable of writeables) {
+            await this.repo.contents(writeable.path)
+                .add({
+                    content: btoa(writeable.contents),
+                    message: (writeable.message != null) ? writeable.message : `Updating ${writeable.path}`,
+                    sha: writeable.sha,
+                });
         }
     }
 }

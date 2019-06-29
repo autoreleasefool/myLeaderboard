@@ -1,4 +1,5 @@
 import React from 'react';
+import RefreshView from '../components/Refresh';
 import { allGames } from '../game/Game';
 import { Player } from '../utils/Octo';
 import './Dashboard.css';
@@ -14,6 +15,7 @@ class Dashboard extends React.Component<Props> {
     public render() {
         return (
             <div>
+                <RefreshView refreshTime={20 * 1000} />
                 {allGames().map(game => {
                     return <Standings key={game} game={game} players={this.props.players} />;
                 })}
