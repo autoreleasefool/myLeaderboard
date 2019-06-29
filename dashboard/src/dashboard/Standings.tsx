@@ -99,7 +99,7 @@ class Standings extends React.Component<Props, State> {
     }
 
     private async _fetchStandings(game: Game) {
-        const contents = await Octo.getInstance().contents(`standings/${game}.json`);
+        const contents = await Octo.getInstance().contents(`data/standings/${game}.json`);
         const json: JSONStandings = JSON.parse(contents);
         this._parseStandings(json);
     }

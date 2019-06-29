@@ -76,7 +76,7 @@ class Octo {
     // Users
 
     public async players(): Promise<Array<Player>> {
-        const contents = await this.contents('players.json');
+        const contents = await this.contents('data/players.json');
         const basicPlayers: Array<BasicPlayer> = JSON.parse(contents);
 
         const promises: Array<Promise<GitHubUser>> = [];
