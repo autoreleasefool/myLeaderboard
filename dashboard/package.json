@@ -22,7 +22,7 @@
     "test": "yarn copy-common && react-scripts test",
     "eject": "react-scripts eject",
     "lint": "tslint 'src/**/*.ts?(x)'",
-    "copy-common": "cp -r ../common ./src/lib"
+    "copy-common": "rm -rf ./src/lib && cp -r ../common ./src/lib"
   },
   "eslintConfig": {
     "extends": "react-app"

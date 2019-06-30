@@ -45,6 +45,10 @@ interface Writeable {
 }
 
 class Octo {
+    public static setBranch(branch: string) {
+        Octo.branch = branch;
+    }
+
     public static getInstance(): Octo {
         if (Octo.instance == null) {
             Octo.instance = new Octo();
@@ -54,6 +58,7 @@ class Octo {
     }
 
     private static instance: Octo;
+    private static branch: string = "master";
 
     private octo: any;
     private repo: any;
@@ -120,7 +125,7 @@ class Octo {
         if (this.contentsCache.has(filename)) {
             return this.contentsCache.get(filename)!;
         } else {
-            const contents = await this.repo.contents(filename).read();
+            const contents = await this.repo.contents(filename).read({ "ref": Octo.branch });
             this.contentsCache.set(filename, contents);
             return contents;
         }
@@ -130,8 +135,8 @@ class Octo {
 
     public async commits(since?: Date): Promise<Array<Commit>> {
         const commitInfo = (since == null)
-            ? await this.repo.commits.fetch()
-            : await this.repo.commits.fetch({ since: since.toISOString() });
+            ? await this.repo.commits.fetch({ sha: Octo.branch })
+            : await this.repo.commits.fetch({ since: since.toISOString(), sha: Octo.branch });
 
         const commitItems: Array<CommitItem> = commitInfo.items;
         const commits: Array<Commit> = [];
