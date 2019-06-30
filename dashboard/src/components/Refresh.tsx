@@ -1,6 +1,6 @@
 import { Banner, Card, Page } from '@shopify/polaris';
 import React from 'react';
-import Octo from '../utils/Octo';
+import Octo from '../lib/Octo';
 
 interface Props {
     refreshTime: number;

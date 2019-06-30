@@ -1,6 +1,6 @@
 import React from 'react';
 import { freshness } from '../dashboard/shadowRealm/ShadowRealm';
-import { Player } from '../utils/Octo';
+import { Player } from '../lib/Octo';
 import './PlayerView.css';
 
 interface Props {

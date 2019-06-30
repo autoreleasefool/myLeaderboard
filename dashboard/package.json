@@ -17,11 +17,12 @@
     "typescript": "^3.5.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "yarn copy-common && react-scripts start",
+    "build": "yarn copy-common && react-scripts build",
+    "test": "yarn copy-common && react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "tslint 'src/**/*.ts?(x)'"
+    "lint": "tslint 'src/**/*.ts?(x)'",
+    "copy-common": "cp -r ../common ./src/lib"
   },
   "eslintConfig": {
     "extends": "react-app"

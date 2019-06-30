@@ -1,6 +1,6 @@
 import React from 'react';
 import Dashboard from './dashboard/Dashboard';
-import Octo, { Player } from './utils/Octo';
+import Octo, { Player } from './lib/Octo';
 
 interface State {
     players: Array<Player>;

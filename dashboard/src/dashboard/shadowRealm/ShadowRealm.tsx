@@ -1,7 +1,7 @@
 import { Page } from '@shopify/polaris';
 import React from 'react';
 import PlayerView from '../../components/PlayerView';
-import Octo, { Player } from '../../utils/Octo';
+import Octo, { Player } from '../../lib/Octo';
 import './ShadowRealm.css';
 
 interface State {
