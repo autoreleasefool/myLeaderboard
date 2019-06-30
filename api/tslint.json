@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-eslint-rules"
+  ],
+  "rules": {
+    "completed-docs": false,
+    "quotemark": [ true, "single", "avoid-escape" ],
+    "interface-name": false,
+    "array-type": false,
+    "max-line-length": false,
+    "arrow-parens": false
+  }
+}
