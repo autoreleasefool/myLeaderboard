@@ -3,7 +3,6 @@ export enum Game {
     Patchwork = 'Patchwork',
 }
 
-
 export function allGames(): Array<Game> {
     const games: Array<Game> = [];
     for (const game in Game) {

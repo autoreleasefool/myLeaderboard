@@ -1,30 +1,15 @@
+// @ts-ignore: Common module in api/dashboard
 import * as Octokat from 'octokat';
 import { getParam } from './Params';
+// @ts-ignore: Common module in api/dashboard
 import { base64decode, base64encode } from '../common/Base64';
-
-export interface Player {
-    avatar: string;
-    displayName: string;
-    lastPlayed: Date;
-    username: string;
-}
-
-export interface BasicPlayer {
-    username: string;
-    displayName: string;
-    lastPlayed: string;
-}
+import { Game, allGames } from '../Game';
+import { BasicPlayer, BasicGamePlayer, JSONStandings, GitHubUser, GenericPlayer } from '../types';
 
 interface Blob {
     content: string;
     path: string;
     sha: string;
-}
-
-interface GitHubUser {
-    login: string;
-    avatarUrl: string;
-    name: string;
 }
 
 interface Author {
@@ -69,9 +54,9 @@ class Octo {
 
     private octo: any;
     private repo: any;
-    private userCache: Map<string, GitHubUser> = new Map();
-    private contentsCache: Map<string, string> = new Map();
-    private blobCache: Map<string, Blob> = new Map();
+    private userCache: Map<string, GitHubUser> = new Map(); // TODO: store promises while waiting for response
+    private contentsCache: Map<string, string> = new Map(); // TODO: store promises while waiting for response
+    private blobCache: Map<string, Blob> = new Map(); // TODO: store promises while waiting for response
 
     private constructor() {
         const token = getParam('token');
@@ -89,9 +74,18 @@ class Octo {
 
     // Users
 
-    public async players(): Promise<Array<Player>> {
-        const contents = await this.contents('data/players.json');
-        const basicPlayers: Array<BasicPlayer> = JSON.parse(contents);
+    public async players(): Promise<Array<GenericPlayer>> {
+        const playerUsernames: Set<string> = new Set();
+        const basicPlayers: Array<BasicPlayer> = [];
+        for (const game of allGames()) {
+            const gamePlayers = await this.playersForGame(game);
+            for (const gamePlayer of gamePlayers) {
+                if (playerUsernames.has(gamePlayer.username) === false) {
+                    playerUsernames.add(gamePlayer.username);
+                    basicPlayers.push(gamePlayer);
+                }
+            }
+        }
 
         const promises: Array<Promise<GitHubUser>> = [];
         for (const basicPlayer of basicPlayers) {
@@ -100,16 +94,21 @@ class Octo {
 
         const users = await Promise.all(promises);
 
-        const players: Array<Player> = [];
+        const players: Array<GenericPlayer> = [];
         for (let i = 0; i < basicPlayers.length; i++) {
             players.push({
                 avatar: users[i].avatarUrl,
                 displayName: basicPlayers[i].displayName,
-                lastPlayed: new Date(basicPlayers[i].lastPlayed),
                 username: basicPlayers[i].username,
             });
         }
         return players;
+    }
+
+    private async playersForGame(game: Game): Promise<Array<BasicGamePlayer>> {
+        const contents = await this.contents(`data/${game}.json`);
+        const standings: JSONStandings = JSON.parse(contents);
+        return standings.players;
     }
 
     public async user(name: string): Promise<GitHubUser> {
@@ -117,15 +116,13 @@ class Octo {
             name = name.substr(1);
         }
 
-        let user: GitHubUser;
         if (this.userCache.has(name)) {
-            user = this.userCache.get(name)!;
+            return this.userCache.get(name)!;
         } else {
-            user = await this.octo.users(name).fetch();
+            const user = await this.octo.users(name).fetch();
             this.userCache.set(name, user);
+            return user;
         }
-
-        return user;
     }
 
     // Contents
