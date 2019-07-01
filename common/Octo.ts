@@ -1,17 +1,24 @@
 import * as Octokat from 'octokat';
 import { getParam } from './Params';
+import { base64decode, base64encode } from '../common/Base64';
 
 export interface Player {
-    username: string;
+    avatar: string;
     displayName: string;
     lastPlayed: Date;
-    avatar: string;
+    username: string;
 }
 
-interface BasicPlayer {
+export interface BasicPlayer {
     username: string;
     displayName: string;
     lastPlayed: string;
+}
+
+interface Blob {
+    content: string;
+    path: string;
+    sha: string;
 }
 
 interface GitHubUser {
@@ -37,10 +44,10 @@ interface CommitItem {
     commit: Commit;
 }
 
-interface Writeable {
+export interface Writeable {
     path: string;
     sha: string;
-    contents: string;
+    content: string;
     message?: string;
 }
 
@@ -58,12 +65,13 @@ class Octo {
     }
 
     private static instance: Octo;
-    private static branch: string = "master";
+    private static branch: string = 'master';
 
     private octo: any;
     private repo: any;
     private userCache: Map<string, GitHubUser> = new Map();
     private contentsCache: Map<string, string> = new Map();
+    private blobCache: Map<string, Blob> = new Map();
 
     private constructor() {
         const token = getParam('token');
@@ -76,6 +84,7 @@ class Octo {
     public clearCache() {
         this.userCache.clear();
         this.contentsCache.clear();
+        this.blobCache.clear();
     }
 
     // Users
@@ -125,8 +134,20 @@ class Octo {
         if (this.contentsCache.has(filename)) {
             return this.contentsCache.get(filename)!;
         } else {
-            const contents = await this.repo.contents(filename).read({ "ref": Octo.branch });
+            const contents = await this.repo.contents(filename).read({ ref: Octo.branch });
             this.contentsCache.set(filename, contents);
+            return contents;
+        }
+    }
+
+    public async blob(filename: string): Promise<Blob> {
+        if (this.blobCache.has(filename)) {
+            return this.blobCache.get(filename)!;
+        } else {
+            const contents = await this.repo.contents(filename).fetch({ ref: Octo.branch });
+            contents.content = base64decode(contents.content);
+
+            this.blobCache.set(filename, contents);
             return contents;
         }
     }
@@ -150,7 +171,7 @@ class Octo {
         for (const writeable of writeables) {
             await this.repo.contents(writeable.path)
                 .add({
-                    content: btoa(writeable.contents),
+                    content: base64encode(writeable.content),
                     message: (writeable.message != null) ? writeable.message : `Updating ${writeable.path}`,
                     sha: writeable.sha,
                 });
