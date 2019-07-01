@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import PlayerView from '../components/PlayerView';
 import Version from '../components/Version';
 import { Game } from '../game/Game';
-import Octo, { Player } from '../lib/Octo';
+import Octo, { Player } from '../lib/utils/Octo';
 import { isBanished } from './shadowRealm/ShadowRealm';
 import './Standings.css';
 

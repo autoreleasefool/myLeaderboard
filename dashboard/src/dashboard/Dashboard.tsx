@@ -1,7 +1,7 @@
 import React from 'react';
 import RefreshView from '../components/Refresh';
 import { allGames } from '../game/Game';
-import { Player } from '../lib/Octo';
+import { Player } from '../lib/utils/Octo';
 import './Dashboard.css';
 import Limbo from './limbo/Limbo';
 import ShadowRealm from './shadowRealm/ShadowRealm';
