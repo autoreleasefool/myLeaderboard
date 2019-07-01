@@ -1,15 +1,19 @@
 import { Page } from '@shopify/polaris';
 import React from 'react';
 import PlayerView from '../../components/PlayerView';
-import Octo, { Player } from '../../lib/utils/Octo';
+import { Player } from '../../lib/types';
 import './ShadowRealm.css';
+
+interface Props {
+    players: Array<Player>;
+}
 
 interface State {
     banished: Array<Player>;
 }
 
-class ShadowRealm extends React.Component<{}, State> {
-    constructor(props: {}) {
+class ShadowRealm extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             banished: [],
@@ -17,13 +21,21 @@ class ShadowRealm extends React.Component<{}, State> {
     }
 
     public componentDidMount() {
-        Octo.getInstance().players().then(players => {
-            const banished = players.filter(player => isBanished(player));
-            this.setState({ banished });
-        });
+        this._identifyBanishedPlayers();
+    }
+
+    public componentDidUpdate(prevProps: Props) {
+        if (this.props.players !== prevProps.players) {
+            this._identifyBanishedPlayers();
+        }
     }
 
     public render() {
+        const { banished } = this.state;
+        if (banished.length === 0) {
+            return null;
+        }
+
         return (
             <Page title={'Shadow Realm'}>
                 <div className={'shadowRealm'}>
@@ -31,6 +43,11 @@ class ShadowRealm extends React.Component<{}, State> {
                 </div>
             </Page>
         );
+    }
+
+    private _identifyBanishedPlayers() {
+        const banished = this.props.players.filter(player => isBanished(player));
+        this.setState({ banished });
     }
 }
 

@@ -2,9 +2,9 @@
 import * as Octokat from 'octokat';
 import { getParam } from './Params';
 // @ts-ignore: Common module in api/dashboard
-import { base64decode, base64encode } from '../common/Base64';
+import { base64decode, base64encode } from '../../common/Base64';
 import { Game, allGames } from '../Game';
-import { BasicPlayer, BasicGamePlayer, JSONStandings, GitHubUser, GenericPlayer } from '../types';
+import { BasicPlayer, BasicGamePlayer, GameStandings, GitHubUser, GenericPlayer } from '../types';
 
 interface Blob {
     content: string;
@@ -107,7 +107,7 @@ class Octo {
 
     private async playersForGame(game: Game): Promise<Array<BasicGamePlayer>> {
         const contents = await this.contents(`data/${game}.json`);
-        const standings: JSONStandings = JSON.parse(contents);
+        const standings: GameStandings = JSON.parse(contents);
         return standings.players;
     }
 

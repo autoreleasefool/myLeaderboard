@@ -1,32 +1,17 @@
 import React from 'react';
-import Dashboard from './dashboard/Dashboard';
-import Octo, { Player } from './lib/utils/Octo';
+import RefreshView from './components/Refresh';
+import GameDashboard from './dashboard/GameDashboard';
+import { allGames } from './lib/Game';
 
-interface State {
-    players: Array<Player>;
-}
-
-class App extends React.Component<{}, State> {
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-            players: [],
-        };
-    }
-
-    public componentDidMount() {
-        Octo.getInstance().players().then(players => {
-            this.setState( { players });
-        });
-    }
-
-    public render() {
-        return (
-            <div>
-                <Dashboard players={this.state.players} />
-            </div>
-        );
-    }
+function App(): React.ReactElement {
+    return (
+        <div>
+            <RefreshView refreshTime={20 * 1000} />
+            {allGames().map(game => {
+                return <GameDashboard key={game} game={game} />;
+            })}
+        </div>
+    );
 }
 
 export default App;

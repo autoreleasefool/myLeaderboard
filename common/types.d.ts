@@ -36,7 +36,7 @@ export interface Record {
     isWorst?: boolean;
 }
 
-export interface JSONStandings {
+export interface GameStandings {
     players: Array<BasicGamePlayer>;
     records: {
         [key: string]: {

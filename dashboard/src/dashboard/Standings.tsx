@@ -2,18 +2,10 @@ import { Card, ColumnContentType, DataTable, Page } from '@shopify/polaris';
 import React, { ReactNode } from 'react';
 import PlayerView from '../components/PlayerView';
 import Version from '../components/Version';
-import { Game } from '../game/Game';
-import Octo, { Player } from '../lib/utils/Octo';
+import { Game } from '../lib/Game';
+import { GameStandings, Player, Record } from '../lib/types';
 import { isBanished } from './shadowRealm/ShadowRealm';
 import './Standings.css';
-
-interface Record {
-    wins: number;
-    losses: number;
-    ties: number;
-    isBest?: boolean;
-    isWorst?: boolean;
-}
 
 interface RecordHighlight {
     player: string | undefined;
@@ -28,14 +20,9 @@ interface GamePlayer {
     records: Map<string, Record>;
 }
 
-interface JSONStandings {
-    [key: string]: {
-        [key: string]: Record;
-    };
-}
-
 interface Props {
     game: Game;
+    standings: GameStandings;
     players: Array<Player>;
 }
 
@@ -54,11 +41,13 @@ class Standings extends React.Component<Props, State> {
     }
 
     public componentDidMount() {
-        this._fetchStandings(this.props.game);
+        this._parseStandings();
     }
 
-    public componentWillReceiveProps() {
-        this._fetchStandings(this.props.game);
+    public componentDidUpdate(prevProps: Props) {
+        if (this.props.standings !== prevProps.standings) {
+            this._parseStandings();
+        }
     }
 
     public render() {
@@ -98,28 +87,23 @@ class Standings extends React.Component<Props, State> {
         );
     }
 
-    private async _fetchStandings(game: Game) {
-        const contents = await Octo.getInstance().contents(`data/standings/${game}.json`);
-        const json: JSONStandings = JSON.parse(contents);
-        this._parseStandings(json);
-    }
-
-    private _parseStandings(jsonStandings: JSONStandings) {
+    private _parseStandings() {
+        const { standings } = this.props;
         const usernames: Array<string> = [];
         const overallRecords: Map<string, Record> = new Map();
         const headToHeadRecords: Map<string, Map<string, Record>> = new Map();
 
-        for (const playerUsername of Object.keys(jsonStandings)) {
-            usernames.push(playerUsername);
+        for (const player of standings.players) {
+            usernames.push(player.username);
             const playerOverallRecord: Record = { wins: 0, losses: 0, ties: 0 };
 
-            for (const opponentUsername of Object.keys(jsonStandings[playerUsername])) {
-                const { wins, losses, ties } = jsonStandings[playerUsername][opponentUsername];
-                if (headToHeadRecords.has(playerUsername) === false) {
-                    headToHeadRecords.set(playerUsername, new Map());
+            for (const opponentUsername of Object.keys(standings.records[player.username])) {
+                const { wins, losses, ties } = standings.records[player.username][opponentUsername];
+                if (headToHeadRecords.has(player.username) === false) {
+                    headToHeadRecords.set(player.username, new Map());
                 }
 
-                const playerRecords = headToHeadRecords.get(playerUsername)!;
+                const playerRecords = headToHeadRecords.get(player.username)!;
                 playerRecords.set(opponentUsername, { wins, losses, ties });
 
                 playerOverallRecord.wins += wins;
@@ -127,7 +111,7 @@ class Standings extends React.Component<Props, State> {
                 playerOverallRecord.ties += ties;
             }
 
-            overallRecords.set(playerUsername, playerOverallRecord);
+            overallRecords.set(player.username, playerOverallRecord);
         }
 
         const invisiblePlayers = this._identifyInvisiblePlayers(overallRecords);
