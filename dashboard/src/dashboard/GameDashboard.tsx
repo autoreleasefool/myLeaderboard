@@ -1,7 +1,7 @@
 import React from 'react';
 import { Game } from '../lib/Game';
+import Octo from '../lib/Octo';
 import { BasicGamePlayer, GameStandings, Player } from '../lib/types';
-import Octo from '../lib/utils/Octo';
 import './GameDashboard.css';
 import Limbo from './limbo/Limbo';
 import ShadowRealm from './shadowRealm/ShadowRealm';

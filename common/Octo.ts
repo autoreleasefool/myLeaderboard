@@ -1,10 +1,9 @@
 // @ts-ignore: Common module in api/dashboard
 import * as Octokat from 'octokat';
-import { getParam } from './Params';
 // @ts-ignore: Common module in api/dashboard
-import { base64decode, base64encode } from '../../common/Base64';
-import { Game, allGames } from '../Game';
-import { BasicPlayer, BasicGamePlayer, GameStandings, GitHubUser, GenericPlayer } from '../types';
+import { base64decode, base64encode } from '../common/Base64';
+import { Game, allGames } from './Game';
+import { BasicPlayer, BasicGamePlayer, GameStandings, GitHubUser, GenericPlayer } from './types';
 
 interface Blob {
     content: string;
@@ -37,20 +36,26 @@ export interface Writeable {
 }
 
 class Octo {
+    public static setToken(token: string | undefined) {
+        Octo.token = token;
+        Octo.instance = undefined;
+    }
+
     public static setBranch(branch: string) {
         Octo.branch = branch;
     }
 
     public static getInstance(): Octo {
         if (Octo.instance == null) {
-            Octo.instance = new Octo();
+            Octo.instance = new Octo(Octo.token);
         }
 
         return Octo.instance;
     }
 
-    private static instance: Octo;
+    private static instance: Octo | undefined;
     private static branch: string = 'master';
+    private static token: string | undefined;
 
     private octo: any;
     private repo: any;
@@ -58,9 +63,7 @@ class Octo {
     private contentsCache: Map<string, string> = new Map(); // TODO: store promises while waiting for response
     private blobCache: Map<string, Blob> = new Map(); // TODO: store promises while waiting for response
 
-    private constructor() {
-        const token = getParam('token');
-
+    private constructor(token: string | undefined) {
         // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
         this.octo = new Octokat({ token });
         this.repo = this.octo.repos('josephroquedev', 'myLeaderboard');
