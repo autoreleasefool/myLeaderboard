@@ -36,11 +36,13 @@ export interface Record {
     isWorst?: boolean;
 }
 
+export interface VsRecord {
+    [key: string]: Record;
+}
+
 export interface GameStandings {
     players: Array<BasicGamePlayer>;
     records: {
-        [key: string]: {
-            [key: string]: Record;
-        }
+        [key: string]: VsRecord;
     }
 }
