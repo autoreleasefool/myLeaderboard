@@ -48,7 +48,7 @@ class Dashboard extends React.Component<Props, State> {
         });
 
         return (
-            <div>
+            <div className={'game-dashboard'}>
                 <Standings key={game} game={game} standings={standings} players={players} />
                 <Limbo players={playersWithGames} />
                 <ShadowRealm players={playersWithGames} />
