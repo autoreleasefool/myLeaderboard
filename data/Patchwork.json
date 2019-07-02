@@ -3,57 +3,57 @@
         {
             "username": "@aimeejoelleanderson",
             "displayName": "Aimée Anderson",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "1970-01-01T00:00:00.000Z"
         },
         {
             "username": "@Caiopia",
             "displayName": "Caio Lima",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "2019-06-28T00:00:00.000Z"
         },
         {
             "username": "@Campbell-Scott",
             "displayName": "Scott Campbell",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "2019-06-28T00:00:00.000Z"
         },
         {
             "username": "@dannbeaus",
             "displayName": "Dann Beauregard",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "2019-06-27T00:00:00.000Z"
         },
         {
             "username": "@josephroquedev",
             "displayName": "Joseph Roque",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "2019-06-26T00:00:00.000Z"
         },
         {
             "username": "@g-Off",
             "displayName": "Geoff Foster",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "1970-01-01T00:00:00.000Z"
         },
         {
             "username": "@Kiesco08",
             "displayName": "Franck Mamboue",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "2019-06-26T00:00:00.000Z"
         },
         {
             "username": "@mori-ahk",
             "displayName": "Mori Ahmadi",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "2019-06-28T00:00:00.000Z"
         },
         {
             "username": "@nabilmaad",
             "displayName": "Nabil Maadarani",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "1970-01-01T00:00:00.000Z"
         },
         {
             "username": "@RyanBillard",
             "displayName": "Ryan Billard",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "1970-01-01T00:00:00.000Z"
         },
         {
             "username": "@see-mack",
             "displayName": "Chris Mack",
-            "lastPlayed": "2019-07-01T00:00:00.000Z"
+            "lastPlayed": "1970-01-01T00:00:00.000Z"
         }
     ],
     "records": {
@@ -146,7 +146,7 @@
                 "ties": 0
             },
             "@mori-ahk": {
-                "wins": 0,
+                "wins": 1,
                 "losses": 0,
                 "ties": 0
             },
@@ -185,7 +185,7 @@
             "@dannbeaus": {
                 "wins": 1,
                 "losses": 0,
-                "ties": 0
+                "ties": 1
             },
             "@g-Off": {
                 "wins": 0,
@@ -204,7 +204,7 @@
             },
             "@mori-ahk": {
                 "wins": 0,
-                "losses": 0,
+                "losses": 1,
                 "ties": 0
             },
             "@nabilmaad": {
@@ -242,7 +242,7 @@
             "@Campbell-Scott": {
                 "wins": 0,
                 "losses": 1,
-                "ties": 0
+                "ties": 1
             },
             "@g-Off": {
                 "wins": 0,
@@ -464,12 +464,12 @@
             },
             "@Caiopia": {
                 "wins": 0,
-                "losses": 0,
+                "losses": 1,
                 "ties": 0
             },
             "@Campbell-Scott": {
                 "wins": 0,
-                "losses": 0,
+                "losses": 1,
                 "ties": 0
             },
             "@dannbeaus": {
