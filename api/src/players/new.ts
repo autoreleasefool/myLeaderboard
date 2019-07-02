@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { allGames, Game } from '../lib/Game';
+import { allGames } from '../lib/Game';
 import Octo, { Writeable } from '../lib/Octo';
 import { GameStandings, VsRecord } from '../lib/types';
 
@@ -18,8 +18,8 @@ export default async function add(req: Request): Promise<void> {
         playerUsername = `@${playerUsername}`;
     }
 
-    for (const gameName of allGames()) {
-        const game = gameName as Game;
+    const games = await allGames();
+    for (const game of games) {
         try {
             const gameStandings = await writeableGameStandingsWithNewPlayer(playerName, playerUsername, game);
             filesToWrite.push(gameStandings);
@@ -32,7 +32,7 @@ export default async function add(req: Request): Promise<void> {
     await Octo.getInstance().write(filesToWrite);
 }
 
-async function writeableGameStandingsWithNewPlayer(displayName: string, username: string, game: Game): Promise<Writeable> {
+async function writeableGameStandingsWithNewPlayer(displayName: string, username: string, game: string): Promise<Writeable> {
     const filename = `data/${game}.json`;
     const gameStandingsBlob = await Octo.getInstance().blob(filename);
     const gameStandings: GameStandings = JSON.parse(gameStandingsBlob.content);
