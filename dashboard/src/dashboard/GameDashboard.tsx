@@ -36,11 +36,22 @@ class Dashboard extends React.Component<Props, State> {
             return null;
         }
 
+        const playersWithGames = players.filter(player => {
+            for (const opponent of Object.keys(standings.records[player.username])) {
+                const { wins, losses, ties } = standings.records[player.username][opponent];
+                if (wins > 0 || losses > 0 || ties > 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
         return (
             <div>
                 <Standings key={game} game={game} standings={standings} players={players} />
-                <Limbo players={players} />
-                <ShadowRealm players={players} />
+                <Limbo players={playersWithGames} />
+                <ShadowRealm players={playersWithGames} />
             </div>
         );
     }
