@@ -29,8 +29,7 @@ export default async function record(req: Request): Promise<void> {
     const updatedStandings = await writeableGameStandingsWithUpdate(gamePlayers, gameWinners, game);
     filesToWrite.push(updatedStandings);
 
-    console.log(filesToWrite);
-    // Octo.getInstance().write(filesToWrite);
+    Octo.getInstance().write(filesToWrite);
 }
 
 enum GameResult {
