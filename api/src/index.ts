@@ -1,8 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import Octo from './lib/Octo';
 
-Octo.setBranch('react');
-
 const app = express();
 const port = (process.env.NODE_ENV === 'production') ? 80 : 3001;
 

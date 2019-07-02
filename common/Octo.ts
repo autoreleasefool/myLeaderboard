@@ -88,7 +88,7 @@ class Octo {
         const basicPlayers: Array<BasicPlayer> = [];
 
         let games: Array<string>;
-        if (forGame == undefined) {
+        if (forGame == null) {
             games = await allGames();
         } else {
             games = [forGame];

@@ -6,7 +6,6 @@ import { getParam } from './common/Params';
 import './index.css';
 import Octo from './lib/Octo';
 
-Octo.setBranch('react');
 Octo.setToken(getParam('token'));
 
 ReactDOM.render(
