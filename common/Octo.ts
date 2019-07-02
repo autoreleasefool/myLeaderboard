@@ -35,7 +35,7 @@ interface Content {
 
 export interface Writeable {
     path: string;
-    sha: string;
+    sha?: string;
     content: string;
     message?: string;
 }
