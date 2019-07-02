@@ -1,8 +1,17 @@
+import { Request } from 'express';
 import { allGames, Game } from '../lib/Game';
 import Octo, { Writeable } from '../lib/Octo';
 import { GameStandings, VsRecord } from '../lib/types';
 
-export default async function add(playerName: string, playerUsername: string): Promise<void> {
+export default async function add(req: Request): Promise<void> {
+    const playerName = req.body.name;
+    let playerUsername = req.body.username;
+    if (playerName == null || playerName.length === 0) {
+        throw new Error('Missing "name".');
+    } else if (playerUsername == null || playerUsername.length === 0) {
+        throw new Error('Missing "username".');
+    }
+
     const filesToWrite: Array<Writeable> = [];
 
     if (playerUsername.charAt(0) !== '@') {
