@@ -1,0 +1,14 @@
+@import url('https://cdn.shopify.com/shopify-marketing_assets/builds/30.6.0/marketing_assets/builds/shopify-sans.css');
+
+body {
+    font-family: ShopifySans, Arial, sans-serif !important;
+    background-color: #212B35;
+    color: #F4F6F8;
+    margin: 0px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.Polaris-Banner {
+    color: black;
+}

@@ -1,0 +1,75 @@
+.Polaris-Card {
+    background-color: rgb(43, 53, 63);
+}
+
+.Polaris-DataTable__Table {
+    border-collapse: collapse;
+}
+
+.Polaris-DataTable__Cell--header {
+    color: #F4F6F8;
+}
+
+.Polaris-DataTable__Cell {
+    border: solid 1px rgb(66, 73, 82);
+    padding: 0;
+}
+
+.Polaris-DataTable__Cell--firstColumn {
+    color: inherit;
+}
+
+.Polaris-DataTable__TableRow:hover .Polaris-DataTable__Cell {
+    background-color: #212B35;
+}
+
+thead {
+    display: none;
+}
+
+th {
+    height: 52px;
+    width: 52px;
+}
+
+tr {
+    height: 52px;
+}
+
+td {
+    position: relative;
+}
+
+.record {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Polaris-DataTable__Cell--firstColumn + td {
+    border-right: solid 2px rgb(87, 96, 109);
+    width: 100px;
+}
+
+.Polaris-DataTable__Cell {
+    text-align: center;
+    vertical-align: inherit;
+}
+
+.record--worst {
+    background-color: rgba(180, 0, 0, 0.2);
+}
+
+.record--best {
+    background-color: rgba(0, 180, 0, 0.2);
+}
+
+.record--value {
+    padding: 4px;
+}
