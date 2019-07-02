@@ -169,9 +169,8 @@ class Octo {
         if (this.blobCache.has(filename)) {
             return this.blobCache.get(filename)!;
         } else {
-            const contents = await this.repo.contents(filename).fetch({ ref: Octo.branch });
+            const contents = await this.repo.contents(filename).fetch();
             contents.content = base64decode(contents.content);
-
             this.blobCache.set(filename, contents);
             return contents;
         }
