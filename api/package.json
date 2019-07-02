@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "start": "yarn build && nodemon build/index.js",
     "build": "yarn copy-common && tsc",
     "copy-common": "rm -rf ./src/lib && cp -r ../common ./src/lib"
   },
@@ -10,6 +11,7 @@
     "@types/express": "^4.17.0",
     "@types/node": "^12.0.10",
     "express": "^4.17.1",
+    "nodemon": "^1.19.1",
     "octokat": "^0.10.0",
     "tslint": "^5.18.0",
     "tslint-eslint-rules": "^5.4.0",
