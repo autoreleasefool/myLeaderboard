@@ -87,8 +87,6 @@ class Dashboard extends React.Component<Props, State> {
             standings,
         });
     }
-
-
 }
 
 export default Dashboard;

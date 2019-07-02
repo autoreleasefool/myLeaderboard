@@ -1,3 +1,5 @@
+// tslint:disable
+
 // @ts-ignore: Common module in api/dashboard
 import * as Octokat from 'octokat';
 // @ts-ignore: Common module in api/dashboard

@@ -5,7 +5,8 @@
   "scripts": {
     "start": "yarn build && nodemon build/index.js",
     "build": "yarn copy-common && tsc",
-    "copy-common": "rm -rf ./src/lib && cp -r ../common ./src/lib"
+    "copy-common": "rm -rf ./src/lib && cp -r ../common ./src/lib",
+    "lint": "tslint 'src/**/*.ts?(x)'"
   },
   "dependencies": {
     "@types/express": "^4.17.0",

@@ -44,5 +44,5 @@ export interface GameStandings {
     players: Array<BasicGamePlayer>;
     records: {
         [key: string]: VsRecord;
-    }
+    };
 }
