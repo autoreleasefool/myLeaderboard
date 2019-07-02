@@ -23,7 +23,7 @@
         {
             "username": "@josephroquedev",
             "displayName": "Joseph Roque",
-            "lastPlayed": "2019-06-26T00:00:00.000Z"
+            "lastPlayed": "2019-07-02T21:10:58.315Z"
         },
         {
             "username": "@g-Off",
@@ -38,7 +38,7 @@
         {
             "username": "@mori-ahk",
             "displayName": "Mori Ahmadi",
-            "lastPlayed": "2019-06-28T00:00:00.000Z"
+            "lastPlayed": "2019-07-02T21:10:58.315Z"
         },
         {
             "username": "@nabilmaad",
@@ -379,7 +379,7 @@
                 "ties": 0
             },
             "@mori-ahk": {
-                "wins": 1,
+                "wins": 2,
                 "losses": 0,
                 "ties": 0
             },
@@ -489,7 +489,7 @@
             },
             "@josephroquedev": {
                 "wins": 0,
-                "losses": 1,
+                "losses": 2,
                 "ties": 0
             },
             "@Kiesco08": {
