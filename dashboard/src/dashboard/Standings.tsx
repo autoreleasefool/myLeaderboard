@@ -88,12 +88,10 @@ class Standings extends React.Component<Props, State> {
 
     private _parseStandings() {
         const { standings } = this.props;
-        const usernames: Array<string> = [];
         const overallRecords: Map<string, Record> = new Map();
         const headToHeadRecords: Map<string, Map<string, Record>> = new Map();
 
         for (const player of standings.players) {
-            usernames.push(player.username);
             const playerOverallRecord: Record = { wins: 0, losses: 0, ties: 0 };
 
             for (const opponentUsername of Object.keys(standings.records[player.username])) {
@@ -124,7 +122,7 @@ class Standings extends React.Component<Props, State> {
                 total: overallRecords.get(player.username)!,
                 username: player.username,
             };
-        }).sort((first, second) => first.username.toLowerCase().localeCompare(second.username.toLowerCase()));
+        });
 
         this._highlightRecords(gamePlayers);
 

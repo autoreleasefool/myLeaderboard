@@ -82,6 +82,9 @@ class Dashboard extends React.Component<Props, State> {
             });
         }
 
+        standings.players.sort((first, second) => first.username.toLowerCase().localeCompare(second.username.toLowerCase()));
+        players.sort((first, second) => first.username.toLowerCase().localeCompare(second.username.toLowerCase()));
+
         this.setState({
             players,
             standings,
