@@ -83,10 +83,16 @@ class Octo {
 
     // Users
 
-    public async players(): Promise<Array<GenericPlayer>> {
+    public async players(forGame: string | undefined = undefined): Promise<Array<GenericPlayer>> {
         const playerUsernames: Set<string> = new Set();
         const basicPlayers: Array<BasicPlayer> = [];
-        const games = await allGames();
+
+        let games: Array<string>;
+        if (forGame == undefined) {
+            games = await allGames();
+        } else {
+            games = [forGame];
+        }
 
         for (const game of games) {
             const gamePlayers = await this.playersForGame(game);
