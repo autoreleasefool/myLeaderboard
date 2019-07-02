@@ -18,7 +18,7 @@ class RefreshView extends React.Component<Props, State> {
         super(props);
         this.startTime = new Date();
         this.state = {
-            errorMessage: 'This is an error',
+            errorMessage: undefined,
         };
     }
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Game } from '../lib/Game';
 import Octo from '../lib/Octo';
 import { BasicGamePlayer, GameStandings, Player } from '../lib/types';
 import './GameDashboard.css';
@@ -8,7 +7,7 @@ import ShadowRealm from './shadowRealm/ShadowRealm';
 import Standings from './Standings';
 
 interface Props {
-    game: Game;
+    game: string;
 }
 
 interface State {

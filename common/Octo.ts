@@ -2,7 +2,7 @@
 import * as Octokat from 'octokat';
 // @ts-ignore: Common module in api/dashboard
 import { base64decode, base64encode } from '../common/Base64';
-import { Game, allGames } from './Game';
+import { allGames } from './Game';
 import { BasicPlayer, BasicGamePlayer, GameStandings, GitHubUser, GenericPlayer } from './types';
 
 interface Blob {
@@ -26,6 +26,11 @@ interface Commit {
 interface CommitItem {
     sha: string;
     commit: Commit;
+}
+
+interface Content {
+    type: string;
+    name: string;
 }
 
 export interface Writeable {
@@ -60,6 +65,7 @@ class Octo {
     private octo: any;
     private repo: any;
     private userCache: Map<string, GitHubUser> = new Map(); // TODO: store promises while waiting for response
+    private dirCache: Map<string, Array<Content>> = new Map(); // TODO: store promises while waiting for response
     private contentsCache: Map<string, string> = new Map(); // TODO: store promises while waiting for response
     private blobCache: Map<string, Blob> = new Map(); // TODO: store promises while waiting for response
 
@@ -80,7 +86,9 @@ class Octo {
     public async players(): Promise<Array<GenericPlayer>> {
         const playerUsernames: Set<string> = new Set();
         const basicPlayers: Array<BasicPlayer> = [];
-        for (const game of allGames()) {
+        const games = await allGames();
+
+        for (const game of games) {
             const gamePlayers = await this.playersForGame(game);
             for (const gamePlayer of gamePlayers) {
                 if (playerUsernames.has(gamePlayer.username) === false) {
@@ -108,7 +116,7 @@ class Octo {
         return players;
     }
 
-    private async playersForGame(game: Game): Promise<Array<BasicGamePlayer>> {
+    private async playersForGame(game: string): Promise<Array<BasicGamePlayer>> {
         const contents = await this.contents(`data/${game}.json`);
         const standings: GameStandings = JSON.parse(contents);
         return standings.players;
@@ -129,6 +137,17 @@ class Octo {
     }
 
     // Contents
+
+    public async dir(path: string): Promise<Array<Content>> {
+        let contents: Array<Content> | undefined = this.dirCache.get(path);
+        if (contents == null) {
+            const dirContents = await this.repo.contents(path).read({ ref: Octo.branch });
+            this.dirCache.set(path, dirContents.items);
+            contents = dirContents.items;
+        }
+
+        return contents!;
+    }
 
     public async contents(filename: string): Promise<string> {
         if (this.contentsCache.has(filename)) {

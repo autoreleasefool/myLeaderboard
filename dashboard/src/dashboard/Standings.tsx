@@ -2,7 +2,6 @@ import { Card, ColumnContentType, DataTable, Page } from '@shopify/polaris';
 import React, { ReactNode } from 'react';
 import PlayerView from '../components/PlayerView';
 import Version from '../components/Version';
-import { Game } from '../lib/Game';
 import { GameStandings, Player, Record } from '../lib/types';
 import { isBanished } from './shadowRealm/ShadowRealm';
 import './Standings.css';
@@ -21,7 +20,7 @@ interface GamePlayer {
 }
 
 interface Props {
-    game: Game;
+    game: string;
     standings: GameStandings;
     players: Array<Player>;
 }

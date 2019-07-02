@@ -1,15 +1,13 @@
-export enum Game {
-    Hive = 'Hive',
-    Patchwork = 'Patchwork',
-}
+import Octo from './Octo';
 
-export function allGames(): Array<Game> {
-    const games: Array<Game> = [];
-    for (const game in Game) {
-        if (Game.hasOwnProperty(game)) {
-            games.push(game as Game);
+export async function allGames(): Promise<Array<string>> {
+    const contents = await Octo.getInstance().dir('data');
+
+    const games: Array<string> = [];
+    for (const content of contents) {
+        if (content.type === 'file' && content.name.endsWith('.json')) {
+            games.push(content.name.split('.')[0]);
         }
     }
-
     return games;
 }
