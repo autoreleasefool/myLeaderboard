@@ -65,7 +65,7 @@ class Octo {
 
     private constructor(token: string | undefined) {
         // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
-        this.octo = new Octokat({ token });
+        this.octo = Octokat.default({ token });
         this.repo = this.octo.repos('josephroquedev', 'myLeaderboard');
     }
 
