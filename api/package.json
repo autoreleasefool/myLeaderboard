@@ -5,7 +5,7 @@
   "scripts": {
     "forever": "./script/start",
     "stop": "./script/stop",
-    "start": "yarn build && nodemon build/index.js --exec 'node -r dotenv/config'",
+    "start": "yarn build && nodemon build/index.js",
     "build": "yarn copy-common && tsc",
     "copy-common": "rm -rf ./src/lib && cp -r ../common ./src/lib",
     "lint": "tslint 'src/**/*.ts?(x)'"
