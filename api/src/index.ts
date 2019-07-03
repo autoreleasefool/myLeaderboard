@@ -1,6 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express';
 import Octo from './lib/Octo';
 
+const githubToken = process.env.GITHUB_TOKEN;
+if (githubToken != null && githubToken.length > 0) {
+    Octo.setToken(githubToken);
+}
+
 const app = express();
 const port = (process.env.NODE_ENV === 'production') ? 80 : 3001;
 
@@ -14,9 +19,7 @@ function errorHandler(err: any, _: Request, res: Response, __: NextFunction) {
 
 function tokenExtraction(req: Request, _: Response, next: NextFunction) {
     const token = req.body.token;
-    if (token == null || token.length === 0) {
-        next(new Error('Token was not provided.'));
-    } else {
+    if (token != null && token.length > 0) {
         Octo.setToken(req.body.token);
     }
 
