@@ -4,8 +4,10 @@ import Octo, { Writeable } from '../lib/Octo';
 import { GameStandings } from '../lib/types';
 
 export default async function record(req: Request): Promise<void> {
-    const gamePlayers: Set<string> = new Set(req.body.players);
-    const gameWinners: Set<string> = new Set(req.body.winners);
+    const playersBody = typeof(req.body.players) === 'string' ? JSON.parse(req.body.players) : req.body.players;
+    const winnersBody = typeof(req.body.winners) === 'string' ? JSON.parse(req.body.winners) : req.body.winners;
+    const gamePlayers: Set<string> = new Set(playersBody);
+    const gameWinners: Set<string> = new Set(winnersBody);
     const game: string = req.body.game;
 
     if (gamePlayers.size === 0) {
