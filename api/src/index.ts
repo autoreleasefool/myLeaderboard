@@ -1,3 +1,5 @@
+import './env';
+
 import express, { NextFunction, Request, Response } from 'express';
 import Octo from './lib/Octo';
 

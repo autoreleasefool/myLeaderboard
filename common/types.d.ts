@@ -1,4 +1,5 @@
 declare module 'octokat';
+declare module 'dotenv';
 
 // Players
 
