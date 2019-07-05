@@ -66,21 +66,11 @@ class Octo {
 
     private octo: any;
     private repo: any;
-    private userCache: Map<string, GitHubUser> = new Map(); // TODO: store promises while waiting for response
-    private dirCache: Map<string, Array<Content>> = new Map(); // TODO: store promises while waiting for response
-    private contentsCache: Map<string, string> = new Map(); // TODO: store promises while waiting for response
-    private blobCache: Map<string, Blob> = new Map(); // TODO: store promises while waiting for response
 
     private constructor(token: string | undefined) {
         // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
         this.octo = Octokat.default({ token });
         this.repo = this.octo.repos('josephroquedev', 'myLeaderboard');
-    }
-
-    public clearCache() {
-        this.userCache.clear();
-        this.contentsCache.clear();
-        this.blobCache.clear();
     }
 
     // Users
@@ -135,47 +125,24 @@ class Octo {
             name = name.substr(1);
         }
 
-        if (this.userCache.has(name)) {
-            return this.userCache.get(name)!;
-        } else {
-            const user = await this.octo.users(name).fetch();
-            this.userCache.set(name, user);
-            return user;
-        }
+        return await this.octo.users(name).fetch();
     }
 
     // Contents
 
     public async dir(path: string): Promise<Array<Content>> {
-        let contents: Array<Content> | undefined = this.dirCache.get(path);
-        if (contents == null) {
-            const dirContents = await this.repo.contents(path).read({ ref: Octo.branch });
-            this.dirCache.set(path, dirContents.items);
-            contents = dirContents.items;
-        }
-
-        return contents!;
+        const dirContents = await this.repo.contents(path).read({ ref: Octo.branch });
+        return dirContents.items;
     }
 
     public async contents(filename: string): Promise<string> {
-        if (this.contentsCache.has(filename)) {
-            return this.contentsCache.get(filename)!;
-        } else {
-            const contents = await this.repo.contents(filename).read({ ref: Octo.branch });
-            this.contentsCache.set(filename, contents);
-            return contents;
-        }
+        return await this.repo.contents(filename).read({ ref: Octo.branch });
     }
 
     public async blob(filename: string): Promise<Blob> {
-        if (this.blobCache.has(filename)) {
-            return this.blobCache.get(filename)!;
-        } else {
-            const contents = await this.repo.contents(filename).fetch();
-            contents.content = base64decode(contents.content);
-            this.blobCache.set(filename, contents);
-            return contents;
-        }
+        const contents = await this.repo.contents(filename).fetch();
+        contents.content = base64decode(contents.content);
+        return contents;
     }
 
     // Repo
