@@ -14,6 +14,7 @@
 		CAB3871C22D1907A00349B1F /* ViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871B22D1907A00349B1F /* ViewAction.swift */; };
 		CAB3871E22D224A100349B1F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871D22D224A100349B1F /* ViewModel.swift */; };
 		CAB3872022D2254000349B1F /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871F22D2254000349B1F /* Action.swift */; };
+		CAB3872C22D22DA100349B1F /* AloeStackView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAB3872B22D22DA100349B1F /* AloeStackView.framework */; };
 		CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066C22D0F70B0075B033 /* AppDelegate.swift */; };
 		CAC9066F22D0F70B0075B033 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066E22D0F70B0075B033 /* RootViewController.swift */; };
 		CAC9067422D0F70F0075B033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		CAB3871B22D1907A00349B1F /* ViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAction.swift; sourceTree = "<group>"; };
 		CAB3871D22D224A100349B1F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		CAB3871F22D2254000349B1F /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		CAB3872B22D22DA100349B1F /* AloeStackView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AloeStackView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066922D0F70B0075B033 /* MyLeaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLeaderboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066C22D0F70B0075B033 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAC9066E22D0F70B0075B033 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAB3872C22D22DA100349B1F /* AloeStackView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +134,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		CAB3872A22D22DA100349B1F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CAB3872B22D22DA100349B1F /* AloeStackView.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CAC9066022D0F70B0075B033 = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +149,7 @@
 				CAC9068022D0F70F0075B033 /* MyLeaderboardTests */,
 				CAC9068B22D0F70F0075B033 /* MyLeaderboardUITests */,
 				CAC9066A22D0F70B0075B033 /* Products */,
+				CAB3872A22D22DA100349B1F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
