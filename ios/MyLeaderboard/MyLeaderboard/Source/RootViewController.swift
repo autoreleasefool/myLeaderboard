@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  RootViewController.swift
 //  MyLeaderboard
 //
 //  Created by Joseph Roque on 2019-07-06.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class RootViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
