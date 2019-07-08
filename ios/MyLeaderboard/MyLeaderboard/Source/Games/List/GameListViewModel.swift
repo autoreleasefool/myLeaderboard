@@ -10,9 +10,11 @@ import Foundation
 
 enum GameListAction: BaseAction {
 	case gameSelected(Game)
+	case gamesLoaded([Game])
 }
 
 enum GameListViewAction: BaseViewAction {
+	case initialize
 	case selectGame(Game)
 }
 
@@ -27,7 +29,14 @@ struct GameListViewModel: ViewModel {
 
 	func postViewAction(_ viewAction: GameListViewAction) {
 		switch viewAction {
-		case .selectGame(let game): handleAction(.gameSelected(game))
+		case .selectGame(let game):
+			handleAction(.gameSelected(game))
+		case .initialize:
+			loadGameList()
 		}
+	}
+
+	private func loadGameList() {
+		
 	}
 }

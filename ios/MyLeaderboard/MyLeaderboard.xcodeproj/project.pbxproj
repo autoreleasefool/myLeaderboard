@@ -16,7 +16,7 @@
 		CAB3872022D2254000349B1F /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871F22D2254000349B1F /* Action.swift */; };
 		CAB3872C22D22DA100349B1F /* AloeStackView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAB3872B22D22DA100349B1F /* AloeStackView.framework */; };
 		CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066C22D0F70B0075B033 /* AppDelegate.swift */; };
-		CAC9066F22D0F70B0075B033 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066E22D0F70B0075B033 /* RootViewController.swift */; };
+		CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */; };
 		CAC9067422D0F70F0075B033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
 		CAC9067722D0F70F0075B033 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067522D0F70F0075B033 /* LaunchScreen.storyboard */; };
 		CAC9068222D0F70F0075B033 /* MyLeaderboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9068122D0F70F0075B033 /* MyLeaderboardTests.swift */; };
@@ -51,7 +51,7 @@
 		CAB3872B22D22DA100349B1F /* AloeStackView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AloeStackView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066922D0F70B0075B033 /* MyLeaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLeaderboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066C22D0F70B0075B033 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CAC9066E22D0F70B0075B033 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
 		CAC9067322D0F70F0075B033 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CAC9067622D0F70F0075B033 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CAC9067822D0F70F0075B033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -196,7 +196,7 @@
 			children = (
 				CAB3871A22D1906D00349B1F /* Common */,
 				CAB3870E22D17F1B00349B1F /* Games */,
-				CAC9066E22D0F70B0075B033 /* RootViewController.swift */,
+				CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */,
 				CAC9066C22D0F70B0075B033 /* AppDelegate.swift */,
 			);
 			path = Source;
@@ -341,7 +341,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAC9066F22D0F70B0075B033 /* RootViewController.swift in Sources */,
+				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
 				CAB3872022D2254000349B1F /* Action.swift in Sources */,
 				CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */,
 				CAB3871922D18E2100349B1F /* GameListViewModel.swift in Sources */,
