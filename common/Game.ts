@@ -1,5 +1,10 @@
 import Octo from './Octo';
 
+export interface Game {
+    name: String;
+    imageURL: String;
+}
+
 export async function allGames(): Promise<Array<string>> {
     const contents = await Octo.getInstance().dir('data');
 
