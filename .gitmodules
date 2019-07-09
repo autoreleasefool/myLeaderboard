@@ -1,0 +1,3 @@
+[submodule "ios/Vendor/FunctionalTableData"]
+	path = ios/Vendor/FunctionalTableData
+	url = git@github.com:Shopify/FunctionalTableData.git

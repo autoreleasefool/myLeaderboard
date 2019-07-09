@@ -4,4 +4,7 @@
    <FileRef
       location = "group:MyLeaderboard/MyLeaderboard.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Vendor/FunctionalTableData/FunctionalTableData.xcodeproj">
+   </FileRef>
 </Workspace>
