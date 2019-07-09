@@ -1,3 +1,0 @@
-[submodule "ios/Vendor/AloeStackView"]
-	path = ios/Vendor/AloeStackView
-	url = git@github.com:airbnb/AloeStackView.git
