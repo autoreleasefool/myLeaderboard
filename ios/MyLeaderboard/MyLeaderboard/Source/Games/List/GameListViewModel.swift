@@ -9,8 +9,9 @@
 import Foundation
 
 enum GameListAction: BaseAction {
+	case gamesUpdated([Game])
 	case gameSelected(Game)
-	case gamesLoaded([Game])
+	case error(Error)
 }
 
 enum GameListViewAction: BaseViewAction {
@@ -18,12 +19,20 @@ enum GameListViewAction: BaseViewAction {
 	case selectGame(Game)
 }
 
-struct GameListViewModel: ViewModel {
+class GameListViewModel: ViewModel {
 	typealias ActionHandler = (_ action: GameListAction) -> Void
 
+	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	init(handleAction: @escaping ActionHandler) {
+	private(set) var games: [Game] = [] {
+		didSet {
+			handleAction(.gamesUpdated(games))
+		}
+	}
+
+	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
+		self.api = api
 		self.handleAction = handleAction
 	}
 
@@ -37,6 +46,13 @@ struct GameListViewModel: ViewModel {
 	}
 
 	private func loadGameList() {
-		
+		api.games { [weak self] in
+			switch $0 {
+			case .failure(let error):
+				self?.handleAction(.error(error))
+			case .success(let games):
+				self?.games = games
+			}
+		}
 	}
 }

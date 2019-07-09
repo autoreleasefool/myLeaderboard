@@ -9,11 +9,7 @@
 import Foundation
 import UIKit
 
-struct Game: Codable {
+struct Game: Equatable, Codable {
 	let name: String
-	let iconName: String
-
-	var icon: UIImage {
-		return UIImage(named: iconName)!
-	}
+	let imageURL: String
 }
