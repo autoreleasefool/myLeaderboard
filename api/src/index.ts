@@ -56,7 +56,7 @@ import applyGamesRouter from './games/router';
 import applyPlayersRouter from './players/router';
 import applyStandingsRouter from './standings/router';
 
-app.use(express.static('../static'));
+app.use(express.static('./static'));
 app.use(tokenExtraction);
 applyGamesRouter(app);
 applyPlayersRouter(app);
