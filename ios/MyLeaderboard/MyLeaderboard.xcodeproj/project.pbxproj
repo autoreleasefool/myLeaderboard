@@ -19,6 +19,7 @@
 		CABA3EA622D4B15C00960758 /* FunctionalTableData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */; };
 		CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
 		CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA922D4B4DB00960758 /* FTDViewController.swift */; };
+		CABA3EB122D58D8700960758 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EB022D58D8700960758 /* Colors.swift */; };
 		CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066C22D0F70B0075B033 /* AppDelegate.swift */; };
 		CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */; };
 		CAC9067422D0F70F0075B033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
@@ -57,6 +58,7 @@
 		CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FunctionalTableData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CABA3EA722D4B2BE00960758 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		CABA3EA922D4B4DB00960758 /* FTDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTDViewController.swift; sourceTree = "<group>"; };
+		CABA3EB022D58D8700960758 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CAC9066922D0F70B0075B033 /* MyLeaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLeaderboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066C22D0F70B0075B033 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
@@ -160,6 +162,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CABA3EB222D58D8B00960758 /* UX */ = {
+			isa = PBXGroup;
+			children = (
+				CABA3EB022D58D8700960758 /* Colors.swift */,
+				CABA3EA722D4B2BE00960758 /* Metrics.swift */,
+			);
+			path = UX;
+			sourceTree = "<group>";
+		};
 		CAC9066022D0F70B0075B033 = {
 			isa = PBXGroup;
 			children = (
@@ -215,9 +226,9 @@
 				CA63D23622D36B7100B7A51F /* API */,
 				CAB3871A22D1906D00349B1F /* Common */,
 				CAB3870E22D17F1B00349B1F /* Games */,
+				CABA3EB222D58D8B00960758 /* UX */,
 				CAC9066C22D0F70B0075B033 /* AppDelegate.swift */,
 				CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */,
-				CABA3EA722D4B2BE00960758 /* Metrics.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -361,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CABA3EB122D58D8700960758 /* Colors.swift in Sources */,
 				CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */,
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
 				CABA3EA422D42DC300960758 /* GameListBuilder.swift in Sources */,
