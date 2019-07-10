@@ -19,7 +19,7 @@ typealias LeaderboardAPIResult<Success> = Result<Success, LeaderboardAPIError>
 
 class LeaderboardAPI {
 	private static var baseURL: URL {
-		return URL(string: "https://6dc46042.ngrok.io")!
+		return URL(string: "")!
 	}
 
 	func games(completion: @escaping (LeaderboardAPIResult<[Game]>) -> Void) {
@@ -32,7 +32,7 @@ class LeaderboardAPI {
 		let url = LeaderboardAPI.baseURL.appendingPathComponent("/games/list")
 		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
 			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
-		}
+		}.resume()
 	}
 
 	private func handleResponse<Result: Codable>(data: Data?, response: URLResponse?, error: Error?, completion: (LeaderboardAPIResult<Result>) -> Void) {
@@ -46,7 +46,7 @@ class LeaderboardAPI {
 			return
 		}
 
-		guard response.statusCode == 200 else {
+		guard (200..<400).contains(response.statusCode) else {
 			completion(.failure(.invalidHTTPResponse(response.statusCode)))
 			return
 		}
