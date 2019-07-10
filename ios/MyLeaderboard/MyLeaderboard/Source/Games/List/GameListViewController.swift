@@ -22,6 +22,7 @@ class GameListViewController: FTDViewController {
 	}
 
 	override func viewDidLoad() {
+		super.viewDidLoad()
 		viewModel = GameListViewModel(api: api) { [weak self] action in
 			guard let self = self else { return }
 			switch action {
@@ -33,6 +34,9 @@ class GameListViewController: FTDViewController {
 				self.presentError(error)
 			}
 		}
+
+		viewModel.postViewAction(.initialize)
+		render()
 	}
 
 	private func render() {

@@ -10,7 +10,7 @@ import UIKit
 
 struct TabItem {
 	let title: String
-	let controller: () -> UIViewController
+	let controller: UIViewController
 	let image: UIImage
 	let selectedImage: UIImage
 }
@@ -20,14 +20,12 @@ class RootTabBarController: UITabBarController {
 		return [
 			TabItem(
 				title: "Games",
-				controller: { [weak self] in
-					return GameListViewController(api: self?.api)
-				},
+				controller: GameListViewController(api: api),
 				image: UIImage(named: "Tabs/Games")!,
 				selectedImage: UIImage(named: "Tabs/Games-selected")!
 			),
 		]
-	}
+	}()
 
 	private var api: LeaderboardAPI!
 
@@ -39,7 +37,7 @@ class RootTabBarController: UITabBarController {
 
 	private func createTabBarItems() -> [UIViewController] {
 		return tabItems.map {
-			let viewController = $0.controller()
+			let viewController = $0.controller
 			viewController.tabBarItem = UITabBarItem(
 				title: $0.title,
 				image: $0.image,

@@ -18,6 +18,7 @@ struct GameListBuilder {
 		let rows = games.map { game in
 			GameListItemCell(
 				key: game.name,
+				style: CellStyle(highlight: true),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
 					actionable?.selectedGame(game: game)
 					return .deselected

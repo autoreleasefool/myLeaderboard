@@ -7,14 +7,17 @@
 //
 
 import UIKit
+import FunctionalTableData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
-
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+		CellStyle.defaultBackgroundColor = .background
+		CellStyle.defaultSelectionColor = .selection
+
 		let window = UIWindow(frame: UIScreen.main.bounds)
 		let rootViewController = RootTabBarController()
 		window.rootViewController = rootViewController
