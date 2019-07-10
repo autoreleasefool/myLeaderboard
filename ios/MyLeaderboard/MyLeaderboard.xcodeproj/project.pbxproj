@@ -19,6 +19,7 @@
 		CABA3EA622D4B15C00960758 /* FunctionalTableData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */; };
 		CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
 		CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA922D4B4DB00960758 /* FTDViewController.swift */; };
+		CABA3EAD22D4B83D00960758 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EAC22D4B83D00960758 /* ImageLoader.swift */; };
 		CABA3EB122D58D8700960758 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EB022D58D8700960758 /* Colors.swift */; };
 		CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066C22D0F70B0075B033 /* AppDelegate.swift */; };
 		CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */; };
@@ -58,6 +59,7 @@
 		CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FunctionalTableData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CABA3EA722D4B2BE00960758 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		CABA3EA922D4B4DB00960758 /* FTDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTDViewController.swift; sourceTree = "<group>"; };
+		CABA3EAC22D4B83D00960758 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CABA3EB022D58D8700960758 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CAC9066922D0F70B0075B033 /* MyLeaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLeaderboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066C22D0F70B0075B033 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -146,10 +148,9 @@
 		CAB3871A22D1906D00349B1F /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				CAB3871F22D2254000349B1F /* Action.swift */,
-				CAB3871B22D1907A00349B1F /* ViewAction.swift */,
-				CAB3871D22D224A100349B1F /* ViewModel.swift */,
+				CABA3EAB22D4B81F00960758 /* MVVM */,
 				CABA3EA922D4B4DB00960758 /* FTDViewController.swift */,
+				CABA3EAC22D4B83D00960758 /* ImageLoader.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -160,6 +161,16 @@
 				CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CABA3EAB22D4B81F00960758 /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				CAB3871F22D2254000349B1F /* Action.swift */,
+				CAB3871B22D1907A00349B1F /* ViewAction.swift */,
+				CAB3871D22D224A100349B1F /* ViewModel.swift */,
+			);
+			path = MVVM;
 			sourceTree = "<group>";
 		};
 		CABA3EB222D58D8B00960758 /* UX */ = {
@@ -372,6 +383,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CABA3EAD22D4B83D00960758 /* ImageLoader.swift in Sources */,
 				CABA3EB122D58D8700960758 /* Colors.swift in Sources */,
 				CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */,
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
