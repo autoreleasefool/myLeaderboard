@@ -17,6 +17,7 @@ enum GameListAction: BaseAction {
 
 enum GameListViewAction: BaseViewAction {
 	case initialize
+	case reload
 	case selectGame(Game)
 	case addGame
 }
@@ -42,7 +43,7 @@ class GameListViewModel: ViewModel {
 		switch viewAction {
 		case .selectGame(let game):
 			handleAction(.gameSelected(game))
-		case .initialize:
+		case .initialize, .reload:
 			loadGameList()
 		case .addGame:
 			handleAction(.addGame)

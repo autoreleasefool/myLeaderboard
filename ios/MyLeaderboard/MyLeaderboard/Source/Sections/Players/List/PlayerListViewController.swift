@@ -15,6 +15,7 @@ class PlayerListViewController: FTDViewController {
 	init(api: LeaderboardAPI) {
 		self.api = api
 		super.init()
+		refreshable = true
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -27,6 +28,7 @@ class PlayerListViewController: FTDViewController {
 			guard let self = self else { return }
 			switch action {
 			case .playersUpdated:
+				self.finishRefresh()
 				self.render()
 			case .error(let error):
 				self.presentError(error)
@@ -59,6 +61,10 @@ class PlayerListViewController: FTDViewController {
 
 	private func presentError(_ error: Error) {
 		print("Error: \(error)")
+	}
+
+	override func refresh() {
+		viewModel.postViewAction(.reload)
 	}
 }
 

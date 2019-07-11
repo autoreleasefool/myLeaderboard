@@ -12,9 +12,21 @@ import FunctionalTableData
 class FTDViewController: UIViewController {
 	let tableView: UITableView = UITableView()
 	let tableData: FunctionalTableData = FunctionalTableData()
+	private let refreshControl = UIRefreshControl()
+
+	var refreshable: Bool = false {
+		didSet {
+			if refreshable {
+				tableView.refreshControl = refreshControl
+			} else {
+				tableView.refreshControl = nil
+			}
+		}
+	}
 
 	init() {
 		super.init(nibName: nil, bundle: nil)
+		refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -43,5 +55,15 @@ class FTDViewController: UIViewController {
 
 	private func setupTableData() {
 		tableData.tableView = tableView
+	}
+
+	@objc private func didPullToRefresh(_ sender: Any) {
+		refresh()
+	}
+
+	func refresh() { }
+
+	func finishRefresh() {
+		refreshControl.endRefreshing()
 	}
 }

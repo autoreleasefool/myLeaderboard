@@ -15,6 +15,7 @@ enum PlayerListAction: BaseAction {
 
 enum PlayerListViewAction: BaseViewAction {
 	case initialize
+	case reload
 }
 
 class PlayerListViewModel: ViewModel {
@@ -36,7 +37,7 @@ class PlayerListViewModel: ViewModel {
 
 	func postViewAction(_ viewAction: PlayerListViewAction) {
 		switch viewAction {
-		case .initialize:
+		case .initialize, .reload:
 			loadPlayerList()
 		}
 	}

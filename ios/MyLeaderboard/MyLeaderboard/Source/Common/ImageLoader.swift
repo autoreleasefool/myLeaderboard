@@ -23,7 +23,6 @@ class ExpiringItem {
 	}
 }
 
-
 enum ImageLoaderError: Error {
 	case invalidURL
 	case invalidData

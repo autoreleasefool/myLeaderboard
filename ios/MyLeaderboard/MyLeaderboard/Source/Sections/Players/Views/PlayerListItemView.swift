@@ -40,8 +40,6 @@ class PlayerListItemView: UIView {
 		addSubview(username)
 		addSubview(displayName)
 
-
-
 		NSLayoutConstraint.activate([
 			playerImage.leadingAnchor.constraint(equalTo: leadingAnchor),
 			playerImage.topAnchor.constraint(equalTo: topAnchor),
