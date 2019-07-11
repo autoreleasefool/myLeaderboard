@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8822D6CED1003347AF /* TextInputCell.swift */; };
+		CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8A22D6CF0C003347AF /* ControlText.swift */; };
+		CA4BAB8D22D6DBD5003347AF /* ButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8C22D6DBD5003347AF /* ButtonState.swift */; };
+		CA4BAB9022D6DC2F003347AF /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8F22D6DC2F003347AF /* UIControl+Extensions.swift */; };
 		CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3870F22D186CE00349B1F /* GameListViewController.swift */; };
 		CAB3871422D18C5700349B1F /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871322D18C5700349B1F /* Game.swift */; };
 		CAB3871622D18DEB00349B1F /* GameListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871522D18DEB00349B1F /* GameListItemView.swift */; };
@@ -47,6 +51,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CA4BAB8822D6CED1003347AF /* TextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputCell.swift; sourceTree = "<group>"; };
+		CA4BAB8A22D6CF0C003347AF /* ControlText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlText.swift; sourceTree = "<group>"; };
+		CA4BAB8C22D6DBD5003347AF /* ButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonState.swift; sourceTree = "<group>"; };
+		CA4BAB8F22D6DC2F003347AF /* UIControl+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		CAB3870F22D186CE00349B1F /* GameListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewController.swift; sourceTree = "<group>"; };
 		CAB3871322D18C5700349B1F /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		CAB3871522D18DEB00349B1F /* GameListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListItemView.swift; sourceTree = "<group>"; };
@@ -101,6 +109,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA4BAB8722D6CEBC003347AF /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				CA4BAB8C22D6DBD5003347AF /* ButtonState.swift */,
+				CA4BAB8A22D6CF0C003347AF /* ControlText.swift */,
+				CA4BAB8822D6CED1003347AF /* TextInputCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		CA4BAB8E22D6DC1A003347AF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CA4BAB8F22D6DC2F003347AF /* UIControl+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		CA63D23622D36B7100B7A51F /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +174,7 @@
 		CAB3871A22D1906D00349B1F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CA4BAB8722D6CEBC003347AF /* Cells */,
 				CABA3EAB22D4B81F00960758 /* MVVM */,
 				CABA3EA922D4B4DB00960758 /* FTDViewController.swift */,
 				CABA3EAC22D4B83D00960758 /* ImageLoader.swift */,
@@ -237,6 +264,7 @@
 				CA63D23622D36B7100B7A51F /* API */,
 				CAB3871A22D1906D00349B1F /* Common */,
 				CAB3870E22D17F1B00349B1F /* Games */,
+				CA4BAB8E22D6DC1A003347AF /* Extensions */,
 				CABA3EB222D58D8B00960758 /* UX */,
 				CAC9066C22D0F70B0075B033 /* AppDelegate.swift */,
 				CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */,
@@ -384,9 +412,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CABA3EAD22D4B83D00960758 /* ImageLoader.swift in Sources */,
+				CA4BAB8D22D6DBD5003347AF /* ButtonState.swift in Sources */,
 				CABA3EB122D58D8700960758 /* Colors.swift in Sources */,
+				CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */,
 				CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */,
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
+				CA4BAB9022D6DC2F003347AF /* UIControl+Extensions.swift in Sources */,
+				CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */,
 				CABA3EA422D42DC300960758 /* GameListBuilder.swift in Sources */,
 				CAB3872022D2254000349B1F /* Action.swift in Sources */,
 				CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */,
