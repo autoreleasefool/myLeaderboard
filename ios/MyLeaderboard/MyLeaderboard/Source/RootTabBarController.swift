@@ -24,6 +24,12 @@ class RootTabBarController: UITabBarController {
 				image: UIImage(named: "Tabs/Games")!,
 				selectedImage: UIImage(named: "Tabs/Games-selected")!
 			),
+			TabItem(
+				title: "Players",
+				controller: UINavigationController(rootViewController: PlayerListViewController(api: api)),
+				image: UIImage(named: "Tabs/Players")!,
+				selectedImage: UIImage(named: "Tabs/Players-selected")!
+			),
 		]
 	}()
 

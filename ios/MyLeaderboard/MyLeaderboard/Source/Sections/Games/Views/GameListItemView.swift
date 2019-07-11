@@ -48,7 +48,7 @@ struct GameListItemState: Equatable {
 
 	static func updateView(_ view: GameListItemView, state: GameListItemState?) {
 		guard let state = state else {
-			view.prepareForReuse();
+			view.prepareForReuse()
 			return
 		}
 
