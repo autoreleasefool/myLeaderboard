@@ -12,11 +12,11 @@ public protocol UIControlClosureAction {}
 extension UIControl: UIControlClosureAction {}
 
 /// An action object to be associated with the control.
-public final class Action<T: UIControl>: NSObject {
+public final class ControlAction<T: UIControl>: NSObject {
 	let events: UIControl.Event
 	let action: (_: T) -> Void
 
-	/// Initializes a new Action instance with corresponding events and action to execute.
+	/// Initializes a new ControlAction instance with corresponding events and action to execute.
 	///
 	/// - Parameters:
 	///   - events: The control-specific events for which the action method is called.
@@ -40,21 +40,21 @@ public extension UIControlClosureAction where Self: UIControl {
 	///   - action: The action that will be executed when the control fires a matching UIControlEvents value.
 	/// - Note: Calling this will remove all existing actions
 	func setAction(for events: UIControl.Event, action: @escaping (_: Self) -> Void) {
-		setActions([Action<Self>(events: events, action: action)])
+		setActions([ControlAction<Self>(events: events, action: action)])
 	}
 
 	/// Adds a series of actions to be executed when a corresponding control event is triggered.
 	///
 	/// - Parameter actions: The set of different actions to add to the control.
 	/// - Note: Calling this will remove all existing actions. Passing an empty array will remove all and not add any new ones.
-	func setActions(_ actions: [Action<Self>]) {
-		if let oldActions = self.actions as? [Action<Self>] {
+	func setActions(_ actions: [ControlAction<Self>]) {
+		if let oldActions = self.actions as? [ControlAction<Self>] {
 			oldActions.forEach {
-				removeTarget($0, action: #selector(Action<Self>.performAction(sender:)), for: $0.events)
+				removeTarget($0, action: #selector(ControlAction<Self>.performAction(sender:)), for: $0.events)
 			}
 		}
 		actions.forEach {
-			addTarget($0, action: #selector(Action<Self>.performAction(sender:)), for: $0.events)
+			addTarget($0, action: #selector(ControlAction<Self>.performAction(sender:)), for: $0.events)
 		}
 		self.actions = actions
 	}
@@ -62,8 +62,8 @@ public extension UIControlClosureAction where Self: UIControl {
 	/// Appends an action to series of existing actions
 	///
 	/// - Parameter actions: The action to add
-	func addAction(_ action: Action<Self>) {
-		addTarget(action, action: #selector(Action<Self>.performAction(sender:)), for: action.events)
+	func addAction(_ action: ControlAction<Self>) {
+		addTarget(action, action: #selector(ControlAction<Self>.performAction(sender:)), for: action.events)
 		actions.append(action)
 	}
 }

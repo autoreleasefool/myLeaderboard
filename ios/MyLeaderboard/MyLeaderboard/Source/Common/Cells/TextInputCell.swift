@@ -11,16 +11,10 @@ import FunctionalTableData
 
 typealias TextInputCell = HostCell<TextInputCellView, TextInputCellState, LayoutMarginsTableItemLayout>
 
-class TextInputCellView: UITextField, UITextFieldDelegate {
-	fileprivate var onUpdate: ((String?) -> Void)? = nil
-
+class TextInputCellView: UITextField {
 	fileprivate func prepareForReuse() {
-		self.text = nil
-	}
-
-	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-		onUpdate?(self.text)
-		return true
+		text = nil
+		setActions([])
 	}
 }
 
@@ -37,7 +31,11 @@ struct TextInputCellState: Equatable {
 
 		view.text = state.text
 		view.placeholder = state.placeholder
-		view.onUpdate = state.onUpdate
+		view.setActions([
+			ControlAction(events: .editingChanged) { sender in
+				guard let text = sender.text else { return }
+				state.onUpdate(text)
+			}])
 	}
 
 	static func ==(lhs: TextInputCellState, rhs: TextInputCellState) -> Bool {
