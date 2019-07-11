@@ -18,9 +18,7 @@ enum LeaderboardAPIError: LocalizedError {
 typealias LeaderboardAPIResult<Success> = Result<Success, LeaderboardAPIError>
 
 class LeaderboardAPI {
-	private static var baseURL: URL {
-		return URL(string: "")!
-	}
+	private static var baseURL = URL(string: "")!
 
 	// MARK: - Players
 
