@@ -22,6 +22,8 @@ class LeaderboardAPI {
 		return URL(string: "")!
 	}
 
+	// MARK: - Games
+
 	func games(completion: @escaping (LeaderboardAPIResult<[Game]>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<[Game]>) {
 			DispatchQueue.main.async {
@@ -42,9 +44,8 @@ class LeaderboardAPI {
 			}
 		}
 
-		let encoder = JSONEncoder()
-		let body: [String: String] = ["name": name]
-		guard let bodyData = try?encoder.encode(body) else {
+		let body = "{\"name\":\"\(name)\"}"
+		guard let bodyData = body.data(using: .utf8) else {
 			finishRequest(.failure(.invalidData))
 			return
 		}
@@ -53,7 +54,8 @@ class LeaderboardAPI {
 		var request = URLRequest(url: url)
 		request.httpMethod = "POST"
 		request.httpBody = bodyData
-		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+		URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
 			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
 		}.resume()
 	}
