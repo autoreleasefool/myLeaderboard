@@ -12,6 +12,8 @@
 		CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8A22D6CF0C003347AF /* ControlText.swift */; };
 		CA4BAB8D22D6DBD5003347AF /* ButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8C22D6DBD5003347AF /* ButtonState.swift */; };
 		CA4BAB9022D6DC2F003347AF /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8F22D6DC2F003347AF /* UIControl+Extensions.swift */; };
+		CA4BAB9222D6E160003347AF /* GameNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9122D6E160003347AF /* GameNavigationController.swift */; };
+		CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9322D76016003347AF /* UIViewController+Extensions.swift */; };
 		CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220222D592AA00479A0B /* CreateGameViewController.swift */; };
 		CA96220522D592B400479A0B /* CreateGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220422D592B400479A0B /* CreateGameViewModel.swift */; };
 		CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3870F22D186CE00349B1F /* GameListViewController.swift */; };
@@ -59,6 +61,8 @@
 		CA4BAB8A22D6CF0C003347AF /* ControlText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlText.swift; sourceTree = "<group>"; };
 		CA4BAB8C22D6DBD5003347AF /* ButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonState.swift; sourceTree = "<group>"; };
 		CA4BAB8F22D6DC2F003347AF /* UIControl+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
+		CA4BAB9122D6E160003347AF /* GameNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNavigationController.swift; sourceTree = "<group>"; };
+		CA4BAB9322D76016003347AF /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		CA96220222D592AA00479A0B /* CreateGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameViewController.swift; sourceTree = "<group>"; };
 		CA96220422D592B400479A0B /* CreateGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameViewModel.swift; sourceTree = "<group>"; };
 		CAB3870F22D186CE00349B1F /* GameListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				CA4BAB8F22D6DC2F003347AF /* UIControl+Extensions.swift */,
+				CA4BAB9322D76016003347AF /* UIViewController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -158,6 +163,7 @@
 				CAB3871722D18E1000349B1F /* List */,
 				CAB3871122D1886E00349B1F /* Models */,
 				CAB3871222D188C800349B1F /* Views */,
+				CA4BAB9122D6E160003347AF /* GameNavigationController.swift */,
 			);
 			path = Games;
 			sourceTree = "<group>";
@@ -432,7 +438,9 @@
 				CA4BAB8622D6BE69003347AF /* CreateGameBuilder.swift in Sources */,
 				CA4BAB8D22D6DBD5003347AF /* ButtonState.swift in Sources */,
 				CABA3EB122D58D8700960758 /* Colors.swift in Sources */,
+				CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */,
 				CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */,
+				CA4BAB9222D6E160003347AF /* GameNavigationController.swift in Sources */,
 				CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */,
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
 				CA4BAB9022D6DC2F003347AF /* UIControl+Extensions.swift in Sources */,

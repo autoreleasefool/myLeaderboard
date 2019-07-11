@@ -20,7 +20,7 @@ class RootTabBarController: UITabBarController {
 		return [
 			TabItem(
 				title: "Games",
-				controller: GameListViewController(api: api),
+				controller: UINavigationController(rootViewController: GameListViewController(api: api)),
 				image: UIImage(named: "Tabs/Games")!,
 				selectedImage: UIImage(named: "Tabs/Games-selected")!
 			),
