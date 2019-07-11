@@ -6,7 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class CreateGameViewController: FTDViewController {
 	private var api: LeaderboardAPI
@@ -25,17 +25,38 @@ class CreateGameViewController: FTDViewController {
 		super.viewDidLoad()
 		viewModel = CreateGameViewModel(api: api) { [weak self] action in
 			switch action {
+			case .nameUpdated(_):
+				self?.updateDoneButton()
 			case .gameCreated(_):
 				self?.dismiss(animated: true)
 			case .error(let error):
 				self?.presentError(error)
 			}
 		}
+
+		self.title = "Create Game"
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
+
+		render()
 	}
 
 	private func render() {
 		let sections = CreateGameBuilder.sections(gameName: viewModel.gameName, actionable: self)
-		return tableData.renderAndDiff(sections)
+		tableData.renderAndDiff(sections)
+		updateDoneButton()
+	}
+
+	private func updateDoneButton() {
+		self.navigationItem.rightBarButtonItem?.isEnabled = viewModel.gameName.isEmpty == false
+	}
+
+	@objc private func cancel() {
+		dismiss(animated: true)
+	}
+
+	@objc private func submit() {
+		viewModel.postViewAction(.submit)
 	}
 
 	private func presentError(_ error: Error) {
@@ -46,9 +67,5 @@ class CreateGameViewController: FTDViewController {
 extension CreateGameViewController: CreateGameActionable {
 	func updatedGameName(name: String) {
 		viewModel.postViewAction(.updateName(name))
-	}
-
-	func submitGame() {
-		viewModel.postViewAction(.submit)
 	}
 }

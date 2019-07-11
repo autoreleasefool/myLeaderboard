@@ -49,8 +49,12 @@ class GameListViewController: FTDViewController {
 		tableData.renderAndDiff(sections)
 	}
 
+	@objc private func addNewGame() {
+		viewModel.postViewAction(.addGame)
+	}
+
 	private func showCreateGame() {
-		present(CreateGameViewController(api: api), animated: true)
+		presentModal(CreateGameViewController(api: api))
 	}
 
 	private func showGameDetails(for game: Game) {

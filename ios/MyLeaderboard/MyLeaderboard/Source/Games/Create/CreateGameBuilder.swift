@@ -10,7 +10,6 @@ import FunctionalTableData
 
 protocol CreateGameActionable: AnyObject {
 	func updatedGameName(name: String)
-	func submitGame()
 }
 
 struct CreateGameBuilder {
@@ -27,16 +26,6 @@ struct CreateGameBuilder {
 					}
 				),
 				cellUpdater: TextInputCellState.updateView
-			),
-			ButtonCell(
-				key: "submit",
-				state: ButtonState(
-					title: "Submit",
-					action: { [weak actionable] _ in
-						actionable?.submitGame()
-					}
-				),
-				cellUpdater: ButtonState.updateView
 			),
 		]
 

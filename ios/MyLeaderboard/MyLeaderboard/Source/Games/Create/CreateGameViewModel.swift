@@ -9,6 +9,7 @@
 import UIKit
 
 enum CreateGameAction {
+	case nameUpdated(String)
 	case gameCreated(Game)
 	case error(Error)
 }
@@ -25,7 +26,11 @@ class CreateGameViewModel {
 	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	private(set) var gameName: String = ""
+	private(set) var gameName: String = "" {
+		didSet {
+			handleAction(.nameUpdated(gameName))
+		}
+	}
 
 	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
 		self.api = api
