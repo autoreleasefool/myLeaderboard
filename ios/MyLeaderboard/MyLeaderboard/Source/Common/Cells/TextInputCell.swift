@@ -39,7 +39,7 @@ struct TextInputCellState: Equatable {
 			}])
 	}
 
-	static func ==(lhs: TextInputCellState, rhs: TextInputCellState) -> Bool {
+	static func == (lhs: TextInputCellState, rhs: TextInputCellState) -> Bool {
 		return lhs.text == rhs.text
 	}
 }

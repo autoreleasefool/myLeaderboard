@@ -28,7 +28,7 @@ public enum ControlText: Encodable {
 }
 
 extension ControlText: Equatable {
-	public static func ==(lhs: ControlText, rhs: ControlText) -> Bool {
+	public static func == (lhs: ControlText, rhs: ControlText) -> Bool {
 		if case .plain(let value1) = lhs, case .plain(let value2) = rhs {
 			return value1 == value2
 		} else if case .attributed(let value1) = lhs, case .attributed(let value2) = rhs {

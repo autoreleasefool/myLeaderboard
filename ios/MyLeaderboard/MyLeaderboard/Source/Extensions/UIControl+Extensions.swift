@@ -28,7 +28,8 @@ public final class ControlAction<T: UIControl>: NSObject {
 	}
 
 	@objc dynamic fileprivate func performAction(sender: Any) {
-		action(sender as! T)
+		guard let sender = sender as? T else { return }
+		action(sender)
 	}
 }
 
@@ -73,8 +74,8 @@ private extension UIControl {
 
 	var actions: [AnyObject] {
 		get {
-			let a = objc_getAssociatedObject(self, &UIControl.controlActionAssociatedHandle)
-			return a as? [AnyObject] ?? []
+			let actions = objc_getAssociatedObject(self, &UIControl.controlActionAssociatedHandle)
+			return actions as? [AnyObject] ?? []
 		}
 		set {
 			objc_setAssociatedObject(self, &UIControl.controlActionAssociatedHandle, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)

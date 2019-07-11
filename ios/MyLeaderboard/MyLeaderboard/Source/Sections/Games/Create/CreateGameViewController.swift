@@ -25,9 +25,9 @@ class CreateGameViewController: FTDViewController {
 		super.viewDidLoad()
 		viewModel = CreateGameViewModel(api: api) { [weak self] action in
 			switch action {
-			case .nameUpdated(_):
+			case .nameUpdated:
 				self?.updateDoneButton()
-			case .gameCreated(_):
+			case .gameCreated:
 				self?.dismiss(animated: true)
 			case .error(let error):
 				self?.presentError(error)

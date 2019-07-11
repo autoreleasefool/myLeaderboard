@@ -44,7 +44,6 @@ class CreateGameViewModel {
 			self.gameName = name
 		case .submit:
 			createGame(withName: gameName)
-			break
 		}
 	}
 

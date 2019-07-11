@@ -39,7 +39,7 @@ public struct ButtonState: Equatable {
 		view.setAction(for: .touchUpInside, action: state.action)
 	}
 
-	public static func ==(lhs: ButtonState, rhs: ButtonState) -> Bool {
+	public static func == (lhs: ButtonState, rhs: ButtonState) -> Bool {
 		return lhs.title == rhs.title && lhs.isEnabled == rhs.isEnabled && lhs.alignment == rhs.alignment
 	}
 }
