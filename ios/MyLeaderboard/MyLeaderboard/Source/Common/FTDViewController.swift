@@ -26,12 +26,12 @@ class FTDViewController: UIViewController {
 		setupTableView()
 		setupTableData()
 
-		view.backgroundColor = .background
+		view.backgroundColor = .primary
 	}
 
 	private func setupTableView() {
 		tableView.translatesAutoresizingMaskIntoConstraints = false
-		tableView.backgroundColor = .background
+		tableView.backgroundColor = .primary
 		view.addSubview(tableView)
 		NSLayoutConstraint.activate([
 			tableView.topAnchor.constraint(equalTo: view.topAnchor),

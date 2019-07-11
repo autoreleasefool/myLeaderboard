@@ -30,7 +30,8 @@ struct TextInputCellState: Equatable {
 		}
 
 		view.text = state.text
-		view.placeholder = state.placeholder
+		let placeholder = NSAttributedString(string: state.placeholder, attributes: [NSAttributedString.Key.foregroundColor: UIColor.textSecondary])
+		view.attributedPlaceholder = placeholder
 		view.setActions([
 			ControlAction(events: .editingChanged) { sender in
 				guard let text = sender.text else { return }
