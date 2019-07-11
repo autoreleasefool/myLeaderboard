@@ -75,7 +75,7 @@ struct PlayerListItemState: Equatable {
 		view.displayName.text = state.player.displayName
 		view.username.text = state.player.username
 
-		ImageLoader.shared.fetch(string: state.player.avatar) { result in
+		view.playerImage.image = ImageLoader.shared.fetch(string: state.player.avatar) { result in
 			if case .success(let image) = result {
 				view.playerImage.image = image
 			}

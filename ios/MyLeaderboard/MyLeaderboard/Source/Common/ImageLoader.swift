@@ -45,7 +45,8 @@ class ImageLoader {
 	private let queryLock = NSLock()
 	private var queryCompletionQueue: [String: [Completion]] = [:]
 
-	func fetch(string: String, completion: @escaping Completion) {
+	@discardableResult
+	func fetch(string: String, completion: @escaping Completion) -> UIImage? {
 		func finishRequest(_ result: ImageLoaderResult) {
 			DispatchQueue.main.async {
 				completion(result)
@@ -60,9 +61,12 @@ class ImageLoader {
 
 			self.fetch(url: url, completion: completion)
 		}
+
+		return cached(string: string)
 	}
 
-	func fetch(url: URL, completion: @escaping Completion) {
+	@discardableResult
+	func fetch(url: URL, completion: @escaping Completion) -> UIImage? {
 		func finishRequest(_ result: ImageLoaderResult) {
 			DispatchQueue.main.async {
 				completion(result)
@@ -72,6 +76,18 @@ class ImageLoader {
 		DispatchQueue.global(qos: .background).async { [unowned self] in
 			self.performFetch(for: url, completion: finishRequest)
 		}
+
+		return cached(url: url)
+	}
+
+	func cached(string: String) -> UIImage? {
+		guard let url = URL(string: string) else { return nil }
+		return cached(url: url)
+	}
+
+	func cached(url: URL) -> UIImage? {
+		guard let data = retrieveFromCache(url: url) else { return nil }
+		return UIImage(data: data)
 	}
 
 	private func performFetch(for url: URL, completion: @escaping Completion) {
