@@ -11,12 +11,14 @@ import Foundation
 enum GameListAction: BaseAction {
 	case gamesUpdated([Game])
 	case gameSelected(Game)
+	case addGame
 	case error(Error)
 }
 
 enum GameListViewAction: BaseViewAction {
 	case initialize
 	case selectGame(Game)
+	case addGame
 }
 
 class GameListViewModel: ViewModel {
@@ -42,6 +44,8 @@ class GameListViewModel: ViewModel {
 			handleAction(.gameSelected(game))
 		case .initialize:
 			loadGameList()
+		case .addGame:
+			handleAction(.addGame)
 		}
 	}
 

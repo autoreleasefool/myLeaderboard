@@ -30,6 +30,8 @@ class GameListViewController: FTDViewController {
 				self.render()
 			case .gameSelected(let game):
 				self.showGameDetails(for: game)
+			case .addGame:
+				self.showCreateGame()
 			case .error(let error):
 				self.presentError(error)
 			}
@@ -42,6 +44,10 @@ class GameListViewController: FTDViewController {
 	private func render() {
 		let sections = GameListBuilder.sections(games: viewModel.games, actionable: self)
 		tableData.renderAndDiff(sections)
+	}
+
+	private func showCreateGame() {
+		present(CreateGameViewController(api: api), animated: true)
 	}
 
 	private func showGameDetails(for game: Game) {
