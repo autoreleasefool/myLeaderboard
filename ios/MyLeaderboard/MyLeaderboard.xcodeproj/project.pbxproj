@@ -140,6 +140,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		CA4BAB9722D7670B003347AF /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				CAB3870E22D17F1B00349B1F /* Games */,
+			);
+			path = Sections;
+			sourceTree = "<group>";
+		};
 		CA63D23622D36B7100B7A51F /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,8 +297,8 @@
 			children = (
 				CA63D23622D36B7100B7A51F /* API */,
 				CAB3871A22D1906D00349B1F /* Common */,
-				CAB3870E22D17F1B00349B1F /* Games */,
 				CA4BAB8E22D6DC1A003347AF /* Extensions */,
+				CA4BAB9722D7670B003347AF /* Sections */,
 				CABA3EB222D58D8B00960758 /* UX */,
 				CAC9066C22D0F70B0075B033 /* AppDelegate.swift */,
 				CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */,
