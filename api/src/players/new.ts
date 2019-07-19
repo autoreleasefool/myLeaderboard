@@ -17,7 +17,7 @@ export default async function add(req: Request): Promise<Player> {
         playerUsername = playerUsername.substr(1);
     }
 
-    const filename = `data/players.json`;
+    const filename = `db/players.json`;
     const playerListBlob = await Octo.getInstance().blob(filename);
     const playerList: Array<Player> = JSON.parse(playerListBlob.content);
 
@@ -42,7 +42,7 @@ function createPlayer(displayName: string, username: string, existingPlayers: Ar
         }
 
         if (existingPlayer.username === username) {
-            throw Error(`A player with username "${username}" already exists.`);
+            throw new Error(`A player with username "${username}" already exists.`);
         }
     }
 

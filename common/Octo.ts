@@ -74,7 +74,7 @@ class Octo {
 
     // Users
 
-    public async players(includeAvatars: boolean = true): Promise<Array<Player>> {
+    public async players(includeAvatars: boolean): Promise<Array<Player>> {
         const contents = await this.contents(`db/players.json`);
         const playerList: Array<Player> = JSON.parse(contents);
 
@@ -86,8 +86,8 @@ class Octo {
 
             const gitHubUsers = await Promise.all(gitHubDetailsPromises);
 
-            for (let player of playerList) {
-                for (let user of gitHubUsers) {
+            for (const player of playerList) {
+                for (const user of gitHubUsers) {
                     if (user.login === player.username) {
                         player.avatar = user.avatarUrl;
                     }
