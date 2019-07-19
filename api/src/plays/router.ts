@@ -12,5 +12,5 @@ router.post('/record', (req, res, next) => {
 });
 
 export default function applyRouter(app: express.Express) {
-    app.use('/standings', router);
+    app.use('/plays', router);
 }

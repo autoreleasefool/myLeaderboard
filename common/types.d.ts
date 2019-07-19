@@ -1,21 +1,23 @@
 declare module 'octokat';
 declare module 'dotenv';
 
+export interface Identifiable {
+    id: number;
+}
+
 // Games
 
-export interface Game {
+export interface Game extends Identifiable {
     image?: string;
-    id: number;
     name: string;
     hasScores: boolean;
 }
 
 // Players
 
-export interface Player {
+export interface Player extends Identifiable {
     avatar?: string;
     displayName: string;
-    id: number;
     username: string;
 }
 
@@ -26,8 +28,7 @@ export interface GitHubUser {
 
 // Plays
 
-export interface Play {
-    id: number;
+export interface Play extends Identifiable {
     game: number;
     playedOn: string;
     players: Array<number>;
