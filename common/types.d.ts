@@ -1,15 +1,21 @@
 declare module 'octokat';
 declare module 'dotenv';
 
-// Players
+// Games
 
-export interface BasicPlayer {
-    displayName: string;
-    username: string;
+export interface Game {
+    id: number;
+    name: string;
+    hasScores: boolean;
 }
 
-export interface BasicGamePlayer extends BasicPlayer {
-    lastPlayed: string;
+// Players
+
+export interface Player {
+    avatar?: string;
+    displayName: string;
+    id: number;
+    username: string;
 }
 
 export interface GitHubUser {
@@ -17,14 +23,15 @@ export interface GitHubUser {
     avatarUrl: string;
 }
 
-export interface GenericPlayer {
-    avatar: string;
-    displayName: string;
-    username: string;
-}
+// Plays
 
-export interface Player extends GenericPlayer {
-    lastPlayed: Date;
+export interface Play {
+    id: number;
+    game: number;
+    playedOn: string;
+    players: Array<number>;
+    winners: Array<number>;
+    scores?: Array<number>;
 }
 
 // Standings
@@ -35,15 +42,4 @@ export interface Record {
     ties: number;
     isBest?: boolean;
     isWorst?: boolean;
-}
-
-export interface VsRecord {
-    [key: string]: Record;
-}
-
-export interface GameStandings {
-    players: Array<BasicGamePlayer>;
-    records: {
-        [key: string]: VsRecord;
-    };
 }

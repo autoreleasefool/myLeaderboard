@@ -4,8 +4,7 @@
 import * as Octokat from 'octokat';
 // @ts-ignore: Common module in api/dashboard
 import { base64decode, base64encode } from '../common/Base64';
-import { allGames } from './Game';
-import { BasicPlayer, BasicGamePlayer, GameStandings, GitHubUser, GenericPlayer } from './types';
+import { GitHubUser, Player, Game, Play } from './types';
 
 interface Blob {
     content: string;
@@ -75,49 +74,28 @@ class Octo {
 
     // Users
 
-    public async players(forGame: string | undefined = undefined): Promise<Array<GenericPlayer>> {
-        const playerUsernames: Set<string> = new Set();
-        const basicPlayers: Array<BasicPlayer> = [];
+    public async players(includeAvatars: boolean = true): Promise<Array<Player>> {
+        const contents = await this.contents(`db/players.json`);
+        const playerList: Array<Player> = JSON.parse(contents);
 
-        let games: Array<string>;
-        if (forGame == null) {
-            games = await allGames();
-        } else {
-            games = [forGame];
-        }
+        if (includeAvatars) {
+            const gitHubDetailsPromises: Array<Promise<GitHubUser>> = [];
+            for (const player of playerList) {
+                gitHubDetailsPromises.push(this.user(player.username));
+            }
 
-        for (const game of games) {
-            const gamePlayers = await this.playersForGame(game);
-            for (const gamePlayer of gamePlayers) {
-                if (playerUsernames.has(gamePlayer.username) === false) {
-                    playerUsernames.add(gamePlayer.username);
-                    basicPlayers.push(gamePlayer);
+            const gitHubUsers = await Promise.all(gitHubDetailsPromises);
+
+            for (let player of playerList) {
+                for (let user of gitHubUsers) {
+                    if (user.login === player.username) {
+                        player.avatar = user.avatarUrl;
+                    }
                 }
             }
         }
 
-        const promises: Array<Promise<GitHubUser>> = [];
-        for (const basicPlayer of basicPlayers) {
-            promises.push(this.user(basicPlayer.username));
-        }
-
-        const users = await Promise.all(promises);
-
-        const players: Array<GenericPlayer> = [];
-        for (let i = 0; i < basicPlayers.length; i++) {
-            players.push({
-                avatar: users[i].avatarUrl,
-                displayName: basicPlayers[i].displayName,
-                username: basicPlayers[i].username,
-            });
-        }
-        return players;
-    }
-
-    private async playersForGame(game: string): Promise<Array<BasicGamePlayer>> {
-        const contents = await this.contents(`data/${game}.json`);
-        const standings: GameStandings = JSON.parse(contents);
-        return standings.players;
+        return playerList;
     }
 
     public async user(name: string): Promise<GitHubUser> {
@@ -128,12 +106,23 @@ class Octo {
         return await this.octo.users(name).fetch();
     }
 
-    // Contents
+    // Games
 
-    public async dir(path: string): Promise<Array<Content>> {
-        const dirContents = await this.repo.contents(path).read({ ref: Octo.branch });
-        return dirContents.items;
+    public async games(): Promise<Array<Game>> {
+        const contents = await this.contents(`db/games.json`);
+        const gameList: Array<Game> = JSON.parse(contents);
+        return gameList;
     }
+
+    // Plays
+
+    public async plays(): Promise<Array<Play>> {
+        const contents = await this.contents(`db/plays.json`);
+        const playList: Array<Play> = JSON.parse(contents);
+        return playList;
+    }
+
+    // Contents
 
     public async contents(filename: string): Promise<string> {
         return await this.repo.contents(filename).read({ ref: Octo.branch });
