@@ -1,63 +1,54 @@
 import { Request } from 'express';
-import { allGames } from '../lib/Game';
-import Octo, { Writeable } from '../lib/Octo';
-import { GameStandings, VsRecord } from '../lib/types';
+import Octo from '../lib/Octo';
+import { Player } from '../lib/types';
 
-export default async function add(req: Request): Promise<void> {
-    const playerName = req.body.name;
-    let playerUsername = req.body.username;
+export default async function add(req: Request): Promise<Player> {
+    const playerName: string = req.body.name;
+    let playerUsername: string = req.body.username;
+
+    // Input validation
     if (playerName == null || playerName.length === 0) {
         throw new Error('Missing "name".');
     } else if (playerUsername == null || playerUsername.length === 0) {
         throw new Error('Missing "username".');
     }
 
-    const filesToWrite: Array<Writeable> = [];
-
-    if (playerUsername.charAt(0) !== '@') {
-        playerUsername = `@${playerUsername}`;
+    if (playerUsername.charAt(0) === '@') {
+        playerUsername = playerUsername.substr(1);
     }
 
-    const games = await allGames();
-    for (const game of games) {
-        try {
-            const gameStandings = await writeableGameStandingsWithNewPlayer(playerName, playerUsername, game);
-            filesToWrite.push(gameStandings);
-        } catch (error) {
-            throw error;
-            return;
-        }
-    }
+    const filename = `data/players.json`;
+    const playerListBlob = await Octo.getInstance().blob(filename);
+    const playerList: Array<Player> = JSON.parse(playerListBlob.content);
 
-    await Octo.getInstance().write(filesToWrite);
+    const newPlayer = createPlayer(playerName, playerUsername, playerList);
+    playerList.push(newPlayer);
+
+    await Octo.getInstance().write([{
+        content: JSON.stringify(playerList, undefined, 4),
+        message: `Adding player "${playerUsername}"`,
+        path: filename,
+        sha: playerListBlob.sha,
+    }]);
+
+    return newPlayer;
 }
 
-async function writeableGameStandingsWithNewPlayer(displayName: string, username: string, game: string): Promise<Writeable> {
-    const filename = `data/${game}.json`;
-    const gameStandingsBlob = await Octo.getInstance().blob(filename);
-    const gameStandings: GameStandings = JSON.parse(gameStandingsBlob.content);
-
-    const playerRecord: VsRecord = {};
-    for (const existingPlayer of gameStandings.players) {
-        if (existingPlayer.username === username) {
-            throw new Error(`Player "${existingPlayer.username}" already exists on ${game}`);
+function createPlayer(displayName: string, username: string, existingPlayers: Array<Player>): Player {
+    let maxId = 0;
+    for (const existingPlayer of existingPlayers) {
+        if (existingPlayer.id > maxId) {
+            maxId = existingPlayer.id;
         }
 
-        playerRecord[existingPlayer.username] = { wins: 0, losses: 0, ties: 0 };
-        gameStandings.records[existingPlayer.username][username] = { wins: 0, losses: 0, ties: 0 };
+        if (existingPlayer.username === username) {
+            throw Error(`A player with username "${username}" already exists.`);
+        }
     }
 
-    gameStandings.records[username] = playerRecord;
-    gameStandings.players.push({
-        displayName,
-        lastPlayed: new Date(0).toISOString(),
-        username,
-    });
-
     return {
-        content: JSON.stringify(gameStandings, undefined, 4),
-        message: `Adding player "${username}" to ${game}`,
-        path: filename,
-        sha: gameStandingsBlob.sha,
+        displayName,
+        id: maxId + 1,
+        username,
     };
 }

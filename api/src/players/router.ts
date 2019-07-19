@@ -5,15 +5,15 @@ import newPlayer from './new';
 const router = express.Router();
 
 router.post('/new', (req, res, next) => {
-    newPlayer(req).then(() => {
-        res.sendStatus(200);
+    newPlayer(req).then(player => {
+        res.json(player);
     }).catch(error => {
         next(error);
     });
 });
 
-router.get('/list', (_, res, next) => {
-    listPlayers().then(players => {
+router.get('/list', (req, res, next) => {
+    listPlayers(req).then(players => {
         res.json(players);
     }).catch(error => {
         next(error);
