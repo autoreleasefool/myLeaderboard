@@ -4,6 +4,7 @@ declare module 'dotenv';
 // Games
 
 export interface Game {
+    image?: string;
     id: number;
     name: string;
     hasScores: boolean;

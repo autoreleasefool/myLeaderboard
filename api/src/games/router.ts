@@ -5,8 +5,8 @@ import newGame from './new';
 const router = express.Router();
 
 router.post('/new', (req, res, next) => {
-    newGame(req).then(() => {
-        res.sendStatus(200);
+    newGame(req).then(game => {
+        res.json(game);
     }).catch(error => {
         next(error);
     });

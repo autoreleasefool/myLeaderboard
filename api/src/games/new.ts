@@ -1,41 +1,51 @@
 import { Request } from 'express';
 import Octo from '../lib/Octo';
-import { GameStandings, VsRecord } from '../lib/types';
+import { Game } from '../lib/types';
 
-export default async function add(req: Request): Promise<void> {
-    const gameName = req.body.name;
-    if (gameName == null || gameName.length === 0) {
+export default async function add(req: Request): Promise<Game> {
+    const name = req.body.name;
+    const hasScores = req.body.hasScores;
+
+    // Input validation
+    if (name == null || name.length === 0) {
         throw new Error('Missing "name".');
     }
-
-    const gameStandings: GameStandings = {
-        players: [],
-        records: {},
-    };
-
-    const allPlayers = await Octo.getInstance().players();
-
-    for (const player of allPlayers) {
-        gameStandings.players.push({
-            displayName: player.displayName,
-            lastPlayed: new Date(0).toISOString(),
-            username: player.username,
-        });
-
-        const playerRecord: VsRecord = {};
-        for (const opponent of allPlayers) {
-            if (player.username === opponent.username) {
-                continue;
-            }
-
-            playerRecord[opponent.username] = { wins: 0, losses: 0, ties: 0 };
-        }
-        gameStandings.records[player.username] = playerRecord;
+    if (hasScores == null || (hasScores !== true && hasScores !== false)) {
+        throw new Error('Missing "hasScores" or value is not boolean.');
     }
 
+    const filename = `db/games.json`;
+    const gameListBlob = await Octo.getInstance().blob(filename);
+    const gameList: Array<Game> = JSON.parse(gameListBlob.content);
+
+    const newGame = createGame(name, hasScores, gameList);
+    gameList.push(newGame);
+
     await Octo.getInstance().write([{
-        content: JSON.stringify(gameStandings, undefined, 4),
-        message: `Adding game ${gameName}`,
-        path: `data/${gameName}.json`,
+        content: JSON.stringify(gameList, undefined, 4),
+        message: `Adding game "${name}"`,
+        path: filename,
+        sha: gameListBlob.sha,
     }]);
+
+    return newGame;
+}
+
+function createGame(name: string, hasScores: boolean, existingGames: Array<Game>): Game {
+    let maxId = 0;
+    for (const existingGame of existingGames) {
+        if (existingGame.id > maxId) {
+            maxId = existingGame.id;
+        }
+
+        if (existingGame.name === name) {
+            throw new Error(`A game with name "${name}" already exists.`);
+        }
+    }
+
+    return {
+        hasScores,
+        id: maxId + 1,
+        name,
+    };
 }

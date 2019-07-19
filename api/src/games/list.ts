@@ -1,13 +1,12 @@
-import { allGames, Game } from '../lib/Game';
+
+import Octo from '../lib/Octo';
+import { Game } from '../lib/types';
 
 export default async function list(): Promise<Array<Game>> {
-    const gameNames = await allGames();
-    const games = gameNames.map(name => {
-        return {
-            imageURL: `${process.env.API_URL}/img/games/${name}.png`,
-            name,
-        };
-    });
-
-    return games;
+    // Input validation
+    const gameList = await Octo.getInstance().games();
+    for (const game of gameList) {
+        game.image = `${process.env.API_URL}/img/games/${game.name}.png`;
+    }
+    return gameList;
 }
