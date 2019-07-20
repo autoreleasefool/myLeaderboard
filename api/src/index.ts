@@ -54,13 +54,13 @@ function tokenExtraction(req: Request, _: Response, next: NextFunction) {
 
 import applyGamesRouter from './games/router';
 import applyPlayersRouter from './players/router';
-import applyStandingsRouter from './standings/router';
+import applyPlaysRouter from './plays/router';
 
 app.use(express.static('./static'));
 app.use(tokenExtraction);
 applyGamesRouter(app);
 applyPlayersRouter(app);
-applyStandingsRouter(app);
+applyPlaysRouter(app);
 app.use(errorHandler);
 
 app.listen(port, () => {
