@@ -38,6 +38,10 @@ export interface Play extends Identifiable {
 
 // Standings
 
+export interface VsRecord {
+    [key: string]: Record;
+}
+
 export interface Record {
     wins: number;
     losses: number;
