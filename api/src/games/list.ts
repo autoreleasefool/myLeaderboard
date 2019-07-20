@@ -1,4 +1,3 @@
-
 import Octo from '../lib/Octo';
 import { Game } from '../lib/types';
 

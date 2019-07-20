@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { findMaxId } from '../common/Database';
+import { findMaxId } from '../common/utils';
 import Octo from '../lib/Octo';
 import { Game, Play, Player } from '../lib/types';
 
