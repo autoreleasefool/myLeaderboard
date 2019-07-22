@@ -7,6 +7,12 @@ import { GameStandings } from '../lib/types';
 let cacheFreshness = new Date();
 const cachedStandings: Map<number, GameStandings> = new Map();
 
+enum GameResult {
+    WON,
+    LOST,
+    TIED,
+}
+
 export default async function standings(req: Request): Promise<GameStandings> {
     const gameId = parseInt(req.params.id, 10);
 
@@ -81,19 +87,31 @@ export default async function standings(req: Request): Promise<GameStandings> {
                     gameStandings[playerId].lastPlayed = play.playedOn;
                 }
 
+                let playerResult: GameResult;
+                if (play.winners.length < play.players.length) {
+                    if (play.winners.includes(playerId)) {
+                        playerResult = GameResult.WON;
+                        gameStandings[playerId].overallRecord.wins += 1;
+                    } else {
+                        gameStandings[playerId].overallRecord.losses += 1;
+                        playerResult = GameResult.LOST;
+                    }
+                } else {
+                    playerResult = GameResult.TIED;
+                    gameStandings[playerId].overallRecord.ties += 1;
+                }
+
                 play.players.filter(opponent => opponent !== playerId)
                     .forEach(opponent => {
                         if (gameStandings[playerId].record[opponent] == null) {
-                            gameStandings[playerId].record[opponent] = { wins: 0, losses: 0, ties: 0};
+                            gameStandings[playerId].record[opponent] = { wins: 0, losses: 0, ties: 0 };
                         }
 
-                        if (play.winners.length > play.players.length) {
-                            if (play.winners.includes(playerId)) {
-                                gameStandings[playerId].record[opponent].wins += 1;
-                            } else {
-                                gameStandings[playerId].record[opponent].losses += 1;
-                            }
-                        } else {
+                        if (playerResult === GameResult.WON) {
+                            gameStandings[playerId].record[opponent].wins += 1;
+                        } else if (playerResult === GameResult.LOST) {
+                            gameStandings[playerId].record[opponent].losses += 1;
+                        } else if (playerResult === GameResult.TIED) {
                             gameStandings[playerId].record[opponent].ties += 1;
                         }
                     });

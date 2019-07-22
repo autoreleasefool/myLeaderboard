@@ -69,4 +69,5 @@ export interface GameStandings {
 
 export interface PlayerStandings extends VsRecord {
     scoreStats?: ScoreStats;
+    overallRecord: Record;
 }
