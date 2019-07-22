@@ -9,8 +9,8 @@ let cacheFreshness = new Date();
 const cachedStandings: Map<number, PlayerStandings> = new Map();
 
 export default async function record(req: Request): Promise<PlayerStandings> {
-    const playerId = req.params.playerId;
-    const gameId = req.params.gameId;
+    const playerId = parseInt(req.params.playerId, 10);
+    const gameId = parseInt(req.params.gameId, 10);
 
     const dependencies = [Plays.getInstance()];
     const cachedValue = await checkCache(cachedStandings, playerId, cacheFreshness, dependencies);
