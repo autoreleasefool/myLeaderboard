@@ -1,10 +1,22 @@
 import { Request } from 'express';
+import { checkCache } from '../common/utils';
 import Games from '../db/games';
 import Plays from '../db/plays';
 import { GameStandings } from '../lib/types';
 
+let cacheFreshness = new Date();
+const cachedStandings: Map<number, GameStandings> = new Map();
+
 export default async function standings(req: Request): Promise<GameStandings> {
     const gameId: number = req.params.id;
+
+    const dependencies = [Plays.getInstance()];
+    const cachedValue = await checkCache(cachedStandings, gameId, cacheFreshness, dependencies);
+    if (cachedValue != null) {
+        return cachedValue;
+    }
+    cacheFreshness = new Date();
+
     const game = Games.getInstance().findById(gameId);
     if (game == null) {
         return {};

@@ -6,6 +6,7 @@ class Table<Row extends Identifiable> {
     private path: string;
     private blob: Blob | undefined;
     private blobOutdated: boolean = true;
+    private latestUpdate: Date = new Date();
     private rows: Array<Row> = [];
 
     constructor(tableName: string) {
@@ -19,6 +20,7 @@ class Table<Row extends Identifiable> {
 
         const unsortedRows: Array<Row> = JSON.parse(this.blob.content);
         this.rows = unsortedRows.sort((first, second) => first.id - second.id);
+        this.latestUpdate = new Date();
     }
 
     public getTableName(): string {
@@ -27,6 +29,10 @@ class Table<Row extends Identifiable> {
 
     public all(): Array<Row> {
         return this.rows;
+    }
+
+    public anyUpdatesSince(date: Date): boolean {
+        return date < this.latestUpdate;
     }
 
     public findById(id: number): Row | undefined {
@@ -58,6 +64,8 @@ class Table<Row extends Identifiable> {
         if (this.blobOutdated) {
             await this.refreshData();
         }
+
+        this.latestUpdate = new Date();
 
         return Octo.getInstance().write([{
             content: this.stringifyRows(),
