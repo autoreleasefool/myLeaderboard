@@ -1,7 +1,15 @@
 import './env';
 
 import express, { NextFunction, Request, Response } from 'express';
+import Games from './db/games';
+import Players from './db/players';
+import Plays from './db/plays';
 import Octo from './lib/Octo';
+
+Octo.setBranch('ios');
+Games.getInstance().refreshData();
+Players.getInstance().refreshData();
+Plays.getInstance().refreshData();
 
 // tslint:disable:no-console
 

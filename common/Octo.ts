@@ -4,7 +4,7 @@
 import * as Octokat from 'octokat';
 // @ts-ignore: Common module in api/dashboard
 import { base64decode, base64encode } from '../common/Base64';
-import { GitHubUser, Player, Game, Play } from './types';
+import { GitHubUser } from './types';
 
 export interface Blob {
     content: string;
@@ -27,11 +27,6 @@ interface Commit {
 interface CommitItem {
     sha: string;
     commit: Commit;
-}
-
-interface Content {
-    type: string;
-    name: string;
 }
 
 export interface Writeable {
@@ -89,7 +84,7 @@ class Octo {
     }
 
     public async blob(filename: string): Promise<Blob> {
-        const contents = await this.repo.contents(filename).fetch();
+        const contents = await this.repo.contents(filename).fetch({ ref: Octo.branch });
         contents.content = base64decode(contents.content);
         return contents;
     }
