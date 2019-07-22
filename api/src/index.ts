@@ -1,10 +1,10 @@
 import './env';
 
 import express, { NextFunction, Request, Response } from 'express';
+import Octo from './common/Octo';
 import Games from './db/games';
 import Players from './db/players';
 import Plays from './db/plays';
-import Octo from './lib/Octo';
 
 Octo.setBranch('ios');
 Octo.setUseLocal(true);

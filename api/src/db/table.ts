@@ -1,4 +1,4 @@
-import Octo, { Blob } from '../lib/Octo';
+import Octo, { Blob } from '../common/Octo';
 import { Identifiable } from '../lib/types';
 
 class Table<Row extends Identifiable> {

@@ -3,8 +3,8 @@
 // @ts-ignore: Common module in api/dashboard
 import * as Octokat from 'octokat';
 // @ts-ignore: Common module in api/dashboard
-import { base64decode, base64encode } from '../common/Base64';
-import { GitHubUser } from './types';
+import { base64decode, base64encode } from './Base64';
+import { GitHubUser } from '../lib/types';
 import fs from 'fs';
 
 export interface Blob {

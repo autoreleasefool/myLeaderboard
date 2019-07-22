@@ -1,4 +1,4 @@
-import Octo from '../lib/Octo';
+import Octo from '../common/Octo';
 import { GitHubUser, Player } from '../lib/types';
 import Table from './table';
 
