@@ -38,14 +38,35 @@ export interface Play extends Identifiable {
 
 // Standings
 
-export interface VsRecord {
-    [key: string]: Record;
-}
-
 export interface Record {
     wins: number;
     losses: number;
     ties: number;
     isBest?: boolean;
     isWorst?: boolean;
+}
+
+export interface VsRecord {
+    [key: number]: Record;
+}
+
+export interface ScoreStats {
+    best: number;
+    worst: number;
+    average: number;
+    gamesPlayed: number;
+}
+
+export interface GameStandings {
+    scoreStats?: ScoreStats;
+    [key: number]: {
+        scoreStats?: ScoreStats;
+        lastPlayed: string;
+        overallRecord: Record;
+        record: VsRecord;
+    };
+}
+
+export interface PlayerStandings extends VsRecord {
+    scoreStats?: ScoreStats;
 }
