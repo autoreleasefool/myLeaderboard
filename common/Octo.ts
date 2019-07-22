@@ -5,6 +5,7 @@ import * as Octokat from 'octokat';
 // @ts-ignore: Common module in api/dashboard
 import { base64decode, base64encode } from '../common/Base64';
 import { GitHubUser } from './types';
+import fs from 'fs';
 
 export interface Blob {
     content: string;
@@ -46,6 +47,10 @@ class Octo {
         Octo.branch = branch;
     }
 
+    public static setUseLocal(useLocal: boolean) {
+        Octo.useLocal = useLocal;
+    }
+
     public static getInstance(): Octo {
         if (Octo.instance == null) {
             Octo.instance = new Octo(Octo.token);
@@ -57,6 +62,7 @@ class Octo {
     private static instance: Octo | undefined;
     private static branch: string = 'master';
     private static token: string | undefined;
+    private static useLocal: boolean = false;
 
     private octo: any;
     private repo: any;
@@ -80,13 +86,26 @@ class Octo {
     // Contents
 
     public async contents(filename: string): Promise<string> {
-        return await this.repo.contents(filename).read({ ref: Octo.branch });
+        if (Octo.useLocal) {
+            console.log(fs.readFileSync(`../${filename}`, 'utf8').toString());
+            return fs.readFileSync(`../${filename}`, 'utf8').toString();
+        } else {
+            return await this.repo.contents(filename).read({ ref: Octo.branch });
+        }
     }
 
     public async blob(filename: string): Promise<Blob> {
-        const contents = await this.repo.contents(filename).fetch({ ref: Octo.branch });
-        contents.content = base64decode(contents.content);
-        return contents;
+        if (Octo.useLocal) {
+            return {
+                path: filename,
+                content: fs.readFileSync(`../${filename}`, 'utf8').toString(),
+                sha: '',
+            }
+        } else {
+            const contents = await this.repo.contents(filename).fetch({ ref: Octo.branch });
+            contents.content = base64decode(contents.content);
+            return contents;
+        }
     }
 
     // Repo

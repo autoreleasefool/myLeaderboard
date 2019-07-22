@@ -1,5 +1,6 @@
 declare module 'octokat';
 declare module 'dotenv';
+declare module 'fs';
 
 export interface Identifiable {
     id: number;

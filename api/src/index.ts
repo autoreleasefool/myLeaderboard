@@ -7,6 +7,7 @@ import Plays from './db/plays';
 import Octo from './lib/Octo';
 
 Octo.setBranch('ios');
+Octo.setUseLocal(true);
 Games.getInstance().refreshData();
 Players.getInstance().refreshData();
 Plays.getInstance().refreshData();
