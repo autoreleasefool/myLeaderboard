@@ -3,18 +3,18 @@ import { GitHubUser, Player } from '../lib/types';
 import Table from './table';
 
 class Players extends Table<Player> {
-    private static instance: Players | undefined;
-
-    private constructor() {
-        super('players');
-    }
-
-    public getInstance(): Players {
+    public static getInstance(): Players {
         if (Players.instance == null) {
             Players.instance = new Players();
         }
 
         return Players.instance;
+    }
+
+    private static instance: Players | undefined;
+
+    private constructor() {
+        super('players');
     }
 
     public async allWithAvatars(): Promise<Array<Player>> {
