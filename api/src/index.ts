@@ -62,6 +62,7 @@ function tokenExtraction(req: Request, _: Response, next: NextFunction) {
 }
 
 import applyGamesRouter from './games/router';
+import applyMiscRouter from './misc/router';
 import applyPlayersRouter from './players/router';
 import applyPlaysRouter from './plays/router';
 
@@ -70,6 +71,7 @@ app.use(tokenExtraction);
 applyGamesRouter(app);
 applyPlayersRouter(app);
 applyPlaysRouter(app);
+applyMiscRouter(app);
 app.use(errorHandler);
 
 app.listen(port, () => {
