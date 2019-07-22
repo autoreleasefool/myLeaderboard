@@ -136,5 +136,6 @@ export default async function standings(req: Request): Promise<GameStandings> {
         };
     }
 
+    cachedStandings.set(gameId, gameStandings);
     return gameStandings;
 }

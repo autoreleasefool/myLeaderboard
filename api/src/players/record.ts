@@ -17,9 +17,10 @@ enum GameResult {
 export default async function record(req: Request): Promise<PlayerStandings> {
     const playerId = parseInt(req.params.playerId, 10);
     const gameId = parseInt(req.params.gameId, 10);
+    const key = playerId * 1000 + gameId;
 
     const dependencies = [Plays.getInstance()];
-    const cachedValue = await checkCache(cachedStandings, playerId, cacheFreshness, dependencies);
+    const cachedValue = await checkCache(cachedStandings, key, cacheFreshness, dependencies);
     if (cachedValue != null) {
         return cachedValue;
     }
@@ -97,5 +98,6 @@ export default async function record(req: Request): Promise<PlayerStandings> {
         };
     }
 
+    cachedStandings.set(key, playerRecord);
     return playerRecord;
 }
