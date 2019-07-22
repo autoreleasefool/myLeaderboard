@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import Octo from '../lib/Octo';
+import Players from '../db/players';
 import { Player } from '../lib/types';
 
 export default async function add(req: Request): Promise<Player> {
@@ -17,19 +17,9 @@ export default async function add(req: Request): Promise<Player> {
         playerUsername = playerUsername.substr(1);
     }
 
-    const filename = `db/players.json`;
-    const playerListBlob = await Octo.getInstance().blob(filename);
-    const playerList: Array<Player> = JSON.parse(playerListBlob.content);
-
+    const playerList = Players.getInstance().all();
     const newPlayer = createPlayer(playerName, playerUsername, playerList);
-    playerList.push(newPlayer);
-
-    await Octo.getInstance().write([{
-        content: JSON.stringify(playerList, undefined, 4),
-        message: `Adding player "${playerUsername}"`,
-        path: filename,
-        sha: playerListBlob.sha,
-    }]);
+    Players.getInstance().add(newPlayer, `Adding player "${playerUsername}`);
 
     return newPlayer;
 }

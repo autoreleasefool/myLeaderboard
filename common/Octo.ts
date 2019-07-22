@@ -6,7 +6,7 @@ import * as Octokat from 'octokat';
 import { base64decode, base64encode } from '../common/Base64';
 import { GitHubUser, Player, Game, Play } from './types';
 
-interface Blob {
+export interface Blob {
     content: string;
     path: string;
     sha: string;
@@ -74,52 +74,12 @@ class Octo {
 
     // Users
 
-    public async players(includeAvatars: boolean): Promise<Array<Player>> {
-        const contents = await this.contents(`db/players.json`);
-        const playerList: Array<Player> = JSON.parse(contents);
-
-        if (includeAvatars) {
-            const gitHubDetailsPromises: Array<Promise<GitHubUser>> = [];
-            for (const player of playerList) {
-                gitHubDetailsPromises.push(this.user(player.username));
-            }
-
-            const gitHubUsers = await Promise.all(gitHubDetailsPromises);
-
-            for (const player of playerList) {
-                for (const user of gitHubUsers) {
-                    if (user.login === player.username) {
-                        player.avatar = user.avatarUrl;
-                    }
-                }
-            }
-        }
-
-        return playerList;
-    }
-
     public async user(name: string): Promise<GitHubUser> {
         if (name.charAt(0) === '@') {
             name = name.substr(1);
         }
 
         return await this.octo.users(name).fetch();
-    }
-
-    // Games
-
-    public async games(): Promise<Array<Game>> {
-        const contents = await this.contents(`db/games.json`);
-        const gameList: Array<Game> = JSON.parse(contents);
-        return gameList;
-    }
-
-    // Plays
-
-    public async plays(): Promise<Array<Play>> {
-        const contents = await this.contents(`db/plays.json`);
-        const playList: Array<Play> = JSON.parse(contents);
-        return playList;
     }
 
     // Contents

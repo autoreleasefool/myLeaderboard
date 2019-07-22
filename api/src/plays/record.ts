@@ -1,6 +1,8 @@
 import { Request } from 'express';
 import { findMaxId } from '../common/utils';
-import Octo from '../lib/Octo';
+import Games from '../db/games';
+import Players from '../db/players';
+import Plays from '../db/plays';
 import { Game, Play, Player } from '../lib/types';
 
 export default async function record(req: Request): Promise<void> {
@@ -15,15 +17,13 @@ export default async function record(req: Request): Promise<void> {
         throw new Error('No winners.');
     }
 
-    validateGameExists(game, await Octo.getInstance().games());
+    validateGameExists(game, await Games.getInstance().all());
     validateWinnersExist(winnerIds, playerIds);
 
-    const existingPlayers = await Octo.getInstance().players(false);
+    const existingPlayers = await Players.getInstance().all();
     const players = mapPlayerIdsToNames(playerIds, existingPlayers);
 
-    const filename = `db/plays.json`;
-    const playListBlob = await Octo.getInstance().blob(filename);
-    const playList: Array<Play> = JSON.parse(playListBlob.content);
+    const playList = Plays.getInstance().all();
     const maxId = findMaxId(playList);
 
     const newPlay: Play = {
@@ -38,18 +38,11 @@ export default async function record(req: Request): Promise<void> {
         newPlay.scores = scores;
     }
 
-    playList.push(newPlay);
-
     const playerList = Array.from(players)
             .sort((first, second) => first.toLowerCase().localeCompare(second.toLowerCase()))
             .join(', ');
 
-    await Octo.getInstance().write([{
-        content: stringifyPlayList(playList),
-        message: `Recording game between ${playerList}`,
-        path: filename,
-        sha: playListBlob.sha,
-    }]);
+    Plays.getInstance().add(newPlay, `Recording game between ${playerList}`);
 }
 
 function mapPlayerIdsToNames(ids: Array<number>, existingPlayers: Array<Player>): Array<string> {
@@ -96,14 +89,4 @@ function validateGameExists(id: number, games: Array<Game>) {
     }
 
     throw new Error(`Game "${id}" does not exist.`);
-}
-
-function stringifyPlayList(plays: Array<Play>): string {
-    let output = '[\n';
-    for (const play of plays) {
-        output += JSON.stringify(play);
-        output += '\n';
-    }
-    output += ']';
-    return output;
 }

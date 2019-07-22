@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import Octo from '../lib/Octo';
+import Players from '../db/players';
 import { Player } from '../lib/types';
 
 export default async function list(req: Request): Promise<Array<Player>> {
@@ -8,5 +8,9 @@ export default async function list(req: Request): Promise<Array<Player>> {
         throw new Error(`"includeAvatars" must be a boolean value. Default is true.`);
     }
 
-    return Octo.getInstance().players(includeAvatars != null ? includeAvatars : true);
+    if (includeAvatars) {
+        return await Players.getInstance().allWithAvatars();
+    } else {
+        return Players.getInstance().all();
+    }
 }

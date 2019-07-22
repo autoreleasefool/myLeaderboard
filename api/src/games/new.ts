@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import Octo from '../lib/Octo';
+import Games from '../db/games';
 import { Game } from '../lib/types';
 
 export default async function add(req: Request): Promise<Game> {
@@ -14,19 +14,9 @@ export default async function add(req: Request): Promise<Game> {
         throw new Error('Missing "hasScores" or value is not boolean.');
     }
 
-    const filename = `db/games.json`;
-    const gameListBlob = await Octo.getInstance().blob(filename);
-    const gameList: Array<Game> = JSON.parse(gameListBlob.content);
-
+    const gameList = Games.getInstance().all();
     const newGame = createGame(name, hasScores, gameList);
-    gameList.push(newGame);
-
-    await Octo.getInstance().write([{
-        content: JSON.stringify(gameList, undefined, 4),
-        message: `Adding game "${name}"`,
-        path: filename,
-        sha: gameListBlob.sha,
-    }]);
+    Games.getInstance().add(newGame, `Adding game ${name}`);
 
     return newGame;
 }
