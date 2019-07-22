@@ -1,11 +1,17 @@
 import { Request } from 'express';
 import Games from '../db/games';
+import Players from '../db/players';
 import Plays from '../db/plays';
 import { PlayerStandings } from '../lib/types';
 
 export default async function record(req: Request): Promise<PlayerStandings> {
     const playerId = req.params.playerId;
     const gameId = req.params.gameId;
+
+    const player = Players.getInstance().findById(playerId);
+    if (player == null) {
+        return {};
+    }
 
     const game = Games.getInstance().findById(gameId);
     if (game == null) {
