@@ -5,7 +5,8 @@
   "scripts": {
     "forever": "./script/start",
     "stop": "./script/stop",
-    "start": "./script/dev && yarn build && nodemon build/index.js",
+    "start": "./script/dev && yarn start-server",
+    "start-server": "yarn build && nodemon build/index.js",
     "build": "yarn copy-common && tsc",
     "copy-common": "rm -rf ./src/lib && cp -r ../common ./src/lib",
     "lint": "tslint 'src/**/*.ts?(x)'"
