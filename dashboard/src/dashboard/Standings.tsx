@@ -21,7 +21,7 @@ interface Props {
 
 interface State {
     banishedPlayers: Set<number>;
-    parsedStandings: GameStandings | undefined;
+    parsedStandings: GameStandings;
 }
 
 class Standings extends React.Component<Props, State> {
@@ -29,7 +29,7 @@ class Standings extends React.Component<Props, State> {
         super(props);
         this.state = {
             banishedPlayers: new Set(),
-            parsedStandings: undefined,
+            parsedStandings: this.props.standings,
         };
     }
 
@@ -44,19 +44,22 @@ class Standings extends React.Component<Props, State> {
     }
 
     public render() {
-        const { game, players, standings } = this.props;
+        const { game, players } = this.props;
+        const standings = this.state.parsedStandings;
+
+        const visiblePlayers = players.filter(player => this.state.banishedPlayers.has(player.id) === false);
 
         return (
             <Page title={game.name}>
                 <Card>
                     <DataTable
-                        columnContentTypes={players.map(_ => 'text' as ColumnContentType)}
+                        columnContentTypes={visiblePlayers.map(_ => 'text' as ColumnContentType)}
                         headings={[]}
                         rows={[
-                            [<Version />, 'Total', ...players.map(player => <PlayerView player={player} record={standings[player.id]} />)],
-                            ...players.map(player => {
+                            [<Version />, 'Total', ...visiblePlayers.map(player => <PlayerView player={player} record={standings[player.id]} />)],
+                            ...visiblePlayers.map(player => {
                                 const recordCells: Array<ReactNode> = [];
-                                for (const opponent of players) {
+                                for (const opponent of visiblePlayers) {
                                     if (opponent.username === player.username) {
                                         recordCells.push('—');
                                         continue;

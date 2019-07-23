@@ -60,17 +60,19 @@ export function freshness(record: PlayerRecord): number {
     const today = new Date();
     const seconds = (today.getTime() - new Date(record.lastPlayed).getTime()) / 1000;
     const daysSinceLastPlayed = Math.floor(seconds / 86400);
+    const veryFreshLimit = 7;
+    const staleLimit = 21;
 
-    if (daysSinceLastPlayed < 7) {
-        // Played in the last week? Very fresh.
+    if (daysSinceLastPlayed <= veryFreshLimit) {
+        // Played in last X days? Very fresh.
         return 1;
-    } else if (daysSinceLastPlayed > 30) {
-        // Haven't played in a month? Stale.
+    } else if (daysSinceLastPlayed >= staleLimit) {
+        // Haven't played in Y days? Stale.
         return 0;
     } else {
         // Otherwise, freshness is 0-1, based on number of days
-        return Math.min((23 - (daysSinceLastPlayed - 7)) / 23, 1);
-
+        const maxFreshnessRange = staleLimit - veryFreshLimit;
+        return Math.max(0, Math.min((maxFreshnessRange - (daysSinceLastPlayed - veryFreshLimit)) / maxFreshnessRange, 1));
     }
 }
 
