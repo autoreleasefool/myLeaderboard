@@ -39,7 +39,7 @@ class Table<Row extends Identifiable> {
         let low = 0;
         let high = this.rows.length - 1;
 
-        while (low < high) {
+        while (low <= high) {
             const mid = Math.floor((low + high) / 2);
             const currentId = this.rows[mid].id;
             if (currentId === id) {
