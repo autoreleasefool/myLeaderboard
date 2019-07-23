@@ -4,6 +4,7 @@ import Games from '../db/games';
 import Players from '../db/players';
 import Plays from '../db/plays';
 import { Game, GameStandings, Player, Record } from '../lib/types';
+import { isBanished } from '../lib/Freshness';
 
 let cacheFreshness = new Date();
 const cachedStandings: Map<number, GameStandings> = new Map();
@@ -38,7 +39,10 @@ export default async function generateGameStandings(req: Request): Promise<GameS
 
     const gameStandings = await buildStandings(game);
     const allPlayers = await Players.getInstance().all();
-    const players = allPlayers.filter(player => gameStandings[player.id] != null);
+    const players = allPlayers.filter(player => {
+        const playerRecord = gameStandings[player.id];
+        return playerRecord == null ? false : isBanished(playerRecord) === false;
+    });
     highlightRecords(gameStandings, players);
 
     cachedStandings.set(gameId, gameStandings);

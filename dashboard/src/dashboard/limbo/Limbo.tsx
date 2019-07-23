@@ -1,8 +1,8 @@
 import { Page } from '@shopify/polaris';
 import React from 'react';
 import PlayerView from '../../components/PlayerView';
+import { freshness } from '../../lib/Freshness';
 import { GameStandings, Player } from '../../lib/types';
-import { freshness } from '../shadowRealm/ShadowRealm';
 import './Limbo.css';
 
 interface Props {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { freshness } from '../dashboard/shadowRealm/ShadowRealm';
+import { freshness } from '../lib/Freshness';
 import { Player, PlayerRecord } from '../lib/types';
 import './PlayerView.css';
 
