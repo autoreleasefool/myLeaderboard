@@ -1,8 +1,9 @@
 import { Request } from 'express';
 import { checkCache } from '../common/utils';
 import Games from '../db/games';
+import Players from '../db/players';
 import Plays from '../db/plays';
-import { GameStandings } from '../lib/types';
+import { Game, GameStandings, Player, Record } from '../lib/types';
 
 let cacheFreshness = new Date();
 const cachedStandings: Map<number, GameStandings> = new Map();
@@ -13,7 +14,14 @@ enum GameResult {
     TIED,
 }
 
-export default async function standings(req: Request): Promise<GameStandings> {
+interface RecordHighlight {
+    player: number | undefined;
+    winRate: number;
+    losses: number;
+    wins: number;
+}
+
+export default async function generateGameStandings(req: Request): Promise<GameStandings> {
     const gameId = parseInt(req.params.id, 10);
 
     const dependencies = [Plays.getInstance()];
@@ -28,15 +36,25 @@ export default async function standings(req: Request): Promise<GameStandings> {
         return {};
     }
 
+    const gameStandings = await buildStandings(game);
+    const allPlayers = await Players.getInstance().all();
+    const players = allPlayers.filter(player => gameStandings[player.id] != null);
+    highlightRecords(gameStandings, players);
+
+    cachedStandings.set(gameId, gameStandings);
+    return gameStandings;
+}
+
+async function buildStandings(game: Game): Promise<GameStandings> {
+    const gameStandings: GameStandings = {};
+
     let totalGames = 0;
     let totalScore = 0;
     let bestScore = -Infinity;
     let worstScore = Infinity;
 
-    const gameStandings: GameStandings = {};
-
     const plays = Plays.getInstance().all();
-    plays.filter(play => play.game === gameId)
+    plays.filter(play => play.game === game.id)
         .forEach(play => {
             totalGames += 1;
             if (game.hasScores && play.scores != null) {
@@ -136,6 +154,100 @@ export default async function standings(req: Request): Promise<GameStandings> {
         };
     }
 
-    cachedStandings.set(gameId, gameStandings);
     return gameStandings;
+}
+
+function highlightRecords(standings: GameStandings, players: Array<Player>) {
+    const worstRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
+    const bestRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
+
+    for (const player of players) {
+        const playerDetails = standings[player.id];
+        if (playerDetails == null) {
+            continue;
+        }
+
+        const totalGames = playerDetails.overallRecord.wins + playerDetails.overallRecord.losses + playerDetails.overallRecord.ties;
+        const winRate = Math.floor(playerDetails.overallRecord.wins / totalGames * 100);
+
+        const playerRecordForHighlight = { player: player.id, winRate, losses: playerDetails.overallRecord.losses, wins: playerDetails.overallRecord.wins };
+        updateHighlightedRecords(playerRecordForHighlight, bestRecords, worstRecords);
+
+        const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
+        const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
+        for (const opponent of players) {
+            const vsRecord = playerDetails.record[opponent.id];
+            if (opponent.id === player.id || vsRecord == null) {
+                continue;
+            }
+
+            const vsTotalGames = vsRecord.wins + vsRecord.losses + vsRecord.ties;
+            const vsWinRate = Math.floor(vsRecord.wins / vsTotalGames * 100);
+
+            const vsRecordForHighlight = { player: opponent.id, winRate: vsWinRate, losses: vsRecord.losses, wins: vsRecord.wins };
+            updateHighlightedRecords(vsRecordForHighlight, bestVsRecords, worstVsRecords);
+        }
+
+        const playerVs: Map<number, Record> = new Map();
+        for (const opponent of players) {
+            if (opponent.id === player.id) {
+                continue;
+            }
+
+            playerVs.set(opponent.id, playerDetails.record[opponent.id]);
+        }
+
+        markBestAndWorstRecords(playerVs, bestVsRecords, worstVsRecords);
+    }
+
+    const playerTotals: Map<number, Record> = new Map();
+    for (const player of players) {
+        playerTotals.set(player.id, standings[player.id].overallRecord);
+    }
+    markBestAndWorstRecords(playerTotals, bestRecords, worstRecords);
+}
+
+function updateHighlightedRecords(record: RecordHighlight, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
+    if (record.winRate > bestRecords[0].winRate) {
+        bestRecords.length = 0;
+        bestRecords.push(record);
+    } else if (record.winRate === bestRecords[0].winRate) {
+        if (record.wins > bestRecords[0].wins) {
+            bestRecords.length = 0;
+            bestRecords.push(record);
+        } else if (record.wins === bestRecords[0].wins) {
+            bestRecords.push(record);
+        }
+    }
+    if (record.winRate < worstRecords[0].winRate) {
+        worstRecords.length = 0;
+        worstRecords.push(record);
+    } else if (record.winRate === worstRecords[0].winRate) {
+        if (record.losses > worstRecords[0].losses) {
+            worstRecords.length = 0;
+            worstRecords.push(record);
+        } else if (record.losses === worstRecords[0].losses) {
+            worstRecords.push(record);
+        }
+    }
+}
+
+function markBestAndWorstRecords(records: Map<number, Record>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
+    for (const player of records.keys()) {
+        const playerRecord = records.get(player)!;
+
+        for (const best of bestRecords) {
+            if (best.player === player) {
+                playerRecord.isBest = true;
+                break;
+            }
+        }
+
+        for (const worst of worstRecords) {
+            if (worst.player === player) {
+                playerRecord.isWorst = true;
+                break;
+            }
+        }
+    }
 }

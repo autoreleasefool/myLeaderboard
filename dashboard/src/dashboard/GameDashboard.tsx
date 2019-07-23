@@ -8,18 +8,17 @@ import Standings from './Standings';
 
 interface Props {
     game: Game;
+    players: Array<Player>;
 }
 
 interface State {
     standings: GameStandings | undefined;
-    players: Array<Player>;
 }
 
 class Dashboard extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            players: [],
             standings: undefined,
         };
     }
@@ -29,8 +28,8 @@ class Dashboard extends React.Component<Props, State> {
     }
 
     public render() {
-        const { players, standings } = this.state;
-        const { game } = this.props;
+        const { standings } = this.state;
+        const { game, players } = this.props;
 
         if (standings == null || players.length === 0) {
             return null;
@@ -57,12 +56,8 @@ class Dashboard extends React.Component<Props, State> {
 
     private async _fetchStandings() {
         const standings = await LeaderboardAPI.getInstance().gameStandings(this.props.game.id);
-        const players = await LeaderboardAPI.getInstance().players();
-
-        players.sort((first, second) => first.username.toLowerCase().localeCompare(second.username.toLowerCase()));
 
         this.setState({
-            players,
             standings,
         });
     }
