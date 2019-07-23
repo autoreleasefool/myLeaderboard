@@ -3,8 +3,8 @@ import { checkCache } from '../common/utils';
 import Games from '../db/games';
 import Players from '../db/players';
 import Plays from '../db/plays';
-import { Game, GameStandings, Player, Record } from '../lib/types';
 import { isBanished } from '../lib/Freshness';
+import { Game, GameStandings, Player, Record } from '../lib/types';
 
 let cacheFreshness = new Date();
 const cachedStandings: Map<number, GameStandings> = new Map();
