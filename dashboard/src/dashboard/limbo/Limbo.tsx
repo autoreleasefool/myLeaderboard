@@ -1,12 +1,13 @@
 import { Page } from '@shopify/polaris';
 import React from 'react';
 import PlayerView from '../../components/PlayerView';
-import { Player } from '../../lib/types';
+import { GameStandings, Player } from '../../lib/types';
 import { freshness } from '../shadowRealm/ShadowRealm';
 import './Limbo.css';
 
 interface Props {
     players: Array<Player>;
+    standings: GameStandings;
 }
 
 interface State {
@@ -22,8 +23,15 @@ class Limbo extends React.Component<Props, State> {
     }
 
     public componentDidMount() {
-        const limboing = this.props.players.filter(player => {
-            const fresh = freshness(player);
+        const { players, standings } = this.props;
+
+        const limboing = players.filter(player => {
+            const playerRecord = standings[player.id];
+            if (playerRecord == null) {
+                return false;
+            }
+
+            const fresh = freshness(playerRecord);
             return fresh > 0 && fresh < 0.2;
         });
 

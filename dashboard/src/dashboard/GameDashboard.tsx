@@ -1,13 +1,13 @@
 import React from 'react';
-import Octo from '../lib/Octo';
-import { BasicGamePlayer, GameStandings, Player } from '../lib/types';
+import LeaderboardAPI from '../api/LeaderboardAPI';
+import { Game, GameStandings, Player } from '../lib/types';
 import './GameDashboard.css';
 import Limbo from './limbo/Limbo';
 import ShadowRealm from './shadowRealm/ShadowRealm';
 import Standings from './Standings';
 
 interface Props {
-    game: string;
+    game: Game;
 }
 
 interface State {
@@ -37,52 +37,28 @@ class Dashboard extends React.Component<Props, State> {
         }
 
         const playersWithGames = players.filter(player => {
-            for (const opponent of Object.keys(standings.records[player.username])) {
-                const { wins, losses, ties } = standings.records[player.username][opponent];
-                if (wins > 0 || losses > 0 || ties > 0) {
-                    return true;
-                }
+            const playerRecord = standings[player.id];
+            if (playerRecord == null) {
+                return false;
             }
 
-            return false;
+            const { wins, losses, ties } = playerRecord.overallRecord;
+            return (wins > 0 || losses > 0 || ties > 0);
         });
 
         return (
             <div className={'game-dashboard'}>
-                <Standings key={game} game={game} standings={standings} players={players} />
-                <Limbo players={playersWithGames} />
-                <ShadowRealm players={playersWithGames} />
+                <Standings key={game.id} game={game} standings={standings} players={playersWithGames} />
+                <Limbo standings={standings} players={playersWithGames} />
+                <ShadowRealm standings={standings} players={playersWithGames} />
             </div>
         );
     }
 
     private async _fetchStandings() {
-        const contents = await Octo.getInstance().contents(`data/${this.props.game}.json`);
-        const standings: GameStandings = JSON.parse(contents);
-        const genericPlayers = await Octo.getInstance().players();
-        const players: Array<Player> = [];
+        const standings = await LeaderboardAPI.getInstance().gameStandings(this.props.game.id);
+        const players = await LeaderboardAPI.getInstance().players();
 
-        for (const genericPlayer of genericPlayers) {
-            let standingsPlayer: BasicGamePlayer | undefined;
-            for (const player of standings.players) {
-                if (player.username === genericPlayer.username) {
-                    standingsPlayer = player;
-                }
-            }
-
-            if (standingsPlayer == null) {
-                continue;
-            }
-
-            players.push({
-                avatar: genericPlayer.avatar,
-                displayName: genericPlayer.displayName,
-                lastPlayed: new Date(standingsPlayer.lastPlayed),
-                username: genericPlayer.username,
-            });
-        }
-
-        standings.players.sort((first, second) => first.username.toLowerCase().localeCompare(second.username.toLowerCase()));
         players.sort((first, second) => first.username.toLowerCase().localeCompare(second.username.toLowerCase()));
 
         this.setState({

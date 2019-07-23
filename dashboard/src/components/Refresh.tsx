@@ -1,6 +1,6 @@
 import { Banner, Card, Page } from '@shopify/polaris';
 import React from 'react';
-import Octo from '../lib/Octo';
+import LeaderboardAPI from '../api/LeaderboardAPI';
 
 interface Props {
     refreshTime: number;
@@ -57,13 +57,12 @@ class RefreshView extends React.Component<Props, State> {
 
     private async _refreshLoop() {
         try {
-            const commits = await Octo.getInstance().commits(this.startTime);
-            if (commits.length > 0) {
+            const anyUpdates = await LeaderboardAPI.getInstance().hasUpdates(this.startTime);
+            if (anyUpdates) {
                 window.location.reload();
             }
         } catch (error) {
             this.setState({ errorMessage: `${error}` });
-
         }
     }
 }

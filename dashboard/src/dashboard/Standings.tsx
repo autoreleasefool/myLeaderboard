@@ -2,32 +2,26 @@ import { Card, ColumnContentType, DataTable, Page } from '@shopify/polaris';
 import React, { ReactNode } from 'react';
 import PlayerView from '../components/PlayerView';
 import Version from '../components/Version';
-import { GameStandings, Player, Record } from '../lib/types';
+import { Game, GameStandings, Player, Record } from '../lib/types';
 import { isBanished } from './shadowRealm/ShadowRealm';
 import './Standings.css';
 
 interface RecordHighlight {
-    player: string | undefined;
+    player: number | undefined;
     winRate: number;
     losses: number;
     wins: number;
 }
 
-interface GamePlayer {
-    username: string;
-    total: Record;
-    records: Map<string, Record>;
-}
-
 interface Props {
-    game: string;
+    game: Game;
     standings: GameStandings;
     players: Array<Player>;
 }
 
 interface State {
-    banishedPlayers: Set<string>;
-    gamePlayers: Array<GamePlayer>;
+    banishedPlayers: Set<number>;
+    parsedStandings: GameStandings | undefined;
 }
 
 class Standings extends React.Component<Props, State> {
@@ -35,7 +29,7 @@ class Standings extends React.Component<Props, State> {
         super(props);
         this.state = {
             banishedPlayers: new Set(),
-            gamePlayers: [],
+            parsedStandings: undefined,
         };
     }
 
@@ -50,32 +44,36 @@ class Standings extends React.Component<Props, State> {
     }
 
     public render() {
-        const { game, players } = this.props;
-        const { gamePlayers } = this.state;
-        const namesToPlayers = this._mapPlayerNamesToPlayers(players);
+        const { game, players, standings } = this.props;
 
         return (
-            <Page title={game}>
+            <Page title={game.name}>
                 <Card>
                     <DataTable
-                        columnContentTypes={gamePlayers.map(_ => 'text' as ColumnContentType)}
+                        columnContentTypes={players.map(_ => 'text' as ColumnContentType)}
                         headings={[]}
                         rows={[
-                            [<Version />, 'Total', ...gamePlayers.map(player => <PlayerView player={namesToPlayers.get(player.username)!} />)],
-                            ...gamePlayers.map(player => {
+                            [<Version />, 'Total', ...players.map(player => <PlayerView player={player} record={standings[player.id]} />)],
+                            ...players.map(player => {
                                 const recordCells: Array<ReactNode> = [];
-                                for (const opponent of gamePlayers) {
+                                for (const opponent of players) {
                                     if (opponent.username === player.username) {
                                         recordCells.push('—');
                                         continue;
                                     }
 
-                                    recordCells.push(this._formatRecord(player.records.get(opponent.username)!, false));
+                                    const record = standings[player.id].record[opponent.id];
+                                    if (record == null) {
+                                        recordCells.push(this._formatRecord({ wins: 0, losses: 0, ties: 0 }, false));
+                                        continue;
+                                    }
+
+                                    recordCells.push(this._formatRecord(record, false));
                                 }
 
                                 return [
-                                    <PlayerView key={player.username} player={namesToPlayers.get(player.username)!} />,
-                                    this._formatRecord(player.total, true),
+                                    <PlayerView key={player.username} player={player} record={standings[player.id]} />,
+                                    this._formatRecord(standings[player.id].overallRecord, true),
                                     ...recordCells,
                                 ];
                             }),
@@ -87,92 +85,67 @@ class Standings extends React.Component<Props, State> {
     }
 
     private _parseStandings() {
-        const { standings } = this.props;
-        const overallRecords: Map<string, Record> = new Map();
-        const headToHeadRecords: Map<string, Map<string, Record>> = new Map();
-
-        for (const player of standings.players) {
-            const playerOverallRecord: Record = { wins: 0, losses: 0, ties: 0 };
-
-            for (const opponentUsername of Object.keys(standings.records[player.username])) {
-                const { wins, losses, ties } = standings.records[player.username][opponentUsername];
-                if (headToHeadRecords.has(player.username) === false) {
-                    headToHeadRecords.set(player.username, new Map());
-                }
-
-                const playerRecords = headToHeadRecords.get(player.username)!;
-                playerRecords.set(opponentUsername, { wins, losses, ties });
-
-                playerOverallRecord.wins += wins;
-                playerOverallRecord.losses += losses;
-                playerOverallRecord.ties += ties;
-            }
-
-            overallRecords.set(player.username, playerOverallRecord);
-        }
-
-        const invisiblePlayers = this._identifyInvisiblePlayers(overallRecords);
-        const banishedPlayers = this._identifyBanishedPlayers(this.props.players);
-
-        const gamePlayers: Array<GamePlayer> = this.props.players.filter(player => {
-            return invisiblePlayers.has(player.username) === false && banishedPlayers.has(player.username) === false;
-        }).map(player => {
-            return {
-                records: headToHeadRecords.get(player.username)!,
-                total: overallRecords.get(player.username)!,
-                username: player.username,
-            };
-        });
-
-        this._highlightRecords(gamePlayers);
-
-        this.setState({
-            banishedPlayers,
-            gamePlayers,
-        });
+        const banishedPlayers = this._identifyBanishedPlayers(this.props.standings, this.props.players);
+        const parsedStandings = this._highlightRecords(this.props.standings);
+        this.setState({ banishedPlayers, parsedStandings });
     }
 
-    private _identifyInvisiblePlayers(records: Map<string, Record>): Set<string> {
-        return new Set(Array.from(records.keys()).filter(player => {
-            const record = records.get(player)!;
-            return record.wins + record.losses + record.ties === 0;
-        }));
+    private _identifyBanishedPlayers(standings: GameStandings, players: Array<Player>): Set<number> {
+        return new Set(players.filter(player => isBanished(standings[player.id])).map(player => player.id));
     }
 
-    private _identifyBanishedPlayers(players: Array<Player>): Set<string> {
-        return new Set(players.filter(player => isBanished(player)).map(player => player.username));
-    }
-
-    private _highlightRecords(players: Array<GamePlayer>) {
+    private _highlightRecords(originalStandings: GameStandings): GameStandings {
+        const standings: GameStandings = JSON.parse(JSON.stringify(originalStandings));
         const worstRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
         const bestRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
 
-        for (const player of players) {
-            const totalGames = player.total.wins + player.total.losses + player.total.ties;
-            const winRate = player.total.wins / totalGames;
+        for (const playerId in standings) {
+            if (standings.hasOwnProperty(playerId) === false || typeof(playerId) !== 'number') {
+                continue;
+            }
+            const player = standings[playerId];
+            const totalGames = player.overallRecord.wins + player.overallRecord.losses + player.overallRecord.ties;
+            const winRate = player.overallRecord.wins / totalGames;
 
-            const playerRecordForHighlight = { player: player.username, winRate, losses: player.total.losses, wins: player.total.wins };
+            const playerRecordForHighlight = { player: playerId, winRate, losses: player.overallRecord.losses, wins: player.overallRecord.wins };
             this._updateHighlightedRecords(playerRecordForHighlight, bestRecords, worstRecords);
 
             const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
             const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
-            for (const opponent of player.records.keys()) {
-                const vsRecord = player.records.get(opponent)!;
+            for (const oppId in player.record) {
+                if (player.record.hasOwnProperty(oppId) === false) {
+                    continue;
+                }
+
+                const opponentId = typeof(oppId) === 'number' ? oppId : parseInt(oppId, 10);
+                const vsRecord = player.record[opponentId];
                 const vsTotalGames = vsRecord.wins + vsRecord.losses + vsRecord.ties;
                 const vsWinRate = vsRecord.wins / vsTotalGames;
 
-                const vsRecordForHighlight = { player: opponent, winRate: vsWinRate, losses: vsRecord.losses, wins: vsRecord.wins };
+                const vsRecordForHighlight = { player: opponentId, winRate: vsWinRate, losses: vsRecord.losses, wins: vsRecord.wins };
                 this._updateHighlightedRecords(vsRecordForHighlight, bestVsRecords, worstVsRecords);
             }
 
-            this._markBestAndWorstRecords(player.records, bestVsRecords, worstVsRecords);
+            const playerVs: Map<number, Record> = new Map();
+            for (const oppId in player.record) {
+                if (player.record.hasOwnProperty(oppId)) {
+                    const opponentId = typeof(oppId) === 'number' ? oppId : parseInt(oppId, 10);
+                    playerVs.set(opponentId, player.record[opponentId]);
+                }
+            }
+
+            this._markBestAndWorstRecords(playerVs, bestVsRecords, worstVsRecords);
         }
 
-        const playerTotals: Map<string, Record> = new Map();
-        for (const player of players) {
-            playerTotals.set(player.username, player.total);
+        const playerTotals: Map<number, Record> = new Map();
+        for (const playerId in standings) {
+            if (standings.hasOwnProperty(playerId) && typeof(playerId) === 'number') {
+                playerTotals.set(playerId, standings[playerId].overallRecord);
+            }
         }
         this._markBestAndWorstRecords(playerTotals, bestRecords, worstRecords);
+
+        return standings;
     }
 
     private _updateHighlightedRecords(record: RecordHighlight, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
@@ -201,7 +174,7 @@ class Standings extends React.Component<Props, State> {
         }
     }
 
-    private _markBestAndWorstRecords(records: Map<string, Record>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
+    private _markBestAndWorstRecords(records: Map<number, Record>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
         for (const player of records.keys()) {
             const playerRecord = records.get(player)!;
 
@@ -219,14 +192,6 @@ class Standings extends React.Component<Props, State> {
                 }
             }
         }
-    }
-
-    private _mapPlayerNamesToPlayers(players: Array<Player>): Map<string, Player> {
-        const map: Map<string, Player> = new Map();
-        for (const player of players) {
-            map.set(player.username, player);
-        }
-        return map;
     }
 
     private _formatRecord(record: Record, overall: boolean): ReactNode {

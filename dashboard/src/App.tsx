@@ -1,10 +1,11 @@
 import React from 'react';
+import LeaderboardAPI from './api/LeaderboardAPI';
 import RefreshView from './components/Refresh';
 import GameDashboard from './dashboard/GameDashboard';
-import { allGames } from './lib/Game';
+import { Game } from './lib/types';
 
 interface State {
-    games: Array<string>;
+    games: Array<Game>;
 }
 
 class App extends React.Component<{}, State> {
@@ -16,7 +17,7 @@ class App extends React.Component<{}, State> {
     }
 
     public componentDidMount() {
-        allGames().then(games => {
+        LeaderboardAPI.getInstance().games().then(games => {
             this.setState({ games });
         });
     }
@@ -26,7 +27,7 @@ class App extends React.Component<{}, State> {
             <div>
                 <RefreshView refreshTime={20 * 1000} />
                 {this.state.games.map(game => {
-                    return <GameDashboard key={game} game={game} />;
+                    return <GameDashboard key={game.id} game={game} />;
                 })}
             </div>
         );

@@ -1,11 +1,12 @@
 import { Page } from '@shopify/polaris';
 import React from 'react';
 import PlayerView from '../../components/PlayerView';
-import { Player } from '../../lib/types';
+import { GameStandings, Player, PlayerRecord } from '../../lib/types';
 import './ShadowRealm.css';
 
 interface Props {
     players: Array<Player>;
+    standings: GameStandings;
 }
 
 interface State {
@@ -46,14 +47,18 @@ class ShadowRealm extends React.Component<Props, State> {
     }
 
     private _identifyBanishedPlayers() {
-        const banished = this.props.players.filter(player => isBanished(player));
+        const { players, standings } = this.props;
+        const banished = players.filter(player => {
+            const playerRecord = standings[player.id];
+            return playerRecord == null ? false : isBanished(playerRecord);
+        });
         this.setState({ banished });
     }
 }
 
-export function freshness(player: Player): number {
+export function freshness(record: PlayerRecord): number {
     const today = new Date();
-    const seconds = (today.getTime() - player.lastPlayed.getTime()) / 1000;
+    const seconds = (today.getTime() - new Date(record.lastPlayed).getTime()) / 1000;
     const daysSinceLastPlayed = Math.floor(seconds / 86400);
 
     if (daysSinceLastPlayed < 7) {
@@ -69,7 +74,7 @@ export function freshness(player: Player): number {
     }
 }
 
-export function isBanished(player: Player): boolean {
+export function isBanished(player: PlayerRecord): boolean {
     return freshness(player) === 0;
 }
 
