@@ -110,7 +110,7 @@ class Standings extends React.Component<Props, State> {
             }
 
             const totalGames = playerDetails.overallRecord.wins + playerDetails.overallRecord.losses + playerDetails.overallRecord.ties;
-            const winRate = playerDetails.overallRecord.wins / totalGames;
+            const winRate = Math.floor(playerDetails.overallRecord.wins / totalGames * 100);
 
             const playerRecordForHighlight = { player: player.id, winRate, losses: playerDetails.overallRecord.losses, wins: playerDetails.overallRecord.wins };
             this._updateHighlightedRecords(playerRecordForHighlight, bestRecords, worstRecords);
@@ -124,7 +124,7 @@ class Standings extends React.Component<Props, State> {
                 }
 
                 const vsTotalGames = vsRecord.wins + vsRecord.losses + vsRecord.ties;
-                const vsWinRate = vsRecord.wins / vsTotalGames;
+                const vsWinRate = Math.floor(vsRecord.wins / vsTotalGames * 100);
 
                 const vsRecordForHighlight = { player: opponent.id, winRate: vsWinRate, losses: vsRecord.losses, wins: vsRecord.wins };
                 this._updateHighlightedRecords(vsRecordForHighlight, bestVsRecords, worstVsRecords);
@@ -163,7 +163,6 @@ class Standings extends React.Component<Props, State> {
                 bestRecords.push(record);
             }
         }
-
         if (record.winRate < worstRecords[0].winRate) {
             worstRecords.length = 0;
             worstRecords.push(record);
@@ -171,7 +170,7 @@ class Standings extends React.Component<Props, State> {
             if (record.losses > worstRecords[0].losses) {
                 worstRecords.length = 0;
                 worstRecords.push(record);
-            } else if (record.losses === bestRecords[0].losses) {
+            } else if (record.losses === worstRecords[0].losses) {
                 worstRecords.push(record);
             }
         }
