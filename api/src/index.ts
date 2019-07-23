@@ -36,6 +36,12 @@ if (githubToken != null && githubToken.length > 0) {
 const app = express();
 const port = (process.env.NODE_ENV === 'production') ? 80 : 3001;
 
+app.use((_, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
 app.use(express.json());
 
 // Log each request made to the server
@@ -44,7 +50,7 @@ app.use((req, _, next) => {
     console.log(`${new Date().toISOString()}: ${req.method} from ${req.ip} -- ${req.originalUrl}`);
     next();
     // tslint:enable:no-console
-  });
+});
 
 function errorHandler(err: any, _: Request, res: Response, __: NextFunction) {
     // tslint:disable no-console
