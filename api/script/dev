@@ -30,3 +30,4 @@ echo $LNK_HTTPS
 
 sed -i '' "s/API_URL=.*/API_URL=$LNK_HTTPS/g" ./.env
 sed -i '' "s/baseURL = URL[(]string: \".*\"[)]!/baseURL = URL(string: \"$LNK_HTTPS\")!/g" ../ios/MyLeaderboard/MyLeaderboard/Source/API/LeaderboardAPI.swift
+sed -i '' "s/baseURL = '.*'/baseURL = '$LNK_HTTPS'/g" ../dashboard/src/api/LeaderboardAPI.ts
