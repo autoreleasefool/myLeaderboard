@@ -4,8 +4,8 @@ import record from './record';
 const router = express.Router();
 
 router.post('/record', (req, res, next) => {
-    record(req).then(() => {
-        res.sendStatus(200);
+    record(req).then(play => {
+        res.json(play);
     }).catch(error => {
         next(error);
     });

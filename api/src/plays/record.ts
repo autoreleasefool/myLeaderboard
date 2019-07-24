@@ -5,7 +5,7 @@ import Players from '../db/players';
 import Plays from '../db/plays';
 import { Game, Play, Player } from '../lib/types';
 
-export default async function record(req: Request): Promise<void> {
+export default async function record(req: Request): Promise<Play> {
     const playerIds: Array<number> = typeof(req.body.players) === 'string' ? JSON.parse(req.body.players) : req.body.players;
     const winnerIds: Array<number> = typeof(req.body.winners) === 'string' ? JSON.parse(req.body.winners) : req.body.winners;
     const scores: Array<number> = req.body.scores != null ? (typeof(req.body.scores) === 'string' ? JSON.parse(req.body.scores) : req.body.scores) : null;
@@ -43,6 +43,8 @@ export default async function record(req: Request): Promise<void> {
             .join(', ');
 
     Plays.getInstance().add(newPlay, `Recording game between ${playerList}`);
+
+    return newPlay;
 }
 
 function mapPlayerIdsToNames(ids: Array<number>, existingPlayers: Array<Player>): Array<string> {
