@@ -67,7 +67,9 @@ export interface ScoreStats {
 
 export interface GameStandings {
     scoreStats?: ScoreStats;
-    [key: number]: PlayerRecord;
+    records: {
+        [key: number]: PlayerRecord;
+    };
 }
 
 export interface PlayerStandings extends VsRecord {

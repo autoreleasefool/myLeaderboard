@@ -34,13 +34,13 @@ export default async function generateGameStandings(req: Request): Promise<GameS
 
     const game = Games.getInstance().findById(gameId);
     if (game == null) {
-        return {};
+        return { records: {}};
     }
 
     const gameStandings = await buildStandings(game);
     const allPlayers = await Players.getInstance().all();
     const players = allPlayers.filter(player => {
-        const playerRecord = gameStandings[player.id];
+        const playerRecord = gameStandings.records[player.id];
         return playerRecord == null ? false : isBanished(playerRecord) === false;
     });
     highlightRecords(gameStandings, players);
@@ -50,7 +50,7 @@ export default async function generateGameStandings(req: Request): Promise<GameS
 }
 
 async function buildStandings(game: Game): Promise<GameStandings> {
-    const gameStandings: GameStandings = {};
+    const gameStandings: GameStandings = { records: {}};
 
     let totalGames = 0;
     let totalScore = 0;
@@ -75,8 +75,8 @@ async function buildStandings(game: Game): Promise<GameStandings> {
             }
 
             play.players.forEach((playerId, index) => {
-                if (gameStandings[playerId] == null) {
-                    gameStandings[playerId] = {
+                if (gameStandings.records[playerId] == null) {
+                    gameStandings.records[playerId] = {
                         lastPlayed: play.playedOn,
                         overallRecord: { wins: 0, losses: 0, ties: 0 },
                         record: {},
@@ -85,9 +85,9 @@ async function buildStandings(game: Game): Promise<GameStandings> {
 
                 if (game.hasScores && play.scores != null && play.scores.length > index) {
                     const playerScore = play.scores[index];
-                    const playerStats = gameStandings[playerId].scoreStats;
+                    const playerStats = gameStandings.records[playerId].scoreStats;
                     if (playerStats == null) {
-                        gameStandings[playerId].scoreStats = {
+                        gameStandings.records[playerId].scoreStats = {
                             average: playerScore,
                             best: playerScore,
                             gamesPlayed: 1,
@@ -105,36 +105,36 @@ async function buildStandings(game: Game): Promise<GameStandings> {
                     }
                 }
 
-                if (play.playedOn > gameStandings[playerId].lastPlayed) {
-                    gameStandings[playerId].lastPlayed = play.playedOn;
+                if (play.playedOn > gameStandings.records[playerId].lastPlayed) {
+                    gameStandings.records[playerId].lastPlayed = play.playedOn;
                 }
 
                 let playerResult: GameResult;
                 if (play.winners.length < play.players.length) {
                     if (play.winners.includes(playerId)) {
                         playerResult = GameResult.WON;
-                        gameStandings[playerId].overallRecord.wins += 1;
+                        gameStandings.records[playerId].overallRecord.wins += 1;
                     } else {
-                        gameStandings[playerId].overallRecord.losses += 1;
+                        gameStandings.records[playerId].overallRecord.losses += 1;
                         playerResult = GameResult.LOST;
                     }
                 } else {
                     playerResult = GameResult.TIED;
-                    gameStandings[playerId].overallRecord.ties += 1;
+                    gameStandings.records[playerId].overallRecord.ties += 1;
                 }
 
                 play.players.filter(opponent => opponent !== playerId)
                     .forEach(opponent => {
-                        if (gameStandings[playerId].record[opponent] == null) {
-                            gameStandings[playerId].record[opponent] = { wins: 0, losses: 0, ties: 0 };
+                        if (gameStandings.records[playerId].record[opponent] == null) {
+                            gameStandings.records[playerId].record[opponent] = { wins: 0, losses: 0, ties: 0 };
                         }
 
                         if (playerResult === GameResult.WON) {
-                            gameStandings[playerId].record[opponent].wins += 1;
+                            gameStandings.records[playerId].record[opponent].wins += 1;
                         } else if (playerResult === GameResult.LOST) {
-                            gameStandings[playerId].record[opponent].losses += 1;
+                            gameStandings.records[playerId].record[opponent].losses += 1;
                         } else if (playerResult === GameResult.TIED) {
-                            gameStandings[playerId].record[opponent].ties += 1;
+                            gameStandings.records[playerId].record[opponent].ties += 1;
                         }
                     });
             });
@@ -142,7 +142,7 @@ async function buildStandings(game: Game): Promise<GameStandings> {
 
     for (const player in gameStandings) {
         if (typeof(player) === 'number' && gameStandings.hasOwnProperty(player)) {
-            const playerStats = gameStandings[player].scoreStats;
+            const playerStats = gameStandings.records[player].scoreStats;
             if (playerStats != null) {
                 playerStats.average = playerStats.average / playerStats.gamesPlayed;
             }
@@ -166,7 +166,7 @@ function highlightRecords(standings: GameStandings, players: Array<Player>) {
     const bestRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
 
     for (const player of players) {
-        const playerDetails = standings[player.id];
+        const playerDetails = standings.records[player.id];
         if (playerDetails == null) {
             continue;
         }
@@ -206,7 +206,7 @@ function highlightRecords(standings: GameStandings, players: Array<Player>) {
 
     const playerTotals: Map<number, Record> = new Map();
     for (const player of players) {
-        playerTotals.set(player.id, standings[player.id].overallRecord);
+        playerTotals.set(player.id, standings.records[player.id].overallRecord);
     }
     markBestAndWorstRecords(playerTotals, bestRecords, worstRecords);
 }

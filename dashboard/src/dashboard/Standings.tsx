@@ -46,7 +46,7 @@ class Standings extends React.Component<Props, State> {
                         columnContentTypes={visiblePlayers.map(_ => 'text' as ColumnContentType)}
                         headings={[]}
                         rows={[
-                            [<Version />, 'Total', ...visiblePlayers.map(player => <PlayerView player={player} record={standings[player.id]} />)],
+                            [<Version />, 'Total', ...visiblePlayers.map(player => <PlayerView player={player} record={standings.records[player.id]} />)],
                             ...visiblePlayers.map(player => {
                                 const recordCells: Array<ReactNode> = [];
                                 for (const opponent of visiblePlayers) {
@@ -55,7 +55,7 @@ class Standings extends React.Component<Props, State> {
                                         continue;
                                     }
 
-                                    const record = standings[player.id].record[opponent.id];
+                                    const record = standings.records[player.id].record[opponent.id];
                                     if (record == null) {
                                         recordCells.push(this._formatRecord({ wins: 0, losses: 0, ties: 0 }, false));
                                         continue;
@@ -65,8 +65,8 @@ class Standings extends React.Component<Props, State> {
                                 }
 
                                 return [
-                                    <PlayerView key={player.username} player={player} record={standings[player.id]} />,
-                                    this._formatRecord(standings[player.id].overallRecord, true),
+                                    <PlayerView key={player.username} player={player} record={standings.records[player.id]} />,
+                                    this._formatRecord(standings.records[player.id].overallRecord, true),
                                     ...recordCells,
                                 ];
                             }),
@@ -84,7 +84,7 @@ class Standings extends React.Component<Props, State> {
     }
 
     private _identifyBanishedPlayers(standings: GameStandings, players: Array<Player>): Set<number> {
-        return new Set(players.filter(player => isBanished(standings[player.id])).map(player => player.id));
+        return new Set(players.filter(player => isBanished(standings.records[player.id])).map(player => player.id));
     }
 
     private _formatRecord(record: Record, overall: boolean): ReactNode {

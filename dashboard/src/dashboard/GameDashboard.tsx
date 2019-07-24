@@ -36,7 +36,7 @@ class Dashboard extends React.Component<Props, State> {
         }
 
         const playersWithGames = players.filter(player => {
-            const playerRecord = standings[player.id];
+            const playerRecord = standings.records[player.id];
             if (playerRecord == null) {
                 return false;
             }

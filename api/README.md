@@ -66,47 +66,49 @@ Returns the standings for a game, given by ID.
         "average": 12,
         "gamesPlayed": 18
     },
-    0: {
-        "scoreStats": {
-            "best": 41,
-            "worst": -4,
-            "average": 17,
-            "gamesPlayed": 5
-        },
-        "lastPlayed": "2019-07-19T00:00:00.000Z",
-        "overallRecord": {
-            "wins": 4,
-            "losses": 1,
-            "ties": 0,
-            "isBest": true
-        },
-        "record": {
-            1: {
-                "wins" 4,
+    "records": {
+        0: {
+            "scoreStats": {
+                "best": 41,
+                "worst": -4,
+                "average": 17,
+                "gamesPlayed": 5
+            },
+            "lastPlayed": "2019-07-19T00:00:00.000Z",
+            "overallRecord": {
+                "wins": 4,
                 "losses": 1,
-                "ties": 0
+                "ties": 0,
+                "isBest": true
+            },
+            "record": {
+                1: {
+                    "wins" 4,
+                    "losses": 1,
+                    "ties": 0
+                }
             }
         }
-    }
-    1: {
-        "scoreStats": {
-            "best": 14,
-            "worst": -34,
-            "average": 5,
-            "gamesPlayed": 5
-        },
-        "lastPlayed": "2019-07-19T00:00:00.000Z",
-        "overallRecord": {
-            "wins": 1,
-            "losses": 4,
-            "ties": 0,
-            "isWorst": true
-        },
-        "record": {
-            1: {
-                "wins" 1,
+        1: {
+            "scoreStats": {
+                "best": 14,
+                "worst": -34,
+                "average": 5,
+                "gamesPlayed": 5
+            },
+            "lastPlayed": "2019-07-19T00:00:00.000Z",
+            "overallRecord": {
+                "wins": 1,
                 "losses": 4,
-                "ties": 0
+                "ties": 0,
+                "isWorst": true
+            },
+            "record": {
+                1: {
+                    "wins" 1,
+                    "losses": 4,
+                    "ties": 0
+                }
             }
         }
     }
