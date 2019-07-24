@@ -117,7 +117,7 @@ Returns the standings for a game, given by ID.
 
 ## Players
 
-**GET** `/players/list?includeAvatars=<Bool>`
+**GET** `/players/list?withAvatars=<Bool>`
 
 Returns the list of players. Optionally include the players' avatars in the response.
 
