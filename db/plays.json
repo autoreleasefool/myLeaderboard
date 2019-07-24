@@ -217,5 +217,7 @@
     {"id": 215, "game": 1, "playedOn": "2019-07-19T00:00:00.000Z", "players": [0,6], "winners": [0]},
     {"id": 216, "game": 1, "playedOn": "2019-07-19T00:00:00.000Z", "players": [0,6], "winners": [0]},
     {"id": 217, "game": 1, "playedOn": "2019-07-19T00:00:00.000Z", "players": [6,11], "winners": [6]},
-    {"id": 218, "game": 0, "playedOn": "2019-07-05T00:00:00.000Z", "players": [3,10], "winners": [3]}
+    {"id": 218, "game": 0, "playedOn": "2019-07-05T00:00:00.000Z", "players": [3,10], "winners": [3]},
+    {"id": 219, "game": 1, "playedOn": "2019-07-24T17:28:30.589Z", "players": [0,6], "winners": [0], "scores": [31,4]},
+    {"id": 220, "game": 1, "playedOn": "2019-07-24T19:08:46.713Z", "players": [5,11], "winners": [5], "scores": [18,5]}
 ]
