@@ -9,7 +9,8 @@
 import Foundation
 
 struct Player: Equatable, Codable {
-	let username: String
+	let id: Int
+	let avatar: String?
 	let displayName: String
-	let avatar: String
+	let username: String
 }

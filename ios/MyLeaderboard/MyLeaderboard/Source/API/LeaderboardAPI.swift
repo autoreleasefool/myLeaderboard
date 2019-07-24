@@ -22,14 +22,14 @@ class LeaderboardAPI {
 
 	// MARK: - Players
 
-	func players(completion: @escaping (LeaderboardAPIResult<[Player]>) -> Void) {
+	func players(withAvatars: Bool = true, completion: @escaping (LeaderboardAPIResult<[Player]>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<[Player]>) {
 			DispatchQueue.main.async {
 				completion(result)
 			}
 		}
 
-		let url = LeaderboardAPI.baseURL.appendingPathComponent("/players/list")
+		let url = LeaderboardAPI.baseURL.appendingPathComponent("/players/list?withAvatars=\(withAvatars)")
 		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
 			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
 		}.resume()

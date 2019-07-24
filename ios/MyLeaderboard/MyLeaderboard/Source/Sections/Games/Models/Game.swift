@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 struct Game: Equatable, Codable {
+	let id: Int
 	let name: String
-	let imageURL: String
+	let hasScores: Bool
+	let image: String?
 }

@@ -52,9 +52,11 @@ struct GameListItemState: Equatable {
 			return
 		}
 
-		view.gameImage.image = ImageLoader.shared.fetch(string: state.game.imageURL) { result in
-			if case .success(let image) = result {
-				view.gameImage.image = image
+		if let image = state.game.image {
+			view.gameImage.image = ImageLoader.shared.fetch(string: image) { result in
+				if case .success(let image) = result {
+					view.gameImage.image = image
+				}
 			}
 		}
 	}
