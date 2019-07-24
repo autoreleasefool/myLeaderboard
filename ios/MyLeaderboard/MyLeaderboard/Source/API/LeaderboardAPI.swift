@@ -35,6 +35,29 @@ class LeaderboardAPI {
 		}.resume()
 	}
 
+	func createPlayer(name: String, username: String, completion: @escaping (LeaderboardAPIResult<Player>) -> Void) {
+		func finishRequest(_ result: LeaderboardAPIResult<Player>) {
+			DispatchQueue.main.async {
+				completion(result)
+			}
+		}
+
+		let body = "{\"name\":\"\(name)\", \"username\":\"\(username)\"}"
+		guard let bodyData = body.data(using: .utf8) else {
+			finishRequest(.failure(.invalidData))
+			return
+		}
+
+		let url = LeaderboardAPI.baseURL.appendingPathComponent("/players/new")
+		var request = URLRequest(url: url)
+		request.httpMethod = "POST"
+		request.httpBody = bodyData
+		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+		URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
+		}.resume()
+	}
+
 	// MARK: - Games
 
 	func games(completion: @escaping (LeaderboardAPIResult<[Game]>) -> Void) {
@@ -72,6 +95,8 @@ class LeaderboardAPI {
 			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
 		}.resume()
 	}
+
+	// MARK: Common
 
 	private func handleResponse<Result: Codable>(data: Data?, response: URLResponse?, error: Error?, completion: (LeaderboardAPIResult<Result>) -> Void) {
 		guard error == nil else {
