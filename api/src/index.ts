@@ -1,16 +1,30 @@
 import './env';
 
 import express, { NextFunction, Request, Response } from 'express';
+import fs from 'fs';
+import https from 'https';
 import Octo from './common/Octo';
 import Games from './db/games';
 import Players from './db/players';
 import Plays from './db/plays';
 
-Octo.setBranch('ios');
-Octo.setUseLocal(true);
 Games.getInstance().refreshData();
 Players.getInstance().refreshData();
 Plays.getInstance().refreshData();
+
+let sslOptions: {
+    ca?: Buffer;
+    cert?: Buffer;
+    key?: Buffer;
+} = {}
+
+if (process.env.PRODUCTION) {
+    sslOptions = {
+        ca: fs.readFileSync('ssl/intermediate.crt'),
+        cert: fs.readFileSync('ssl/primary.crt'),
+        key: fs.readFileSync('ssl/private.key'),
+    }
+}
 
 // tslint:disable:no-console
 
@@ -80,6 +94,10 @@ applyPlaysRouter(app);
 applyMiscRouter(app);
 app.use(errorHandler);
 
-app.listen(port, () => {
-    console.log(`myLeaderboard API listening on port ${port}`);
-});
+if (process.env.PRODUCTION) {
+    https.createServer(sslOptions, app).listen(443);
+} else {
+    app.listen(port, () => {
+        console.log(`myLeaderboard API listening on port ${port}`);
+    });
+}
