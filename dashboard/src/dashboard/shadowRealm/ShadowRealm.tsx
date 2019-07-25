@@ -50,7 +50,7 @@ class ShadowRealm extends React.Component<Props, State> {
     private _identifyBanishedPlayers() {
         const { players, standings } = this.props;
         const banished = players.filter(player => {
-            const playerRecord = standings[player.id];
+            const playerRecord = standings.records[player.id];
             return playerRecord == null ? false : isBanished(playerRecord);
         });
         this.setState({ banished });

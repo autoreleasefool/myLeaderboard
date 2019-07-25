@@ -26,7 +26,7 @@ class Limbo extends React.Component<Props, State> {
         const { players, standings } = this.props;
 
         const limboing = players.filter(player => {
-            const playerRecord = standings[player.id];
+            const playerRecord = standings.records[player.id];
             if (playerRecord == null) {
                 return false;
             }
