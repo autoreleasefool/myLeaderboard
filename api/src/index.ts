@@ -20,9 +20,9 @@ let sslOptions: {
 
 if (process.env.PRODUCTION) {
     sslOptions = {
-        ca: fs.readFileSync('ssl/intermediate.crt'),
-        cert: fs.readFileSync('ssl/primary.crt'),
-        key: fs.readFileSync('ssl/private.key'),
+        ca: fs.readFileSync('../ssl/intermediate.crt'),
+        cert: fs.readFileSync('../ssl/primary.crt'),
+        key: fs.readFileSync('../ssl/private.key'),
     }
 }
 
