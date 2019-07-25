@@ -8,6 +8,7 @@ import './Limbo.css';
 interface Props {
     players: Array<Player>;
     standings: GameStandings;
+    forceRefresh: boolean;
 }
 
 interface State {

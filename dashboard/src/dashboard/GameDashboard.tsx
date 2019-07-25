@@ -12,23 +12,30 @@ interface Props {
 }
 
 interface State {
+    refresh: boolean;
     standings: GameStandings | undefined;
 }
 
+const softRefreshTime = 60 * 60 * 1000;
+
 class Dashboard extends React.Component<Props, State> {
+    private refreshInterval: number | undefined = undefined;
+
     constructor(props: Props) {
         super(props);
         this.state = {
+            refresh: false,
             standings: undefined,
         };
     }
 
     public componentDidMount() {
         this._fetchStandings();
+        this._startRefreshLoop();
     }
 
     public render() {
-        const { standings } = this.state;
+        const { refresh, standings } = this.state;
         const { game, players } = this.props;
 
         if (standings == null || players.length === 0) {
@@ -47,9 +54,9 @@ class Dashboard extends React.Component<Props, State> {
 
         return (
             <div className={'game-dashboard'}>
-                <Standings key={game.id} game={game} standings={standings} players={playersWithGames} />
-                <Limbo standings={standings} players={playersWithGames} />
-                <ShadowRealm standings={standings} players={playersWithGames} />
+                <Standings key={game.id} game={game} standings={standings} players={playersWithGames} forceRefresh={refresh} />
+                <Limbo standings={standings} players={playersWithGames} forceRefresh={refresh} />
+                <ShadowRealm standings={standings} players={playersWithGames} forceRefresh={refresh} />
             </div>
         );
     }
@@ -60,6 +67,18 @@ class Dashboard extends React.Component<Props, State> {
         this.setState({
             standings,
         });
+    }
+
+    private _startRefreshLoop() {
+        if (this.refreshInterval != null) {
+            window.clearInterval(this.refreshInterval);
+        }
+
+        this.refreshInterval = window.setInterval(() => this._refreshLoop(), softRefreshTime);
+    }
+
+    private async _refreshLoop() {
+        this.setState({ refresh: !this.state.refresh });
     }
 }
 

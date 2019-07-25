@@ -10,6 +10,7 @@ interface Props {
     game: Game;
     standings: GameStandings;
     players: Array<Player>;
+    forceRefresh: boolean;
 }
 
 interface State {
