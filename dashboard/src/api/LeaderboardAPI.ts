@@ -10,7 +10,7 @@ class LeaderboardAPI {
     }
 
     private static instance: LeaderboardAPI;
-    private static baseURL = '';
+    private static baseURL = 'http://myleaderboard.josephroque.dev';
 
     private constructor() {}
 
