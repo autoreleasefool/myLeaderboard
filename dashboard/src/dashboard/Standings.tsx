@@ -56,7 +56,7 @@ class Standings extends React.Component<Props, State> {
                                         continue;
                                     }
 
-                                    const record = standings.records[player.id].record[opponent.id];
+                                    const record = standings.records[player.id].records[opponent.id];
                                     if (record == null) {
                                         recordCells.push(this._formatRecord({ wins: 0, losses: 0, ties: 0 }, false));
                                         continue;

@@ -79,7 +79,7 @@ async function buildStandings(game: Game): Promise<GameStandings> {
                     gameStandings.records[playerId] = {
                         lastPlayed: play.playedOn,
                         overallRecord: { wins: 0, losses: 0, ties: 0 },
-                        record: {},
+                        records: {},
                     };
                 }
 
@@ -125,16 +125,16 @@ async function buildStandings(game: Game): Promise<GameStandings> {
 
                 play.players.filter(opponent => opponent !== playerId)
                     .forEach(opponent => {
-                        if (gameStandings.records[playerId].record[opponent] == null) {
-                            gameStandings.records[playerId].record[opponent] = { wins: 0, losses: 0, ties: 0 };
+                        if (gameStandings.records[playerId].records[opponent] == null) {
+                            gameStandings.records[playerId].records[opponent] = { wins: 0, losses: 0, ties: 0 };
                         }
 
                         if (playerResult === GameResult.WON) {
-                            gameStandings.records[playerId].record[opponent].wins += 1;
+                            gameStandings.records[playerId].records[opponent].wins += 1;
                         } else if (playerResult === GameResult.LOST) {
-                            gameStandings.records[playerId].record[opponent].losses += 1;
+                            gameStandings.records[playerId].records[opponent].losses += 1;
                         } else if (playerResult === GameResult.TIED) {
-                            gameStandings.records[playerId].record[opponent].ties += 1;
+                            gameStandings.records[playerId].records[opponent].ties += 1;
                         }
                     });
             });
@@ -180,7 +180,7 @@ function highlightRecords(standings: GameStandings, players: Array<Player>) {
         const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
         const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
         for (const opponent of players) {
-            const vsRecord = playerDetails.record[opponent.id];
+            const vsRecord = playerDetails.records[opponent.id];
             if (opponent.id === player.id || vsRecord == null) {
                 continue;
             }
@@ -198,7 +198,7 @@ function highlightRecords(standings: GameStandings, players: Array<Player>) {
                 continue;
             }
 
-            playerVs.set(opponent.id, playerDetails.record[opponent.id]);
+            playerVs.set(opponent.id, playerDetails.records[opponent.id]);
         }
 
         markBestAndWorstRecords(playerVs, bestVsRecords, worstVsRecords);

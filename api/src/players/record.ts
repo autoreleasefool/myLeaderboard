@@ -26,17 +26,18 @@ export default async function record(req: Request): Promise<PlayerStandings> {
     }
     cacheFreshness = new Date();
 
+    const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
+
     const player = Players.getInstance().findById(playerId);
     if (player == null) {
-        return { overallRecord: { wins: 0, losses: 0, ties: 0 }};
+        return playerRecord;
     }
 
     const game = Games.getInstance().findById(gameId);
     if (game == null) {
-        return { overallRecord: { wins: 0, losses: 0, ties: 0 }};
+        return playerRecord;
     }
 
-    const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }};
     const plays = await Plays.getInstance().all();
 
     let gamesPlayed = 0;
@@ -75,16 +76,16 @@ export default async function record(req: Request): Promise<PlayerStandings> {
 
             play.players.filter(opponent => opponent !== playerId)
                 .forEach(opponent => {
-                    if (playerRecord[opponent] == null) {
-                        playerRecord[opponent] = { wins: 0, losses: 0, ties: 0 };
+                    if (playerRecord.records[opponent] == null) {
+                        playerRecord.records[opponent] = { wins: 0, losses: 0, ties: 0 };
                     }
 
                     if (playerResult === GameResult.WON) {
-                        playerRecord[opponent].wins += 1;
+                        playerRecord.records[opponent].wins += 1;
                     } else if (playerResult === GameResult.LOST) {
-                        playerRecord[opponent].losses += 1;
+                        playerRecord.records[opponent].losses += 1;
                     } else if (playerResult === GameResult.TIED) {
-                        playerRecord[opponent].ties += 1;
+                        playerRecord.records[opponent].ties += 1;
                     }
                 });
         });

@@ -47,15 +47,13 @@ export interface Record {
     isWorst?: boolean;
 }
 
-export interface VsRecord {
-    [key: number]: Record;
-}
-
 export interface PlayerRecord {
     scoreStats?: ScoreStats;
     lastPlayed: string;
     overallRecord: Record;
-    record: VsRecord;
+    records: {
+        [key: number]: Record;
+    };
 }
 
 export interface ScoreStats {
@@ -72,7 +70,10 @@ export interface GameStandings {
     };
 }
 
-export interface PlayerStandings extends VsRecord {
+export interface PlayerStandings {
     scoreStats?: ScoreStats;
     overallRecord: Record;
+    records: {
+        [key: number]: Record;
+    }
 }
