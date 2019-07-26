@@ -38,3 +38,24 @@ export async function refreshDepdendencies(lastUpdate: Date, dependencies: Array
     }
     return true;
 }
+
+export function apiURL(withScheme: boolean): string {
+    const baseURL: string = process.env.baseURL!;
+    if (baseURL.startsWith('http')) {
+        if (withScheme) {
+            return baseURL;
+        } else {
+            return baseURL.substr(baseURL.indexOf('/') + 2);
+        }
+    } else {
+        if (withScheme) {
+            if (process.env.SSL_ENABLED) {
+                return `https://${baseURL}`;
+            } else {
+                return `http://${baseURL}`;
+            }
+        } else {
+            return baseURL;
+        }
+    }
+}
