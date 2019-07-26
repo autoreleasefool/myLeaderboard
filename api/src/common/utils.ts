@@ -40,7 +40,7 @@ export async function refreshDepdendencies(lastUpdate: Date, dependencies: Array
 }
 
 export function apiURL(withScheme: boolean): string {
-    const baseURL: string = process.env.baseURL!;
+    const baseURL: string = process.env.API_URL!;
     if (baseURL.startsWith('http')) {
         if (withScheme) {
             return baseURL;
