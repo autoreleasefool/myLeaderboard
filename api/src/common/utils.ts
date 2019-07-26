@@ -16,7 +16,7 @@ export async function checkCache<T>(cache: Map<number, T>, id: number, updated: 
         return undefined;
     }
 
-    const anyRefreshed = await refreshDepdendencies(updated, dependencies);
+    const anyRefreshed = await refreshDependencies(updated, dependencies);
     if (anyRefreshed) {
         cache.clear();
     }
@@ -24,7 +24,7 @@ export async function checkCache<T>(cache: Map<number, T>, id: number, updated: 
     return cache.get(id);
 }
 
-export async function refreshDepdendencies(lastUpdate: Date, dependencies: Array<Table<any>>): Promise<boolean> {
+export async function refreshDependencies(lastUpdate: Date, dependencies: Array<Table<any>>): Promise<boolean> {
     const promises: Array<Promise<any>> = [];
     for (const dependency of dependencies) {
         if (dependency.anyUpdatesSince(lastUpdate)) {
@@ -34,9 +34,9 @@ export async function refreshDepdendencies(lastUpdate: Date, dependencies: Array
 
     if (promises.length > 0) {
         await Promise.all(promises);
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 
 export function apiURL(withScheme: boolean): string {
