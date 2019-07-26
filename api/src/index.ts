@@ -32,7 +32,7 @@ if (githubToken != null && githubToken.length > 0) {
 }
 
 const app = express();
-const port = (process.env.NODE_ENV === 'production') ? 80 : 3001;
+const port = 3001;
 
 app.use((_, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -78,6 +78,29 @@ applyPlaysRouter(app);
 applyMiscRouter(app);
 app.use(errorHandler);
 
-app.listen(port, () => {
-    console.log(`myLeaderboard API listening on port ${port}`);
-});
+// SSL
+
+import fs from 'fs';
+import https from 'https';
+import { apiURL } from './common/utils';
+
+if (process.env.SSL_ENABLED) {
+    const privateKey = fs.readFileSync(`/etc/letsencrypt/live/${apiURL(false)}/privkey.pem`, 'utf8');
+    const certificate = fs.readFileSync(`/etc/letsencrypt/live/${apiURL(false)}/cert.pem`, 'utf8');
+    const ca = fs.readFileSync(`/etc/letsencrypt/live/${apiURL(false)}/chain.pem`, 'utf8');
+
+    const credentials = {
+        ca,
+        cert: certificate,
+        key: privateKey,
+    };
+
+    const httpsServer = https.createServer(credentials, app);
+    httpsServer.listen(443, () => {
+        console.log('myLeaderboard API listening on port 443.');
+    });
+} else {
+    app.listen(port, () => {
+        console.log(`myLeaderboard API listening on port ${port}`);
+    });
+}
