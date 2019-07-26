@@ -10,5 +10,5 @@ import Foundation
 
 struct Standings: Codable {
 	let scoreStats: Score?
-	let records: [Int: Record]
+	let records: [ID: Record]
 }

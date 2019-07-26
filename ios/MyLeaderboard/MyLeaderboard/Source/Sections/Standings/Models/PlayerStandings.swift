@@ -1,5 +1,5 @@
 //
-//  PlayerRecord.swift
+//  PlayerStandings.swift
 //  MyLeaderboard
 //
 //  Created by Joseph Roque on 2019-07-24.
@@ -8,9 +8,8 @@
 
 import Foundation
 
-struct PlayerRecord: Codable {
+struct PlayerStandings: Codable {
 	let scoreStats: Score?
-	let lastPlayed: String
 	let overallRecord: Record
-	let record: [ID: Record]
+	let records: [ID: Record]
 }
