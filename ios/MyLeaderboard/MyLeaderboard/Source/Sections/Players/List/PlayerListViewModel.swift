@@ -37,8 +37,10 @@ class PlayerListViewModel: ViewModel {
 
 	func postViewAction(_ viewAction: PlayerListViewAction) {
 		switch viewAction {
-		case .initialize, .reload:
+		case .initialize:
 			loadPlayerList()
+		case .reload:
+			reloadPlayerList()
 		}
 	}
 
@@ -49,6 +51,17 @@ class PlayerListViewModel: ViewModel {
 				self?.handleAction(.error(error))
 			case .success(let players):
 				self?.players = players
+			}
+		}
+	}
+
+	private func reloadPlayerList() {
+		api.refresh { [weak self] in
+			switch $0 {
+			case .failure(let error):
+				self?.handleAction(.error(error))
+			case .success:
+				self?.loadPlayerList()
 			}
 		}
 	}

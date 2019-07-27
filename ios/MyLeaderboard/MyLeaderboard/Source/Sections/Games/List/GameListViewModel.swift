@@ -43,8 +43,10 @@ class GameListViewModel: ViewModel {
 		switch viewAction {
 		case .selectGame(let game):
 			handleAction(.gameSelected(game))
-		case .initialize, .reload:
+		case .initialize:
 			loadGameList()
+		case .reload:
+			reloadGameList()
 		case .addGame:
 			handleAction(.addGame)
 		}
@@ -57,6 +59,17 @@ class GameListViewModel: ViewModel {
 				self?.handleAction(.error(error))
 			case .success(let games):
 				self?.games = games
+			}
+		}
+	}
+
+	private func reloadGameList() {
+		api.refresh { [weak self] in
+			switch $0 {
+			case .failure(let error):
+				self?.handleAction(.error(error))
+			case .success:
+				self?.loadGameList()
 			}
 		}
 	}
