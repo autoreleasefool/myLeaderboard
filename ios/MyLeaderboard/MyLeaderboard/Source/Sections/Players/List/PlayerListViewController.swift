@@ -30,8 +30,8 @@ class PlayerListViewController: FTDViewController {
 			case .playersUpdated:
 				self.finishRefresh()
 				self.render()
-            case .playerSelected(let player):
-                self.showPlayerDetails(for: player)
+			case .playerSelected(let player):
+				self.showPlayerDetails(for: player)
 			case .error(let error):
 				self.presentError(error)
 			}
