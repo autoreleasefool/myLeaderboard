@@ -30,6 +30,8 @@ class PlayerListViewController: FTDViewController {
 			case .playersUpdated:
 				self.finishRefresh()
 				self.render()
+            case .playerSelected(let player):
+                self.showPlayerDetails(for: player)
 			case .error(let error):
 				self.presentError(error)
 			}
@@ -55,9 +57,9 @@ class PlayerListViewController: FTDViewController {
 //		presentModal(CreateGameViewController(api: api))
 //	}
 
-//	private func showPlayerDetails(for player: Player) {
-//		print("Selected game \(game.name)")
-//	}
+	private func showPlayerDetails(for player: Player) {
+		print("Selected player \(player.displayName)")
+	}
 
 	private func presentError(_ error: Error) {
 		print("Error: \(error)")
@@ -70,6 +72,6 @@ class PlayerListViewController: FTDViewController {
 
 extension PlayerListViewController: PlayerListActionable {
 	func selectedPlayer(player: Player) {
-//		viewModel.postViewAction(.selectGame(game))
+        viewModel.postViewAction(.selectPlayer(player))
 	}
 }
