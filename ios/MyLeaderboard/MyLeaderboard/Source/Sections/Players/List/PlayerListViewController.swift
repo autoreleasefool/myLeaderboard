@@ -72,6 +72,6 @@ class PlayerListViewController: FTDViewController {
 
 extension PlayerListViewController: PlayerListActionable {
 	func selectedPlayer(player: Player) {
-        viewModel.postViewAction(.selectPlayer(player))
+		viewModel.postViewAction(.selectPlayer(player))
 	}
 }
