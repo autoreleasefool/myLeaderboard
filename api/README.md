@@ -81,7 +81,7 @@ Returns the standings for a game, given by ID.
                 "ties": 0,
                 "isBest": true
             },
-            "record": {
+            "records": {
                 1: {
                     "wins" 4,
                     "losses": 1,
@@ -103,7 +103,7 @@ Returns the standings for a game, given by ID.
                 "ties": 0,
                 "isWorst": true
             },
-            "record": {
+            "records": {
                 1: {
                     "wins" 1,
                     "losses": 4,
