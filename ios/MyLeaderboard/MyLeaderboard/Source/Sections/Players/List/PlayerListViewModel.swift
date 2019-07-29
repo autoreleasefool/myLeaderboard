@@ -10,12 +10,14 @@ import Foundation
 
 enum PlayerListAction: BaseAction {
 	case playersUpdated([Player])
+	case playerSelected(Player)
 	case error(Error)
 }
 
 enum PlayerListViewAction: BaseViewAction {
 	case initialize
 	case reload
+	case selectPlayer(Player)
 }
 
 class PlayerListViewModel: ViewModel {
@@ -41,6 +43,8 @@ class PlayerListViewModel: ViewModel {
 			loadPlayerList()
 		case .reload:
 			reloadPlayerList()
+		case .selectPlayer(let player):
+			handleAction(.playerSelected(player))
 		}
 	}
 
