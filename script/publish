@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Checkout master
+git checkout master
+
+# Bump version
+./script/bump-version $1
+git add .
+git commit -S -m "Bump $1 version"
+# git push origin master
+
+# Build site
+cd dashboard
+yarn
+yarn build
+cd ..
+mv ./site ../site
+
+# Commit changes
+git checkout gh-pages
+rm -rf ./site
+mv ../site ./
+git add .
+git commit -S -m "Publish site"
+# git push origin gh-pages
+
+# Return to master
+git checkout master

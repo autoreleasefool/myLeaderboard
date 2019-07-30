@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+
+import re
+import sys
+
+version_file = './dashboard/src/components/Version.tsx'
+
+major=1
+minor=0
+patch=0
+
+update = 'patch'
+if len(sys.argv) > 1:
+    if sys.argv[1] in ['major', 'minor', 'patch']:
+        update = sys.argv[1]
+
+# Get current version
+
+with open(version_file) as f:
+    for line in f:
+        match = re.search('(major|minor|patch)Version = (\d+)', line)
+        if match:
+            if match.group(1) == 'major':
+                major = int(match.group(2))
+            elif match.group(1) == 'minor':
+                minor = int(match.group(2))
+            elif match.group(1) == 'patch':
+                patch = int(match.group(2))
+
+# Compute new version
+if update == 'patch':
+    patch += 1
+elif update == 'minor':
+    patch = 0
+    minor += 1
+elif update == 'major':
+    patch = 0
+    minor = 0
+    major += 1
+
+# Update version file
+
+from tempfile import mkstemp
+from shutil import move
+from os import fdopen, remove
+
+fh, abs_path = mkstemp()
+with fdopen(fh, 'w') as new_file:
+    with open(version_file) as old_file:
+        for line in old_file:
+            updated = re.sub('majorVersion = \d+', 'majorVersion = {}'.format(major), line)
+            updated = re.sub('minorVersion = \d+', 'minorVersion = {}'.format(minor), updated)
+            updated = re.sub('patchVersion = \d+', 'patchVersion = {}'.format(patch), updated)
+            new_file.write(updated)
+
+remove(version_file)
+move(abs_path, version_file)
