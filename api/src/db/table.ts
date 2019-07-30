@@ -76,12 +76,14 @@ class Table<Row extends Identifiable> {
     }
 
     private stringifyRows(): string {
-        let output = '[\n';
+        const stringifiedRows: Array<string> = [];
         for (const row of this.rows) {
-            output += JSON.stringify(row);
-            output += '\n';
+            stringifiedRows.push(`    ${JSON.stringify(row)}`);
         }
-        output += ']';
+
+        let output = '[\n';
+        output += stringifiedRows.join(',\n');
+        output += '\n]';
         return output;
     }
 }
