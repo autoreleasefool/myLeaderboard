@@ -1,4 +1,4 @@
 [
-    {"id": 0, "name": "Hive", "hasScores": false},
-    {"id": 1, "name": "Patchwork", "hasScores": true}
+    {"id":0,"name":"Hive","hasScores":false},
+    {"id":1,"name":"Patchwork","hasScores":true}
 ]
