@@ -28,9 +28,10 @@ class LeaderboardAPI {
 				completion(result)
 			}
 		}
-
-		let stringURL = LeaderboardAPI.baseURL.appendingPathComponent("/players/list?withAvatars=\(withAvatars)").absoluteString.replacingOccurrences(of: "%3F", with: "?")
-        guard let url = URL(string: stringURL) else { return }
+		guard var urlComponents = URLComponents(url: LeaderboardAPI.baseURL.appendingPathComponent("/players/list"), resolvingAgainstBaseURL: true) else { return }
+		let queryItems: [URLQueryItem] = [URLQueryItem(name: "withAvatars", value: "\(withAvatars)")]
+		urlComponents.queryItems = queryItems
+        guard let url = urlComponents.url else { return }
 		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
 			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
 		}.resume()

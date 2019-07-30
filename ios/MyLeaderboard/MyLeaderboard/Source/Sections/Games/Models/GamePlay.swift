@@ -8,11 +8,6 @@
 
 import Foundation
 
-typealias ID = Int
-protocol Identifiable {
-    var id: ID { get }
-}
-
 struct GamePlay: Identifiable, Codable {
 	let id: ID
 	let game: ID
