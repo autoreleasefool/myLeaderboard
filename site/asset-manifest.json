@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/myLeaderboard/site/static/css/main.5205e508.chunk.css",
+    "main.css": "/myLeaderboard/site/static/css/main.4cdb1b87.chunk.css",
     "main.js": "/myLeaderboard/site/static/js/main.cb50a589.chunk.js",
     "main.js.map": "/myLeaderboard/site/static/js/main.cb50a589.chunk.js.map",
     "runtime~main.js": "/myLeaderboard/site/static/js/runtime~main.5f8b190c.js",
@@ -8,8 +8,8 @@
     "static/js/2.d264c340.chunk.js": "/myLeaderboard/site/static/js/2.d264c340.chunk.js",
     "static/js/2.d264c340.chunk.js.map": "/myLeaderboard/site/static/js/2.d264c340.chunk.js.map",
     "index.html": "/myLeaderboard/site/index.html",
-    "precache-manifest.0297a8c7ce8a56740611cc05affcc6f7.js": "/myLeaderboard/site/precache-manifest.0297a8c7ce8a56740611cc05affcc6f7.js",
+    "precache-manifest.d76fd827400e85d5dde8a8a371f94432.js": "/myLeaderboard/site/precache-manifest.d76fd827400e85d5dde8a8a371f94432.js",
     "service-worker.js": "/myLeaderboard/site/service-worker.js",
-    "static/css/main.5205e508.chunk.css.map": "/myLeaderboard/site/static/css/main.5205e508.chunk.css.map"
+    "static/css/main.4cdb1b87.chunk.css.map": "/myLeaderboard/site/static/css/main.4cdb1b87.chunk.css.map"
   }
 }
