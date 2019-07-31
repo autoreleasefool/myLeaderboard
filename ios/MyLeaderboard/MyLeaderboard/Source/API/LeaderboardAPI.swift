@@ -18,7 +18,7 @@ enum LeaderboardAPIError: LocalizedError {
 typealias LeaderboardAPIResult<Success> = Result<Success, LeaderboardAPIError>
 
 class LeaderboardAPI {
-	private static var baseURL = URL(string: "")!
+	private static var baseURL = URL(string: "https://myleaderboard.josephroque.dev")!
 
 	// MARK: - Players
 
@@ -28,8 +28,10 @@ class LeaderboardAPI {
 				completion(result)
 			}
 		}
-
-		let url = LeaderboardAPI.baseURL.appendingPathComponent("/players/list?withAvatars=\(withAvatars)")
+		guard var urlComponents = URLComponents(url: LeaderboardAPI.baseURL.appendingPathComponent("/players/list"), resolvingAgainstBaseURL: true) else { return }
+		let queryItems: [URLQueryItem] = [URLQueryItem(name: "withAvatars", value: "\(withAvatars)")]
+		urlComponents.queryItems = queryItems
+        guard let url = urlComponents.url else { return }
 		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
 			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
 		}.resume()
@@ -187,7 +189,7 @@ class LeaderboardAPI {
 		completion(.success(result))
 	}
 
-	private func handleVoidResponse<Result: Codable>(data: Data?, response: URLResponse?, error: Error?, completion: (LeaderboardAPIResult<Bool>) -> Void) {
+	private func handleVoidResponse(data: Data?, response: URLResponse?, error: Error?, completion: (LeaderboardAPIResult<Bool>) -> Void) {
 		guard error == nil else {
 			completion(.failure(.networkingError(error!)))
 			return

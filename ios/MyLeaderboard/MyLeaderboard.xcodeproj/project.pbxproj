@@ -23,7 +23,6 @@
 		CA9209FE22E93604008E1B96 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9209FD22E93604008E1B96 /* Record.swift */; };
 		CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9209FF22E9360F008E1B96 /* PlayerRecord.swift */; };
 		CA920A0222E93666008E1B96 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0122E93666008E1B96 /* Score.swift */; };
-		CA920A0422E94367008E1B96 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0322E94367008E1B96 /* Identifiable.swift */; };
 		CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0522E94911008E1B96 /* PlayerStandings.swift */; };
 		CA920A0822E94A84008E1B96 /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0722E94A84008E1B96 /* GamePlay.swift */; };
 		CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220222D592AA00479A0B /* CreateGameViewController.swift */; };
@@ -49,6 +48,7 @@
 		CAC9067722D0F70F0075B033 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067522D0F70F0075B033 /* LaunchScreen.storyboard */; };
 		CAC9068222D0F70F0075B033 /* MyLeaderboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9068122D0F70F0075B033 /* MyLeaderboardTests.swift */; };
 		CAC9068D22D0F70F0075B033 /* MyLeaderboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9068C22D0F70F0075B033 /* MyLeaderboardUITests.swift */; };
+		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,7 +85,6 @@
 		CA9209FD22E93604008E1B96 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		CA9209FF22E9360F008E1B96 /* PlayerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRecord.swift; sourceTree = "<group>"; };
 		CA920A0122E93666008E1B96 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
-		CA920A0322E94367008E1B96 /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 		CA920A0522E94911008E1B96 /* PlayerStandings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStandings.swift; sourceTree = "<group>"; };
 		CA920A0722E94A84008E1B96 /* GamePlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlay.swift; sourceTree = "<group>"; };
 		CA96220222D592AA00479A0B /* CreateGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +116,7 @@
 		CAC9068822D0F70F0075B033 /* MyLeaderboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyLeaderboardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9068C22D0F70F0075B033 /* MyLeaderboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardUITests.swift; sourceTree = "<group>"; };
 		CAC9068E22D0F70F0075B033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +294,7 @@
 				CABA3EAB22D4B81F00960758 /* MVVM */,
 				CABA3EA922D4B4DB00960758 /* FTDViewController.swift */,
 				CABA3EAC22D4B83D00960758 /* ImageLoader.swift */,
+				F55AE95922F1049500BCEE5B /* Identifiable.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -587,6 +588,7 @@
 				CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */,
 				CAB3871C22D1907A00349B1F /* ViewAction.swift in Sources */,
 				CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */,
+				F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */,
 				CABA3EA222D36BAD00960758 /* LeaderboardAPI.swift in Sources */,
 				CAB3871422D18C5700349B1F /* Game.swift in Sources */,
 				CAB3871E22D224A100349B1F /* ViewModel.swift in Sources */,
