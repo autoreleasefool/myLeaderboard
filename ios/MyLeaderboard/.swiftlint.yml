@@ -1,4 +1,5 @@
 disabled_rules:
+  - type_name
   - identifier_name
   - line_length
   - trailing_comma

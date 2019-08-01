@@ -8,6 +8,7 @@
 import Foundation
 
 typealias ID = Int
+
 protocol Identifiable {
 	var id: ID { get }
 }
