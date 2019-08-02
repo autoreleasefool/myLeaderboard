@@ -8,10 +8,10 @@
 
 import Foundation
 
-protocol PickerItemQueryable: AnyObject {
+protocol PickerItemQueryable {
 	associatedtype Item: Identifiable
 
-	func query(api: LeaderboardAPI, completion: (LeaderboardAPIResult<[Item]>) -> Void)
+	func query(api: LeaderboardAPI, completion: @escaping (LeaderboardAPIResult<[Item]>) -> Void)
 }
 
 enum PickerAction<Item: Identifiable>: BaseAction {
@@ -31,7 +31,8 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 	typealias ActionHandler = (_ action: PickerAction<Item>) -> Void
 
 	private var api: LeaderboardAPI
-	private weak var queryable: Queryable?
+	private let multiSelect: Bool
+	private var queryable: Queryable
 	var handleAction: ActionHandler
 
 	private(set) var items: [Item] = [] {
@@ -46,9 +47,10 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		}
 	}
 
-	init(api: LeaderboardAPI, initiallySelected: Set<ID>, queryable: Queryable, handleAction: @escaping ActionHandler) {
+	init(api: LeaderboardAPI, initiallySelected: Set<ID>, multiSelect: Bool, queryable: Queryable, handleAction: @escaping ActionHandler) {
 		self.api = api
 		self.selectedItems = initiallySelected
+		self.multiSelect = multiSelect
 		self.queryable = queryable
 		self.handleAction = handleAction
 	}
@@ -60,18 +62,14 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		case .refresh:
 			reloadItems()
 		case .itemSelected(let id, let selected):
-			if selected {
-				selectedItems.insert(id)
-			} else {
-				selectedItems.remove(id)
-			}
+			selectItem(id, selected: selected)
 		case .finish:
 			submit()
 		}
 	}
 
 	private func loadItems() {
-		queryable?.query(api: api) { [weak self] result in
+		queryable.query(api: api) { [weak self] result in
 			switch result {
 			case .success(let items):
 				self?.items = items
@@ -90,6 +88,20 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 				self?.handleAction(.apiError(error))
 			}
 		}
+	}
+
+	private func selectItem(_ id: ID, selected: Bool) {
+		var selectedItems = Set(self.selectedItems)
+		if selected {
+			if !multiSelect {
+				selectedItems.removeAll()
+			}
+			selectedItems.insert(id)
+		} else {
+			selectedItems.remove(id)
+		}
+
+		self.selectedItems = selectedItems
 	}
 
 	private func submit() {

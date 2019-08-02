@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-struct Game: Equatable, Codable {
-	let id: Int
+struct Game: Identifiable, Equatable, Codable {
+	let id: ID
 	let name: String
 	let hasScores: Bool
 	let image: String?

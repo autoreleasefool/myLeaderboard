@@ -131,6 +131,7 @@
 		CAE56F8722F4712500FE0998 /* CombinedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedView.swift; sourceTree = "<group>"; };
 		CAE56F8922F47AAB00FE0998 /* ImageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageState.swift; sourceTree = "<group>"; };
 		CAE56F8B22F47CD000FE0998 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
+		CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPickerViewController.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -431,6 +432,7 @@
 		CAE16DF922F44C3800F1304C /* Picker */ = {
 			isa = PBXGroup;
 			children = (
+				CAE56F9022F48C7C00FE0998 /* Player */,
 				CAE56F8F22F48C6B00FE0998 /* Base */,
 			);
 			path = Picker;
@@ -444,6 +446,14 @@
 				CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		CAE56F9022F48C7C00FE0998 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -615,6 +625,7 @@
 				CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */,
 				CA4BAB9022D6DC2F003347AF /* UIControl+Extensions.swift in Sources */,
 				CAC47BC722E887DC000DF790 /* Standings.swift in Sources */,
+				CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */,
 				CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */,
 				CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */,
 				CABA3EA422D42DC300960758 /* GameListBuilder.swift in Sources */,

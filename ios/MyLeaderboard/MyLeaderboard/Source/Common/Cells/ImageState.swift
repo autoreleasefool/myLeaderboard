@@ -16,11 +16,13 @@ struct ImageState: ViewState {
 	private static let heightAnchorIdentifier = "ImageState.Height"
 
 	let image: UIImage?
+	let tintColor: UIColor?
 	let width: CGFloat?
 	let height: CGFloat?
 
-	init(image: UIImage?, width: CGFloat? = nil, height: CGFloat? = nil) {
+	init(image: UIImage?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil) {
 		self.image = image
+		self.tintColor = tintColor
 		self.width = width
 		self.height = height
 	}
@@ -47,6 +49,7 @@ struct ImageState: ViewState {
 		}
 
 		view.contentMode = .scaleAspectFit
+		view.tintColor = state.tintColor
 		view.image = state.image
 	}
 

@@ -16,12 +16,12 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 	private var viewModel: BasePickerViewModel<Item, Queryable>!
 	private var finishedSelection: FinishedSelection
 
-	init(api: LeaderboardAPI, initiallySelected: Set<ID>, queryable: Queryable, completion: @escaping FinishedSelection) {
+	init(api: LeaderboardAPI, initiallySelected: Set<ID>, multiSelect: Bool, queryable: Queryable, completion: @escaping FinishedSelection) {
 		self.api = api
 		self.finishedSelection = completion
 		super.init()
 
-		self.viewModel = BasePickerViewModel(api: api, initiallySelected: initiallySelected, queryable: queryable) { [weak self] action in
+		self.viewModel = BasePickerViewModel(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, queryable: queryable) { [weak self] action in
 			switch action {
 			case .itemsUpdated:
 				self?.render()
@@ -31,10 +31,18 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 				self?.presentError(error)
 			}
 		}
+
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		viewModel.postViewAction(.initialize)
+		render()
 	}
 
 	private func render() {
@@ -56,6 +64,10 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 		}
 
 		Loaf(message, state: .error, sender: self).show()
+	}
+
+	@objc private func submit() {
+		viewModel.postViewAction(.finish)
 	}
 }
 

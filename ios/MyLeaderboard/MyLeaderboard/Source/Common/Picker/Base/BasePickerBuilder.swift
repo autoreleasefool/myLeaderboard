@@ -11,7 +11,6 @@ import FunctionalTableData
 struct PickerItem<State: ViewState> {
 	let id: ID
 	let state: State.State
-	let view: State.View
 }
 
 protocol BasePickerActionable: AnyObject {
@@ -28,7 +27,12 @@ struct BasePickerBuilder {
 	}
 
 	static func cell<State: ViewState>(for item: PickerItem<State>, selected: Bool, actionable: BasePickerActionable) -> CellConfigType {
-		let checkedState = ImageState(image: selected ? UIImage(named: "Check") : nil, width: Metrics.Image.small, height: Metrics.Image.small)
+		let checkedState = ImageState(
+			image: selected ? UIImage(named: "Check") : nil,
+			tintColor: .white,
+			width: Metrics.Image.small,
+			height: Metrics.Image.small
+		)
 
 		return CombinedCell<UIImageView, ImageState, State.View, State.State, LayoutMarginsTableItemLayout>(
 			key: "\(item.id)",

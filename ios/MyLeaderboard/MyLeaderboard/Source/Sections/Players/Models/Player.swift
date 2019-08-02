@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct Player: Equatable, Codable {
-	let id: Int
+struct Player: Identifiable, Equatable, Codable {
+	let id: ID
 	let avatar: String?
 	let displayName: String
 	let username: String
