@@ -12,7 +12,7 @@ enum GameListAction: BaseAction {
 	case gamesUpdated([Game])
 	case gameSelected(Game)
 	case addGame
-	case error(Error)
+	case apiError(LeaderboardAPIError)
 }
 
 enum GameListViewAction: BaseViewAction {
@@ -56,7 +56,7 @@ class GameListViewModel: ViewModel {
 		api.games { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.error(error))
+				self?.handleAction(.apiError(error))
 			case .success(let games):
 				self?.games = games
 			}
@@ -67,7 +67,7 @@ class GameListViewModel: ViewModel {
 		api.refresh { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.error(error))
+				self?.handleAction(.apiError(error))
 			case .success:
 				self?.loadGameList()
 			}

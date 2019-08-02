@@ -13,6 +13,21 @@ enum LeaderboardAPIError: LocalizedError {
 	case invalidResponse
 	case invalidHTTPResponse(Int)
 	case invalidData
+
+	var errorDescription: String? {
+		switch self {
+		case .networkingError:
+			return "Network error"
+		case .invalidResponse, .invalidData:
+			return "Could not parse response"
+		case .invalidHTTPResponse(let code):
+			if (500..<600).contains(code) {
+				return "Server error (\(code))"
+			} else {
+				return "Unexpected HTTP error: \(code)"
+			}
+		}
+	}
 }
 
 typealias LeaderboardAPIResult<Success> = Result<Success, LeaderboardAPIError>

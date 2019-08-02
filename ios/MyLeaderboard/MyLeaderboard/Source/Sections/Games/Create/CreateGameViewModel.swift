@@ -11,7 +11,7 @@ import UIKit
 enum CreateGameAction {
 	case nameUpdated(String)
 	case gameCreated(Game)
-	case error(Error)
+	case apiError(LeaderboardAPIError)
 }
 
 enum CreateGameViewAction {
@@ -48,12 +48,14 @@ class CreateGameViewModel {
 	}
 
 	private func createGame(withName name: String) {
+		// TODO: present error if name is empty
+
 		api.createGame(withName: name) { [weak self] result in
 			switch result {
 			case .success(let game):
 				self?.handleAction(.gameCreated(game))
 			case .failure(let error):
-				self?.handleAction(.error(error))
+				self?.handleAction(.apiError(error))
 			}
 		}
 	}

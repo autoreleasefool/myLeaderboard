@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Loaf
 
 class GameListViewController: FTDViewController {
 	private var api: LeaderboardAPI
@@ -35,7 +36,7 @@ class GameListViewController: FTDViewController {
 				self.showGameDetails(for: game)
 			case .addGame:
 				self.showCreateGame()
-			case .error(let error):
+			case .apiError(let error):
 				self.presentError(error)
 			}
 		}
@@ -64,8 +65,15 @@ class GameListViewController: FTDViewController {
 		print("Selected game \(game.name)")
 	}
 
-	private func presentError(_ error: Error) {
-		print("Error: \(error)")
+	private func presentError(_ error: LeaderboardAPIError) {
+		let message: String
+		if let errorDescription = error.errorDescription {
+			message = errorDescription
+		} else {
+			message = "Unknown error."
+		}
+
+		Loaf(message, state: .error, sender: self).show()
 	}
 
 	override func refresh() {

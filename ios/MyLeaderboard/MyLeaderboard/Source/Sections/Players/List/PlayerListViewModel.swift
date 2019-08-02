@@ -11,7 +11,7 @@ import Foundation
 enum PlayerListAction: BaseAction {
 	case playersUpdated([Player])
 	case playerSelected(Player)
-	case error(Error)
+	case apiError(LeaderboardAPIError)
 }
 
 enum PlayerListViewAction: BaseViewAction {
@@ -52,7 +52,7 @@ class PlayerListViewModel: ViewModel {
 		api.players { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.error(error))
+				self?.handleAction(.apiError(error))
 			case .success(let players):
 				self?.players = players
 			}
@@ -63,7 +63,7 @@ class PlayerListViewModel: ViewModel {
 		api.refresh { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.error(error))
+				self?.handleAction(.apiError(error))
 			case .success:
 				self?.loadPlayerList()
 			}

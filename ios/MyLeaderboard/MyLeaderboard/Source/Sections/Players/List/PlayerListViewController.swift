@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Loaf
 
 class PlayerListViewController: FTDViewController {
 	private var api: LeaderboardAPI
@@ -32,7 +33,7 @@ class PlayerListViewController: FTDViewController {
 				self.render()
 			case .playerSelected(let player):
 				self.showPlayerDetails(for: player)
-			case .error(let error):
+			case .apiError(let error):
 				self.presentError(error)
 			}
 		}
@@ -61,8 +62,15 @@ class PlayerListViewController: FTDViewController {
 		print("Selected player \(player.displayName)")
 	}
 
-	private func presentError(_ error: Error) {
-		print("Error: \(error)")
+	private func presentError(_ error: LeaderboardAPIError) {
+		let message: String
+		if let errorDescription = error.errorDescription {
+			message = errorDescription
+		} else {
+			message = "Unknown error."
+		}
+
+		Loaf(message, state: .error, sender: self).show()
 	}
 
 	override func refresh() {
