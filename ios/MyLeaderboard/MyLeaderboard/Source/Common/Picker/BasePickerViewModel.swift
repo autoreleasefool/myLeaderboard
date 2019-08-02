@@ -17,7 +17,7 @@ protocol PickerItemQueryable: AnyObject {
 enum PickerAction<Item: Identifiable>: BaseAction {
 	case itemsUpdated
 	case donePicking([Item])
-	case apiError(Error)
+	case apiError(LeaderboardAPIError)
 }
 
 enum PickerViewAction<Item: Identifiable>: BaseViewAction {

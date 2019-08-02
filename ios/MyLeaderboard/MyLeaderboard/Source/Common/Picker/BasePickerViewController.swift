@@ -7,6 +7,7 @@
 //
 
 import FunctionalTableData
+import Loaf
 
 class BasePickerViewController<Item, Queryable: PickerItemQueryable>: FTDViewController where Queryable.Item == Item {
 	typealias FinishedSelection = ([Item]) -> Void
@@ -46,7 +47,14 @@ class BasePickerViewController<Item, Queryable: PickerItemQueryable>: FTDViewCon
 		fatalError("Pickers must implement renderItems")
 	}
 
-	private func presentError(_ error: Error) {
+	private func presentError(_ error: LeaderboardAPIError) {
+		let message: String
+		if let errorDescription = error.errorDescription {
+			message = errorDescription
+		} else {
+			message = "Unknown error."
+		}
 
+		Loaf(message, state: .error, sender: self).show()
 	}
 }
