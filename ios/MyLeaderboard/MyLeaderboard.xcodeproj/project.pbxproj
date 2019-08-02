@@ -55,6 +55,7 @@
 		CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8722F4712500FE0998 /* CombinedView.swift */; };
 		CAE56F8A22F47AAB00FE0998 /* ImageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8922F47AAB00FE0998 /* ImageState.swift */; };
 		CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8B22F47CD000FE0998 /* ViewState.swift */; };
+		CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -430,11 +431,19 @@
 		CAE16DF922F44C3800F1304C /* Picker */ = {
 			isa = PBXGroup;
 			children = (
+				CAE56F8F22F48C6B00FE0998 /* Base */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
+		CAE56F8F22F48C6B00FE0998 /* Base */ = {
+			isa = PBXGroup;
+			children = (
 				CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */,
 				CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */,
 				CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */,
 			);
-			path = Picker;
+			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
