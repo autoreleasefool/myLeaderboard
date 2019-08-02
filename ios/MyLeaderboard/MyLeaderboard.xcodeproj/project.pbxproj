@@ -49,6 +49,9 @@
 		CAC9067722D0F70F0075B033 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067522D0F70F0075B033 /* LaunchScreen.storyboard */; };
 		CAC9068222D0F70F0075B033 /* MyLeaderboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9068122D0F70F0075B033 /* MyLeaderboardTests.swift */; };
 		CAC9068D22D0F70F0075B033 /* MyLeaderboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9068C22D0F70F0075B033 /* MyLeaderboardUITests.swift */; };
+		CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */; };
+		CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */; };
+		CAE16DFF22F45FCE00F1304C /* BasePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +121,9 @@
 		CAC9068822D0F70F0075B033 /* MyLeaderboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyLeaderboardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9068C22D0F70F0075B033 /* MyLeaderboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardUITests.swift; sourceTree = "<group>"; };
 		CAC9068E22D0F70F0075B033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerViewController.swift; sourceTree = "<group>"; };
+		CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerViewModel.swift; sourceTree = "<group>"; };
+		CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerBuilder.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -293,6 +299,7 @@
 		CAB3871A22D1906D00349B1F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CAE16DF922F44C3800F1304C /* Picker */,
 				CA4BAB8722D6CEBC003347AF /* Cells */,
 				CABA3EAB22D4B81F00960758 /* MVVM */,
 				CABA3EA922D4B4DB00960758 /* FTDViewController.swift */,
@@ -409,6 +416,16 @@
 				CAC9067322D0F70F0075B033 /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		CAE16DF922F44C3800F1304C /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */,
+				CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */,
+				CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */,
+			);
+			path = Picker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -581,10 +598,12 @@
 				CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */,
 				CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */,
 				CABA3EA422D42DC300960758 /* GameListBuilder.swift in Sources */,
+				CAE16DFF22F45FCE00F1304C /* BasePickerBuilder.swift in Sources */,
 				CA4BAB9622D76322003347AF /* Theme.swift in Sources */,
 				CAB3872022D2254000349B1F /* Action.swift in Sources */,
 				CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */,
 				CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */,
+				CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */,
 				CA4BABA222D77089003347AF /* PlayerListViewController.swift in Sources */,
 				CAB3871922D18E2100349B1F /* GameListViewModel.swift in Sources */,
 				CA96220522D592B400479A0B /* CreateGameViewModel.swift in Sources */,
@@ -594,6 +613,7 @@
 				CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */,
 				F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */,
 				CABA3EA222D36BAD00960758 /* LeaderboardAPI.swift in Sources */,
+				CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */,
 				CAB3871422D18C5700349B1F /* Game.swift in Sources */,
 				CAB3871E22D224A100349B1F /* ViewModel.swift in Sources */,
 				CAB3871622D18DEB00349B1F /* GameListItemView.swift in Sources */,
