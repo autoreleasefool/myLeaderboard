@@ -18,7 +18,7 @@ class TextInputCellView: UITextField {
 	}
 }
 
-struct TextInputCellState: Equatable {
+struct TextInputCellState: ViewState {
 	let text: String
 	let placeholder: String
 	let onUpdate: (String?) -> Void

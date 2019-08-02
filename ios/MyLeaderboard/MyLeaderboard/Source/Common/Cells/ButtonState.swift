@@ -11,7 +11,7 @@ import FunctionalTableData
 
 typealias ButtonCell = HostCell<UIButton, ButtonState, LayoutMarginsTableItemLayout>
 
-public struct ButtonState: Equatable {
+public struct ButtonState: ViewState {
 	public let title: String
 	public let isEnabled: Bool
 	public let alignment: UIControl.ContentHorizontalAlignment

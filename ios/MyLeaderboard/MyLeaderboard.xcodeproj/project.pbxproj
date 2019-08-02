@@ -54,6 +54,7 @@
 		CAE16DFF22F45FCE00F1304C /* BasePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */; };
 		CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8722F4712500FE0998 /* CombinedView.swift */; };
 		CAE56F8A22F47AAB00FE0998 /* ImageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8922F47AAB00FE0998 /* ImageState.swift */; };
+		CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8B22F47CD000FE0998 /* ViewState.swift */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -128,6 +129,7 @@
 		CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerBuilder.swift; sourceTree = "<group>"; };
 		CAE56F8722F4712500FE0998 /* CombinedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedView.swift; sourceTree = "<group>"; };
 		CAE56F8922F47AAB00FE0998 /* ImageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageState.swift; sourceTree = "<group>"; };
+		CAE56F8B22F47CD000FE0998 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,6 +168,7 @@
 				CA4BAB8A22D6CF0C003347AF /* ControlText.swift */,
 				CAE56F8922F47AAB00FE0998 /* ImageState.swift */,
 				CA4BAB8822D6CED1003347AF /* TextInputCell.swift */,
+				CAE56F8B22F47CD000FE0998 /* ViewState.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -597,6 +600,7 @@
 				CA9209FE22E93604008E1B96 /* Record.swift in Sources */,
 				CA4BAB9222D6E160003347AF /* GameNavigationController.swift in Sources */,
 				CA4BABA022D76E9D003347AF /* PlayerListItemView.swift in Sources */,
+				CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */,
 				CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */,
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
 				CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */,

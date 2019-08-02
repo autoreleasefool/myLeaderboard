@@ -63,7 +63,7 @@ class PlayerListItemView: UIView {
 	}
 }
 
-struct PlayerListItemState: Equatable {
+struct PlayerListItemState: ViewState {
 	let player: Player
 
 	static func updateView(_ view: PlayerListItemView, state: PlayerListItemState?) {

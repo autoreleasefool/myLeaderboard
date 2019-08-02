@@ -43,7 +43,7 @@ class GameListItemView: UIView {
 	}
 }
 
-struct GameListItemState: Equatable {
+struct GameListItemState: ViewState {
 	let game: Game
 
 	static func updateView(_ view: GameListItemView, state: GameListItemState?) {
