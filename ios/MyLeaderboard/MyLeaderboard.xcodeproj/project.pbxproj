@@ -20,6 +20,7 @@
 		CA4BABA222D77089003347AF /* PlayerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA122D77089003347AF /* PlayerListViewController.swift */; };
 		CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA322D77103003347AF /* PlayerListBuilder.swift */; };
 		CA4BABA622D77187003347AF /* PlayerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA522D77187003347AF /* PlayerListViewModel.swift */; };
+		CA51636E22F465AA002E0A90 /* Loaf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; };
 		CA9209FE22E93604008E1B96 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9209FD22E93604008E1B96 /* Record.swift */; };
 		CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9209FF22E9360F008E1B96 /* PlayerRecord.swift */; };
 		CA920A0222E93666008E1B96 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0122E93666008E1B96 /* Score.swift */; };
@@ -82,6 +83,7 @@
 		CA4BABA122D77089003347AF /* PlayerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewController.swift; sourceTree = "<group>"; };
 		CA4BABA322D77103003347AF /* PlayerListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListBuilder.swift; sourceTree = "<group>"; };
 		CA4BABA522D77187003347AF /* PlayerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewModel.swift; sourceTree = "<group>"; };
+		CA51636D22F465AA002E0A90 /* Loaf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Loaf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA9209FD22E93604008E1B96 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		CA9209FF22E9360F008E1B96 /* PlayerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRecord.swift; sourceTree = "<group>"; };
 		CA920A0122E93666008E1B96 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA51636E22F465AA002E0A90 /* Loaf.framework in Frameworks */,
 				CABA3EA622D4B15C00960758 /* FunctionalTableData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,6 +305,7 @@
 		CAB3872A22D22DA100349B1F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CA51636D22F465AA002E0A90 /* Loaf.framework */,
 				CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */,
 			);
 			name = Frameworks;
