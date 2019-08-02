@@ -9,7 +9,7 @@
 import FunctionalTableData
 import Loaf
 
-class BasePickerViewController<Item, Queryable: PickerItemQueryable>: FTDViewController where Queryable.Item == Item {
+class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQueryable>: FTDViewController where Queryable.Item == Item {
 	typealias FinishedSelection = ([Item]) -> Void
 
 	private let api: LeaderboardAPI
@@ -39,11 +39,11 @@ class BasePickerViewController<Item, Queryable: PickerItemQueryable>: FTDViewCon
 
 	private func render() {
 		let renderedItems = renderItems(viewModel.items)
-		let sections = BasePickerBuilder.sections(items: renderedItems, selectedItems: viewModel.selectedItems)
+		let sections = BasePickerBuilder.sections(items: renderedItems, selectedItems: viewModel.selectedItems, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
-	open func renderItems(_ items: [Item]) -> [PickerItem] {
+	open func renderItems(_ items: [Item]) -> [PickerItem<State>] {
 		fatalError("Pickers must implement renderItems")
 	}
 
@@ -56,5 +56,11 @@ class BasePickerViewController<Item, Queryable: PickerItemQueryable>: FTDViewCon
 		}
 
 		Loaf(message, state: .error, sender: self).show()
+	}
+}
+
+extension BasePickerViewController: BasePickerActionable {
+	func didSelectItem(_ item: ID, selected: Bool) {
+		viewModel.postViewAction(.itemSelected(item, selected))
 	}
 }

@@ -24,7 +24,7 @@ enum PickerViewAction<Item: Identifiable>: BaseViewAction {
 	case initialize
 	case refresh
 	case finish
-	case itemSelected(Item, Bool)
+	case itemSelected(ID, Bool)
 }
 
 class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where Queryable.Item == Item {
@@ -59,11 +59,11 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 			loadItems()
 		case .refresh:
 			reloadItems()
-		case .itemSelected(let item, let selected):
+		case .itemSelected(let id, let selected):
 			if selected {
-				selectedItems.insert(item.id)
+				selectedItems.insert(id)
 			} else {
-				selectedItems.remove(item.id)
+				selectedItems.remove(id)
 			}
 		case .finish:
 			submit()

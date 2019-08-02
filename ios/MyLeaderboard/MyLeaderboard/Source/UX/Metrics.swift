@@ -12,6 +12,7 @@ struct Metrics {
 	struct Image {
 		static let large: CGFloat = 128
 		static let listIcon: CGFloat = 48
+		static let small: CGFloat = 24
 	}
 
 	struct Spacing {
