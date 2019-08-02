@@ -52,6 +52,7 @@
 		CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */; };
 		CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */; };
 		CAE16DFF22F45FCE00F1304C /* BasePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */; };
+		CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8722F4712500FE0998 /* CombinedView.swift */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -124,6 +125,7 @@
 		CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerViewController.swift; sourceTree = "<group>"; };
 		CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerViewModel.swift; sourceTree = "<group>"; };
 		CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerBuilder.swift; sourceTree = "<group>"; };
+		CAE56F8722F4712500FE0998 /* CombinedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedView.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				CA4BAB8C22D6DBD5003347AF /* ButtonState.swift */,
+				CAE56F8722F4712500FE0998 /* CombinedView.swift */,
 				CA4BAB8A22D6CF0C003347AF /* ControlText.swift */,
 				CA4BAB8822D6CED1003347AF /* TextInputCell.swift */,
 			);
@@ -586,6 +589,7 @@
 				CABA3EB122D58D8700960758 /* Colors.swift in Sources */,
 				CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */,
 				CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */,
+				CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */,
 				CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */,
 				CA9209FE22E93604008E1B96 /* Record.swift in Sources */,
 				CA4BAB9222D6E160003347AF /* GameNavigationController.swift in Sources */,
