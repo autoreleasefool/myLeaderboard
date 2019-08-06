@@ -30,7 +30,6 @@
 		CA96220522D592B400479A0B /* CreateGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220422D592B400479A0B /* CreateGameViewModel.swift */; };
 		CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3870F22D186CE00349B1F /* GameListViewController.swift */; };
 		CAB3871422D18C5700349B1F /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871322D18C5700349B1F /* Game.swift */; };
-		CAB3871622D18DEB00349B1F /* GameListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871522D18DEB00349B1F /* GameListItemView.swift */; };
 		CAB3871922D18E2100349B1F /* GameListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871822D18E2100349B1F /* GameListViewModel.swift */; };
 		CAB3871C22D1907A00349B1F /* ViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871B22D1907A00349B1F /* ViewAction.swift */; };
 		CAB3871E22D224A100349B1F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871D22D224A100349B1F /* ViewModel.swift */; };
@@ -57,6 +56,9 @@
 		CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8B22F47CD000FE0998 /* ViewState.swift */; };
 		CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */; };
 		CAE56F9422F9ABCB00FE0998 /* GamePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9322F9ABCB00FE0998 /* GamePickerViewController.swift */; };
+		CAE56F9622F9AEE100FE0998 /* LabelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9522F9AEE100FE0998 /* LabelState.swift */; };
+		CAE56F9822F9B65800FE0998 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9722F9B65800FE0998 /* NSAttributedString+Extensions.swift */; };
+		CAE56F9A22F9B92800FE0998 /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9922F9B92800FE0998 /* Cells.swift */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -101,7 +103,6 @@
 		CA96220422D592B400479A0B /* CreateGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameViewModel.swift; sourceTree = "<group>"; };
 		CAB3870F22D186CE00349B1F /* GameListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewController.swift; sourceTree = "<group>"; };
 		CAB3871322D18C5700349B1F /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
-		CAB3871522D18DEB00349B1F /* GameListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListItemView.swift; sourceTree = "<group>"; };
 		CAB3871822D18E2100349B1F /* GameListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewModel.swift; sourceTree = "<group>"; };
 		CAB3871B22D1907A00349B1F /* ViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAction.swift; sourceTree = "<group>"; };
 		CAB3871D22D224A100349B1F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -134,6 +135,9 @@
 		CAE56F8B22F47CD000FE0998 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayerPickerViewController.swift; path = Player/PlayerPickerViewController.swift; sourceTree = "<group>"; };
 		CAE56F9322F9ABCB00FE0998 /* GamePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePickerViewController.swift; sourceTree = "<group>"; };
+		CAE56F9522F9AEE100FE0998 /* LabelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelState.swift; sourceTree = "<group>"; };
+		CAE56F9722F9B65800FE0998 /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
+		CAE56F9922F9B92800FE0998 /* Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cells.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,10 +171,12 @@
 		CA4BAB8722D6CEBC003347AF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				CAE56F9922F9B92800FE0998 /* Cells.swift */,
 				CA4BAB8C22D6DBD5003347AF /* ButtonState.swift */,
 				CAE56F8722F4712500FE0998 /* CombinedView.swift */,
 				CA4BAB8A22D6CF0C003347AF /* ControlText.swift */,
 				CAE56F8922F47AAB00FE0998 /* ImageState.swift */,
+				CAE56F9522F9AEE100FE0998 /* LabelState.swift */,
 				CA4BAB8822D6CED1003347AF /* TextInputCell.swift */,
 				CAE56F8B22F47CD000FE0998 /* ViewState.swift */,
 			);
@@ -180,6 +186,7 @@
 		CA4BAB8E22D6DC1A003347AF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CAE56F9722F9B65800FE0998 /* NSAttributedString+Extensions.swift */,
 				CA4BAB8F22D6DC2F003347AF /* UIControl+Extensions.swift */,
 				CA4BAB9322D76016003347AF /* UIViewController+Extensions.swift */,
 			);
@@ -294,7 +301,6 @@
 		CAB3871222D188C800349B1F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CAB3871522D18DEB00349B1F /* GameListItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -610,6 +616,7 @@
 				CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */,
 				CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */,
 				CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */,
+				CAE56F9622F9AEE100FE0998 /* LabelState.swift in Sources */,
 				CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */,
 				CA9209FE22E93604008E1B96 /* Record.swift in Sources */,
 				CA4BAB9222D6E160003347AF /* GameNavigationController.swift in Sources */,
@@ -628,6 +635,7 @@
 				CA4BAB9622D76322003347AF /* Theme.swift in Sources */,
 				CAB3872022D2254000349B1F /* Action.swift in Sources */,
 				CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */,
+				CAE56F9822F9B65800FE0998 /* NSAttributedString+Extensions.swift in Sources */,
 				CAE56F9422F9ABCB00FE0998 /* GamePickerViewController.swift in Sources */,
 				CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */,
 				CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */,
@@ -637,6 +645,7 @@
 				CA4BAB9D22D7677A003347AF /* Player.swift in Sources */,
 				CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */,
 				CAB3871C22D1907A00349B1F /* ViewAction.swift in Sources */,
+				CAE56F9A22F9B92800FE0998 /* Cells.swift in Sources */,
 				CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */,
 				F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */,
 				CABA3EA222D36BAD00960758 /* LeaderboardAPI.swift in Sources */,
@@ -644,7 +653,6 @@
 				CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */,
 				CAB3871422D18C5700349B1F /* Game.swift in Sources */,
 				CAB3871E22D224A100349B1F /* ViewModel.swift in Sources */,
-				CAB3871622D18DEB00349B1F /* GameListItemView.swift in Sources */,
 				CA4BABA622D77187003347AF /* PlayerListViewModel.swift in Sources */,
 				CA920A0822E94A84008E1B96 /* GamePlay.swift in Sources */,
 			);

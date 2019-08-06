@@ -17,9 +17,16 @@ struct Metrics {
 
 	struct Spacing {
 		static let massive: CGFloat = 64
-		static let larg: CGFloat = 32
+		static let large: CGFloat = 32
 		static let standard: CGFloat = 16
 		static let small: CGFloat = 8
 		static let tiny: CGFloat = 4
+	}
+
+	struct Text {
+		static let header: CGFloat = 44
+		static let title: CGFloat = 20
+		static let body: CGFloat = 14
+		static let caption: CGFloat = 12
 	}
 }

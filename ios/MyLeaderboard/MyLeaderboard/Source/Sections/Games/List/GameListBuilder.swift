@@ -14,17 +14,26 @@ protocol GameListActionable: AnyObject {
 }
 
 struct GameListBuilder {
+
 	static func sections(games: [Game], actionable: GameListActionable) -> [TableSection] {
-		let rows = games.map { game in
-			GameListItemCell(
+		let rows: [CellConfigType] = games.map { game in
+			return GameCell(
 				key: game.name,
 				style: CellStyle(highlight: true),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
 					actionable?.selectedGame(game: game)
 					return .deselected
 				}),
-				state: GameListItemState(game: game),
-				cellUpdater: GameListItemState.updateView
+				state: Cells.gameState(for: game),
+				cellUpdater: { view, state in
+					CombinedState<ImageState, LabelState>.updateView(view, state: state)
+
+					if state != nil {
+						view.stackView.spacing = Metrics.Spacing.small
+					} else {
+						view.stackView.spacing = 0
+					}
+				}
 			)
 		}
 
