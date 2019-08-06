@@ -30,8 +30,7 @@ struct BasePickerBuilder {
 		let checkedState = ImageState(
 			image: selected ? UIImage(named: "Check") : nil,
 			tintColor: .white,
-			width: Metrics.Image.small,
-			height: Metrics.Image.small
+			width: Metrics.Image.small
 		)
 
 		return CombinedCell<UIImageView, ImageState, State.View, State.State, LayoutMarginsTableItemLayout>(
@@ -44,13 +43,15 @@ struct BasePickerBuilder {
 			state: CombinedState(state1: checkedState, state2: item.state),
 			cellUpdater: { view, state in
 				guard let state = state else {
-					view.view1.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-					view.view1.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+					view.view1.setContentHuggingPriority(.defaultLow, for: .horizontal)
+					view.view1.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+					view.stackView.spacing = 0
 					return
 				}
 
 				view.view1.setContentCompressionResistancePriority(.required, for: .horizontal)
 				view.view1.setContentHuggingPriority(.required, for: .horizontal)
+				view.stackView.spacing = Metrics.Spacing.standard
 
 				CombinedState<ImageState, State>.updateView(view, state: state)
 			}
