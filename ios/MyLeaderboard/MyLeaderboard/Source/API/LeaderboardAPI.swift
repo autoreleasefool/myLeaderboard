@@ -38,7 +38,14 @@ class LeaderboardAPI {
 	// MARK: - Players
 
 	func players(withAvatars: Bool = true, completion: @escaping (LeaderboardAPIResult<[Player]>) -> Void) {
-		func finishRequest(_ result: LeaderboardAPIResult<[Player]>) {
+		func finishRequest(_ intermediateResult: LeaderboardAPIResult<[Player]>) {
+			let result: LeaderboardAPIResult<[Player]>
+			if case .success(let players) = intermediateResult {
+				result = .success(players.sorted())
+			} else {
+				result = intermediateResult
+			}
+
 			DispatchQueue.main.async {
 				completion(result)
 			}
@@ -46,7 +53,7 @@ class LeaderboardAPI {
 		guard var urlComponents = URLComponents(url: LeaderboardAPI.baseURL.appendingPathComponent("/players/list"), resolvingAgainstBaseURL: true) else { return }
 		let queryItems: [URLQueryItem] = [URLQueryItem(name: "withAvatars", value: "\(withAvatars)")]
 		urlComponents.queryItems = queryItems
-        guard let url = urlComponents.url else { return }
+		guard let url = urlComponents.url else { return }
 		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
 			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
 		}.resume()
@@ -91,7 +98,14 @@ class LeaderboardAPI {
 	// MARK: - Games
 
 	func games(completion: @escaping (LeaderboardAPIResult<[Game]>) -> Void) {
-		func finishRequest(_ result: LeaderboardAPIResult<[Game]>) {
+		func finishRequest(_ intermediateResult: LeaderboardAPIResult<[Game]>) {
+			let result: LeaderboardAPIResult<[Game]>
+			if case .success(let games) = intermediateResult {
+				result = .success(games.sorted())
+			} else {
+				result = intermediateResult
+			}
+
 			DispatchQueue.main.async {
 				completion(result)
 			}

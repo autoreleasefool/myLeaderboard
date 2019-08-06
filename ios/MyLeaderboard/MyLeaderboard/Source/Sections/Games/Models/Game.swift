@@ -15,3 +15,9 @@ struct Game: Identifiable, Equatable, Codable {
 	let hasScores: Bool
 	let image: String?
 }
+
+extension Game: Comparable {
+	public static func < (lhs: Game, rhs: Game) -> Bool {
+		return lhs.name < rhs.name
+	}
+}

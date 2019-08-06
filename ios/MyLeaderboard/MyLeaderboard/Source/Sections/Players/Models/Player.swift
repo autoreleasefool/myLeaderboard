@@ -14,3 +14,9 @@ struct Player: Identifiable, Equatable, Codable {
 	let displayName: String
 	let username: String
 }
+
+extension Player: Comparable {
+	public static func < (lhs: Player, rhs: Player) -> Bool {
+		return lhs.displayName < rhs.displayName
+	}
+}
