@@ -9,20 +9,6 @@
 import Foundation
 import UIKit
 
-class ExpiringItem {
-	let object: AnyObject
-	private let expirationDate: Date
-
-	init(object: AnyObject, expiresAfter: TimeInterval = 3600) {
-		self.object = object
-		self.expirationDate = Date(timeInterval: expiresAfter, since: Date())
-	}
-
-	var expired: Bool {
-		return expirationDate < Date()
-	}
-}
-
 enum ImageLoaderError: Error {
 	case invalidURL
 	case invalidData
@@ -38,7 +24,7 @@ class ImageLoader {
 
 	static let shared: ImageLoader = ImageLoader()
 
-	private let cache = NSCache<AnyObject, ExpiringItem>()
+	private let cache = NSCache<NSURL, UIImage>()
 	private let queryLock = NSLock()
 	private var queryCompletionQueue: [String: [Completion]] = [:]
 
@@ -99,43 +85,10 @@ class ImageLoader {
 	}
 
 	func cached(url: URL) -> UIImage? {
-		guard let data = retrieveFromCache(url: url) else { return nil }
-		return UIImage(data: data)
+		return cache.object(forKey: url as NSURL)
 	}
 
 	private func performFetch(for url: URL, completion: @escaping Completion) {
-		if let data = self.retrieveFromCache(url: url) {
-			self.image(for: data, fromURL: url, completion: completion)
-			return
-		}
-
-		waitForResult(for: url, completion: completion)
-	}
-
-	private func image(for data: Data, fromURL url: URL, completion: @escaping Completion) {
-		guard let image = UIImage(data: data) else {
-			completion(.failure(.invalidData))
-			return
-		}
-
-		completion(.success((url, image)))
-	}
-
-	private func retrieveFromCache(url: URL) -> Data? {
-		let key = url.absoluteString as NSString
-		guard let cachedItem = cache.object(forKey: key) else {
-			return nil
-		}
-
-		if cachedItem.expired {
-			cache.removeObject(forKey: key)
-			return nil
-		}
-
-		return cachedItem.object as? Data
-	}
-
-	private func waitForResult(for url: URL, completion: @escaping Completion) {
 		defer { queryLock.unlock() }
 		queryLock.lock()
 
@@ -179,5 +132,15 @@ class ImageLoader {
 
 			self.image(for: data, fromURL: url, completion: finished)
 		}.resume()
+	}
+
+	private func image(for data: Data, fromURL url: URL, completion: @escaping Completion) {
+		guard let image = UIImage(data: data) else {
+			completion(.failure(.invalidData))
+			return
+		}
+
+		cache.setObject(image, forKey: url as NSURL)
+		completion(.success((url, image)))
 	}
 }
