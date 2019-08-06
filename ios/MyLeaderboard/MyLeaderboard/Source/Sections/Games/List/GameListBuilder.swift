@@ -17,23 +17,15 @@ struct GameListBuilder {
 
 	static func sections(games: [Game], actionable: GameListActionable) -> [TableSection] {
 		let rows: [CellConfigType] = games.map { game in
-			return GameCell(
-				key: game.name,
+			return GameListItemCell(
+				key: "game-\(game.id)",
 				style: CellStyle(highlight: true),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
 					actionable?.selectedGame(game: game)
 					return .deselected
 				}),
-				state: Cells.gameState(for: game),
-				cellUpdater: { view, state in
-					GameCellState.updateView(view, state: state)
-
-					if state != nil {
-						view.stackView.spacing = Metrics.Spacing.small
-					} else {
-						view.stackView.spacing = 0
-					}
-				}
+				state: GameListItemState(name: game.name, image: game.image),
+				cellUpdater: GameListItemState.updateView
 			)
 		}
 

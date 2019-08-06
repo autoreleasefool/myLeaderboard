@@ -14,7 +14,7 @@ struct PlayerListQueryable: PickerItemQueryable {
 	}
 }
 
-typealias PlayerPicker = BasePickerViewController<Player, PlayerCellState, PlayerListQueryable>
+typealias PlayerPicker = BasePickerViewController<Player, PlayerListItemState, PlayerListQueryable>
 
 class PlayerPickerViewController: PlayerPicker {
 	init(api: LeaderboardAPI, multiSelect: Bool = true, initiallySelected: Set<ID>, completion: @escaping PlayerPicker.FinishedSelection) {
@@ -26,11 +26,11 @@ class PlayerPickerViewController: PlayerPicker {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	override func renderItems(_ items: [Player]) -> [PickerItem<PlayerCellState>] {
+	override func renderItems(_ items: [Player]) -> [PickerItem<PlayerListItemState>] {
 		return items.map {
 			return PickerItem(
 				id: $0.id,
-				state: Cells.playerState(for: $0)
+				state: PlayerListItemState(displayName: $0.displayName, username: $0.username, avatar: $0.avatar)
 			)
 		}
 	}

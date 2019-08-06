@@ -14,7 +14,7 @@ struct GameListQueryable: PickerItemQueryable {
 	}
 }
 
-typealias GamePicker = BasePickerViewController<Game, GameCellState, GameListQueryable>
+typealias GamePicker = BasePickerViewController<Game, GameListItemState, GameListQueryable>
 
 class GamePickerViewController: GamePicker {
 	init(api: LeaderboardAPI, multiSelect: Bool = true, initiallySelected: Set<ID>, completion: @escaping GamePicker.FinishedSelection) {
@@ -26,11 +26,11 @@ class GamePickerViewController: GamePicker {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	override func renderItems(_ items: [Game]) -> [PickerItem<GameCellState>] {
+	override func renderItems(_ items: [Game]) -> [PickerItem<GameListItemState>] {
 		return items.map {
 			return PickerItem(
 				id: $0.id,
-				state: Cells.gameState(for: $0)
+				state: GameListItemState(name: $0.name, image: $0.image)
 			)
 		}
 	}
