@@ -31,7 +31,7 @@ enum ImageLoaderError: Error {
 	case invalidHTTPResponse(Int)
 }
 
-typealias ImageLoaderResult = Result<UIImage, ImageLoaderError>
+typealias ImageLoaderResult = Result<(URL, UIImage), ImageLoaderError>
 
 class ImageLoader {
 	typealias Completion = (ImageLoaderResult) -> Void
@@ -105,20 +105,20 @@ class ImageLoader {
 
 	private func performFetch(for url: URL, completion: @escaping Completion) {
 		if let data = self.retrieveFromCache(url: url) {
-			self.image(for: data, completion: completion)
+			self.image(for: data, fromURL: url, completion: completion)
 			return
 		}
 
 		waitForResult(for: url, completion: completion)
 	}
 
-	private func image(for data: Data, completion: @escaping Completion) {
+	private func image(for data: Data, fromURL url: URL, completion: @escaping Completion) {
 		guard let image = UIImage(data: data) else {
 			completion(.failure(.invalidData))
 			return
 		}
 
-		completion(.success(image))
+		completion(.success((url, image)))
 	}
 
 	private func retrieveFromCache(url: URL) -> Data? {
@@ -177,7 +177,7 @@ class ImageLoader {
 				return
 			}
 
-			self.image(for: data, completion: finished)
+			self.image(for: data, fromURL: url, completion: finished)
 		}.resume()
 	}
 }

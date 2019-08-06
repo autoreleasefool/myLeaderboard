@@ -77,7 +77,7 @@ struct PlayerListItemState: ViewState {
 
 		if let avatar = state.player.avatar {
 			view.playerImage.image = ImageLoader.shared.fetch(string: avatar) { result in
-				if case .success(let image) = result {
+				if case .success(let url, let image) = result, url.absoluteString == state.player.avatar {
 					view.playerImage.image = image
 				}
 			}

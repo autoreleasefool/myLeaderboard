@@ -16,12 +16,22 @@ struct ImageState: ViewState {
 	private static let heightAnchorIdentifier = "ImageState.Height"
 
 	let image: UIImage?
+	let url: URL?
 	let tintColor: UIColor?
 	let width: CGFloat?
 	let height: CGFloat?
 
 	init(image: UIImage?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil) {
+		self.url = nil
 		self.image = image
+		self.tintColor = tintColor
+		self.width = width
+		self.height = height
+	}
+
+	init(url: URL?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil) {
+		self.image = nil
+		self.url = url
 		self.tintColor = tintColor
 		self.width = width
 		self.height = height
@@ -50,7 +60,16 @@ struct ImageState: ViewState {
 
 		view.contentMode = .scaleAspectFit
 		view.tintColor = state.tintColor
-		view.image = state.image
+
+		if let url = state.url {
+			view.image = ImageLoader.shared.fetch(url: url) { result in
+				if case .success(let url, let image) = result, url == state.url {
+					view.image = image
+				}
+			}
+		} else {
+			view.image = state.image
+		}
 	}
 
 	public static func == (lhs: ImageState, rhs: ImageState) -> Bool {

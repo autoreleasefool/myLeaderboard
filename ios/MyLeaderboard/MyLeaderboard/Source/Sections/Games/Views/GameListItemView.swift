@@ -54,7 +54,7 @@ struct GameListItemState: ViewState {
 
 		if let image = state.game.image {
 			view.gameImage.image = ImageLoader.shared.fetch(string: image) { result in
-				if case .success(let image) = result {
+				if case .success(let url, let image) = result, url.absoluteString == state.game.image {
 					view.gameImage.image = image
 				}
 			}
