@@ -15,15 +15,23 @@ protocol PlayerListActionable: AnyObject {
 struct PlayerListBuilder {
 	static func sections(players: [Player], actionable: PlayerListActionable) -> [TableSection] {
 		let rows = players.map { player in
-			PlayerListItemCell(
+			PlayerCell(
 				key: player.username,
 				style: CellStyle(highlight: true),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
 					actionable?.selectedPlayer(player: player)
 					return .deselected
 				}),
-				state: PlayerListItemState(player: player),
-				cellUpdater: PlayerListItemState.updateView
+				state: Cells.playerState(for: player),
+				cellUpdater: { view, state in
+					PlayerCellState.updateView(view, state: state)
+
+					if state != nil {
+						view.stackView.spacing = Metrics.Spacing.small
+					} else {
+						view.stackView.spacing = 0
+					}
+			}
 			)
 		}
 

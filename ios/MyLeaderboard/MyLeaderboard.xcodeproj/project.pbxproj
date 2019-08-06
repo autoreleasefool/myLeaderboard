@@ -16,7 +16,6 @@
 		CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9322D76016003347AF /* UIViewController+Extensions.swift */; };
 		CA4BAB9622D76322003347AF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9522D76322003347AF /* Theme.swift */; };
 		CA4BAB9D22D7677A003347AF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9C22D7677A003347AF /* Player.swift */; };
-		CA4BABA022D76E9D003347AF /* PlayerListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9F22D76E9D003347AF /* PlayerListItemView.swift */; };
 		CA4BABA222D77089003347AF /* PlayerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA122D77089003347AF /* PlayerListViewController.swift */; };
 		CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA322D77103003347AF /* PlayerListBuilder.swift */; };
 		CA4BABA622D77187003347AF /* PlayerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA522D77187003347AF /* PlayerListViewModel.swift */; };
@@ -89,7 +88,6 @@
 		CA4BAB9322D76016003347AF /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		CA4BAB9522D76322003347AF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		CA4BAB9C22D7677A003347AF /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		CA4BAB9F22D76E9D003347AF /* PlayerListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListItemView.swift; sourceTree = "<group>"; };
 		CA4BABA122D77089003347AF /* PlayerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewController.swift; sourceTree = "<group>"; };
 		CA4BABA322D77103003347AF /* PlayerListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListBuilder.swift; sourceTree = "<group>"; };
 		CA4BABA522D77187003347AF /* PlayerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewModel.swift; sourceTree = "<group>"; };
@@ -242,7 +240,6 @@
 		CA4BAB9E22D76E83003347AF /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CA4BAB9F22D76E9D003347AF /* PlayerListItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -620,7 +617,6 @@
 				CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */,
 				CA9209FE22E93604008E1B96 /* Record.swift in Sources */,
 				CA4BAB9222D6E160003347AF /* GameNavigationController.swift in Sources */,
-				CA4BABA022D76E9D003347AF /* PlayerListItemView.swift in Sources */,
 				CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */,
 				CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */,
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,

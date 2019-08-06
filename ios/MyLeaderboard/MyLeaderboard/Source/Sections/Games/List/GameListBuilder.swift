@@ -26,7 +26,7 @@ struct GameListBuilder {
 				}),
 				state: Cells.gameState(for: game),
 				cellUpdater: { view, state in
-					CombinedState<ImageState, LabelState>.updateView(view, state: state)
+					GameCellState.updateView(view, state: state)
 
 					if state != nil {
 						view.stackView.spacing = Metrics.Spacing.small
