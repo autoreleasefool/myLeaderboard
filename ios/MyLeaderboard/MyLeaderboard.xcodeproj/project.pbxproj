@@ -56,6 +56,7 @@
 		CAE56F8A22F47AAB00FE0998 /* ImageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8922F47AAB00FE0998 /* ImageState.swift */; };
 		CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8B22F47CD000FE0998 /* ViewState.swift */; };
 		CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */; };
+		CAE56F9422F9ABCB00FE0998 /* GamePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9322F9ABCB00FE0998 /* GamePickerViewController.swift */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -131,7 +132,8 @@
 		CAE56F8722F4712500FE0998 /* CombinedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinedView.swift; sourceTree = "<group>"; };
 		CAE56F8922F47AAB00FE0998 /* ImageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageState.swift; sourceTree = "<group>"; };
 		CAE56F8B22F47CD000FE0998 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
-		CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPickerViewController.swift; sourceTree = "<group>"; };
+		CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayerPickerViewController.swift; path = Player/PlayerPickerViewController.swift; sourceTree = "<group>"; };
+		CAE56F9322F9ABCB00FE0998 /* GamePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePickerViewController.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -432,8 +434,9 @@
 		CAE16DF922F44C3800F1304C /* Picker */ = {
 			isa = PBXGroup;
 			children = (
-				CAE56F9022F48C7C00FE0998 /* Player */,
 				CAE56F8F22F48C6B00FE0998 /* Base */,
+				CAE56F9322F9ABCB00FE0998 /* GamePickerViewController.swift */,
+				CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */,
 			);
 			path = Picker;
 			sourceTree = "<group>";
@@ -446,14 +449,6 @@
 				CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */,
 			);
 			path = Base;
-			sourceTree = "<group>";
-		};
-		CAE56F9022F48C7C00FE0998 /* Player */ = {
-			isa = PBXGroup;
-			children = (
-				CAE56F9122F48C8B00FE0998 /* PlayerPickerViewController.swift */,
-			);
-			path = Player;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -633,6 +628,7 @@
 				CA4BAB9622D76322003347AF /* Theme.swift in Sources */,
 				CAB3872022D2254000349B1F /* Action.swift in Sources */,
 				CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */,
+				CAE56F9422F9ABCB00FE0998 /* GamePickerViewController.swift in Sources */,
 				CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */,
 				CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */,
 				CA4BABA222D77089003347AF /* PlayerListViewController.swift in Sources */,
