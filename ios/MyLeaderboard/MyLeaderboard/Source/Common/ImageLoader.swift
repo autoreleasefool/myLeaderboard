@@ -37,13 +37,16 @@ class ImageLoader {
 	typealias Completion = (ImageLoaderResult) -> Void
 
 	static let shared: ImageLoader = ImageLoader()
-	private init() {
-		cache.countLimit = 200
-	}
 
 	private let cache = NSCache<AnyObject, ExpiringItem>()
 	private let queryLock = NSLock()
 	private var queryCompletionQueue: [String: [Completion]] = [:]
+
+	let queryIfCached: Bool
+
+	init(queryIfCached: Bool = false) {
+		self.queryIfCached = queryIfCached
+	}
 
 	@discardableResult
 	func fetch(string: String, completion: @escaping Completion) -> UIImage? {
@@ -51,6 +54,11 @@ class ImageLoader {
 			DispatchQueue.main.async {
 				completion(result)
 			}
+		}
+
+		let cachedImage = cached(string: string)
+		if let cachedImage = cachedImage, !queryIfCached {
+			return cachedImage
 		}
 
 		DispatchQueue.global(qos: .background).async { [unowned self] in
@@ -62,7 +70,7 @@ class ImageLoader {
 			self.fetch(url: url, completion: completion)
 		}
 
-		return cached(string: string)
+		return cachedImage
 	}
 
 	@discardableResult
@@ -73,11 +81,16 @@ class ImageLoader {
 			}
 		}
 
+		let cachedImage = cached(url: url)
+		if let cachedImage = cachedImage, !queryIfCached {
+			return cachedImage
+		}
+
 		DispatchQueue.global(qos: .background).async { [unowned self] in
 			self.performFetch(for: url, completion: finishRequest)
 		}
 
-		return cached(url: url)
+		return cachedImage
 	}
 
 	func cached(string: String) -> UIImage? {
