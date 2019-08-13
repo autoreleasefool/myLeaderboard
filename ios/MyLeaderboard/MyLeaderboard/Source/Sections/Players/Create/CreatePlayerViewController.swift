@@ -43,7 +43,7 @@ class CreatePlayerViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = CreatePlayerBuilder.sections(displayName: viewModel.displayName, username: viewModel.username, errors: viewModel.errors, actionable: self)
+		let sections = CreatePlayerBuilder.sections(displayName: viewModel.displayName, username: viewModel.username, avatarURL: viewModel.avatarURL, errors: viewModel.errors, actionable: self)
 		tableData.renderAndDiff(sections)
 		updateDoneButton()
 	}

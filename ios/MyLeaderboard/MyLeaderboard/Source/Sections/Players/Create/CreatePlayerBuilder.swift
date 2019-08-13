@@ -26,13 +26,14 @@ struct CreatePlayerBuilder {
 		enum Preview: String {
 			case header
 			case avatar
+			case error
 		}
 	}
 
-	static func sections(displayName: String, username: String, errors: KeyedErrors, actionable: CreatePlayerActionable) -> [TableSection] {
+	static func sections(displayName: String, username: String, avatarURL: URL?, errors: KeyedErrors, actionable: CreatePlayerActionable) -> [TableSection] {
 		return [
 			inputSection(displayName: displayName, username: username, errors: errors, actionable: actionable),
-			previewSection(username: username),
+			previewSection(url: avatarURL, errors: errors),
 		]
 	}
 
@@ -95,22 +96,26 @@ struct CreatePlayerBuilder {
 		return TableSection(key: Keys.createPlayerSection, rows: rows)
 	}
 
-	static func previewSection(username: String) -> TableSection {
-		let rows: [CellConfigType] = [
+	static func previewSection(url: URL?, errors: KeyedErrors) -> TableSection {
+		var rows: [CellConfigType] = [
 			sectionHeader(key: Keys.Preview.header, title: "Preview"),
 			ImageCell(
 				key: Keys.Preview.avatar.rawValue,
-				state: ImageState(url: avatarUrl(for: username), width: Metrics.Image.large, height: Metrics.Image.large, rounded: true),
+				state: ImageState(url: url, width: Metrics.Image.large, height: Metrics.Image.large, rounded: true),
 				cellUpdater: ImageState.updateView
 			),
 		]
 
-		return TableSection(key: Keys.previewSection, rows: rows)
-	}
+		if let errorMessage = errors[Keys.previewSection.rawValue, Keys.Preview.error.rawValue] {
+			rows.append(LabelCell(
+				key: Keys.Create.error,
+				style: CellStyle(backgroundColor: .primaryDark),
+				state: LabelState(text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)), size: Metrics.Text.caption),
+				cellUpdater: LabelState.updateView
+			))
+		}
 
-	static func avatarUrl(for username: String) -> URL? {
-		guard username.count > 0 else { return nil }
-		return URL(string: "https://github.com/\(username).png")
+		return TableSection(key: Keys.previewSection, rows: rows)
 	}
 
 	static func sectionHeader<Key: RawRepresentable>(key: Key, title: String) -> CellConfigType where Key.RawValue == String {

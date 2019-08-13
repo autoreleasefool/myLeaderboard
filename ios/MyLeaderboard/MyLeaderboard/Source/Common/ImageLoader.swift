@@ -11,10 +11,10 @@ import UIKit
 
 enum ImageLoaderError: Error {
 	case invalidURL
-	case invalidData
-	case networkingError(Error)
-	case invalidResponse
-	case invalidHTTPResponse(Int)
+	case invalidData(URL)
+	case networkingError(URL, Error)
+	case invalidResponse(URL)
+	case invalidHTTPResponse(URL, Int)
 }
 
 typealias ImageLoaderResult = Result<(URL, UIImage), ImageLoaderError>
@@ -111,22 +111,22 @@ class ImageLoader {
 		queryCompletionQueue[url.absoluteString] = [completion]
 		URLSession.shared.dataTask(with: url) { [unowned self] data, response, error in
 			guard error == nil else {
-				finished(.failure(.networkingError(error!)))
+				finished(.failure(.networkingError(url, error!)))
 				return
 			}
 
 			guard let response = response as? HTTPURLResponse else {
-				finished(.failure(.invalidResponse))
+				finished(.failure(.invalidResponse(url)))
 				return
 			}
 
 			guard (200..<400).contains(response.statusCode) else {
-				finished(.failure(.invalidHTTPResponse(response.statusCode)))
+				finished(.failure(.invalidHTTPResponse(url, response.statusCode)))
 				return
 			}
 
 			guard let data = data else {
-				finished(.failure(.invalidData))
+				finished(.failure(.invalidData(url)))
 				return
 			}
 
@@ -136,7 +136,7 @@ class ImageLoader {
 
 	private func image(for data: Data, fromURL url: URL, completion: @escaping Completion) {
 		guard let image = UIImage(data: data) else {
-			completion(.failure(.invalidData))
+			completion(.failure(.invalidData(url)))
 			return
 		}
 
