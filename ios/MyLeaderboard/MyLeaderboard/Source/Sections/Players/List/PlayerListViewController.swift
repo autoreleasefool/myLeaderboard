@@ -35,6 +35,8 @@ class PlayerListViewController: FTDViewController {
 				self.showPlayerDetails(for: player)
 			case .apiError(let error):
 				self.presentError(error)
+			case .addPlayer:
+				self.showCreatePlayer()
 			}
 		}
 
@@ -51,12 +53,12 @@ class PlayerListViewController: FTDViewController {
 	}
 
 	@objc private func addNewPlayer() {
-//		viewModel.postViewAction(.addPlayer)
+		viewModel.postViewAction(.addPlayer)
 	}
 
-//	private func showCreatePlayer() {
-//		presentModal(CreateGameViewController(api: api))
-//	}
+	private func showCreatePlayer() {
+		presentModal(CreatePlayerViewController(api: api))
+	}
 
 	private func showPlayerDetails(for player: Player) {
 		print("Selected player \(player.displayName)")

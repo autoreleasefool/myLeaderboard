@@ -11,6 +11,7 @@ import Foundation
 enum PlayerListAction: BaseAction {
 	case playersUpdated([Player])
 	case playerSelected(Player)
+	case addPlayer
 	case apiError(LeaderboardAPIError)
 }
 
@@ -18,6 +19,7 @@ enum PlayerListViewAction: BaseViewAction {
 	case initialize
 	case reload
 	case selectPlayer(Player)
+	case addPlayer
 }
 
 class PlayerListViewModel: ViewModel {
@@ -45,6 +47,8 @@ class PlayerListViewModel: ViewModel {
 			reloadPlayerList()
 		case .selectPlayer(let player):
 			handleAction(.playerSelected(player))
+		case .addPlayer:
+			handleAction(.addPlayer)
 		}
 	}
 

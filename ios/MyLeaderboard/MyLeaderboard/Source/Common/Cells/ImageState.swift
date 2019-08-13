@@ -87,7 +87,10 @@ struct ImageState: ViewState {
 
 	public static func == (lhs: ImageState, rhs: ImageState) -> Bool {
 		return lhs.image == rhs.image &&
+			lhs.url == rhs.url &&
+			lhs.tintColor == rhs.tintColor &&
 			lhs.width == rhs.width &&
-			lhs.height == rhs.height
+			lhs.height == rhs.height &&
+			lhs.rounded == rhs.rounded
 	}
 }
