@@ -20,26 +20,31 @@ struct ImageState: ViewState {
 	let tintColor: UIColor?
 	let width: CGFloat?
 	let height: CGFloat?
+	let rounded: Bool
 
-	init(image: UIImage?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil) {
+	init(image: UIImage?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil, rounded: Bool = false) {
 		self.url = nil
 		self.image = image
 		self.tintColor = tintColor
 		self.width = width
 		self.height = height
+		self.rounded = rounded
 	}
 
-	init(url: URL?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil) {
+	init(url: URL?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil, rounded: Bool = false) {
 		self.image = nil
 		self.url = url
 		self.tintColor = tintColor
 		self.width = width
 		self.height = height
+		self.rounded = rounded
 	}
 
 	static func updateView(_ view: UIImageView, state: ImageState?) {
 		guard let state = state else {
 			view.image = nil
+			view.layer.cornerRadius = 0
+			view.clipsToBounds = false
 			return
 		}
 
@@ -56,6 +61,14 @@ struct ImageState: ViewState {
 			let heightConstraint = view.heightAnchor.constraint(equalToConstant: height)
 			heightConstraint.isActive = true
 			heightConstraint.identifier = ImageState.heightAnchorIdentifier
+		}
+
+		if let width = state.width, state.height == state.width && state.rounded {
+			view.clipsToBounds = true
+			view.layer.cornerRadius = width / 2
+		} else {
+			view.clipsToBounds = false
+			view.layer.cornerRadius = 0
 		}
 
 		view.contentMode = .scaleAspectFit
