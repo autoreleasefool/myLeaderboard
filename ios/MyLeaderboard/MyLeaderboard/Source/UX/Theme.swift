@@ -20,5 +20,7 @@ struct Theme {
 
 		UITextField.appearance().textColor = .text
 		UILabel.appearance().textColor = .text
+
+		UIApplication.shared.statusBarStyle = .lightContent
 	}
 }
