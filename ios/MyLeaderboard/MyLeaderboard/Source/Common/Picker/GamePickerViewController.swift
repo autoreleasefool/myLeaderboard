@@ -20,6 +20,8 @@ class GamePickerViewController: GamePicker {
 	init(api: LeaderboardAPI, multiSelect: Bool = true, initiallySelected: Set<ID>, completion: @escaping GamePicker.FinishedSelection) {
 		let queryable = GameListQueryable()
 		super.init(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, queryable: queryable, completion: completion)
+
+		self.title = "Games"
 	}
 
 	required init?(coder aDecoder: NSCoder) {

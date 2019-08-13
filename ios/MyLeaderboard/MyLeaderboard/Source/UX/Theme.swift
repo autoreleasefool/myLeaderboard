@@ -15,7 +15,7 @@ struct Theme {
 		CellStyle.defaultSelectionColor = .selection
 
 		UINavigationBar.appearance().barStyle = .black
-		UINavigationBar.appearance().tintColor = .textSecondary
+		UINavigationBar.appearance().tintColor = .text
 		UINavigationBar.appearance().barTintColor = .primaryLight
 
 		UITextField.appearance().textColor = .text

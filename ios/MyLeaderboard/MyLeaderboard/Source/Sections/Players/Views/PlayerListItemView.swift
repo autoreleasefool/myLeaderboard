@@ -28,6 +28,8 @@ class PlayerListItemView: UIView {
 
 	private func setupView() {
 		playerImage.contentMode = .scaleAspectFit
+		playerImage.layer.cornerRadius = Metrics.Image.listIcon / 2
+		playerImage.clipsToBounds = true
 		playerImage.translatesAutoresizingMaskIntoConstraints = false
 
 		displayName.textColor = .text

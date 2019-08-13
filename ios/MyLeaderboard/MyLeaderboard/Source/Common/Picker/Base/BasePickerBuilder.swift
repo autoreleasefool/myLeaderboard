@@ -28,8 +28,8 @@ struct BasePickerBuilder {
 
 	static func cell<State: ViewState>(for item: PickerItem<State>, selected: Bool, actionable: BasePickerActionable) -> CellConfigType {
 		let checkedState = ImageState(
-			image: selected ? UIImage(named: "Check") : nil,
-			tintColor: .white,
+			image: selected ? UIImage(named: "Check") : UIImage(named: "Unchecked"),
+			tintColor: selected ? .success : .error,
 			width: Metrics.Image.small
 		)
 

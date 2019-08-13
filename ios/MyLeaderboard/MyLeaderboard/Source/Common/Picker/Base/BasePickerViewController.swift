@@ -26,7 +26,7 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 			case .itemsUpdated:
 				self?.render()
 			case .donePicking(let selectedItems):
-				self?.finishedSelection(selectedItems)
+				self?.finish(with: selectedItems)
 			case .apiError(let error):
 				self?.presentError(error)
 			}
@@ -68,6 +68,11 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 
 	@objc private func submit() {
 		viewModel.postViewAction(.finish)
+	}
+
+	private func finish(with selectedItems: [Item]) {
+		self.finishedSelection(selectedItems)
+		dismiss(animated: true)
 	}
 }
 

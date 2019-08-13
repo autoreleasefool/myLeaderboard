@@ -20,6 +20,8 @@ class PlayerPickerViewController: PlayerPicker {
 	init(api: LeaderboardAPI, multiSelect: Bool = true, initiallySelected: Set<ID>, completion: @escaping PlayerPicker.FinishedSelection) {
 		let queryable = PlayerListQueryable()
 		super.init(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, queryable: queryable, completion: completion)
+
+		self.title = "Players"
 	}
 
 	required init?(coder aDecoder: NSCoder) {

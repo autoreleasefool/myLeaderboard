@@ -65,11 +65,14 @@ struct GameListItemState: ViewState {
 		view.gameName.text = state.name
 
 		if let image = state.image {
+			view.gameImage.isHidden = false
 			view.gameImage.image = ImageLoader.shared.fetch(string: image) { result in
 				if case .success(let url, let image) = result, url.absoluteString == state.image {
 					view.gameImage.image = image
 				}
 			}
+		} else {
+			view.gameImage.isHidden = true
 		}
 	}
 }
