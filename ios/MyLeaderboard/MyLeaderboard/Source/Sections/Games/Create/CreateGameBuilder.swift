@@ -22,19 +22,28 @@ struct CreateGameBuilder {
 	}
 
 	static func sections(gameName: String, errors: KeyedErrors, actionable: CreateGameActionable) -> [TableSection] {
+		let label = LabelState(text: .attributed(NSAttributedString(string: "Name", textColor: .text)))
+		let input = TextInputCellState(text: gameName, placeholder: "Patchwork") { [weak actionable] text in
+			guard let text = text else { return }
+			actionable?.updatedGameName(name: text)
+		}
+
 		var rows: [CellConfigType] = [
-			TextInputCell(
-				key: "gameName",
-				state: TextInputCellState(
-					text: gameName,
-					placeholder: "Name",
-					onUpdate: { [weak actionable] text in
-						guard let text = text else { return }
-						actionable?.updatedGameName(name: text)
+			CombinedCell<UILabel, LabelState, TextInputCellView, TextInputCellState, LayoutMarginsTableItemLayout>(
+				key: Keys.Create.name.rawValue,
+				state: CombinedState(state1: label, state2: input),
+				cellUpdater: { view, state in
+					if state == nil {
+						view.view1.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+						view.stackView.spacing = 0
+					} else {
+						view.view1.setContentHuggingPriority(.required, for: .horizontal)
+						view.stackView.spacing = Metrics.Spacing.small
 					}
-				),
-				cellUpdater: TextInputCellState.updateView
-			),
+
+					CombinedState<LabelState, TextInputCellState>.updateView(view, state: state)
+				}
+			)
 		]
 
 		if let errorMessage = errors[Keys.createGameSection.rawValue, Keys.Create.error.rawValue] {
