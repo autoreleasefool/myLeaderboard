@@ -19,6 +19,12 @@ class RootTabBarController: UITabBarController {
 	private lazy var tabItems: [TabItem] = {
 		return [
 			TabItem(
+				title: "Record",
+				controller: UINavigationController(rootViewController: BlankStandingsViewController(api: api)),
+				image: UIImage(named: "Tabs/Standings")!,
+				selectedImage: UIImage(named: "Tabs/Standings-selected")!
+			),
+			TabItem(
 				title: "Games",
 				controller: UINavigationController(rootViewController: GameListViewController(api: api)),
 				image: UIImage(named: "Tabs/Games")!,
