@@ -68,6 +68,16 @@ class RecordPlayViewModel: ViewModel {
 		}
 	}
 
+	private var isLoading: Bool = false {
+		didSet {
+			if isLoading {
+				LoadingHUD.shared.show()
+			} else {
+				LoadingHUD.shared.hide()
+			}
+		}
+	}
+
 	var playIsValid: Bool {
 		return selectedGame != nil &&
 			selectedPlayers.count > 1 &&
@@ -81,6 +91,8 @@ class RecordPlayViewModel: ViewModel {
 	}
 
 	func postViewAction(_ viewAction: RecordPlayViewAction) {
+		guard !isLoading else { return }
+
 		switch viewAction {
 		case .initialize:
 			break
@@ -140,6 +152,8 @@ class RecordPlayViewModel: ViewModel {
 			return
 		}
 
+		isLoading = true
+
 		let selectedPlayers = self.selectedPlayers.map { $0.id }
 		let winners = self.winners.map { $0.id }
 		var finalScores: [Int] = []
@@ -158,6 +172,8 @@ class RecordPlayViewModel: ViewModel {
 			winnerIDs: winners,
 			scores: finalScores.isEmpty ? nil : finalScores
 		) { [weak self] result in
+			self?.isLoading = false
+
 			switch result {
 			case .success(let play):
 				self?.handleAction(.playCreated(play))
