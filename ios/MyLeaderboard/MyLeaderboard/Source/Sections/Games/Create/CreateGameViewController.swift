@@ -32,6 +32,8 @@ class CreateGameViewController: FTDViewController {
 				self?.dismiss(animated: true)
 			case .apiError(let error):
 				self?.presentError(error)
+			case .userErrors:
+				self?.render()
 			}
 		}
 
@@ -43,13 +45,13 @@ class CreateGameViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = CreateGameBuilder.sections(gameName: viewModel.gameName, actionable: self)
+		let sections = CreateGameBuilder.sections(gameName: viewModel.gameName, errors: viewModel.errors, actionable: self)
 		tableData.renderAndDiff(sections)
 		updateDoneButton()
 	}
 
 	private func updateDoneButton() {
-		self.navigationItem.rightBarButtonItem?.isEnabled = viewModel.gameName.isEmpty == false
+		self.navigationItem.rightBarButtonItem?.isEnabled = viewModel.gameIsValid
 	}
 
 	@objc private func cancel() {
@@ -57,7 +59,7 @@ class CreateGameViewController: FTDViewController {
 	}
 
 	@objc private func submit() {
-		viewModel.postViewAction(.submit)
+		viewModel.postViewAction(.submit(self))
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {

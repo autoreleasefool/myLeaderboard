@@ -13,8 +13,16 @@ protocol CreateGameActionable: AnyObject {
 }
 
 struct CreateGameBuilder {
-	static func sections(gameName: String, actionable: CreateGameActionable) -> [TableSection] {
-		let rows: [CellConfigType] = [
+	enum Keys: String {
+		case createGameSection
+		enum Create: String {
+			case name
+			case error
+		}
+	}
+
+	static func sections(gameName: String, errors: KeyedErrors, actionable: CreateGameActionable) -> [TableSection] {
+		var rows: [CellConfigType] = [
 			TextInputCell(
 				key: "gameName",
 				state: TextInputCellState(
@@ -29,6 +37,15 @@ struct CreateGameBuilder {
 			),
 		]
 
-		return [TableSection(key: "createGame", rows: rows)]
+		if let errorMessage = errors[Keys.createGameSection.rawValue, Keys.Create.error.rawValue] {
+			rows.append(LabelCell(
+				key: Keys.Create.error,
+				style: CellStyle(backgroundColor: .primaryDark),
+				state: LabelState(text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)), size: Metrics.Text.caption),
+				cellUpdater: LabelState.updateView
+			))
+		}
+
+		return [TableSection(key: Keys.createGameSection, rows: rows)]
 	}
 }
