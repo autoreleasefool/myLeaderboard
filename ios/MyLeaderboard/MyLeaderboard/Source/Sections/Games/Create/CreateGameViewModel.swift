@@ -69,6 +69,7 @@ class CreateGameViewModel {
 		case .initialize: break
 		case .updateName(let name):
 			self.gameName = name
+			updateErrors(for: CreateGameBuilder.Keys.createGameSection.rawValue)
 		case .submit(let context):
 			submit(with: context)
 		}
