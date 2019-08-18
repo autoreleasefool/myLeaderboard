@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA1F20CB2309F8880060957B /* StandingsListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */; };
 		CA4BAB8622D6BE69003347AF /* CreateGameBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8522D6BE69003347AF /* CreateGameBuilder.swift */; };
 		CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8822D6CED1003347AF /* TextInputCell.swift */; };
 		CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8A22D6CF0C003347AF /* ControlText.swift */; };
@@ -20,6 +21,8 @@
 		CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA322D77103003347AF /* PlayerListBuilder.swift */; };
 		CA4BABA622D77187003347AF /* PlayerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA522D77187003347AF /* PlayerListViewModel.swift */; };
 		CA51636E22F465AA002E0A90 /* Loaf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; };
+		CA8D939A2308E601003FF844 /* StandingsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D93992308E601003FF844 /* StandingsListViewController.swift */; };
+		CA8D939C2308E6A2003FF844 /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
 		CA9209FE22E93604008E1B96 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9209FD22E93604008E1B96 /* Record.swift */; };
 		CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9209FF22E9360F008E1B96 /* PlayerRecord.swift */; };
 		CA920A0222E93666008E1B96 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0122E93666008E1B96 /* Score.swift */; };
@@ -90,6 +93,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsListBuilder.swift; sourceTree = "<group>"; };
 		CA4BAB8522D6BE69003347AF /* CreateGameBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameBuilder.swift; sourceTree = "<group>"; };
 		CA4BAB8822D6CED1003347AF /* TextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputCell.swift; sourceTree = "<group>"; };
 		CA4BAB8A22D6CF0C003347AF /* ControlText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlText.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 		CA4BABA322D77103003347AF /* PlayerListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListBuilder.swift; sourceTree = "<group>"; };
 		CA4BABA522D77187003347AF /* PlayerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewModel.swift; sourceTree = "<group>"; };
 		CA51636D22F465AA002E0A90 /* Loaf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Loaf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA8D93992308E601003FF844 /* StandingsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsListViewController.swift; sourceTree = "<group>"; };
+		CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsListViewModel.swift; sourceTree = "<group>"; };
 		CA9209FD22E93604008E1B96 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		CA9209FF22E9360F008E1B96 /* PlayerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRecord.swift; sourceTree = "<group>"; };
 		CA920A0122E93666008E1B96 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
@@ -188,6 +194,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA3F8B8F2308E5C100C4296E /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */,
+				CA8D93992308E601003FF844 /* StandingsListViewController.swift */,
+				CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		CA4BAB8722D6CEBC003347AF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,6 +419,7 @@
 		CAC47BC522E887CC000DF790 /* Standings */ = {
 			isa = PBXGroup;
 			children = (
+				CA3F8B8F2308E5C100C4296E /* Home */,
 				CA9D412322FA558B0027E2D0 /* Record */,
 				CA9209FC22E935ED008E1B96 /* Models */,
 				CA9D412A22FA78630027E2D0 /* Views */,
@@ -665,10 +682,12 @@
 				CA9D412922FA5DEE0027E2D0 /* RecordPlayBuilder.swift in Sources */,
 				CAE56F9622F9AEE100FE0998 /* LabelState.swift in Sources */,
 				CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */,
+				CA1F20CB2309F8880060957B /* StandingsListBuilder.swift in Sources */,
 				CA9209FE22E93604008E1B96 /* Record.swift in Sources */,
 				CAE56F9E22F9C30C00FE0998 /* GameListItemView.swift in Sources */,
 				CAED76B422FA78CF000A2281 /* PlayerPlayCell.swift in Sources */,
 				CA4BAB9222D6E160003347AF /* GameNavigationController.swift in Sources */,
+				CA8D939C2308E6A2003FF844 /* StandingsListViewModel.swift in Sources */,
 				CAAE778423024349001A37DC /* BlankStandingsViewController.swift in Sources */,
 				CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */,
 				CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */,
@@ -698,6 +717,7 @@
 				CAED76B622FC4FCE000A2281 /* KeyedErrors.swift in Sources */,
 				CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */,
 				CAB3871C22D1907A00349B1F /* ViewAction.swift in Sources */,
+				CA8D939A2308E601003FF844 /* StandingsListViewController.swift in Sources */,
 				CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */,
 				F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */,
 				CABA3EA222D36BAD00960758 /* LeaderboardAPI.swift in Sources */,

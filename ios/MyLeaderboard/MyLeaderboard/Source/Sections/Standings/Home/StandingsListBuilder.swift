@@ -1,21 +1,20 @@
 //
-//  GameListBuilder.swift
+//  StandingsListBuilder.swift
 //  MyLeaderboard
 //
-//  Created by Joseph Roque on 2019-07-08.
+//  Created by Joseph Roque on 2019-08-18.
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
-import UIKit
 import FunctionalTableData
 
-protocol GameListActionable: AnyObject {
+protocol StandingsListActionable: AnyObject {
 	func selectedGame(game: Game)
 }
 
-struct GameListBuilder {
-	static func sections(games: [Game], actionable: GameListActionable) -> [TableSection] {
-		let rows: [CellConfigType] = games.map { game in
+struct StandingsListBuilder {
+	static func sections(standings: [Game: Standings?], actionable: StandingsListActionable) -> [TableSection] {
+		let rows: [CellConfigType] = standings.keys.sorted(by: { $0.id < $1.id }).map { game in
 			return GameListItemCell(
 				key: "game-\(game.id)",
 				style: CellStyle(highlight: true),
@@ -28,6 +27,6 @@ struct GameListBuilder {
 			)
 		}
 
-		return [TableSection(key: "games", rows: rows)]
+		return [TableSection(key: "Standings", rows: rows)]
 	}
 }

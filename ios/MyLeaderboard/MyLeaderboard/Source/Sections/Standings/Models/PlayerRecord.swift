@@ -12,5 +12,5 @@ struct PlayerRecord: Codable {
 	let scoreStats: Score?
 	let lastPlayed: String
 	let overallRecord: Record
-	let record: [ID: Record]
+	let records: [ID: Record]
 }

@@ -1,0 +1,87 @@
+//
+//  StandingsListViewController.swift
+//  MyLeaderboard
+//
+//  Created by Joseph Roque on 2019-08-17.
+//  Copyright © 2019 Joseph Roque. All rights reserved.
+//
+
+import UIKit
+import Loaf
+
+class StandingsListViewController: FTDViewController {
+	private var api: LeaderboardAPI
+	private var viewModel: StandingsListViewModel!
+
+	init(api: LeaderboardAPI) {
+		self.api = api
+		super.init()
+		refreshable = true
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		viewModel = StandingsListViewModel(api: api) { [weak self] action in
+			guard let self = self else { return }
+			switch action {
+			case .standingsUpdated:
+				self.finishRefresh()
+				self.render()
+			case .apiError(let error):
+				self.presentError(error)
+			case .openRecordPlay:
+				self.showRecordPlay()
+			case .openGameDetails(let game):
+				self.showGameDetails(for: game)
+			}
+		}
+
+		self.title = "Standings"
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(recordPlay))
+
+		viewModel.postViewAction(.initialize)
+		render()
+	}
+
+	private func render() {
+		let sections = StandingsListBuilder.sections(standings: viewModel.standings, actionable: self)
+		tableData.renderAndDiff(sections)
+	}
+
+	@objc private func recordPlay() {
+		viewModel.postViewAction(.recordPlay)
+	}
+
+	private func showRecordPlay() {
+		presentModal(RecordPlayViewController(api: api))
+	}
+
+	private func showGameDetails(for game: Game) {
+		print("Show game details for \(game.name)")
+	}
+
+	private func presentError(_ error: LeaderboardAPIError) {
+		let message: String
+		if let errorDescription = error.errorDescription {
+			message = errorDescription
+		} else {
+			message = "Unknown error."
+		}
+
+		Loaf(message, state: .error, sender: self).show()
+	}
+
+	override func refresh() {
+		viewModel.postViewAction(.reload)
+	}
+}
+
+extension StandingsListViewController: StandingsListActionable {
+	func selectedGame(game: Game) {
+		viewModel.postViewAction(.selectGame(game))
+	}
+}
