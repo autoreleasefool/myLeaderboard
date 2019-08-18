@@ -19,4 +19,8 @@ extension UIViewController {
 
 		present(modalController, animated: true)
 	}
+
+	var preferredStatusBarStyle: UIStatusBarStyle {
+		return .lightContent
+	}
 }

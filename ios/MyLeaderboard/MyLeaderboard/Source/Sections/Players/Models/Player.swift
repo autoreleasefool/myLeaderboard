@@ -17,6 +17,9 @@ struct Player: Identifiable, Equatable, Codable {
 
 extension Player: Comparable {
 	public static func < (lhs: Player, rhs: Player) -> Bool {
-		return lhs.displayName < rhs.displayName
+		if lhs.displayName != rhs.displayName {
+			return lhs.displayName < rhs.displayName
+		}
+		return lhs.id < rhs.id
 	}
 }

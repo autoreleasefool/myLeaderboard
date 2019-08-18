@@ -14,7 +14,7 @@ protocol StandingsListActionable: AnyObject {
 
 struct StandingsListBuilder {
 	static func sections(standings: [Game: Standings?], actionable: StandingsListActionable) -> [TableSection] {
-		let rows: [CellConfigType] = standings.keys.sorted(by: { $0.id < $1.id }).map { game in
+		let rows: [CellConfigType] = standings.keys.sorted().map { game in
 			return GameListItemCell(
 				key: "game-\(game.id)",
 				style: CellStyle(highlight: true),
