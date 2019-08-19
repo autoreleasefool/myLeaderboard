@@ -10,6 +10,7 @@ import Foundation
 
 enum StandingsListAction: BaseAction {
 	case standingsUpdated
+	case playersUpdated
 	case apiError(LeaderboardAPIError)
 	case openRecordPlay
 	case openGameDetails(Game)
@@ -34,6 +35,12 @@ class StandingsListViewModel: ViewModel {
 		}
 	}
 
+	private(set) var players: [Player] = [] {
+		didSet {
+			handleAction(.playersUpdated)
+		}
+	}
+
 	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
 		self.api = api
 		self.handleAction = handleAction
@@ -42,9 +49,9 @@ class StandingsListViewModel: ViewModel {
 	func postViewAction(_ viewAction: StandingsListViewAction) {
 		switch viewAction {
 		case .initialize:
-			loadGamesAndStandings()
+			loadData()
 		case .reload:
-			reloadGamesAndStandings()
+			reloadData()
 		case .recordPlay:
 			handleAction(.openRecordPlay)
 		case .selectGame(let game):
@@ -52,24 +59,33 @@ class StandingsListViewModel: ViewModel {
 		}
 	}
 
-	private func reloadGamesAndStandings() {
+	private func reloadData() {
 		api.refresh { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.apiError(error))
 			case .success:
-				self?.loadGamesAndStandings()
+				self?.loadData()
 			}
 		}
 	}
 
-	private func loadGamesAndStandings() {
+	private func loadData() {
 		api.games { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.apiError(error))
 			case .success(let games):
 				self?.loadStandings(for: games)
+			}
+		}
+
+		api.players { [weak self] in
+			switch $0 {
+			case .failure(let error):
+				self?.handleAction(.apiError(error))
+			case .success(let players):
+				self?.players = players.sorted()
 			}
 		}
 	}

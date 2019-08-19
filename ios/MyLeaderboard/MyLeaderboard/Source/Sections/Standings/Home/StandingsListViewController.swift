@@ -31,6 +31,8 @@ class StandingsListViewController: FTDViewController {
 			case .standingsUpdated:
 				self.finishRefresh()
 				self.render()
+			case .playersUpdated:
+				self.render()
 			case .apiError(let error):
 				self.presentError(error)
 			case .openRecordPlay:
@@ -48,7 +50,7 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = StandingsListBuilder.sections(standings: viewModel.standings, actionable: self)
+		let sections = StandingsListBuilder.sections(standings: viewModel.standings, players: viewModel.players, tableData: tableData, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
