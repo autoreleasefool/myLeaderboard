@@ -33,7 +33,7 @@ struct BasePickerBuilder {
 			width: Metrics.Image.small
 		)
 
-		return CombinedCell<UIImageView, ImageState, State.View, State.State, LayoutMarginsTableItemLayout>(
+		return CombinedCell<ImageView, ImageState, State.View, State.State, LayoutMarginsTableItemLayout>(
 			key: "\(item.id)",
 			style: CellStyle(highlight: true),
 			actions: CellActions(selectionAction: { [weak actionable] _ in

@@ -9,7 +9,32 @@
 import UIKit
 import FunctionalTableData
 
-typealias ImageCell = HostCell<UIImageView, ImageState, LayoutMarginsTableItemLayout>
+typealias ImageCell = HostCell<ImageView, ImageState, LayoutMarginsTableItemLayout>
+
+class ImageView: UIView {
+	fileprivate let imageView = UIImageView()
+
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		setupView()
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	private func setupView() {
+		imageView.translatesAutoresizingMaskIntoConstraints = false
+		addSubview(imageView)
+
+		NSLayoutConstraint.activate([
+			imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+			imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+			imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+			imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+			])
+	}
+}
 
 struct ImageState: ViewState {
 	private static let widthAnchorIdentifier = "ImageState.Width"
@@ -40,48 +65,48 @@ struct ImageState: ViewState {
 		self.rounded = rounded
 	}
 
-	static func updateView(_ view: UIImageView, state: ImageState?) {
+	static func updateView(_ view: ImageView, state: ImageState?) {
 		guard let state = state else {
-			view.image = nil
-			view.layer.cornerRadius = 0
-			view.clipsToBounds = false
+			view.imageView.image = nil
+			view.imageView.layer.cornerRadius = 0
+			view.imageView.clipsToBounds = false
 			return
 		}
 
 		let constraints = view.constraints.filter { $0.identifier == ImageState.widthAnchorIdentifier || $0.identifier == ImageState.heightAnchorIdentifier }
 		constraints.forEach { $0.isActive = false }
 
+		view.imageView.contentMode = .scaleAspectFit
+		view.imageView.tintColor = state.tintColor
+
 		if let width = state.width {
-			let widthConstraint = view.widthAnchor.constraint(equalToConstant: width)
+			let widthConstraint = view.imageView.widthAnchor.constraint(equalToConstant: width)
 			widthConstraint.isActive = true
 			widthConstraint.identifier = ImageState.widthAnchorIdentifier
 		}
 
 		if let height = state.height {
-			let heightConstraint = view.heightAnchor.constraint(equalToConstant: height)
+			let heightConstraint = view.imageView.heightAnchor.constraint(equalToConstant: height)
 			heightConstraint.isActive = true
 			heightConstraint.identifier = ImageState.heightAnchorIdentifier
 		}
 
 		if let width = state.width, state.height == state.width && state.rounded {
-			view.clipsToBounds = true
-			view.layer.cornerRadius = width / 2
+			view.imageView.layer.cornerRadius = width / 2
+			view.imageView.clipsToBounds = true
 		} else {
-			view.clipsToBounds = false
-			view.layer.cornerRadius = 0
+			view.imageView.layer.cornerRadius = 0
+			view.imageView.clipsToBounds = false
 		}
 
-		view.contentMode = .scaleAspectFit
-		view.tintColor = state.tintColor
-
 		if let url = state.url {
-			view.image = ImageLoader.shared.fetch(url: url) { result in
+			view.imageView.image = ImageLoader.shared.fetch(url: url) { result in
 				if case .success(let url, let image) = result, url == state.url {
-					view.image = image
+					view.imageView.image = image
 				}
 			}
 		} else {
-			view.image = state.image
+			view.imageView.image = state.image
 		}
 	}
 

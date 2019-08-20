@@ -34,20 +34,28 @@ struct StandingsListBuilder {
 			if let optionalGameStandings = standings[game], let gameStandings = optionalGameStandings {
 				let visiblePlayers = self.visiblePlayers(from: players, standings: gameStandings)
 
+				var headerRow: [GridCellConfig] = [Cells.textGridCell(key: "Header", text: "")]
+				visiblePlayers.forEach {
+					headerRow.append(Cells.playerCell(for: $0))
+				}
+				spreadsheetCells.append(headerRow)
+
 				visiblePlayers.forEach { player in
 					if let playerRecord = gameStandings.records[player.id] {
-						var cells: [GridCellConfig] = []
+						var cells: [GridCellConfig] = [
+							Cells.playerCell(for: player),
+						]
 
 						visiblePlayers.forEach { opponent in
 							guard opponent.id != player.id else {
-								cells.append(textGridCell(key: "\(player.id)-\(opponent.id)", text: "—"))
+								cells.append(Cells.textGridCell(key: "\(player.id)-\(opponent.id)", text: "—"))
 								return
 							}
 
 							if let recordAgainstOpponent = playerRecord.records[opponent.id] {
-								cells.append(textGridCell(key: "\(player.id)-\(opponent.id)", text: format(record: recordAgainstOpponent)))
+								cells.append(Cells.textGridCell(key: "\(player.id)-\(opponent.id)", text: format(record: recordAgainstOpponent)))
 							} else {
-								cells.append(textGridCell(key: "\(player.id)-\(opponent.id)", text: format(record: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil))))
+								cells.append(Cells.textGridCell(key: "\(player.id)-\(opponent.id)", text: format(record: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil))))
 							}
 						}
 
@@ -56,25 +64,10 @@ struct StandingsListBuilder {
 				}
 			}
 
-			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
-			spreadsheetCells.enumerated().forEach { index, _ in
-				if index == spreadsheetCells.endIndex - 1 {
-					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil, bottomBorder: nil)
-				} else {
-					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil)
-				}
-			}
-
-			var columnConfigs: [Int: Spreadsheet.ColumnConfig] = [:]
-			spreadsheetCells.first?.enumerated().forEach { index, _ in
-				if index == (spreadsheetCells.first?.endIndex ?? 0) - 1 {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: nil)
-				} else {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil)
-				}
-			}
-
+			let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
+			let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
 			let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, in: tableData)
+
 			if let spreadsheet = Spreadsheet.section(key: "Standings-\(game.id)", config: config) {
 				rows.append(contentsOf: spreadsheet.rows)
 			}
@@ -89,18 +82,64 @@ struct StandingsListBuilder {
 		return "\(record.wins) - \(record.losses)\(record.ties > 0 ? " - \(record.ties)" : "")"
 	}
 
-	static func textGridCell(key: String, text: String) -> GridCellConfig {
-		return Spreadsheet.TextGridCellConfig(
-			key: key,
-			state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
-			topBorder: nil,
-			bottomBorder: nil,
-			leftBorder: nil,
-			rightBorder: nil
-		)
-	}
-
 	static func visiblePlayers(from players: [Player], standings: Standings) -> [Player] {
 		return players.filter { (standings.records[$0.id]?.isBanished ?? true) == false }
+	}
+
+	private struct SpreadsheetConfigs {
+		static func rows(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.RowConfig] {
+			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
+			cells.enumerated().forEach { index, _ in
+				if index == cells.endIndex - 1 {
+					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil, bottomBorder: nil)
+				} else {
+					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil)
+				}
+			}
+			return rowConfigs
+		}
+
+		static func columns(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.ColumnConfig] {
+			var columnConfigs: [Int: Spreadsheet.ColumnConfig] = [:]
+			cells.first?.enumerated().forEach { index, _ in
+				if index == (cells.first?.endIndex ?? 0) - 1 {
+					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: nil)
+				} else {
+					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil)
+				}
+			}
+			return columnConfigs
+		}
+	}
+
+	private struct Cells {
+		static func textGridCell(key: String, text: String) -> GridCellConfig {
+			return Spreadsheet.TextGridCellConfig(
+				key: key,
+				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
+				topBorder: nil,
+				bottomBorder: nil,
+				leftBorder: nil,
+				rightBorder: nil
+			)
+		}
+
+		static func playerCell(for player: Player) -> GridCellConfig {
+			let avatarURL: URL?
+			if let avatar = player.avatar {
+				avatarURL = URL(string: avatar)
+			} else {
+				avatarURL = nil
+			}
+
+			return Spreadsheet.ImageGridCellConfig(
+				key: "Avatar-\(player.id)",
+				state: ImageState(url: avatarURL, width: Metrics.Image.small, height: Metrics.Image.small, rounded: true),
+				topBorder: nil,
+				bottomBorder: nil,
+				leftBorder: nil,
+				rightBorder: nil
+			)
+		}
 	}
 }

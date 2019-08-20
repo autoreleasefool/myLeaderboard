@@ -54,7 +54,7 @@ extension Spreadsheet {
 	}
 
 	struct ImageGridCellConfig: GridCellConfig {
-		private typealias Cell = HostCell<UIImageView, ImageState, LayoutMarginsTableItemLayout>
+		private typealias Cell = HostCell<ImageView, ImageState, LayoutMarginsTableItemLayout>
 
 		let key: String
 		let state: ImageState
