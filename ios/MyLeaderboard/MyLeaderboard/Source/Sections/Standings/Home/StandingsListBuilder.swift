@@ -34,16 +34,15 @@ struct StandingsListBuilder {
 			if let optionalGameStandings = standings[game], let gameStandings = optionalGameStandings {
 				let visiblePlayers = self.visiblePlayers(from: players, standings: gameStandings)
 
-				var headerRow: [GridCellConfig] = [Cells.textGridCell(key: "Header", text: "")]
-				visiblePlayers.forEach {
-					headerRow.append(Cells.playerCell(for: $0))
-				}
+				var headerRow: [GridCellConfig] = [Cells.textGridCell(key: "Header", text: ""), Cells.textGridCell(key: "Total", text: "Total")]
+				visiblePlayers.forEach { headerRow.append(Cells.playerCell(for: $0)) }
 				spreadsheetCells.append(headerRow)
 
 				visiblePlayers.forEach { player in
 					if let playerRecord = gameStandings.records[player.id] {
 						var cells: [GridCellConfig] = [
 							Cells.playerCell(for: player),
+							Cells.textGridCell(key: "Total", text: format(record: playerRecord.overallRecord), backgroundColor: backgroundColor(for: playerRecord.overallRecord))
 						]
 
 						visiblePlayers.forEach { opponent in
@@ -53,7 +52,7 @@ struct StandingsListBuilder {
 							}
 
 							if let recordAgainstOpponent = playerRecord.records[opponent.id] {
-								cells.append(Cells.textGridCell(key: "\(player.id)-\(opponent.id)", text: format(record: recordAgainstOpponent)))
+								cells.append(Cells.textGridCell(key: "\(player.id)-\(opponent.id)", text: format(record: recordAgainstOpponent), backgroundColor: backgroundColor(for: recordAgainstOpponent)))
 							} else {
 								cells.append(Cells.textGridCell(key: "\(player.id)-\(opponent.id)", text: format(record: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil))))
 							}
@@ -82,8 +81,23 @@ struct StandingsListBuilder {
 		return "\(record.wins) - \(record.losses)\(record.ties > 0 ? " - \(record.ties)" : "")"
 	}
 
+	static func backgroundColor(for record: Record) -> UIColor? {
+		if record.isBest == true {
+			return .bestRecord
+		} else if record.isWorst == true {
+			return .worstRecord
+		} else {
+			return nil
+		}
+	}
+
 	static func visiblePlayers(from players: [Player], standings: Standings) -> [Player] {
 		return players.filter { (standings.records[$0.id]?.isBanished ?? true) == false }
+	}
+
+	static func banishedPlayers(from players: [Player], standings: Standings) -> [Player] {
+		let visiblePlayers = self.visiblePlayers(from: players, standings: standings)
+		return players.filter { standings.records.keys.contains($0.id) && visiblePlayers.contains($0) }
 	}
 
 	private struct SpreadsheetConfigs {
@@ -113,10 +127,11 @@ struct StandingsListBuilder {
 	}
 
 	private struct Cells {
-		static func textGridCell(key: String, text: String) -> GridCellConfig {
+		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil) -> GridCellConfig {
 			return Spreadsheet.TextGridCellConfig(
 				key: key,
 				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
+				backgroundColor: backgroundColor,
 				topBorder: nil,
 				bottomBorder: nil,
 				leftBorder: nil,
@@ -125,6 +140,8 @@ struct StandingsListBuilder {
 		}
 
 		static func playerCell(for player: Player) -> GridCellConfig {
+			let imageSize: CGFloat = 32
+
 			let avatarURL: URL?
 			if let avatar = player.avatar {
 				avatarURL = URL(string: avatar)
@@ -134,7 +151,8 @@ struct StandingsListBuilder {
 
 			return Spreadsheet.ImageGridCellConfig(
 				key: "Avatar-\(player.id)",
-				state: ImageState(url: avatarURL, width: Metrics.Image.small, height: Metrics.Image.small, rounded: true),
+				state: ImageState(url: avatarURL, width: imageSize, height: imageSize, rounded: true),
+				backgroundColor: nil,
 				topBorder: nil,
 				bottomBorder: nil,
 				leftBorder: nil,

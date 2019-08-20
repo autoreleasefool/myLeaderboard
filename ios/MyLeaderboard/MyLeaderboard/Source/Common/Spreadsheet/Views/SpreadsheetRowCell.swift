@@ -90,6 +90,7 @@ extension Spreadsheet {
 
 			let rows: [CellConfigType] = state.cells.enumerated().map { index, cell in
 				let backgroundViewProvider = GridCellBackgroundViewProvider(
+					backgroundColor: cell.backgroundColor,
 					topBorder: cell.topBorder ?? state.config.topBorder,
 					bottomBorder: cell.bottomBorder ?? state.config.bottomBorder,
 					leftBorder: cell.leftBorder ?? state.columns[index]?.leftBorder,
@@ -133,6 +134,7 @@ extension Spreadsheet {
 			case top, bottom, right, left
 		}
 
+		let backgroundColor: UIColor?
 		let topBorder: BorderConfig?
 		let bottomBorder: BorderConfig?
 		let leftBorder: BorderConfig?
@@ -140,6 +142,10 @@ extension Spreadsheet {
 
 		func backgroundView() -> UIView? {
 			let view = UIView()
+
+			if let backgroundColor = backgroundColor {
+				view.backgroundColor = backgroundColor
+			}
 
 			if let topBorder = topBorder {
 				apply(border: topBorder, at: .top, toView: view)
@@ -192,7 +198,8 @@ extension Spreadsheet {
 
 		func isEqualTo(_ other: BackgroundViewProvider?) -> Bool {
 			guard let other = other as? GridCellBackgroundViewProvider else { return false }
-			return topBorder == other.topBorder &&
+			return backgroundColor == other.backgroundColor &&
+				topBorder == other.topBorder &&
 				bottomBorder == other.bottomBorder &&
 				leftBorder == other.leftBorder &&
 				rightBorder == other.rightBorder

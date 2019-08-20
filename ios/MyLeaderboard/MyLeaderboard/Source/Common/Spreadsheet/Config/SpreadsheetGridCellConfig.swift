@@ -12,6 +12,7 @@ import FunctionalTableData
 protocol GridCellConfig {
 	var key: String { get }
 
+	var backgroundColor: UIColor? { get }
 	var topBorder: Spreadsheet.BorderConfig? { get }
 	var bottomBorder: Spreadsheet.BorderConfig? { get }
 	var leftBorder: Spreadsheet.BorderConfig? { get }
@@ -28,6 +29,7 @@ extension Spreadsheet {
 
 		let key: String
 		let state: LabelState
+		let backgroundColor: UIColor?
 
 		let topBorder: Spreadsheet.BorderConfig?
 		let bottomBorder: Spreadsheet.BorderConfig?
@@ -46,6 +48,7 @@ extension Spreadsheet {
 			guard let other = other as? TextGridCellConfig else { return false }
 			return key == other.key &&
 				state == other.state &&
+				backgroundColor == other.backgroundColor &&
 				topBorder == other.topBorder &&
 				bottomBorder == other.bottomBorder &&
 				leftBorder == other.leftBorder &&
@@ -58,6 +61,7 @@ extension Spreadsheet {
 
 		let key: String
 		let state: ImageState
+		let backgroundColor: UIColor?
 
 		let topBorder: Spreadsheet.BorderConfig?
 		let bottomBorder: Spreadsheet.BorderConfig?
@@ -76,6 +80,7 @@ extension Spreadsheet {
 			guard let other = other as? ImageGridCellConfig else { return false }
 			return key == other.key &&
 				state == other.state &&
+				backgroundColor == other.backgroundColor &&
 				topBorder == other.topBorder &&
 				bottomBorder == other.bottomBorder &&
 				leftBorder == other.leftBorder &&
