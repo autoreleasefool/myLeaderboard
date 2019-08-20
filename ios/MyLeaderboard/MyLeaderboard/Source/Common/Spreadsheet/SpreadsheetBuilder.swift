@@ -53,8 +53,7 @@ class SpreadsheetBuilder {
 			return
 		}
 
-		guard let tableViewCell = cell as? Spreadsheet.RowCell.TableViewCellType,
-			let rowCellView = tableViewCell.subviews.first as? Spreadsheet.RowCellView,
+		guard let rowCellView = cell.subviews.first?.subviews.first as? Spreadsheet.RowCellView,
 			rowCellView.spreadsheetKey == key else {
 			return
 		}
@@ -71,7 +70,7 @@ class SpreadsheetBuilder {
 		offsets[key] = offset
 
 		tableView.visibleCells.forEach {
-			guard let rowCellView = $0.subviews.first as? Spreadsheet.RowCellView,
+			guard let rowCellView = $0.subviews.first?.subviews.first as? Spreadsheet.RowCellView,
 				rowCellView.spreadsheetKey == key else {
 				return
 			}

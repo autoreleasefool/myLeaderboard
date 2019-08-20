@@ -23,7 +23,9 @@ protocol GridCellConfig {
 }
 
 extension Spreadsheet {
-	struct TextGridCell: GridCellConfig {
+	struct TextGridCellConfig: GridCellConfig {
+		private typealias Cell = HostCell<UILabel, LabelState, LayoutMarginsTableItemLayout>
+
 		let key: String
 		let state: LabelState
 
@@ -33,7 +35,7 @@ extension Spreadsheet {
 		let rightBorder: Spreadsheet.BorderConfig?
 
 		var view: CellConfigType {
-			return LabelCell(
+			return Cell(
 				key: key,
 				state: state,
 				cellUpdater: LabelState.updateView
@@ -41,7 +43,7 @@ extension Spreadsheet {
 		}
 
 		func isEqual(_ other: GridCellConfig) -> Bool {
-			guard let other = other as? TextGridCell else { return false }
+			guard let other = other as? TextGridCellConfig else { return false }
 			return key == other.key &&
 				state == other.state &&
 				topBorder == other.topBorder &&
@@ -51,7 +53,9 @@ extension Spreadsheet {
 		}
 	}
 
-	struct ImageGridCell: GridCellConfig {
+	struct ImageGridCellConfig: GridCellConfig {
+		private typealias Cell = HostCell<UIImageView, ImageState, LayoutMarginsTableItemLayout>
+
 		let key: String
 		let state: ImageState
 
@@ -61,7 +65,7 @@ extension Spreadsheet {
 		let rightBorder: Spreadsheet.BorderConfig?
 
 		var view: CellConfigType {
-			return ImageCell(
+			return Cell(
 				key: key,
 				state: state,
 				cellUpdater: ImageState.updateView
@@ -69,7 +73,7 @@ extension Spreadsheet {
 		}
 
 		func isEqual(_ other: GridCellConfig) -> Bool {
-			guard let other = other as? ImageGridCell else { return false }
+			guard let other = other as? ImageGridCellConfig else { return false }
 			return key == other.key &&
 				state == other.state &&
 				topBorder == other.topBorder &&

@@ -10,19 +10,31 @@ import UIKit
 import FunctionalTableData
 
 extension Spreadsheet {
-	typealias RowCell = HostCell<RowCellView, RowCellState, LayoutMarginsTableItemLayout>
+	typealias RowCell = HostCell<RowCellView, RowCellState, EdgeBasedTableItemLayout>
 
 	class RowCellView: UIView {
 		var spreadsheetKey: String?
 		let collectionView: UICollectionView
+
 		fileprivate let collectionData = FunctionalCollectionData()
+		fileprivate let heightConstraint: NSLayoutConstraint
 
 		override init(frame: CGRect) {
 			let layout = UICollectionViewFlowLayout()
 			layout.scrollDirection = .horizontal
+			layout.minimumInteritemSpacing = 0
+			layout.minimumLineSpacing = 0
 
 			collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+			collectionView.translatesAutoresizingMaskIntoConstraints = false
 			collectionView.showsHorizontalScrollIndicator = false
+			collectionView.backgroundColor = .clear
+
+			heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 1)
+			heightConstraint.priority = .defaultLow
+			heightConstraint.isActive = true
+
+			collectionData.collectionView = collectionView
 
 			super.init(frame: frame)
 			setupView()
@@ -63,6 +75,12 @@ extension Spreadsheet {
 				view.collectionData.scrollViewDidScroll = nil
 				view.collectionData.renderAndDiff([])
 				return
+			}
+
+			if let layout = view.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+				let maxWidth = state.columns.max { left, right -> Bool in left.value.columnWidth < right.value.columnWidth }?.value.columnWidth ?? 48
+				layout.itemSize = CGSize(width: maxWidth, height: state.config.rowHeight)
+				view.heightConstraint.constant = state.config.rowHeight
 			}
 
 			view.spreadsheetKey = state.spreadsheetKey

@@ -11,20 +11,17 @@ import UIKit
 extension Spreadsheet {
 	struct RowConfig: Equatable {
 		let isSticky: Bool
-		let maxHeight: CGFloat?
-		let minHeight: CGFloat?
-		let topBorder: BorderConfig
-		let bottomBorder: BorderConfig
+		let rowHeight: CGFloat
+		let topBorder: BorderConfig?
+		let bottomBorder: BorderConfig?
 
 		init(
 			isSticky: Bool = false,
-			maxHeight: CGFloat? = nil,
-			minHeight: CGFloat = 48,
-			topBorder: BorderConfig = BorderConfig(),
-			bottomBorder: BorderConfig = BorderConfig()) {
+			rowHeight: CGFloat = 48,
+			topBorder: BorderConfig? = BorderConfig(),
+			bottomBorder: BorderConfig? = BorderConfig()) {
 			self.isSticky = isSticky
-			self.maxHeight = maxHeight
-			self.minHeight = minHeight
+			self.rowHeight = rowHeight
 			self.topBorder = topBorder
 			self.bottomBorder = bottomBorder
 		}

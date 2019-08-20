@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Player: Identifiable, Equatable, Codable {
+struct Player: Identifiable, Equatable, Codable, Hashable {
 	let id: ID
 	let avatar: String?
 	let displayName: String
