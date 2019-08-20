@@ -19,7 +19,6 @@
 		CA4BABA222D77089003347AF /* PlayerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA122D77089003347AF /* PlayerListViewController.swift */; };
 		CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA322D77103003347AF /* PlayerListBuilder.swift */; };
 		CA4BABA622D77187003347AF /* PlayerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BABA522D77187003347AF /* PlayerListViewModel.swift */; };
-		CA51636E22F465AA002E0A90 /* Loaf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; };
 		CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
 		CA834B87230A1D8500A48C9B /* StandingsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D93992308E601003FF844 /* StandingsListViewController.swift */; };
 		CA834B88230A1D8900A48C9B /* StandingsListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */; };
@@ -37,6 +36,10 @@
 		CA920A0222E93666008E1B96 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0122E93666008E1B96 /* Score.swift */; };
 		CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0522E94911008E1B96 /* PlayerStandings.swift */; };
 		CA920A0822E94A84008E1B96 /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0722E94A84008E1B96 /* GamePlay.swift */; };
+		CA93292E230C397600599122 /* FunctionalTableData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */; };
+		CA93292F230C397600599122 /* FunctionalTableData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CA932931230C397700599122 /* Loaf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; };
+		CA932932230C397700599122 /* Loaf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220222D592AA00479A0B /* CreateGameViewController.swift */; };
 		CA96220522D592B400479A0B /* CreateGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220422D592B400479A0B /* CreateGameViewModel.swift */; };
 		CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */; };
@@ -55,7 +58,6 @@
 		CAB3872022D2254000349B1F /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871F22D2254000349B1F /* Action.swift */; };
 		CABA3EA222D36BAD00960758 /* LeaderboardAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA122D36BAD00960758 /* LeaderboardAPI.swift */; };
 		CABA3EA422D42DC300960758 /* GameListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA322D42DC300960758 /* GameListBuilder.swift */; };
-		CABA3EA622D4B15C00960758 /* FunctionalTableData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */; };
 		CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
 		CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA922D4B4DB00960758 /* FTDViewController.swift */; };
 		CABA3EAD22D4B83D00960758 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EAC22D4B83D00960758 /* ImageLoader.swift */; };
@@ -100,6 +102,21 @@
 			remoteInfo = MyLeaderboard;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CA932930230C397600599122 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CA932932230C397700599122 /* Loaf.framework in Embed Frameworks */,
+				CA93292F230C397600599122 /* FunctionalTableData.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsListBuilder.swift; sourceTree = "<group>"; };
@@ -190,8 +207,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA51636E22F465AA002E0A90 /* Loaf.framework in Frameworks */,
-				CABA3EA622D4B15C00960758 /* FunctionalTableData.framework in Frameworks */,
+				CA932931230C397700599122 /* Loaf.framework in Frameworks */,
+				CA93292E230C397600599122 /* FunctionalTableData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +599,7 @@
 				CAC9066522D0F70B0075B033 /* Sources */,
 				CAC9066622D0F70B0075B033 /* Frameworks */,
 				CAC9066722D0F70B0075B033 /* Resources */,
+				CA932930230C397600599122 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
