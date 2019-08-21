@@ -55,6 +55,7 @@
 		CAB3871C22D1907A00349B1F /* ViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871B22D1907A00349B1F /* ViewAction.swift */; };
 		CAB3871E22D224A100349B1F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871D22D224A100349B1F /* ViewModel.swift */; };
 		CAB3872022D2254000349B1F /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871F22D2254000349B1F /* Action.swift */; };
+		CAB88E35230DB8FF0022281D /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB88E34230DB8FF0022281D /* CollectionViewCell.swift */; };
 		CABA3EA222D36BAD00960758 /* LeaderboardAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA122D36BAD00960758 /* LeaderboardAPI.swift */; };
 		CABA3EA422D42DC300960758 /* GameListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA322D42DC300960758 /* GameListBuilder.swift */; };
 		CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
@@ -163,6 +164,7 @@
 		CAB3871B22D1907A00349B1F /* ViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAction.swift; sourceTree = "<group>"; };
 		CAB3871D22D224A100349B1F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		CAB3871F22D2254000349B1F /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		CAB88E34230DB8FF0022281D /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		CABA3EA122D36BAD00960758 /* LeaderboardAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardAPI.swift; sourceTree = "<group>"; };
 		CABA3EA322D42DC300960758 /* GameListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListBuilder.swift; sourceTree = "<group>"; };
 		CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FunctionalTableData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -241,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				CA4BAB8C22D6DBD5003347AF /* ButtonState.swift */,
+				CAB88E34230DB8FF0022281D /* CollectionViewCell.swift */,
 				CAE56F8722F4712500FE0998 /* CombinedView.swift */,
 				CA4BAB8A22D6CF0C003347AF /* ControlText.swift */,
 				CAE56F8922F47AAB00FE0998 /* ImageState.swift */,
@@ -766,6 +769,7 @@
 				CAAE778E2302DB0A001A37DC /* CreatePlayerBuilder.swift in Sources */,
 				CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */,
 				CA834B9A230A298300A48C9B /* SpreadsheetConfig.swift in Sources */,
+				CAB88E35230DB8FF0022281D /* CollectionViewCell.swift in Sources */,
 				CA834B9C230A335600A48C9B /* SpreadsheetBuilder.swift in Sources */,
 				CA834B90230A1EB900A48C9B /* SpreadsheetColumnConfig.swift in Sources */,
 				CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */,
