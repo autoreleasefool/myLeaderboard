@@ -204,6 +204,35 @@ Get the record for a single player, for a single game.
 
 ## Plays
 
+**GET** `/plays/list`
+
+Returns the list of plays.
+
+<summary>Example response</summary>
+<details>
+
+```
+[
+    {
+        "id": 0,
+        "game": 0,
+        "playedOn": "2019-07-01T00:00:00.000Z",
+        "players": [1, 9],
+        "winners": [1]
+    },
+    {
+        "id": 245,
+        "game": 1,
+        "playedOn": "2019-08-21T21:07:43.038Z",
+        "players": [5, 6],
+        "winners": [6],
+        "scores": [-5, 13]
+    }
+]
+```
+
+</details>
+
 **POST** `/plays/record`
 
 Record a new play of a game.
