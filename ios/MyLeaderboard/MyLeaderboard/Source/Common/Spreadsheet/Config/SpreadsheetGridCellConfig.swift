@@ -20,7 +20,7 @@ protocol GridCellConfig {
 
 	var view: CellConfigType { get }
 
-	func isEqual(_ other: GridCellConfig) -> Bool
+	func isEqual(to other: GridCellConfig?) -> Bool
 }
 
 extension Spreadsheet {
@@ -46,7 +46,7 @@ extension Spreadsheet {
 			)
 		}
 
-		func isEqual(_ other: GridCellConfig) -> Bool {
+		func isEqual(to other: GridCellConfig?) -> Bool {
 			guard let other = other as? TextGridCellConfig else { return false }
 			return key == other.key &&
 				state == other.state &&
@@ -76,11 +76,11 @@ extension Spreadsheet {
 				key: key,
 				actions: actions,
 				state: state,
-				cellUpdater: ImageState.updateView
+				cellUpdater: ImageState.updateImageView
 			)
 		}
 
-		func isEqual(_ other: GridCellConfig) -> Bool {
+		func isEqual(to other: GridCellConfig?) -> Bool {
 			guard let other = other as? ImageGridCellConfig else { return false }
 			return key == other.key &&
 				state == other.state &&

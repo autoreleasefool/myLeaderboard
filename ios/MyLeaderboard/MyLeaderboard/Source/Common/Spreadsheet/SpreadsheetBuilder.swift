@@ -33,7 +33,7 @@ class SpreadsheetBuilder {
 				),
 				state: Spreadsheet.RowCellState(
 					spreadsheetKey: key,
-					config: config.rows[index] ?? Spreadsheet.RowConfig(),
+					config: config.rows[index] ?? Spreadsheet.CommonRowConfig(),
 					columns: config.columns,
 					cells: row,
 					border: border,

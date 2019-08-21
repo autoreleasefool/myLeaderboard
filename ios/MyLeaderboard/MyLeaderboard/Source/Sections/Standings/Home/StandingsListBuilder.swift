@@ -117,7 +117,7 @@ struct StandingsListBuilder {
 		guard players.count > 0 else { return nil }
 
 		var rows: [CellConfigType] = [
-			Cells.subHeader(key: "BanishedHeader-\(game.id)", text: "Banished")
+			Cells.subHeader(key: "BanishedHeader-\(game.id)", text: "Shadow Realm")
 		]
 
 		let banishedPlayerRows: [CellConfigType] = players.map { Cells.playerAvatar(for: $0, actionable: actionable) }
@@ -156,9 +156,9 @@ struct StandingsListBuilder {
 			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
 			cells.enumerated().forEach { index, _ in
 				if index == 0 {
-					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: Spreadsheet.BorderConfig(color: .standingsBorder), bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
+					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: Spreadsheet.BorderConfig(color: .standingsBorder), bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
 				} else {
-					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
+					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
 				}
 			}
 			return rowConfigs
@@ -200,13 +200,6 @@ struct StandingsListBuilder {
 		}
 
 		static func playerAvatar(for player: Player, actionable: StandingsListActionable) -> CellConfigType {
-			let avatarURL: URL?
-			if let avatar = player.avatar {
-				avatarURL = URL(string: avatar)
-			} else {
-				avatarURL = nil
-			}
-
 			return ImageCell(
 				key: "player-\(player.id)",
 				style: CellStyle(highlight: true),
@@ -214,9 +207,20 @@ struct StandingsListBuilder {
 					actionable?.selectedPlayer(player: player)
 					return .deselected
 				}),
-				state: ImageState(url: avatarURL, width: StandingsListBuilder.avatarImageSize, height: StandingsListBuilder.avatarImageSize, rounded: true),
-				cellUpdater: ImageState.updateView
+				state: playerAvatarState(for: player),
+				cellUpdater: ImageState.updateImageView
 			)
+		}
+
+		static func playerAvatarState(for player: Player, opacity: CGFloat = 1.0) -> ImageState {
+			let avatarURL: URL?
+			if let avatar = player.avatar {
+				avatarURL = URL(string: avatar)
+			} else {
+				avatarURL = nil
+			}
+
+			return ImageState(url: avatarURL, width: StandingsListBuilder.avatarImageSize, height: StandingsListBuilder.avatarImageSize, rounded: true, opacity: opacity)
 		}
 	}
 
@@ -237,20 +241,13 @@ struct StandingsListBuilder {
 		static func playerCell(for player: Player, record: PlayerRecord?, actionable: StandingsListActionable) -> GridCellConfig {
 			let opacity = CGFloat(record?.freshness ?? 1)
 
-			let avatarURL: URL?
-			if let avatar = player.avatar {
-				avatarURL = URL(string: avatar)
-			} else {
-				avatarURL = nil
-			}
-
 			return Spreadsheet.ImageGridCellConfig(
 				key: "Avatar-\(player.id)",
 				actions: CellActions(selectionAction: { [weak actionable] _ in
 					actionable?.selectedPlayer(player: player)
 					return .deselected
 				}),
-				state: ImageState(url: avatarURL, width: StandingsListBuilder.avatarImageSize, height: StandingsListBuilder.avatarImageSize, rounded: true, opacity: opacity),
+				state: Cells.playerAvatarState(for: player, opacity: opacity),
 				backgroundColor: nil,
 				topBorder: nil,
 				bottomBorder: nil,

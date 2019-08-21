@@ -201,14 +201,14 @@ extension Spreadsheet {
 
 		static func == (lhs: RowCellState, rhs: RowCellState) -> Bool {
 			guard lhs.spreadsheetKey == rhs.spreadsheetKey &&
-				lhs.config == rhs.config &&
+				lhs.config.isEqual(to: rhs.config) &&
 				lhs.columns == rhs.columns else {
 				return false
 			}
 
 			guard lhs.cells.count == rhs.cells.count else { return false }
 			for (index, cell) in lhs.cells.enumerated() {
-				if cell.isEqual(rhs.cells[index]) == false {
+				if cell.isEqual(to: rhs.cells[index]) == false {
 					return false
 				}
 			}

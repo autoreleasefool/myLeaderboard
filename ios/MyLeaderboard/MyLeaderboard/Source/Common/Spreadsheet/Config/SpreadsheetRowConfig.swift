@@ -8,25 +8,62 @@
 
 import UIKit
 
+protocol RowConfig {
+	var rowHeight: CGFloat { get }
+	var topBorder: Spreadsheet.BorderConfig? { get }
+	var bottomBorder: Spreadsheet.BorderConfig? { get }
+
+	func isEqual(to other: RowConfig?) -> Bool
+}
+
 extension Spreadsheet {
-	struct RowConfig: Equatable {
-		let isSticky: Bool
+	typealias RowConfig = MyLeaderboard.RowConfig
+
+	struct HeaderRowConfig: RowConfig {
+		let header: GridCellConfig?
 		let rowHeight: CGFloat
 		let topBorder: BorderConfig?
 		let bottomBorder: BorderConfig?
 
 		init(
-			isSticky: Bool = false,
+			header: GridCellConfig? = nil,
 			rowHeight: CGFloat = 48,
 			topBorder: BorderConfig? = BorderConfig(),
 			bottomBorder: BorderConfig? = BorderConfig()) {
-			self.isSticky = isSticky
+			self.header = header
 			self.rowHeight = rowHeight
 			self.topBorder = topBorder
 			self.bottomBorder = bottomBorder
 		}
 
-		static let Header = RowConfig(isSticky: true, topBorder: BorderConfig(thickness: 3), bottomBorder: BorderConfig(thickness: 3))
-		static let `default` = RowConfig()
+		func isEqual(to other: RowConfig?) -> Bool {
+			guard let other = other as? HeaderRowConfig else { return false }
+			return (header?.isEqual(to: other.header) ?? false) &&
+				rowHeight == other.rowHeight &&
+				topBorder == other.topBorder &&
+				bottomBorder == other.bottomBorder
+		}
+	}
+
+	struct CommonRowConfig: RowConfig {
+		let rowHeight: CGFloat
+		let topBorder: BorderConfig?
+		let bottomBorder: BorderConfig?
+
+		init(
+			rowHeight: CGFloat = 48,
+			topBorder: BorderConfig? = BorderConfig(),
+			bottomBorder: BorderConfig? = BorderConfig()) {
+			self.rowHeight = rowHeight
+			self.topBorder = topBorder
+			self.bottomBorder = bottomBorder
+		}
+
+		func isEqual(to other: RowConfig?) -> Bool {
+			guard let other = other as? CommonRowConfig else { return false }
+			return rowHeight == other.rowHeight &&
+				topBorder == other.topBorder &&
+				bottomBorder == other.bottomBorder
+		}
 	}
 }

@@ -25,17 +25,24 @@ extension Spreadsheet {
 		}
 
 		static func == (lhs: Config, rhs: Config) -> Bool {
-			guard lhs.rows == rhs.rows &&
-				lhs.columns == rhs.columns &&
+			guard lhs.columns == rhs.columns &&
 				lhs.tableData === rhs.tableData else {
 				return false
+			}
+
+			guard lhs.rows.count == rhs.rows.count else { return false }
+			for (rowIndex, row) in lhs.rows {
+				guard let rhsRow = rhs.rows[rowIndex] else { return false }
+				if row.isEqual(to: rhsRow) == false {
+					return false
+				}
 			}
 
 			guard lhs.cells.count == rhs.cells.count else { return false }
 			for (rowIndex, row) in lhs.cells.enumerated() {
 				if row.count != rhs.cells[rowIndex].count { return false }
 				for (index, cell) in row.enumerated() {
-					if cell.isEqual(rhs.cells[rowIndex][index]) == false {
+					if cell.isEqual(to: rhs.cells[rowIndex][index]) == false {
 						return false
 					}
 				}
