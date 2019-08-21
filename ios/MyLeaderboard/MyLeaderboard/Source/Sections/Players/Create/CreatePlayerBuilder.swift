@@ -102,7 +102,7 @@ struct CreatePlayerBuilder {
 			ImageCell(
 				key: Keys.Preview.avatar.rawValue,
 				state: ImageState(url: url, width: Metrics.Image.large, height: Metrics.Image.large, rounded: true),
-				cellUpdater: ImageState.updateView
+				cellUpdater: ImageState.updateImageView
 			),
 		]
 

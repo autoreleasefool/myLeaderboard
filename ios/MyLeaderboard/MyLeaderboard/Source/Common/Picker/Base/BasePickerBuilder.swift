@@ -53,7 +53,8 @@ struct BasePickerBuilder {
 				view.view1.setContentHuggingPriority(.required, for: .horizontal)
 				view.stackView.spacing = Metrics.Spacing.standard
 
-				CombinedState<ImageState, State>.updateView(view, state: state)
+				ImageState.updateView(view.view1, state: state.state1)
+				State.updateView(view.view2, state: state.state2)
 			}
 		)
 	}
