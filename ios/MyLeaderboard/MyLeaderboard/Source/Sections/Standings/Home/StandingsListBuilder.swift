@@ -9,6 +9,7 @@
 import FunctionalTableData
 
 protocol StandingsListActionable: AnyObject {
+	func selectedPlayer(player: Player)
 	func selectedGame(game: Game)
 }
 
@@ -35,13 +36,13 @@ struct StandingsListBuilder {
 				let visiblePlayers = self.visiblePlayers(from: players, standings: gameStandings)
 
 				var headerRow: [GridCellConfig] = [Cells.textGridCell(key: "Header", text: ""), Cells.textGridCell(key: "Total", text: "Total")]
-				visiblePlayers.forEach { headerRow.append(Cells.playerCell(for: $0)) }
+				visiblePlayers.forEach { headerRow.append(Cells.playerCell(for: $0, actionable: actionable)) }
 				spreadsheetCells.append(headerRow)
 
 				visiblePlayers.forEach { player in
 					if let playerRecord = gameStandings.records[player.id] {
 						var cells: [GridCellConfig] = [
-							Cells.playerCell(for: player),
+							Cells.playerCell(for: player, actionable: actionable),
 							Cells.textGridCell(key: "Total", text: format(record: playerRecord.overallRecord), backgroundColor: backgroundColor(for: playerRecord.overallRecord))
 						]
 
@@ -130,6 +131,7 @@ struct StandingsListBuilder {
 		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil) -> GridCellConfig {
 			return Spreadsheet.TextGridCellConfig(
 				key: key,
+				actions: CellActions(),
 				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
 				backgroundColor: backgroundColor,
 				topBorder: nil,
@@ -139,7 +141,7 @@ struct StandingsListBuilder {
 			)
 		}
 
-		static func playerCell(for player: Player) -> GridCellConfig {
+		static func playerCell(for player: Player, actionable: StandingsListActionable) -> GridCellConfig {
 			let imageSize: CGFloat = 32
 
 			let avatarURL: URL?
@@ -151,6 +153,10 @@ struct StandingsListBuilder {
 
 			return Spreadsheet.ImageGridCellConfig(
 				key: "Avatar-\(player.id)",
+				actions: CellActions(selectionAction: { [weak actionable] _ in
+					actionable?.selectedPlayer(player: player)
+					return .deselected
+				}),
 				state: ImageState(url: avatarURL, width: imageSize, height: imageSize, rounded: true),
 				backgroundColor: nil,
 				topBorder: nil,

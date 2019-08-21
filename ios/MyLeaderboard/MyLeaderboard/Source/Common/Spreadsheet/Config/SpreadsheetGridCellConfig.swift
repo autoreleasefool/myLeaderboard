@@ -28,6 +28,7 @@ extension Spreadsheet {
 		private typealias Cell = HostCell<UILabel, LabelState, LayoutMarginsTableItemLayout>
 
 		let key: String
+		let actions: CellActions
 		let state: LabelState
 		let backgroundColor: UIColor?
 
@@ -39,6 +40,7 @@ extension Spreadsheet {
 		var view: CellConfigType {
 			return Cell(
 				key: key,
+				actions: actions,
 				state: state,
 				cellUpdater: LabelState.updateView
 			)
@@ -60,6 +62,7 @@ extension Spreadsheet {
 		private typealias Cell = HostCell<ImageView, ImageState, LayoutMarginsTableItemLayout>
 
 		let key: String
+		let actions: CellActions
 		let state: ImageState
 		let backgroundColor: UIColor?
 
@@ -71,6 +74,7 @@ extension Spreadsheet {
 		var view: CellConfigType {
 			return Cell(
 				key: key,
+				actions: actions,
 				state: state,
 				cellUpdater: ImageState.updateView
 			)

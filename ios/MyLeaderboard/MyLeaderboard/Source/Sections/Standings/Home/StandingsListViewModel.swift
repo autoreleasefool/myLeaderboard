@@ -14,6 +14,7 @@ enum StandingsListAction: BaseAction {
 	case apiError(LeaderboardAPIError)
 	case openRecordPlay
 	case openGameDetails(Game)
+	case openPlayerDetails(Player)
 }
 
 enum StandingsListViewAction: BaseViewAction {
@@ -21,6 +22,7 @@ enum StandingsListViewAction: BaseViewAction {
 	case reload
 	case recordPlay
 	case selectGame(Game)
+	case selectPlayer(Player)
 }
 
 class StandingsListViewModel: ViewModel {
@@ -56,6 +58,8 @@ class StandingsListViewModel: ViewModel {
 			handleAction(.openRecordPlay)
 		case .selectGame(let game):
 			handleAction(.openGameDetails(game))
+		case .selectPlayer(let player):
+			handleAction(.openPlayerDetails(player))
 		}
 	}
 
