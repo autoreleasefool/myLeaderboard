@@ -22,7 +22,6 @@
 		CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
 		CA834B87230A1D8500A48C9B /* StandingsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D93992308E601003FF844 /* StandingsListViewController.swift */; };
 		CA834B88230A1D8900A48C9B /* StandingsListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */; };
-		CA834B8B230A1DDF00A48C9B /* SpreadsheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA834B8A230A1DDF00A48C9B /* SpreadsheetCell.swift */; };
 		CA834B8E230A1E4D00A48C9B /* SpreadsheetRowConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA834B8D230A1E4D00A48C9B /* SpreadsheetRowConfig.swift */; };
 		CA834B90230A1EB900A48C9B /* SpreadsheetColumnConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA834B8F230A1EB900A48C9B /* SpreadsheetColumnConfig.swift */; };
 		CA834B92230A1EDD00A48C9B /* SpreadsheetBorderConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA834B91230A1EDD00A48C9B /* SpreadsheetBorderConfig.swift */; };
@@ -133,7 +132,6 @@
 		CA4BABA322D77103003347AF /* PlayerListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListBuilder.swift; sourceTree = "<group>"; };
 		CA4BABA522D77187003347AF /* PlayerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewModel.swift; sourceTree = "<group>"; };
 		CA51636D22F465AA002E0A90 /* Loaf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Loaf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA834B8A230A1DDF00A48C9B /* SpreadsheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetCell.swift; sourceTree = "<group>"; };
 		CA834B8D230A1E4D00A48C9B /* SpreadsheetRowConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetRowConfig.swift; sourceTree = "<group>"; };
 		CA834B8F230A1EB900A48C9B /* SpreadsheetColumnConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetColumnConfig.swift; sourceTree = "<group>"; };
 		CA834B91230A1EDD00A48C9B /* SpreadsheetBorderConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetBorderConfig.swift; sourceTree = "<group>"; };
@@ -344,7 +342,6 @@
 		CA834B9D230A344E00A48C9B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CA834B8A230A1DDF00A48C9B /* SpreadsheetCell.swift */,
 				CA834B9E230A346400A48C9B /* SpreadsheetRowCell.swift */,
 			);
 			path = Views;
@@ -788,7 +785,6 @@
 				CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */,
 				CA4BABA222D77089003347AF /* PlayerListViewController.swift in Sources */,
 				CAB3871922D18E2100349B1F /* GameListViewModel.swift in Sources */,
-				CA834B8B230A1DDF00A48C9B /* SpreadsheetCell.swift in Sources */,
 				CA96220522D592B400479A0B /* CreateGameViewModel.swift in Sources */,
 				CA4BAB9D22D7677A003347AF /* Player.swift in Sources */,
 				CAED76B622FC4FCE000A2281 /* KeyedErrors.swift in Sources */,

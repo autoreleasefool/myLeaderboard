@@ -87,4 +87,80 @@ extension Spreadsheet {
 				rightBorder == other.rightBorder
 		}
 	}
+
+	struct GridCellBackgroundViewProvider: BackgroundViewProvider {
+		private enum BorderPosition {
+			case top, bottom, right, left
+		}
+
+		let backgroundColor: UIColor?
+		let topBorder: BorderConfig?
+		let bottomBorder: BorderConfig?
+		let leftBorder: BorderConfig?
+		let rightBorder: BorderConfig?
+
+		func backgroundView() -> UIView? {
+			let view = UIView()
+
+			if let backgroundColor = backgroundColor {
+				view.backgroundColor = backgroundColor
+			}
+
+			if let topBorder = topBorder {
+				apply(border: topBorder, at: .top, toView: view)
+			}
+
+			if let bottomBorder = bottomBorder {
+				apply(border: bottomBorder, at: .bottom, toView: view)
+			}
+
+			if let leftBorder = leftBorder {
+				apply(border: leftBorder, at: .left, toView: view)
+			}
+
+			if let rightBorder = rightBorder {
+				apply(border: rightBorder, at: .right, toView: view)
+			}
+
+			return view
+		}
+
+		private func apply(border config: BorderConfig, at position: BorderPosition, toView: UIView) {
+			let border = UIView()
+			border.backgroundColor = config.color
+			border.translatesAutoresizingMaskIntoConstraints = false
+			toView.addSubview(border)
+
+			switch position {
+			case .top, .bottom:
+				border.heightAnchor.constraint(equalToConstant: config.thickness).isActive = true
+				border.leadingAnchor.constraint(equalTo: toView.leadingAnchor).isActive = true
+				border.trailingAnchor.constraint(equalTo: toView.trailingAnchor).isActive = true
+			case .left, .right:
+				border.widthAnchor.constraint(equalToConstant: config.thickness).isActive = true
+				border.topAnchor.constraint(equalTo: toView.topAnchor).isActive = true
+				border.bottomAnchor.constraint(equalTo: toView.bottomAnchor).isActive = true
+			}
+
+			switch position {
+			case .top:
+				border.topAnchor.constraint(equalTo: toView.topAnchor).isActive = true
+			case .bottom:
+				border.bottomAnchor.constraint(equalTo: toView.bottomAnchor).isActive = true
+			case .left:
+				border.leadingAnchor.constraint(equalTo: toView.leadingAnchor).isActive = true
+			case .right:
+				border.trailingAnchor.constraint(equalTo: toView.trailingAnchor).isActive = true
+			}
+		}
+
+		func isEqualTo(_ other: BackgroundViewProvider?) -> Bool {
+			guard let other = other as? GridCellBackgroundViewProvider else { return false }
+			return backgroundColor == other.backgroundColor &&
+				topBorder == other.topBorder &&
+				bottomBorder == other.bottomBorder &&
+				leftBorder == other.leftBorder &&
+				rightBorder == other.rightBorder
+		}
+	}
 }

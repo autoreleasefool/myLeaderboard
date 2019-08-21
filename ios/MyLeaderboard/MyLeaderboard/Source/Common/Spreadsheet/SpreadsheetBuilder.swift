@@ -22,6 +22,8 @@ class SpreadsheetBuilder {
 		}
 
 		let rows: [CellConfigType] = config.cells.enumerated().map { index, row in
+			let border = rowCellBorderConfig(for: index, totalRows: config.cells.count, from: config.border)
+
 			return Spreadsheet.RowCell(
 				key: "\(key)-row-\(index)",
 				actions: CellActions(
@@ -34,6 +36,7 @@ class SpreadsheetBuilder {
 					config: config.rows[index] ?? Spreadsheet.RowConfig(),
 					columns: config.columns,
 					cells: row,
+					border: border,
 					didScroll: { [weak self] offset in
 						self?.didScroll(key: key, offset: offset)
 					}
@@ -45,6 +48,20 @@ class SpreadsheetBuilder {
 		return TableSection(key: key, rows: rows)
 	}
 
+	private func rowCellBorderConfig(for index: Int, totalRows: Int, from config: Spreadsheet.BorderConfig?) -> Spreadsheet.RowCellBorderConfig {
+		guard let config = config else {
+			return Spreadsheet.RowCellBorderConfig(topBorder: nil, bottomBorder: nil, leftBorder: nil, rightBorder: nil)
+		}
+
+		if index == 0 {
+			return Spreadsheet.RowCellBorderConfig(topBorder: config, bottomBorder: nil, leftBorder: config, rightBorder: config)
+		} else if index == totalRows - 1 {
+			return Spreadsheet.RowCellBorderConfig(topBorder: nil, bottomBorder: config, leftBorder: config, rightBorder: config)
+		} else {
+			return Spreadsheet.RowCellBorderConfig(topBorder: nil, bottomBorder: nil, leftBorder: config, rightBorder: config)
+		}
+	}
+
 	private func didUpdateVisibility(key: String, cell: UIView, isVisible: Bool) {
 		guard isVisible else { return }
 
@@ -53,7 +70,7 @@ class SpreadsheetBuilder {
 			return
 		}
 
-		guard let rowCellView = cell.subviews.first?.subviews.first as? Spreadsheet.RowCellView,
+		guard let rowCellView = cell.subviews.last?.subviews.first as? Spreadsheet.RowCellView,
 			rowCellView.spreadsheetKey == key else {
 			return
 		}
@@ -70,7 +87,7 @@ class SpreadsheetBuilder {
 		offsets[key] = offset
 
 		tableView.visibleCells.forEach {
-			guard let rowCellView = $0.subviews.first?.subviews.first as? Spreadsheet.RowCellView,
+			guard let rowCellView = $0.subviews.last?.subviews.first as? Spreadsheet.RowCellView,
 				rowCellView.spreadsheetKey == key else {
 				return
 			}

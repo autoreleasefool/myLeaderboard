@@ -21,7 +21,7 @@ struct StandingsListBuilder {
 
 			rows.append(GameListItemCell(
 				key: "Header",
-				style: CellStyle(highlight: true),
+				style: CellStyle(highlight: true, backgroundColor: .primaryLight),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
 					actionable?.selectedGame(game: game)
 					return .deselected
@@ -65,7 +65,7 @@ struct StandingsListBuilder {
 
 			let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
 			let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
-			let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, in: tableData)
+			let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: Spreadsheet.BorderConfig(color: .standingsBorder, thickness: 1), in: tableData)
 
 			if let spreadsheet = Spreadsheet.section(key: "Standings-\(game.id)", config: config) {
 				rows.append(contentsOf: spreadsheet.rows)
@@ -107,7 +107,7 @@ struct StandingsListBuilder {
 				if index == cells.endIndex - 1 {
 					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil, bottomBorder: nil)
 				} else {
-					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil)
+					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
 				}
 			}
 			return rowConfigs
@@ -119,7 +119,7 @@ struct StandingsListBuilder {
 				if index == (cells.first?.endIndex ?? 0) - 1 {
 					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: nil)
 				} else {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil)
+					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
 				}
 			}
 			return columnConfigs

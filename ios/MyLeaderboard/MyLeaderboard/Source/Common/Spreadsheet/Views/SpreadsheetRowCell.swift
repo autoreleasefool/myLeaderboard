@@ -16,6 +16,15 @@ extension Spreadsheet {
 		var spreadsheetKey: String?
 		let collectionView: UICollectionView
 
+		private let topBorder = UIView()
+		private let topBorderHeightConstraint: NSLayoutConstraint
+		private let bottomBorder = UIView()
+		private let bottomBorderHeightConstraint: NSLayoutConstraint
+		private let leftBorder = UIView()
+		private let leftBorderWidthConstraint: NSLayoutConstraint
+		private let rightBorder = UIView()
+		private let rightBorderWidthConstraint: NSLayoutConstraint
+
 		fileprivate let collectionData = FunctionalCollectionData()
 		fileprivate let heightConstraint: NSLayoutConstraint
 
@@ -34,6 +43,15 @@ extension Spreadsheet {
 			heightConstraint.priority = .defaultLow
 			heightConstraint.isActive = true
 
+			topBorderHeightConstraint = topBorder.heightAnchor.constraint(equalToConstant: 0)
+			topBorderHeightConstraint.isActive = true
+			bottomBorderHeightConstraint = bottomBorder.heightAnchor.constraint(equalToConstant: 0)
+			bottomBorderHeightConstraint.isActive = true
+			leftBorderWidthConstraint = leftBorder.widthAnchor.constraint(equalToConstant: 0)
+			leftBorderWidthConstraint.isActive = true
+			rightBorderWidthConstraint = rightBorder.widthAnchor.constraint(equalToConstant: 0)
+			rightBorderWidthConstraint.isActive = true
+
 			collectionData.collectionView = collectionView
 
 			super.init(frame: frame)
@@ -45,28 +63,96 @@ extension Spreadsheet {
 		}
 
 		private func setupView() {
+			topBorder.translatesAutoresizingMaskIntoConstraints = false
+			addSubview(topBorder)
+
+			bottomBorder.translatesAutoresizingMaskIntoConstraints = false
+			addSubview(bottomBorder)
+
+			leftBorder.translatesAutoresizingMaskIntoConstraints = false
+			addSubview(leftBorder)
+
+			rightBorder.translatesAutoresizingMaskIntoConstraints = false
+			addSubview(rightBorder)
+
 			addSubview(collectionView)
 			NSLayoutConstraint.activate([
-				collectionView.topAnchor.constraint(equalTo: topAnchor),
-				collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-				collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-				collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+				topBorder.topAnchor.constraint(equalTo: topAnchor),
+				topBorder.leadingAnchor.constraint(equalTo: leadingAnchor),
+				topBorder.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+				bottomBorder.bottomAnchor.constraint(equalTo: bottomAnchor),
+				bottomBorder.leadingAnchor.constraint(equalTo: leadingAnchor),
+				bottomBorder.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+				leftBorder.topAnchor.constraint(equalTo: topAnchor),
+				leftBorder.bottomAnchor.constraint(equalTo: bottomAnchor),
+				leftBorder.leadingAnchor.constraint(equalTo: leadingAnchor),
+
+				rightBorder.topAnchor.constraint(equalTo: topAnchor),
+				rightBorder.bottomAnchor.constraint(equalTo: bottomAnchor),
+				rightBorder.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+				collectionView.topAnchor.constraint(equalTo: topBorder.bottomAnchor),
+				collectionView.bottomAnchor.constraint(equalTo: bottomBorder.topAnchor),
+				collectionView.leadingAnchor.constraint(equalTo: leftBorder.trailingAnchor),
+				collectionView.trailingAnchor.constraint(equalTo: rightBorder.leadingAnchor),
 				])
+		}
+
+		fileprivate func applyBorder(_ border: RowCellBorderConfig) {
+			if let topBorderConfig = border.topBorder {
+				topBorderHeightConstraint.constant = topBorderConfig.thickness
+				topBorder.backgroundColor = topBorderConfig.color
+				topBorder.isHidden = false
+			} else {
+				topBorderHeightConstraint.constant = 0
+				topBorder.isHidden = true
+			}
+
+			if let bottomBorderConfig = border.bottomBorder {
+				bottomBorderHeightConstraint.constant = bottomBorderConfig.thickness
+				bottomBorder.backgroundColor = bottomBorderConfig.color
+				bottomBorder.isHidden = false
+			} else {
+				bottomBorderHeightConstraint.constant = 0
+				bottomBorder.isHidden = true
+			}
+
+			if let leftBorderConfig = border.leftBorder {
+				leftBorderWidthConstraint.constant = leftBorderConfig.thickness
+				leftBorder.backgroundColor = leftBorderConfig.color
+				leftBorder.isHidden = false
+			} else {
+				leftBorderWidthConstraint.constant = 0
+				leftBorder.isHidden = true
+			}
+
+			if let rightBorderConfig = border.rightBorder {
+				rightBorderWidthConstraint.constant = rightBorderConfig.thickness
+				rightBorder.backgroundColor = rightBorderConfig.color
+				rightBorder.isHidden = false
+			} else {
+				rightBorderWidthConstraint.constant = 0
+				rightBorder.isHidden = true
+			}
 		}
 	}
 
 	struct RowCellState: ViewState {
 		let spreadsheetKey: String
+		let border: RowCellBorderConfig
 		let config: RowConfig
 		let columns: [Int: ColumnConfig]
 		let cells: [GridCellConfig]
 		let didScroll: (CGPoint) -> Void
 
-		init(spreadsheetKey: String, config: RowConfig, columns: [Int: ColumnConfig], cells: [GridCellConfig], didScroll: @escaping (CGPoint) -> Void) {
+		init(spreadsheetKey: String, config: RowConfig, columns: [Int: ColumnConfig], cells: [GridCellConfig], border: RowCellBorderConfig, didScroll: @escaping (CGPoint) -> Void) {
 			self.spreadsheetKey = spreadsheetKey
 			self.config = config
 			self.columns = columns
 			self.cells = cells
+			self.border = border
 			self.didScroll = didScroll
 		}
 
@@ -82,6 +168,8 @@ extension Spreadsheet {
 				layout.itemSize = CGSize(width: maxWidth, height: state.config.rowHeight)
 				view.heightConstraint.constant = state.config.rowHeight
 			}
+
+			view.applyBorder(state.border)
 
 			view.spreadsheetKey = state.spreadsheetKey
 			view.collectionData.scrollViewDidScroll = { scrollView in
@@ -129,80 +217,10 @@ extension Spreadsheet {
 		}
 	}
 
-	struct GridCellBackgroundViewProvider: BackgroundViewProvider {
-		private enum BorderPosition {
-			case top, bottom, right, left
-		}
-
-		let backgroundColor: UIColor?
+	struct RowCellBorderConfig {
 		let topBorder: BorderConfig?
 		let bottomBorder: BorderConfig?
 		let leftBorder: BorderConfig?
 		let rightBorder: BorderConfig?
-
-		func backgroundView() -> UIView? {
-			let view = UIView()
-
-			if let backgroundColor = backgroundColor {
-				view.backgroundColor = backgroundColor
-			}
-
-			if let topBorder = topBorder {
-				apply(border: topBorder, at: .top, toView: view)
-			}
-
-			if let bottomBorder = bottomBorder {
-				apply(border: bottomBorder, at: .bottom, toView: view)
-			}
-
-			if let leftBorder = leftBorder {
-				apply(border: leftBorder, at: .left, toView: view)
-			}
-
-			if let rightBorder = rightBorder {
-				apply(border: rightBorder, at: .right, toView: view)
-			}
-
-			return view
-		}
-
-		private func apply(border config: BorderConfig, at position: BorderPosition, toView: UIView) {
-			let border = UIView()
-			border.backgroundColor = config.color
-			border.translatesAutoresizingMaskIntoConstraints = false
-			toView.addSubview(border)
-
-			switch position {
-			case .top, .bottom:
-				border.heightAnchor.constraint(equalToConstant: config.thickness).isActive = true
-				border.leadingAnchor.constraint(equalTo: toView.leadingAnchor).isActive = true
-				border.trailingAnchor.constraint(equalTo: toView.trailingAnchor).isActive = true
-			case .left, .right:
-				border.widthAnchor.constraint(equalToConstant: config.thickness).isActive = true
-				border.topAnchor.constraint(equalTo: toView.topAnchor).isActive = true
-				border.bottomAnchor.constraint(equalTo: toView.bottomAnchor).isActive = true
-			}
-
-			switch position {
-			case .top:
-				border.topAnchor.constraint(equalTo: toView.topAnchor).isActive = true
-			case .bottom:
-				border.bottomAnchor.constraint(equalTo: toView.bottomAnchor).isActive = true
-			case .left:
-				border.leadingAnchor.constraint(equalTo: toView.leadingAnchor).isActive = true
-			case .right:
-				border.trailingAnchor.constraint(equalTo: toView.trailingAnchor).isActive = true
-			}
-
-		}
-
-		func isEqualTo(_ other: BackgroundViewProvider?) -> Bool {
-			guard let other = other as? GridCellBackgroundViewProvider else { return false }
-			return backgroundColor == other.backgroundColor &&
-				topBorder == other.topBorder &&
-				bottomBorder == other.bottomBorder &&
-				leftBorder == other.leftBorder &&
-				rightBorder == other.rightBorder
-		}
 	}
 }

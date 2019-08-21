@@ -23,6 +23,7 @@ extension UIColor {
 	static let error = UIColor(red: 255.0 / 255, green: 0, blue: 0, alpha: 1.0)
 	static let success = UIColor(red: 60.0 / 255, green: 185.0 / 255, blue: 60.0 / 255, alpha: 1.0)
 
+	static let standingsBorder = UIColor(red: 66.0 / 255, green: 73.0 / 255, blue: 82.0 / 255, alpha: 1.0)
 	static let bestRecord = UIColor(red: 0.0 / 255, green: 180.0 / 255, blue: 0.0 / 255, alpha: 0.2)
 	static let worstRecord = UIColor(red: 180.0 / 255, green: 0.0 / 255, blue: 0.0 / 255, alpha: 0.2)
 }

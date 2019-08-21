@@ -13,12 +13,14 @@ extension Spreadsheet {
 		let rows: [Int: RowConfig]
 		let columns: [Int: ColumnConfig]
 		let cells: [[GridCellConfig]]
+		let border: BorderConfig?
 		weak var tableData: FunctionalTableData?
 
-		init(rows: [Int: RowConfig], columns: [Int: ColumnConfig], cells: [[GridCellConfig]], in tableData: FunctionalTableData) {
+		init(rows: [Int: RowConfig], columns: [Int: ColumnConfig], cells: [[GridCellConfig]], border: BorderConfig? = BorderConfig(), in tableData: FunctionalTableData) {
 			self.rows = rows
 			self.columns = columns
 			self.cells = cells
+			self.border = border
 			self.tableData = tableData
 		}
 
