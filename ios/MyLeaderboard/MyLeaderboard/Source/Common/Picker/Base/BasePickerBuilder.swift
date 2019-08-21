@@ -33,7 +33,7 @@ struct BasePickerBuilder {
 			width: Metrics.Image.small
 		)
 
-		return CombinedCell<ImageView, ImageState, State.View, State.State, LayoutMarginsTableItemLayout>(
+		return CombinedCell<UIImageView, ImageState, State.View, State.State, LayoutMarginsTableItemLayout>(
 			key: "\(item.id)",
 			style: CellStyle(highlight: true),
 			actions: CellActions(selectionAction: { [weak actionable] _ in
@@ -53,7 +53,8 @@ struct BasePickerBuilder {
 				view.view1.setContentHuggingPriority(.required, for: .horizontal)
 				view.stackView.spacing = Metrics.Spacing.standard
 
-				CombinedState<ImageState, State>.updateView(view, state: state)
+				ImageState.updateView(view.view1, state: state.state1)
+				State.updateView(view.view2, state: state.state2)
 			}
 		)
 	}

@@ -68,59 +68,63 @@ struct ImageState: ViewState {
 		self.opacity = opacity
 	}
 
-	static func updateView(_ view: ImageView, state: ImageState?) {
+	static func updateView(_ view: UIImageView, state: ImageState?) {
 		guard let state = state else {
-			view.imageView.image = nil
-			view.imageView.layer.cornerRadius = 0
-			view.imageView.clipsToBounds = false
-			view.imageView.isOpaque = true
-			view.imageView.alpha = 1.0
+			view.image = nil
+			view.layer.cornerRadius = 0
+			view.clipsToBounds = false
+			view.isOpaque = true
+			view.alpha = 1.0
 			return
 		}
 
 		let constraints = view.constraints.filter { $0.identifier == ImageState.widthAnchorIdentifier || $0.identifier == ImageState.heightAnchorIdentifier }
 		constraints.forEach { $0.isActive = false }
 
-		view.imageView.contentMode = .scaleAspectFit
-		view.imageView.tintColor = state.tintColor
+		view.contentMode = .scaleAspectFit
+		view.tintColor = state.tintColor
 
 		if state.opacity < 1.0 {
-			view.imageView.alpha = state.opacity
-			view.imageView.isOpaque = false
+			view.alpha = state.opacity
+			view.isOpaque = false
 		} else {
-			view.imageView.alpha = 1.0
-			view.imageView.isOpaque = true
+			view.alpha = 1.0
+			view.isOpaque = true
 		}
 
 		if let width = state.width {
-			let widthConstraint = view.imageView.widthAnchor.constraint(equalToConstant: width)
+			let widthConstraint = view.widthAnchor.constraint(equalToConstant: width)
 			widthConstraint.isActive = true
 			widthConstraint.identifier = ImageState.widthAnchorIdentifier
 		}
 
 		if let height = state.height {
-			let heightConstraint = view.imageView.heightAnchor.constraint(equalToConstant: height)
+			let heightConstraint = view.heightAnchor.constraint(equalToConstant: height)
 			heightConstraint.isActive = true
 			heightConstraint.identifier = ImageState.heightAnchorIdentifier
 		}
 
 		if let width = state.width, state.height == state.width && state.rounded {
-			view.imageView.layer.cornerRadius = width / 2
-			view.imageView.clipsToBounds = true
+			view.layer.cornerRadius = width / 2
+			view.clipsToBounds = true
 		} else {
-			view.imageView.layer.cornerRadius = 0
-			view.imageView.clipsToBounds = false
+			view.layer.cornerRadius = 0
+			view.clipsToBounds = false
 		}
 
 		if let url = state.url {
-			view.imageView.image = ImageLoader.shared.fetch(url: url) { result in
+			view.image = ImageLoader.shared.fetch(url: url) { result in
 				if case .success(let url, let image) = result, url == state.url {
-					view.imageView.image = image
+					view.image = image
 				}
 			}
 		} else {
-			view.imageView.image = state.image
+			view.image = state.image
 		}
+	}
+
+	static func updateImageView(_ view: ImageView, state: ImageState?) {
+		ImageState.updateView(view.imageView, state: state)
 	}
 
 	public static func == (lhs: ImageState, rhs: ImageState) -> Bool {
