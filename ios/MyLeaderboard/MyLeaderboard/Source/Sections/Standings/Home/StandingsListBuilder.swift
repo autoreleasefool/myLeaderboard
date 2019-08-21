@@ -61,14 +61,14 @@ struct StandingsListBuilder {
 			SpreadsheetCells.textGridCell(key: "Total", text: "Total"),
 		]
 		visiblePlayers.forEach {
-			headerRow.append(SpreadsheetCells.playerCell(for: $0, actionable: actionable))
+			headerRow.append(SpreadsheetCells.playerCell(for: $0, record: gameStandings.records[$0.id], actionable: actionable))
 		}
 		spreadsheetCells.append(headerRow)
 
 		visiblePlayers.forEach { player in
 			if let playerRecord = gameStandings.records[player.id] {
 				var cells: [GridCellConfig] = [
-					SpreadsheetCells.playerCell(for: player, actionable: actionable),
+					SpreadsheetCells.playerCell(for: player, record: gameStandings.records[player.id], actionable: actionable),
 					SpreadsheetCells.textGridCell(key: "Total", text: playerRecord.overallRecord.formatted, backgroundColor: playerRecord.overallRecord.backgroundColor)
 				]
 
@@ -234,7 +234,9 @@ struct StandingsListBuilder {
 			)
 		}
 
-		static func playerCell(for player: Player, actionable: StandingsListActionable) -> GridCellConfig {
+		static func playerCell(for player: Player, record: PlayerRecord?, actionable: StandingsListActionable) -> GridCellConfig {
+			let opacity = CGFloat(record?.freshness ?? 1)
+
 			let avatarURL: URL?
 			if let avatar = player.avatar {
 				avatarURL = URL(string: avatar)
@@ -248,7 +250,7 @@ struct StandingsListBuilder {
 					actionable?.selectedPlayer(player: player)
 					return .deselected
 				}),
-				state: ImageState(url: avatarURL, width: StandingsListBuilder.avatarImageSize, height: StandingsListBuilder.avatarImageSize, rounded: true),
+				state: ImageState(url: avatarURL, width: StandingsListBuilder.avatarImageSize, height: StandingsListBuilder.avatarImageSize, rounded: true, opacity: opacity),
 				backgroundColor: nil,
 				topBorder: nil,
 				bottomBorder: nil,

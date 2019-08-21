@@ -46,23 +46,26 @@ struct ImageState: ViewState {
 	let width: CGFloat?
 	let height: CGFloat?
 	let rounded: Bool
+	let opacity: CGFloat
 
-	init(image: UIImage?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil, rounded: Bool = false) {
+	init(image: UIImage?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil, rounded: Bool = false, opacity: CGFloat = 1.0) {
 		self.url = nil
 		self.image = image
 		self.tintColor = tintColor
 		self.width = width
 		self.height = height
 		self.rounded = rounded
+		self.opacity = opacity
 	}
 
-	init(url: URL?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil, rounded: Bool = false) {
+	init(url: URL?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil, rounded: Bool = false, opacity: CGFloat = 1.0) {
 		self.image = nil
 		self.url = url
 		self.tintColor = tintColor
 		self.width = width
 		self.height = height
 		self.rounded = rounded
+		self.opacity = opacity
 	}
 
 	static func updateView(_ view: ImageView, state: ImageState?) {
@@ -70,6 +73,8 @@ struct ImageState: ViewState {
 			view.imageView.image = nil
 			view.imageView.layer.cornerRadius = 0
 			view.imageView.clipsToBounds = false
+			view.imageView.isOpaque = true
+			view.imageView.alpha = 1.0
 			return
 		}
 
@@ -78,6 +83,14 @@ struct ImageState: ViewState {
 
 		view.imageView.contentMode = .scaleAspectFit
 		view.imageView.tintColor = state.tintColor
+
+		if state.opacity < 1.0 {
+			view.imageView.alpha = state.opacity
+			view.imageView.isOpaque = false
+		} else {
+			view.imageView.alpha = 1.0
+			view.imageView.isOpaque = true
+		}
 
 		if let width = state.width {
 			let widthConstraint = view.imageView.widthAnchor.constraint(equalToConstant: width)
