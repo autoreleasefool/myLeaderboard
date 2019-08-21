@@ -61,7 +61,9 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func showRecordPlay() {
-		presentModal(RecordPlayViewController(api: api))
+		presentModal(RecordPlayViewController(api: api) { play in
+			Loaf("Play recorded!", state: .success, sender: self).show()
+		})
 	}
 
 	private func showGameDetails(for game: Game) {

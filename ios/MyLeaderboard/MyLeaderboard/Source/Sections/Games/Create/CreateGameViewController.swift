@@ -13,8 +13,11 @@ class CreateGameViewController: FTDViewController {
 	private var api: LeaderboardAPI
 	private var viewModel: CreateGameViewModel!
 
-	init(api: LeaderboardAPI) {
+	private var gameCreated: ((Game) -> Void)?
+
+	init(api: LeaderboardAPI, onSuccess: ((Game) -> Void)? = nil) {
 		self.api = api
+		self.gameCreated = onSuccess
 		super.init()
 	}
 
@@ -28,7 +31,8 @@ class CreateGameViewController: FTDViewController {
 			switch action {
 			case .nameUpdated:
 				self?.updateDoneButton()
-			case .gameCreated:
+			case .gameCreated(let game):
+				self?.gameCreated?(game)
 				self?.dismiss(animated: true)
 			case .apiError(let error):
 				self?.presentError(error)

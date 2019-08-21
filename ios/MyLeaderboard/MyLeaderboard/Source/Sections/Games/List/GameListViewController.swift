@@ -58,7 +58,9 @@ class GameListViewController: FTDViewController {
 	}
 
 	private func showCreateGame() {
-		presentModal(CreateGameViewController(api: api))
+		presentModal(CreateGameViewController(api: api) { game in
+			Loaf("\(game.name) created!", state: .success, sender: self).show()
+		})
 	}
 
 	private func showGameDetails(for game: Game) {

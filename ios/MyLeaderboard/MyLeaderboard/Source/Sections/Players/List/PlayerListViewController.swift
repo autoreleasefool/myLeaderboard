@@ -57,7 +57,9 @@ class PlayerListViewController: FTDViewController {
 	}
 
 	private func showCreatePlayer() {
-		presentModal(CreatePlayerViewController(api: api))
+		presentModal(CreatePlayerViewController(api: api) { player in
+			Loaf("\(player.displayName) added!", state: .success, sender: self).show()
+		})
 	}
 
 	private func showPlayerDetails(for player: Player) {
