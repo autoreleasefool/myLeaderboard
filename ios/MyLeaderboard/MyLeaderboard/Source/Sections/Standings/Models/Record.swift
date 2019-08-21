@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Record: Codable {
 	let wins: Int
@@ -14,4 +15,18 @@ struct Record: Codable {
 	let ties: Int
 	let isBest: Bool?
 	let isWorst: Bool?
+
+	var formatted: String {
+		return "\(wins) - \(losses)\(ties > 0 ? " - \(ties)" : "")"
+	}
+
+	var backgroundColor: UIColor? {
+		if isBest == true {
+			return .bestRecord
+		} else if isWorst == true {
+			return .worstRecord
+		} else {
+			return nil
+		}
+	}
 }

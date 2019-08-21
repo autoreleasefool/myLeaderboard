@@ -9,6 +9,8 @@
 import UIKit
 import FunctionalTableData
 
+typealias CollectionViewCell = HostCell<CollectionViewCellView, CollectionViewCellState, LayoutMarginsTableItemLayout>
+
 class CollectionViewCellView: UIView {
 	fileprivate let collectionView: UICollectionView
 	fileprivate let collectionData = FunctionalCollectionData()

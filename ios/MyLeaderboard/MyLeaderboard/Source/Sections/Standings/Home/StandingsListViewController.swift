@@ -67,7 +67,7 @@ class StandingsListViewController: FTDViewController {
 	private func showGameDetails(for game: Game) {
 		print("Show game details for \(game.name)")
 	}
-	
+
 	private func showPlayerDetails(for player: Player) {
 		print("Show player details for \(player.displayName)")
 	}
@@ -92,7 +92,7 @@ extension StandingsListViewController: StandingsListActionable {
 	func selectedGame(game: Game) {
 		viewModel.postViewAction(.selectGame(game))
 	}
-	
+
 	func selectedPlayer(player: Player) {
 		viewModel.postViewAction(.selectPlayer(player))
 	}
