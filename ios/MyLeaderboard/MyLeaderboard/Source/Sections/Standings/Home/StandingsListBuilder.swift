@@ -65,7 +65,7 @@ struct StandingsListBuilder {
 
 			let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
 			let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
-			let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: Spreadsheet.BorderConfig(color: .standingsBorder, thickness: 1), in: tableData)
+			let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil, in: tableData)
 
 			if let spreadsheet = Spreadsheet.section(key: "Standings-\(game.id)", config: config) {
 				rows.append(contentsOf: spreadsheet.rows)
@@ -104,8 +104,8 @@ struct StandingsListBuilder {
 		static func rows(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.RowConfig] {
 			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
 			cells.enumerated().forEach { index, _ in
-				if index == cells.endIndex - 1 {
-					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil, bottomBorder: nil)
+				if index == 0 {
+					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: Spreadsheet.BorderConfig(color: .standingsBorder), bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
 				} else {
 					rowConfigs[index] = Spreadsheet.RowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
 				}
@@ -116,8 +116,8 @@ struct StandingsListBuilder {
 		static func columns(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.ColumnConfig] {
 			var columnConfigs: [Int: Spreadsheet.ColumnConfig] = [:]
 			cells.first?.enumerated().forEach { index, _ in
-				if index == (cells.first?.endIndex ?? 0) - 1 {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: nil)
+				if index == 0 {
+					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: Spreadsheet.BorderConfig(color: .standingsBorder), rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
 				} else {
 					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
 				}
