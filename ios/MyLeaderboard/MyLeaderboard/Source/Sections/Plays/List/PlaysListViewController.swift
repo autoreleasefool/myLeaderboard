@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FunctionalTableData
 import Loaf
 
 class PlaysListViewController: FTDViewController {
@@ -18,7 +19,7 @@ class PlaysListViewController: FTDViewController {
 		super.init()
 		refreshable = true
 
-		viewModel = PlaysListViewModel(api: api, gameID: game?.id, playerID: player?.id) { [weak self] action in
+		viewModel = PlaysListViewModel(api: api, game: game, player: player) { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .dataChanged:
@@ -51,7 +52,15 @@ class PlaysListViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = PlaysListBuilder.sections(plays: viewModel.plays, players: viewModel.players, actionable: self)
+		let sections: [TableSection]
+		if let player = viewModel.player {
+			sections = PlaysListBuilder.sections(forPlayer: player, plays: viewModel.plays, games: viewModel.games, players: viewModel.players, actionable: self)
+		} else if let game = viewModel.game {
+			sections = PlaysListBuilder.sections(forGame: game, plays: viewModel.plays, players: viewModel.players, actionable: self)
+		} else {
+			sections = PlaysListBuilder.sections(plays: viewModel.plays, players: viewModel.players, actionable: self)
+		}
+
 		tableData.renderAndDiff(sections)
 	}
 

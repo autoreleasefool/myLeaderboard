@@ -24,8 +24,14 @@ class PlaysListViewModel: ViewModel {
 	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	private let gameID: ID?
-	private let playerID: ID?
+	let game: Game?
+	let player: Player?
+
+	private(set) var games: [Game] = [] {
+		didSet {
+			handleAction(.dataChanged)
+		}
+	}
 
 	private(set) var plays: [GamePlay] = [] {
 		didSet {
@@ -39,10 +45,10 @@ class PlaysListViewModel: ViewModel {
 		}
 	}
 
-	init(api: LeaderboardAPI, gameID: ID?, playerID: ID?, handleAction: @escaping ActionHandler) {
+	init(api: LeaderboardAPI, game: Game?, player: Player?, handleAction: @escaping ActionHandler) {
 		self.api = api
-		self.gameID = gameID
-		self.playerID = playerID
+		self.game = game
+		self.player = player
 		self.handleAction = handleAction
 	}
 
@@ -76,17 +82,28 @@ class PlaysListViewModel: ViewModel {
 			}
 		}
 
+		if player != nil {
+			api.games { [weak self] in
+				switch $0 {
+				case .failure(let error):
+					self?.handleAction(.apiError(error))
+				case .success(let games):
+					self?.games = games
+				}
+			}
+		}
+
 		api.plays { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.apiError(error))
 			case .success(let plays):
 				self?.plays = plays.filter {
-					if let gameID = self?.gameID, $0.game != gameID {
+					if let game = self?.game, $0.game != game.id {
 						return false
 					}
 
-					if let playerID = self?.playerID, !$0.players.contains(playerID) {
+					if let player = self?.player, !$0.players.contains(player.id) {
 						return false
 					}
 
