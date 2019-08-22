@@ -100,7 +100,7 @@ class PlayerDetailsViewModel: ViewModel {
 			case .failure(let error):
 				self?.handleAction(.apiError(error))
 			case .success(let players):
-				self?.players = players
+				self?.players = players.sorted()
 			}
 		}
 

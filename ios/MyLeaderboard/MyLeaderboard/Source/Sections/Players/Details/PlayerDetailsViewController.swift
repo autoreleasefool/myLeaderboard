@@ -48,7 +48,7 @@ class PlayerDetailsViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = PlayerDetailsBuilder.sections(player: viewModel.player, records: viewModel.records, players: viewModel.players, plays: viewModel.plays, actionable: self)
+		let sections = PlayerDetailsBuilder.sections(player: viewModel.player, records: viewModel.records, players: viewModel.players, plays: viewModel.plays, tableData: tableData, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -57,7 +57,7 @@ class PlayerDetailsViewController: FTDViewController {
 	}
 
 	private func showPlayerDetails(for player: Player) {
-		print("Selected player \(player.displayName)")
+		show(PlayerDetailsViewController(api: api, player: player), sender: self)
 	}
 
 	private func openAllPlays() {
