@@ -63,7 +63,7 @@ class PlayerListViewController: FTDViewController {
 	}
 
 	private func showPlayerDetails(for player: Player) {
-		print("Selected player \(player.displayName)")
+		show(PlayerDetailsViewController(api: api, player: player), sender: self)
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {

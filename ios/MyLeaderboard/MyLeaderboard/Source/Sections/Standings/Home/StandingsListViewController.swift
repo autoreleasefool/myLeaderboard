@@ -71,7 +71,7 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func showPlayerDetails(for player: Player) {
-		print("Show player details for \(player.displayName)")
+		show(PlayerDetailsViewController(api: api, player: player), sender: self)
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {
