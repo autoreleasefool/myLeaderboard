@@ -20,12 +20,14 @@ class GameDetailsViewController: FTDViewController {
 		refreshable = true
 		viewModel = GameDetailsViewModel(api: api, game: game) { [weak self] action in
 			switch action {
-			case .gameUpdated:
+			case .dataChanged:
 				self?.render()
 			case .playerSelected(let player):
 				self?.showPlayerDetails(for: player)
 			case .apiError(let error):
 				self?.presentError(error)
+			case .openAllPlays:
+				self?.openAllPlays()
 			}
 		}
 
@@ -43,12 +45,16 @@ class GameDetailsViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = GameDetailsBuilder.sections(game: viewModel.game, players: viewModel.players, standings: viewModel.standingΩs, actionable: self)
+		let sections = GameDetailsBuilder.sections(game: viewModel.game, plays: viewModel.plays, players: viewModel.players, standings: viewModel.standings, tableData: tableData, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
 	private func showPlayerDetails(for player: Player) {
 		print("Show details for \(player.displayName)")
+	}
+
+	private func openAllPlays() {
+		print("Show all plays")
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {
@@ -71,5 +77,8 @@ extension GameDetailsViewController: GameDetailsActionable {
 	func selectedPlayer(player: Player) {
 		viewModel.postViewAction(.selectPlayer(player))
 	}
-}
 
+	func showAllPlays() {
+		viewModel.postViewAction(.showAllPlays)
+	}
+}

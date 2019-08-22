@@ -9,15 +9,17 @@
 import Foundation
 
 enum GameDetailsAction: BaseAction {
-	case gameUpdated
+	case dataChanged
 	case playerSelected(Player)
 	case apiError(LeaderboardAPIError)
+	case openAllPlays
 }
 
 enum GameDetailsViewAction: BaseViewAction {
 	case initialize
 	case reload
 	case selectPlayer(Player)
+	case showAllPlays
 }
 
 class GameDetailsViewModel: ViewModel {
@@ -28,15 +30,21 @@ class GameDetailsViewModel: ViewModel {
 
 	private(set) var game: Game
 
+	private(set) var plays: [GamePlay] = [] {
+		didSet {
+			handleAction(.dataChanged)
+		}
+	}
+
 	private(set) var players: [Player] = [] {
 		didSet {
-			handleAction(.gameUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
 	private(set) var standings: Standings? = nil {
 		didSet {
-			handleAction(.gameUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
@@ -54,6 +62,8 @@ class GameDetailsViewModel: ViewModel {
 			reloadData()
 		case .selectPlayer(let player):
 			handleAction(.playerSelected(player))
+		case .showAllPlays:
+			handleAction(.openAllPlays)
 		}
 	}
 
@@ -69,6 +79,15 @@ class GameDetailsViewModel: ViewModel {
 	}
 
 	private func loadData() {
+		api.plays { [weak self] result in
+			switch result {
+			case .failure(let error):
+				self?.handleAction(.apiError(error))
+			case .success(let plays):
+				self?.plays = plays
+			}
+		}
+
 		api.standings(for: game) { [weak self] result in
 			switch result {
 			case .failure(let error):

@@ -61,13 +61,13 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func showRecordPlay() {
-		presentModal(RecordPlayViewController(api: api) { play in
+		presentModal(RecordPlayViewController(api: api) { _ in
 			Loaf("Play recorded!", state: .success, sender: self).show()
 		})
 	}
 
 	private func showGameDetails(for game: Game) {
-		print("Show game details for \(game.name)")
+		show(GameDetailsViewController(api: api, game: game), sender: self)
 	}
 
 	private func showPlayerDetails(for player: Player) {
