@@ -13,8 +13,10 @@ typealias GamePlayCell = HostCell<GamePlayView, GamePlayState, LayoutMarginsTabl
 
 class GamePlayView: UIView {
 	fileprivate let firstPlayerResult = UILabel()
-	fileprivate let firstPlayer = UIImageView()
 	fileprivate let secondPlayerResult = UILabel()
+	fileprivate let firstPlayerScore = UILabel()
+	fileprivate let secondPlayerScore = UILabel()
+	fileprivate let firstPlayer = UIImageView()
 	fileprivate let secondPlayer = UIImageView()
 
 	override init(frame: CGRect) {
@@ -27,21 +29,12 @@ class GamePlayView: UIView {
 	}
 
 	private func setupView() {
-		firstPlayer.contentMode = .scaleAspectFit
-		firstPlayer.layer.cornerRadius = Metrics.Image.listIcon / 2
-		firstPlayer.clipsToBounds = true
-		firstPlayer.setContentHuggingPriority(.required, for: .horizontal)
-
-		firstPlayerResult.textAlignment = .right
-		firstPlayerResult.setContentHuggingPriority(.required, for: .horizontal)
-
-		secondPlayer.contentMode = .scaleAspectFit
-		secondPlayer.layer.cornerRadius = Metrics.Image.listIcon / 2
-		secondPlayer.clipsToBounds = true
-		secondPlayer.setContentHuggingPriority(.required, for: .horizontal)
-
-		secondPlayerResult.textAlignment = .left
-		secondPlayerResult.setContentHuggingPriority(.required, for: .horizontal)
+		setupImageView(firstPlayer)
+		setupImageView(secondPlayer)
+		setupLabel(firstPlayerScore)
+		setupLabel(secondPlayerScore)
+		setupLabel(firstPlayerResult)
+		setupLabel(secondPlayerResult)
 
 		let separator = UILabel()
 		separator.textColor = .textSecondary
@@ -49,7 +42,7 @@ class GamePlayView: UIView {
 		separator.text = "—"
 		separator.setContentHuggingPriority(.required, for: .horizontal)
 
-		let stackView = UIStackView(arrangedSubviews: [firstPlayerResult, firstPlayer, separator, secondPlayer, secondPlayerResult])
+		let stackView = UIStackView(arrangedSubviews: [firstPlayerScore, firstPlayerResult, firstPlayer, separator, secondPlayer, secondPlayerResult, secondPlayerScore])
 		stackView.spacing = Metrics.Spacing.standard
 		stackView.alignment = .center
 		stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,20 +58,37 @@ class GamePlayView: UIView {
 			firstPlayer.widthAnchor.constraint(equalToConstant: Metrics.Image.listIcon),
 			firstPlayer.heightAnchor.constraint(equalToConstant: Metrics.Image.listIcon),
 
-			firstPlayerResult.widthAnchor.constraint(equalToConstant: Metrics.Spacing.massive),
+			firstPlayerScore.widthAnchor.constraint(equalToConstant: Metrics.Spacing.large),
+			firstPlayerResult.widthAnchor.constraint(equalToConstant: Metrics.Spacing.large),
 
 			secondPlayer.widthAnchor.constraint(equalToConstant: Metrics.Image.listIcon),
 			secondPlayer.heightAnchor.constraint(equalToConstant: Metrics.Image.listIcon),
 
-			secondPlayerResult.widthAnchor.constraint(equalToConstant: Metrics.Spacing.massive),
+			secondPlayerScore.widthAnchor.constraint(equalToConstant: Metrics.Spacing.large),
+			secondPlayerResult.widthAnchor.constraint(equalToConstant: Metrics.Spacing.large),
 			])
+	}
+
+	private func setupImageView(_ imageView: UIImageView) {
+		imageView.contentMode = .scaleAspectFit
+		imageView.layer.cornerRadius = Metrics.Image.listIcon / 2
+		imageView.clipsToBounds = true
+		imageView.setContentHuggingPriority(.required, for: .horizontal)
+	}
+
+	private func setupLabel(_ label: UILabel) {
+		label.textAlignment = .center
+		label.setContentHuggingPriority(.required, for: .horizontal)
+		label.textColor = .textSecondary
 	}
 
 	fileprivate func prepareForReuse() {
 		firstPlayer.image = nil
 		firstPlayerResult.text = nil
+		firstPlayerScore.text = nil
 		secondPlayer.image = nil
 		secondPlayerResult.text = nil
+		secondPlayerScore.text = nil
 	}
 }
 
@@ -86,6 +96,7 @@ struct GamePlayState: ViewState {
 	let firstPlayer: Player
 	let secondPlayer: Player
 	let winners: [ID]
+	let scores: [Int]?
 
 	static func updateView(_ view: GamePlayView, state: GamePlayState?) {
 		guard let state = state else {
@@ -124,6 +135,14 @@ struct GamePlayState: ViewState {
 			view.firstPlayerResult.textColor = .error
 			view.secondPlayerResult.text = "W"
 			view.secondPlayerResult.textColor = .success
+		}
+
+		if var scores = state.scores, scores.count >= 2 {
+			view.firstPlayerScore.text = "\(scores[0])"
+			view.secondPlayerScore.text = "\(scores[1])"
+		} else {
+			view.firstPlayerScore.text = nil
+			view.secondPlayerScore.text = nil
 		}
 	}
 }

@@ -25,7 +25,7 @@ struct PlayerDetailsBuilder {
 		return [
 			profileSection(player: player),
 			recordsSection(player: player, records: records, players: visiblePlayers, tableData: tableData, actionable: actionable),
-			playsSection(games: records.keys.sorted(), players: players, plays: plays, actionable: actionable),
+			playsSection(games: records.keys.sorted(), player: player, players: players, plays: plays, actionable: actionable),
 		]
 	}
 
@@ -71,7 +71,7 @@ struct PlayerDetailsBuilder {
 		return TableSection(key: "Records", rows: rows)
 	}
 
-	private static func playsSection(games: [Game], players: [Player], plays: [GamePlay], actionable: PlayerDetailsActionable) -> TableSection {
+	private static func playsSection(games: [Game], player: Player, players: [Player], plays: [GamePlay], actionable: PlayerDetailsActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.sectionHeader(key: "MostRecentPlays", title: "Most Recent Plays", action: "View All") { [weak actionable] in
 				actionable?.showAllPlays()
@@ -79,7 +79,7 @@ struct PlayerDetailsBuilder {
 		]
 
 		plays.prefix(3).forEach {
-			if let playCell = Cells.playCell(for: $0, players: players, actionable: actionable) {
+			if let playCell = Cells.playCell(for: $0, games: games, player: player, players: players, actionable: actionable) {
 				rows.append(playCell)
 			}
 		}
@@ -123,14 +123,32 @@ struct PlayerDetailsBuilder {
 			}
 		}
 
-		static func playCell(for play: GamePlay, players: [Player], actionable: PlayerDetailsActionable) -> CellConfigType? {
+		static func playCell(for play: GamePlay, games: [Game], player: Player, players: [Player], actionable: PlayerDetailsActionable) -> CellConfigType? {
 			guard let firstPlayer = players.first(where: { $0.id == play.players[0] }),
-				let secondPlayer = players.first(where: { $0.id == play.players[1] }) else { return nil }
+				let secondPlayer = players.first(where: { $0.id == play.players[1] }),
+				let game = games.first(where: { $0.id == play.game }) else { return nil }
 
-			return GamePlayCell(
+			let opponent: Player
+			var playerScore: Int?
+			var opponentScore: Int?
+			if firstPlayer == player {
+				opponent = secondPlayer
+				if let scores = play.scores, scores.count >= 2 {
+					playerScore = scores[0]
+					opponentScore = scores[1]
+				}
+			} else {
+				opponent = firstPlayer
+				if let scores = play.scores, scores.count >= 2 {
+					playerScore = scores[1]
+					opponentScore = scores[0]
+				}
+			}
+
+			return PlayerGamePlayCell(
 				key: "Play-\(play.id)",
-				state: GamePlayState(firstPlayer: firstPlayer, secondPlayer: secondPlayer, winners: play.winners),
-				cellUpdater: GamePlayState.updateView
+				state: PlayerGamePlayState(game: game, player: player, opponent: opponent, winners: play.winners, playerScore: playerScore, opponentScore: opponentScore),
+				cellUpdater: PlayerGamePlayState.updateView
 			)
 		}
 	}
