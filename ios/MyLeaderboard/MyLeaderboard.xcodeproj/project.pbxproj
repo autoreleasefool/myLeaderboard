@@ -84,6 +84,7 @@
 		CAE56F9822F9B65800FE0998 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9722F9B65800FE0998 /* NSAttributedString+Extensions.swift */; };
 		CAE56F9C22F9C28E00FE0998 /* PlayerListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9B22F9C28E00FE0998 /* PlayerListItemView.swift */; };
 		CAE56F9E22F9C30C00FE0998 /* GameListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F9D22F9C30C00FE0998 /* GameListItemView.swift */; };
+		CAE9CF5E230EEBAC00D4850E /* GamePlayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE9CF5D230EEBAC00D4850E /* GamePlayCell.swift */; };
 		CAED76B422FA78CF000A2281 /* PlayerPlayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED76B322FA78CF000A2281 /* PlayerPlayCell.swift */; };
 		CAED76B622FC4FCE000A2281 /* KeyedErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED76B522FC4FCE000A2281 /* KeyedErrors.swift */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
@@ -203,6 +204,7 @@
 		CAE56F9722F9B65800FE0998 /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		CAE56F9B22F9C28E00FE0998 /* PlayerListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListItemView.swift; sourceTree = "<group>"; };
 		CAE56F9D22F9C30C00FE0998 /* GameListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListItemView.swift; sourceTree = "<group>"; };
+		CAE9CF5D230EEBAC00D4850E /* GamePlayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlayCell.swift; sourceTree = "<group>"; };
 		CAED76B322FA78CF000A2281 /* PlayerPlayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayerPlayCell.swift; path = MyLeaderboard/Source/Sections/Standings/Record/PlayerPlayCell.swift; sourceTree = SOURCE_ROOT; };
 		CAED76B522FC4FCE000A2281 /* KeyedErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyedErrors.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
@@ -432,6 +434,7 @@
 			isa = PBXGroup;
 			children = (
 				CAE56F9D22F9C30C00FE0998 /* GameListItemView.swift */,
+				CAE9CF5D230EEBAC00D4850E /* GamePlayCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -780,6 +783,7 @@
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
 				CAE56F9C22F9C28E00FE0998 /* PlayerListItemView.swift in Sources */,
 				CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */,
+				CAE9CF5E230EEBAC00D4850E /* GamePlayCell.swift in Sources */,
 				CA4BAB9022D6DC2F003347AF /* UIControl+Extensions.swift in Sources */,
 				CAC47BC722E887DC000DF790 /* Standings.swift in Sources */,
 				CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */,

@@ -84,7 +84,7 @@ class GameDetailsViewModel: ViewModel {
 			case .failure(let error):
 				self?.handleAction(.apiError(error))
 			case .success(let plays):
-				self?.plays = plays
+				self?.plays = plays.sorted().reversed().filter { $0.game == self?.game.id }
 			}
 		}
 
