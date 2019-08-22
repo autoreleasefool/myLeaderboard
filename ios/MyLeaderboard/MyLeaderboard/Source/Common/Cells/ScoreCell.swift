@@ -34,6 +34,7 @@ class ScoreCellView: UIView {
 		worstScore.textColor = .text
 		worstScore.font = worstScore.font.withSize(Metrics.Text.caption)
 
+		let averageView = UIImageView(image: UIImage(named: "Score/Average"))
 		averageScore.textColor = .text
 		averageScore.font = averageScore.font.withSize(Metrics.Text.caption)
 
@@ -45,7 +46,11 @@ class ScoreCellView: UIView {
 		worstStackView.alignment = .center
 		worstStackView.spacing = Metrics.Spacing.small
 
-		let mainStackView = UIStackView(arrangedSubviews: [bestStackView, worstStackView, averageScore])
+		let averageStackView = UIStackView(arrangedSubviews: [averageView, averageScore])
+		averageStackView.alignment = .center
+		averageStackView.spacing = Metrics.Spacing.small
+
+		let mainStackView = UIStackView(arrangedSubviews: [bestStackView, worstStackView, averageStackView])
 		mainStackView.alignment = .center
 		mainStackView.axis = .vertical
 		mainStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,6 +68,9 @@ class ScoreCellView: UIView {
 
 			poopView.widthAnchor.constraint(equalToConstant: Metrics.Image.medium),
 			poopView.heightAnchor.constraint(equalToConstant: Metrics.Image.medium),
+
+			averageView.widthAnchor.constraint(equalToConstant: Metrics.Image.medium),
+			averageView.heightAnchor.constraint(equalToConstant: Metrics.Image.medium),
 			])
 	}
 
