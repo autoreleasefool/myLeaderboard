@@ -10,6 +10,7 @@ import UIKit
 
 enum CreateGameAction {
 	case nameUpdated(String)
+	case hasScoresUpdated(Bool)
 	case gameCreated(Game)
 	case apiError(LeaderboardAPIError)
 	case userErrors
@@ -18,6 +19,7 @@ enum CreateGameAction {
 enum CreateGameViewAction {
 	case initialize
 	case updateName(String)
+	case updateHasScores(Bool)
 	case submit(UIViewController)
 }
 
@@ -35,6 +37,12 @@ class CreateGameViewModel {
 
 	private var trimmedGameName: String {
 		return gameName.trimmingCharacters(in: .whitespaces)
+	}
+
+	private(set) var hasScores: Bool = false {
+		didSet {
+			handleAction(.hasScoresUpdated(hasScores))
+		}
 	}
 
 	private(set) var errors: KeyedErrors = KeyedErrors() {
@@ -70,6 +78,8 @@ class CreateGameViewModel {
 		case .updateName(let name):
 			self.gameName = name
 			updateErrors(for: CreateGameBuilder.Keys.createGameSection.rawValue)
+		case .updateHasScores(let hasScores):
+			self.hasScores = hasScores
 		case .submit(let context):
 			submit(with: context)
 		}
@@ -111,7 +121,7 @@ class CreateGameViewModel {
 
 		isLoading = true
 
-		api.createGame(withName: trimmedGameName) { [weak self] result in
+		api.createGame(withName: trimmedGameName, hasScores: hasScores) { [weak self] result in
 			self?.isLoading = false
 
 			switch result {

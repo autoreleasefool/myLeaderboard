@@ -29,7 +29,7 @@ class CreateGameViewController: FTDViewController {
 		super.viewDidLoad()
 		viewModel = CreateGameViewModel(api: api) { [weak self] action in
 			switch action {
-			case .nameUpdated:
+			case .nameUpdated, .hasScoresUpdated:
 				self?.updateDoneButton()
 			case .gameCreated(let game):
 				self?.gameCreated?(game)
@@ -49,7 +49,7 @@ class CreateGameViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = CreateGameBuilder.sections(gameName: viewModel.gameName, errors: viewModel.errors, actionable: self)
+		let sections = CreateGameBuilder.sections(gameName: viewModel.gameName, hasScores: viewModel.hasScores, errors: viewModel.errors, actionable: self)
 		tableData.renderAndDiff(sections)
 		updateDoneButton()
 	}
@@ -81,5 +81,9 @@ class CreateGameViewController: FTDViewController {
 extension CreateGameViewController: CreateGameActionable {
 	func updatedGameName(name: String) {
 		viewModel.postViewAction(.updateName(name))
+	}
+
+	func updatedHasScores(hasScores: Bool) {
+		viewModel.postViewAction(.updateHasScores(hasScores))
 	}
 }

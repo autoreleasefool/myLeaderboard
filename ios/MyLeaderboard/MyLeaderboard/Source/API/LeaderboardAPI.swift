@@ -117,14 +117,17 @@ class LeaderboardAPI {
 		}.resume()
 	}
 
-	func createGame(withName name: String, completion: @escaping (LeaderboardAPIResult<Game>) -> Void) {
+	func createGame(withName name: String, hasScores: Bool, completion: @escaping (LeaderboardAPIResult<Game>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<Game>) {
 			DispatchQueue.main.async {
 				completion(result)
 			}
 		}
 
-		let body = ["name": name]
+		let body: [String: Any] = [
+			"name": name,
+			"hasScores": hasScores,
+		]
 		guard let bodyData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
 			finishRequest(.failure(.invalidData))
 			return

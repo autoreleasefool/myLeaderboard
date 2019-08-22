@@ -10,6 +10,7 @@ import FunctionalTableData
 
 protocol CreateGameActionable: AnyObject {
 	func updatedGameName(name: String)
+	func updatedHasScores(hasScores: Bool)
 }
 
 struct CreateGameBuilder {
@@ -17,21 +18,27 @@ struct CreateGameBuilder {
 		case createGameSection
 		enum Create: String {
 			case name
+			case hasScores
 			case error
 		}
 	}
 
-	static func sections(gameName: String, errors: KeyedErrors, actionable: CreateGameActionable) -> [TableSection] {
-		let label = LabelState(text: .attributed(NSAttributedString(string: "Name", textColor: .text)))
-		let input = TextInputCellState(text: gameName, placeholder: "Patchwork") { [weak actionable] text in
+	static func sections(gameName: String, hasScores: Bool, errors: KeyedErrors, actionable: CreateGameActionable) -> [TableSection] {
+		let nameLabel = LabelState(text: .attributed(NSAttributedString(string: "Name", textColor: .text)))
+		let nameInput = TextInputCellState(text: gameName, placeholder: "Patchwork") { [weak actionable] text in
 			guard let text = text else { return }
 			actionable?.updatedGameName(name: text)
+		}
+
+		let hasScoresLabel = LabelState(text: .attributed(NSAttributedString(string: "Has scores?", textColor: .text)))
+		let hasScoresSwitch = SwitchState(isOn: hasScores) { [weak actionable] isOn in
+			actionable?.updatedHasScores(hasScores: isOn)
 		}
 
 		var rows: [CellConfigType] = [
 			CombinedCell<UILabel, LabelState, TextInputCellView, TextInputCellState, LayoutMarginsTableItemLayout>(
 				key: Keys.Create.name.rawValue,
-				state: CombinedState(state1: label, state2: input),
+				state: CombinedState(state1: nameLabel, state2: nameInput),
 				cellUpdater: { view, state in
 					if state == nil {
 						view.view1.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -43,7 +50,14 @@ struct CreateGameBuilder {
 
 					CombinedState<LabelState, TextInputCellState>.updateView(view, state: state)
 				}
-			)
+			),
+			SwitchCell(
+				key: Keys.Create.hasScores.rawValue,
+				state: CombinedState(state1: hasScoresLabel, state2: hasScoresSwitch),
+				cellUpdater: { view, state in
+					CombinedState<LabelState, SwitchState>.updateView(view, state: state)
+				}
+			),
 		]
 
 		if let errorMessage = errors[Keys.createGameSection.rawValue, Keys.Create.error.rawValue] {
