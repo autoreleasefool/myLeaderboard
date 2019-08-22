@@ -21,6 +21,7 @@ extension UIColor {
 	static let textSecondary = UIColor(red: 244.0 / 255, green: 246.0 / 255, blue: 248.0 / 255, alpha: 0.7)
 
 	static let error = UIColor(red: 255.0 / 255, green: 0, blue: 0, alpha: 1.0)
+	static let warning = UIColor(red: 255.0 / 255, green: 255.0 / 255, blue: 0, alpha: 1.0)
 	static let success = UIColor(red: 60.0 / 255, green: 185.0 / 255, blue: 60.0 / 255, alpha: 1.0)
 
 	static let standingsBorder = UIColor(red: 66.0 / 255, green: 73.0 / 255, blue: 82.0 / 255, alpha: 1.0)

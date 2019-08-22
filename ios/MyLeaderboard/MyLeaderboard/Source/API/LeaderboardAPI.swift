@@ -163,6 +163,19 @@ class LeaderboardAPI {
 
 	// MARK: - Play
 
+	func plays(completion: @escaping (LeaderboardAPIResult<[GamePlay]>) -> Void) {
+		func finishRequest(_ result: LeaderboardAPIResult<[GamePlay]>) {
+			DispatchQueue.main.async {
+				completion(result)
+			}
+		}
+
+		let url = LeaderboardAPI.baseURL.appendingPathComponent("/plays/list")
+		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+			self?.handleResponse(data: data, response: response, error: error, completion: finishRequest)
+		}.resume()
+	}
+
 	func record(gameID: ID, playerIDs: [ID], winnerIDs: [ID], scores: [ID]?, completion: @escaping (LeaderboardAPIResult<GamePlay>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<GamePlay>) {
 			DispatchQueue.main.async {

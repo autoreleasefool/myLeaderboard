@@ -21,3 +21,9 @@ struct GamePlay: Identifiable, Codable {
 		return dateFormatter.date(from: playedOn)
 	}
 }
+
+extension GamePlay: Comparable {
+	static func < (lhs: GamePlay, rhs: GamePlay) -> Bool {
+		return lhs.id < rhs.id
+	}
+}

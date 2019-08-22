@@ -12,8 +12,11 @@ class RecordPlayViewController: FTDViewController {
 	private var api: LeaderboardAPI
 	private var viewModel: RecordPlayViewModel!
 
-	init(api: LeaderboardAPI) {
+	private var playCreated: ((GamePlay) -> Void)?
+
+	init(api: LeaderboardAPI, onSuccess: ((GamePlay) -> Void)? = nil) {
 		self.api = api
+		self.playCreated = onSuccess
 		super.init()
 	}
 
@@ -29,7 +32,8 @@ class RecordPlayViewController: FTDViewController {
 				self?.render()
 			case .apiError(let error):
 				self?.presentError(error)
-			case .playCreated:
+			case .playCreated(let play):
+				self?.playCreated?(play)
 				self?.dismiss(animated: true)
 			case .openGamePicker:
 				self?.presentGamePicker()
