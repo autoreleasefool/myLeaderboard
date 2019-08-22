@@ -22,11 +22,15 @@ struct PlayerDetailsBuilder {
 			return records.first(where: { $0.value?.records[player.id] != nil }) != nil
 		}
 
-		return [
+		var sections: [TableSection] = [
 			profileSection(player: player),
-			recordsSection(player: player, records: records, players: visiblePlayers, tableData: tableData, actionable: actionable),
-			playsSection(games: records.keys.sorted(), player: player, players: players, plays: plays, actionable: actionable),
 		]
+
+		sections.append(contentsOf: scoreSections(records: records, actionable: actionable))
+		sections.append(recordsSection(player: player, records: records, players: visiblePlayers, tableData: tableData, actionable: actionable))
+		sections.append(playsSection(games: records.keys.sorted(), player: player, players: players, plays: plays, actionable: actionable))
+
+		return sections
 	}
 
 	private static func profileSection(player: Player) -> TableSection {
@@ -48,8 +52,39 @@ struct PlayerDetailsBuilder {
 		return TableSection(key: "Profile", rows: rows)
 	}
 
+	private static func scoreSections(records: [Game: PlayerStandings?], actionable: PlayerDetailsActionable) -> [TableSection] {
+		var sections: [TableSection] = []
+		records.keys.sorted().forEach { game in
+			if let optionalStandings = records[game], let score = optionalStandings?.scoreStats {
+				let rows: [CellConfigType] = [
+					GameListItemCell(
+						key: "Game-\(game.id)",
+						style: CellStyle(highlight: true, backgroundColor: .primaryLight),
+						actions: CellActions(selectionAction: { [weak actionable] _ in
+							actionable?.selectedGame(game: game)
+							return .deselected
+						}),
+						state: GameListItemState(name: game.name, image: game.image),
+						cellUpdater: GameListItemState.updateView
+					),
+					ScoreCell(
+						key: "Score",
+						state: ScoreCellState(bestScore: score.best, worstScore: score.worst, averageScore: score.average),
+						cellUpdater: ScoreCellState.updateView
+					)
+				]
+
+				sections.append(TableSection(key: "Score-\(game.id)", rows: rows))
+			}
+		}
+
+		return sections
+	}
+
 	private static func recordsSection(player: Player, records: [Game: PlayerStandings?], players: [Player], tableData: FunctionalTableData, actionable: PlayerDetailsActionable) -> TableSection {
-		var rows: [CellConfigType] = []
+		var rows: [CellConfigType] = [
+			Cells.sectionHeader(key: "Header", title: "Records")
+		]
 		var spreadsheetCells: [[GridCellConfig]] = []
 
 		spreadsheetCells.append(SpreadsheetCells.headerRow(players: players, actionable: actionable))
