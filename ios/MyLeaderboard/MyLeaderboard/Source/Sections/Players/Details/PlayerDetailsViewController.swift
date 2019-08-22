@@ -53,7 +53,7 @@ class PlayerDetailsViewController: FTDViewController {
 	}
 
 	private func showGameDetails(for game: Game) {
-		print("Selected game \(game.name)")
+		show(GameDetailsViewController(api: api, game: game), sender: self)
 	}
 
 	private func showPlayerDetails(for player: Player) {
@@ -61,7 +61,7 @@ class PlayerDetailsViewController: FTDViewController {
 	}
 
 	private func openAllPlays() {
-		print("Open all plays.")
+		show(PlaysListViewController(api: api, player: viewModel.player), sender: self)
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {

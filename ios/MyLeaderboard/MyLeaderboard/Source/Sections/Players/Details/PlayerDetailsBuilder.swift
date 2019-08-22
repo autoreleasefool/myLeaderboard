@@ -25,7 +25,7 @@ struct PlayerDetailsBuilder {
 		return [
 			profileSection(player: player),
 			recordsSection(player: player, records: records, players: visiblePlayers, tableData: tableData, actionable: actionable),
-			playsSection(games: records.keys.sorted(), players: visiblePlayers, plays: plays, actionable: actionable),
+			playsSection(games: records.keys.sorted(), players: players, plays: plays, actionable: actionable),
 		]
 	}
 
@@ -72,7 +72,67 @@ struct PlayerDetailsBuilder {
 	}
 
 	private static func playsSection(games: [Game], players: [Player], plays: [GamePlay], actionable: PlayerDetailsActionable) -> TableSection {
-		return TableSection(key: "Plays")
+		var rows: [CellConfigType] = [
+			Cells.sectionHeader(key: "MostRecentPlays", title: "Most Recent Plays", action: "View All") { [weak actionable] in
+				actionable?.showAllPlays()
+			}
+		]
+
+		plays.prefix(3).forEach {
+			if let playCell = Cells.playCell(for: $0, players: players, actionable: actionable) {
+				rows.append(playCell)
+			}
+		}
+
+		return TableSection(key: "Plays", rows: rows)
+	}
+
+	private struct Cells {
+		static func sectionHeader(key: String, title: String, action: String? = nil, onAction: (() -> Void)? = nil) -> CellConfigType {
+			let titleState = LabelState(text: .attributed(NSAttributedString(string: title, textColor: .text)), size: Metrics.Text.title)
+
+			if let action = action, let onAction = onAction {
+				let actionState = LabelState(text: .attributed(NSAttributedString(string: action, textColor: .textSecondary)), size: Metrics.Text.caption)
+
+				return CombinedCell<UILabel, LabelState, UILabel, LabelState, LayoutMarginsTableItemLayout>(
+					key: key,
+					style: CellStyle(highlight: true, backgroundColor: .primaryLight),
+					actions: CellActions(selectionAction: { _ in
+						onAction()
+						return .deselected
+					}),
+					state: CombinedState(state1: titleState, state2: actionState),
+					cellUpdater: { view, state in
+						if state == nil {
+							view.stackView.alignment = .center
+							view.view2.textAlignment = .natural
+						} else {
+							view.stackView.alignment = .firstBaseline
+							view.view2.textAlignment = .right
+						}
+						CombinedState<LabelState, LabelState>.updateView(view, state: state)
+				}
+				)
+			} else {
+				return LabelCell(
+					key: key,
+					style: CellStyle(backgroundColor: .primaryLight),
+					state: titleState,
+					cellUpdater: LabelState.updateView
+				)
+			}
+		}
+
+		static func playCell(for play: GamePlay, players: [Player], actionable: PlayerDetailsActionable) -> CellConfigType? {
+			guard let firstPlayer = players.first(where: { $0.id == play.players[0] }),
+				let secondPlayer = players.first(where: { $0.id == play.players[1] }) else { return nil }
+
+			return GamePlayCell(
+				key: "Play-\(play.id)",
+				state: GamePlayState(firstPlayer: firstPlayer, secondPlayer: secondPlayer, winners: play.winners),
+				cellUpdater: GamePlayState.updateView
+			)
+		}
 	}
 
 	private struct SpreadsheetCells {

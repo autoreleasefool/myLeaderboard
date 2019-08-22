@@ -104,7 +104,17 @@ class PlayerDetailsViewModel: ViewModel {
 			}
 		}
 
-		// Fetch plays
+		api.plays { [weak self] result in
+			guard let self = self else { return }
+			switch result {
+			case .failure(let error):
+				self.handleAction(.apiError(error))
+			case .success(let plays):
+				self.plays = plays.filter {
+					$0.players.contains(self.player.id)
+				}.sorted().reversed()
+			}
+		}
 	}
 
 	private func fetchPlayerStandings(for game: Game) {
