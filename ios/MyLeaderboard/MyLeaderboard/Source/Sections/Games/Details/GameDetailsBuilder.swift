@@ -108,7 +108,7 @@ struct GameDetailsBuilder {
 
 			return GamePlayCell(
 				key: "Play-\(play.id)",
-				state: GamePlayState(firstPlayer: firstPlayer, secondPlayer: secondPlayer, winners: play.winners),
+				state: GamePlayState(firstPlayer: firstPlayer, secondPlayer: secondPlayer, winners: play.winners, scores: play.scores),
 				cellUpdater: GamePlayState.updateView
 			)
 		}

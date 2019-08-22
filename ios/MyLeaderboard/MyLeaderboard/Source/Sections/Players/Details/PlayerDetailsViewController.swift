@@ -1,37 +1,40 @@
 //
-//  GameDetailsViewController.swift
+//  PlayerDetailsViewController.swift
 //  MyLeaderboard
 //
-//  Created by Joseph Roque on 2019-08-21.
+//  Created by Joseph Roque on 2019-08-22.
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
 import UIKit
 import Loaf
 
-class GameDetailsViewController: FTDViewController {
+class PlayerDetailsViewController: FTDViewController {
 	private var api: LeaderboardAPI
-	private var viewModel: GameDetailsViewModel!
+	private var viewModel: PlayerDetailsViewModel!
 
-	init(api: LeaderboardAPI, game: Game) {
+	init(api: LeaderboardAPI, player: Player) {
 		self.api = api
 		super.init()
-
 		refreshable = true
-		viewModel = GameDetailsViewModel(api: api, game: game) { [weak self] action in
+
+		viewModel = PlayerDetailsViewModel(api: api, player: player) { [weak self] action in
 			switch action {
 			case .dataChanged:
+				self?.finishRefresh()
 				self?.render()
-			case .playerSelected(let player):
-				self?.showPlayerDetails(for: player)
 			case .apiError(let error):
 				self?.presentError(error)
+			case .gameSelected(let game):
+				self?.showGameDetails(for: game)
+			case .playerSelected(let player):
+				self?.showPlayerDetails(for: player)
 			case .openAllPlays:
 				self?.openAllPlays()
 			}
 		}
 
-		self.title = game.name
+		self.title = player.displayName
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -45,8 +48,12 @@ class GameDetailsViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = GameDetailsBuilder.sections(game: viewModel.game, plays: viewModel.plays, players: viewModel.players, standings: viewModel.standings, tableData: tableData, actionable: self)
+		let sections = PlayerDetailsBuilder.sections(player: viewModel.player, records: viewModel.records, players: viewModel.players, plays: viewModel.plays, tableData: tableData, actionable: self)
 		tableData.renderAndDiff(sections)
+	}
+
+	private func showGameDetails(for game: Game) {
+		show(GameDetailsViewController(api: api, game: game), sender: self)
 	}
 
 	private func showPlayerDetails(for player: Player) {
@@ -54,7 +61,7 @@ class GameDetailsViewController: FTDViewController {
 	}
 
 	private func openAllPlays() {
-		show(PlaysListViewController(api: api, game: viewModel.game), sender: self)
+		show(PlaysListViewController(api: api, player: viewModel.player), sender: self)
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {
@@ -73,7 +80,11 @@ class GameDetailsViewController: FTDViewController {
 	}
 }
 
-extension GameDetailsViewController: GameDetailsActionable {
+extension PlayerDetailsViewController: PlayerDetailsActionable {
+	func selectedGame(game: Game) {
+		viewModel.postViewAction(.selectGame(game))
+	}
+
 	func selectedPlayer(player: Player) {
 		viewModel.postViewAction(.selectPlayer(player))
 	}
