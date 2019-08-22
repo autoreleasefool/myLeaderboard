@@ -159,7 +159,6 @@ extension Spreadsheet {
 		static func updateView(_ view: RowCellView, state: RowCellState?) {
 			guard let state = state else {
 				view.collectionData.scrollViewDidScroll = nil
-				view.collectionData.renderAndDiff([])
 				return
 			}
 
