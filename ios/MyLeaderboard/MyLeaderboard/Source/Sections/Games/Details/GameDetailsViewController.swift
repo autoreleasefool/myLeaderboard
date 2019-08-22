@@ -50,11 +50,11 @@ class GameDetailsViewController: FTDViewController {
 	}
 
 	private func showPlayerDetails(for player: Player) {
-		print("Show details for \(player.displayName)")
+		show(PlayerDetailsViewController(api: api, player: player), sender: self)
 	}
 
 	private func openAllPlays() {
-		print("Show all plays")
+		show(PlaysListViewController(api: api, game: viewModel.game), sender: self)
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {

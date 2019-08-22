@@ -19,13 +19,7 @@ struct PlayerDetailsBuilder {
 
 	static func sections(player: Player, records: [Game: PlayerStandings?], players: [Player], plays: [GamePlay], tableData: FunctionalTableData, actionable: PlayerDetailsActionable) -> [TableSection] {
 		let visiblePlayers = players.filter { player in
-			for record in records {
-				if record.value?.records[player.id] != nil {
-					return true
-				}
-			}
-
-			return false
+			return records.first(where: { $0.value?.records[player.id] != nil }) != nil
 		}
 
 		return [
