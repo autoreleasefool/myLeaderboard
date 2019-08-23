@@ -13,11 +13,20 @@ protocol PlaysListActionable: AnyObject {
 }
 
 struct PlaysListBuilder {
+	private static let dateFormatter: DateFormatter = {
+		let formatter = DateFormatter()
+		formatter.timeStyle = .none
+		formatter.dateStyle = .long
+		return formatter
+	}()
+
 	static func sections(forPlayer player: Player, plays: [GamePlay], games: [Game], players: [Player], actionable: PlaysListActionable) -> [TableSection] {
-		let rows: [CellConfigType] = plays.compactMap { play in
+		var lastDatePlayed: Date?
+		var rows: [CellConfigType] = []
+		plays.forEach { play in
 			guard let firstPlayer = players.first(where: { $0.id == play.players[0] }),
 				let secondPlayer = players.first(where: { $0.id == play.players[1] }),
-				let game = games.first(where: { $0.id == play.game }) else { return nil }
+				let game = games.first(where: { $0.id == play.game }) else { return }
 
 			let opponent: Player
 			var playerScore: Int?
@@ -36,11 +45,16 @@ struct PlaysListBuilder {
 				}
 			}
 
-			return PlayerGamePlayCell(
+			if let date = play.playedOnDay, date != lastDatePlayed {
+				rows.append(dateCell(for: date))
+				lastDatePlayed = date
+			}
+
+			rows.append(PlayerGamePlayCell(
 				key: "Play-\(play.id)",
 				state: PlayerGamePlayState(game: game, player: player, opponent: opponent, winners: play.winners, playerScore: playerScore, opponentScore: opponentScore),
 				cellUpdater: PlayerGamePlayState.updateView
-			)
+			))
 		}
 
 		return [TableSection(key: "Plays", rows: rows)]
@@ -51,17 +65,33 @@ struct PlaysListBuilder {
 	}
 
 	static func sections(plays: [GamePlay], players: [Player], actionable: PlaysListActionable) -> [TableSection] {
-		let rows: [CellConfigType] = plays.compactMap { play in
+		var lastDatePlayed: Date?
+		var rows: [CellConfigType] = []
+		plays.forEach { play in
 			guard let firstPlayer = players.first(where: { $0.id == play.players[0] }),
-				let secondPlayer = players.first(where: { $0.id == play.players[1] }) else { return nil }
+				let secondPlayer = players.first(where: { $0.id == play.players[1] }) else { return }
 
-			return GamePlayCell(
+			if let date = play.playedOnDay, date != lastDatePlayed {
+				rows.append(dateCell(for: date))
+				lastDatePlayed = date
+			}
+
+			rows.append(GamePlayCell(
 				key: "Play-\(play.id)",
 				state: GamePlayState(firstPlayer: firstPlayer, secondPlayer: secondPlayer, winners: play.winners, scores: play.scores),
 				cellUpdater: GamePlayState.updateView
-			)
+			))
 		}
 
 		return [TableSection(key: "Plays", rows: rows)]
+	}
+
+	static func dateCell(for date: Date) -> CellConfigType {
+		let dateString = PlaysListBuilder.dateFormatter.string(from: date)
+		return LabelCell(
+			key: "Date-\(dateString)",
+			state: LabelState(text: .attributed(NSAttributedString(string: dateString, textColor: .textSecondary)), size: Metrics.Text.caption),
+			cellUpdater: LabelState.updateView
+		)
 	}
 }

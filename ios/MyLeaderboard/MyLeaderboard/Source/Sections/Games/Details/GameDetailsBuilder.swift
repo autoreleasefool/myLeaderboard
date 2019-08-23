@@ -15,6 +15,12 @@ protocol GameDetailsActionable: AnyObject {
 
 struct GameDetailsBuilder {
 	private static let avatarImageSize: CGFloat = 32
+	private static let dateFormatter: DateFormatter = {
+		let formatter = DateFormatter()
+		formatter.timeStyle = .none
+		formatter.dateStyle = .long
+		return formatter
+	}()
 
 	static func sections(game: Game, plays: [GamePlay], players: [Player], standings: Standings?, builder: SpreadsheetBuilder, actionable: GameDetailsActionable) -> [TableSection] {
 		let visiblePlayers = players.filter { standings?.records[$0.id] != nil }
@@ -47,8 +53,13 @@ struct GameDetailsBuilder {
 			},
 		]
 
+		var lastDatePlayed: Date?
 		plays.prefix(3).forEach {
 			if let playCell = Cells.playCell(for: $0, players: players, actionable: actionable) {
+				if let date = $0.playedOnDay, date != lastDatePlayed {
+					rows.append(Cells.dateCell(for: date))
+					lastDatePlayed = date
+				}
 				rows.append(playCell)
 			}
 		}
@@ -125,6 +136,15 @@ struct GameDetailsBuilder {
 				key: "Play-\(play.id)",
 				state: GamePlayState(firstPlayer: firstPlayer, secondPlayer: secondPlayer, winners: play.winners, scores: play.scores),
 				cellUpdater: GamePlayState.updateView
+			)
+		}
+
+		static func dateCell(for date: Date) -> CellConfigType {
+			let dateString = GameDetailsBuilder.dateFormatter.string(from: date)
+			return LabelCell(
+				key: "Date-\(dateString)",
+				state: LabelState(text: .attributed(NSAttributedString(string: dateString, textColor: .textSecondary)), size: Metrics.Text.caption),
+				cellUpdater: LabelState.updateView
 			)
 		}
 	}
