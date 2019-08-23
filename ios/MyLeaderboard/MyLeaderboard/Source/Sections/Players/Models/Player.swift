@@ -23,3 +23,23 @@ extension Player: Comparable {
 		return lhs.id < rhs.id
 	}
 }
+
+extension Player {
+	private static let preferredPlayerKey = "Settings.PreferredPlayer"
+
+	static var preferred: Player? {
+		get {
+			if let data = UserDefaults.standard.value(forKey: Player.preferredPlayerKey) as? Data,
+				let player = try? JSONDecoder().decode(Player.self, from: data) {
+				return player
+			}
+
+			return nil
+		}
+		set {
+			if let data = try? JSONEncoder().encode(newValue) {
+				UserDefaults.standard.set(data, forKey: Player.preferredPlayerKey)
+			}
+		}
+	}
+}

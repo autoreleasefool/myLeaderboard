@@ -47,6 +47,7 @@ class StandingsListViewController: FTDViewController {
 
 		self.title = "Standings"
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(recordPlay))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings"), style: .plain, target: self, action: #selector(openSettings))
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 
 		viewModel.postViewAction(.initialize)
@@ -74,6 +75,10 @@ class StandingsListViewController: FTDViewController {
 
 	private func showPlayerDetails(for player: Player) {
 		show(PlayerDetailsViewController(api: api, player: player), sender: self)
+	}
+
+	@objc private func openSettings() {
+		presentModal(SettingsViewController(api: api))
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {
