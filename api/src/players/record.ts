@@ -41,6 +41,7 @@ export default async function record(req: Request): Promise<PlayerStandings> {
     const plays = await Plays.getInstance().all();
 
     let gamesPlayed = 0;
+    let gamesWithScores = 0;
     let totalScore = 0;
     let bestScore = -Infinity;
     let worstScore = Infinity;
@@ -50,6 +51,7 @@ export default async function record(req: Request): Promise<PlayerStandings> {
             gamesPlayed += 1;
             const playerIndex = play.players.indexOf(playerId);
             if (playerIndex >= 0 && game.hasScores && play.scores != null && play.scores.length > playerIndex) {
+                gamesWithScores += 1;
                 const playerScore = play.scores[playerIndex];
                 totalScore += playerScore;
                 if (playerScore > bestScore) {
@@ -92,7 +94,7 @@ export default async function record(req: Request): Promise<PlayerStandings> {
 
     if (game.hasScores && totalScore > 0) {
         playerRecord.scoreStats = {
-            average: totalScore / gamesPlayed,
+            average: totalScore / gamesWithScores,
             best: bestScore,
             gamesPlayed,
             worst: worstScore,

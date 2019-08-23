@@ -53,6 +53,7 @@ async function buildStandings(game: Game): Promise<GameStandings> {
     const gameStandings: GameStandings = { records: {}};
 
     let totalGames = 0;
+    let gamesWithScores = 0;
     let totalScore = 0;
     let bestScore = -Infinity;
     let worstScore = Infinity;
@@ -61,7 +62,8 @@ async function buildStandings(game: Game): Promise<GameStandings> {
     plays.filter(play => play.game === game.id)
         .forEach(play => {
             totalGames += 1;
-            if (game.hasScores && play.scores != null) {
+            if (game.hasScores && play.scores != null && play.scores.length > 1) {
+                gamesWithScores += 1;
                 for (const score of play.scores) {
                     totalScore += score;
                     if (score > bestScore) {
@@ -151,7 +153,7 @@ async function buildStandings(game: Game): Promise<GameStandings> {
 
     if (game.hasScores && totalScore > 0) {
         gameStandings.scoreStats = {
-            average: totalScore / totalGames,
+            average: totalScore / gamesWithScores,
             best: bestScore,
             gamesPlayed: totalGames,
             worst: worstScore,
