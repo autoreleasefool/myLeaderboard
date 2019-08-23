@@ -20,9 +20,24 @@ struct GameDetailsBuilder {
 		let visiblePlayers = players.filter { standings?.records[$0.id] != nil }
 
 		return [
+			scoreSection(standings: standings),
 			playsSection(players: visiblePlayers, plays: plays, actionable: actionable),
 			standingsSection(players: visiblePlayers, standings: standings, builder: builder, actionable: actionable),
 		]
+	}
+
+	static func scoreSection(standings: Standings?) -> TableSection {
+		var rows: [CellConfigType] = []
+		if let score = standings?.scoreStats {
+			rows.append(Cells.sectionHeader(key: "Header", title: "Score Statistics"))
+			rows.append(ScoreCell(
+				key: "Scores",
+				state: ScoreCellState(bestScore: score.best, worstScore: score.worst, averageScore: score.average),
+				cellUpdater: ScoreCellState.updateView
+			))
+		}
+
+		return TableSection(key: "Scores", rows: rows)
 	}
 
 	static func playsSection(players: [Player], plays: [GamePlay], actionable: GameDetailsActionable) -> TableSection {
