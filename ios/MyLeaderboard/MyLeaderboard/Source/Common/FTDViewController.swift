@@ -27,6 +27,7 @@ class FTDViewController: UIViewController {
 	init() {
 		super.init(nibName: nil, bundle: nil)
 		refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+		tableView.cellLayoutMarginsFollowReadableWidth = true
 	}
 
 	required init?(coder aDecoder: NSCoder) {
