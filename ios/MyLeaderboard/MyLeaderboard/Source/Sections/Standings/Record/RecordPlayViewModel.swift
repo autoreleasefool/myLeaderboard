@@ -88,6 +88,10 @@ class RecordPlayViewModel: ViewModel {
 	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
 		self.api = api
 		self.handleAction = handleAction
+
+		if let preferredPlayer = Player.preferred {
+			self.selectedPlayers = [preferredPlayer]
+		}
 	}
 
 	func postViewAction(_ viewAction: RecordPlayViewAction) {
