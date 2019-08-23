@@ -137,7 +137,7 @@ struct GamePlayState: ViewState {
 			view.secondPlayerResult.textColor = .success
 		}
 
-		if var scores = state.scores, scores.count >= 2 {
+		if let scores = state.scores, scores.count >= 2 {
 			view.firstPlayerScore.text = "\(scores[0])"
 			view.secondPlayerScore.text = "\(scores[1])"
 		} else {
