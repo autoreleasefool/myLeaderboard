@@ -62,11 +62,11 @@ class SettingsViewController: FTDViewController {
 	}
 
 	private func openLicenses() {
-		print("Open licenses")
+		presentModal(LicensesListViewController())
 	}
 
 	private func openContributors() {
-		print("Open contributors")
+		presentModal(ContributorsListViewController())
 	}
 
 	private func openPlayerPicker() {
