@@ -26,15 +26,19 @@ class ScoreCellView: UIView {
 	}
 
 	private func setupView() {
-		let trophyView = UIImageView(image: UIImage(named: "Score/Trophy"))
+		let trophyView = setupImageView(UIImage(named: "Score/Trophy"), size: Metrics.Image.medium)
 		bestScore.textColor = .text
 		bestScore.font = bestScore.font.withSize(Metrics.Text.body)
 
-		let poopView = UIImageView(image: UIImage(named: "Score/Poop"))
+		let rainyView = setupImageView(UIImage(named: "Score/Rain"), size: Metrics.Image.small)
+		rainyView.alpha = 0.5
+		rainyView.isOpaque = false
 		worstScore.textColor = .text
 		worstScore.font = worstScore.font.withSize(Metrics.Text.caption)
 
-		let averageView = UIImageView(image: UIImage(named: "Score/Average"))
+		let averageView = setupImageView(UIImage(named: "Score/Average"), size: Metrics.Image.small)
+		averageView.alpha = 0.7
+		averageView.isOpaque = false
 		averageScore.textColor = .text
 		averageScore.font = averageScore.font.withSize(Metrics.Text.caption)
 
@@ -42,7 +46,7 @@ class ScoreCellView: UIView {
 		bestStackView.alignment = .center
 		bestStackView.spacing = Metrics.Spacing.small
 
-		let worstStackView = UIStackView(arrangedSubviews: [poopView, worstScore])
+		let worstStackView = UIStackView(arrangedSubviews: [rainyView, worstScore])
 		worstStackView.alignment = .center
 		worstStackView.spacing = Metrics.Spacing.small
 
@@ -51,7 +55,7 @@ class ScoreCellView: UIView {
 		averageStackView.spacing = Metrics.Spacing.small
 
 		let mainStackView = UIStackView(arrangedSubviews: [bestStackView, worstStackView, averageStackView])
-		mainStackView.alignment = .center
+		mainStackView.alignment = .leading
 		mainStackView.axis = .vertical
 		mainStackView.translatesAutoresizingMaskIntoConstraints = false
 		mainStackView.spacing = Metrics.Spacing.small
@@ -62,16 +66,15 @@ class ScoreCellView: UIView {
 			mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
 			mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
 			mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-			trophyView.widthAnchor.constraint(equalToConstant: Metrics.Image.listIcon),
-			trophyView.heightAnchor.constraint(equalToConstant: Metrics.Image.listIcon),
-
-			poopView.widthAnchor.constraint(equalToConstant: Metrics.Image.medium),
-			poopView.heightAnchor.constraint(equalToConstant: Metrics.Image.medium),
-
-			averageView.widthAnchor.constraint(equalToConstant: Metrics.Image.medium),
-			averageView.heightAnchor.constraint(equalToConstant: Metrics.Image.medium),
 			])
+	}
+
+	private func setupImageView(_ image: UIImage?, size: CGFloat) -> UIImageView {
+		let imageView = UIImageView(image: image)
+		imageView.contentMode = .scaleAspectFit
+		imageView.widthAnchor.constraint(equalToConstant: Metrics.Image.medium).isActive = true
+		imageView.heightAnchor.constraint(equalToConstant: size).isActive = true
+		return imageView
 	}
 
 	fileprivate func prepareForReuse() {

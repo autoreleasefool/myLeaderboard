@@ -64,7 +64,7 @@ struct PlayerDetailsBuilder {
 							actionable?.selectedGame(game: game)
 							return .deselected
 						}),
-						state: GameListItemState(name: game.name, image: game.image),
+						state: GameListItemState(name: "\(game.name) Scores", image: game.image),
 						cellUpdater: GameListItemState.updateView
 					),
 					ScoreCell(
