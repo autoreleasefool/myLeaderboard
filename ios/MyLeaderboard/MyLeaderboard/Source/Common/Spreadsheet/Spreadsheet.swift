@@ -9,7 +9,7 @@
 import FunctionalTableData
 
 struct Spreadsheet {
-	static func section(key: String, config: Config) -> TableSection? {
-		return SpreadsheetBuilder.shared.spreadsheet(forKey: key, config: config)
+	static func section(key: String, builder: SpreadsheetBuilder, config: Config) -> TableSection? {
+		return builder.spreadsheet(forKey: key, config: config)
 	}
 }

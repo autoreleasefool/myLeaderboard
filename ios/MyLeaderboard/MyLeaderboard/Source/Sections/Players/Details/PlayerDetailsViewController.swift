@@ -12,6 +12,7 @@ import Loaf
 class PlayerDetailsViewController: FTDViewController {
 	private var api: LeaderboardAPI
 	private var viewModel: PlayerDetailsViewModel!
+	private var spreadsheetBuilder: SpreadsheetBuilder!
 
 	init(api: LeaderboardAPI, player: Player) {
 		self.api = api
@@ -35,6 +36,7 @@ class PlayerDetailsViewController: FTDViewController {
 		}
 
 		self.title = player.displayName
+		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -48,7 +50,7 @@ class PlayerDetailsViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = PlayerDetailsBuilder.sections(player: viewModel.player, records: viewModel.records, players: viewModel.players, plays: viewModel.plays, tableData: tableData, actionable: self)
+		let sections = PlayerDetailsBuilder.sections(player: viewModel.player, records: viewModel.records, players: viewModel.players, plays: viewModel.plays, builder: spreadsheetBuilder, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 

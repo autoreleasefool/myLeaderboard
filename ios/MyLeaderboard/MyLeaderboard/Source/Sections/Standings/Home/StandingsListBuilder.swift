@@ -16,7 +16,7 @@ protocol StandingsListActionable: AnyObject {
 struct StandingsListBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
-	static func sections(standings: [Game: Standings?], players: [Player], tableData: FunctionalTableData, actionable: StandingsListActionable) -> [TableSection] {
+	static func sections(standings: [Game: Standings?], players: [Player], builder: SpreadsheetBuilder, actionable: StandingsListActionable) -> [TableSection] {
 		var sections: [TableSection] = []
 
 		standings.keys.sorted().forEach { game in
@@ -31,9 +31,9 @@ struct StandingsListBuilder {
 
 			let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
 			let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
-			let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil, in: tableData)
+			let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil)
 
-			if let spreadsheet = Spreadsheet.section(key: "Standings-\(game.id)", config: config) {
+			if let spreadsheet = Spreadsheet.section(key: "StandingsList-\(game.id)", builder: builder, config: config) {
 				rows.append(contentsOf: spreadsheet.rows)
 			}
 

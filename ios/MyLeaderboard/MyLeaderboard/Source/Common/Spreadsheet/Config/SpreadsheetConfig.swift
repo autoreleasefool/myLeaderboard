@@ -6,27 +6,22 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
-import FunctionalTableData
-
 extension Spreadsheet {
 	class Config: Equatable {
 		let rows: [Int: RowConfig]
 		let columns: [Int: ColumnConfig]
 		let cells: [[GridCellConfig]]
 		let border: BorderConfig?
-		weak var tableData: FunctionalTableData?
 
-		init(rows: [Int: RowConfig], columns: [Int: ColumnConfig], cells: [[GridCellConfig]], border: BorderConfig? = BorderConfig(), in tableData: FunctionalTableData) {
+		init(rows: [Int: RowConfig], columns: [Int: ColumnConfig], cells: [[GridCellConfig]], border: BorderConfig? = BorderConfig()) {
 			self.rows = rows
 			self.columns = columns
 			self.cells = cells
 			self.border = border
-			self.tableData = tableData
 		}
 
 		static func == (lhs: Config, rhs: Config) -> Bool {
-			guard lhs.columns == rhs.columns &&
-				lhs.tableData === rhs.tableData else {
+			guard lhs.columns == rhs.columns else {
 				return false
 			}
 

@@ -16,12 +16,12 @@ protocol GameDetailsActionable: AnyObject {
 struct GameDetailsBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
-	static func sections(game: Game, plays: [GamePlay], players: [Player], standings: Standings?, tableData: FunctionalTableData, actionable: GameDetailsActionable) -> [TableSection] {
+	static func sections(game: Game, plays: [GamePlay], players: [Player], standings: Standings?, builder: SpreadsheetBuilder, actionable: GameDetailsActionable) -> [TableSection] {
 		let visiblePlayers = players.filter { standings?.records[$0.id] != nil }
 
 		return [
 			playsSection(players: visiblePlayers, plays: plays, actionable: actionable),
-			standingsSection(players: visiblePlayers, standings: standings, tableData: tableData, actionable: actionable),
+			standingsSection(players: visiblePlayers, standings: standings, builder: builder, actionable: actionable),
 		]
 	}
 
@@ -41,7 +41,7 @@ struct GameDetailsBuilder {
 		return TableSection(key: "Plays", rows: rows)
 	}
 
-	static func standingsSection(players: [Player], standings: Standings?, tableData: FunctionalTableData, actionable: GameDetailsActionable) -> TableSection {
+	static func standingsSection(players: [Player], standings: Standings?, builder: SpreadsheetBuilder, actionable: GameDetailsActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.sectionHeader(key: "Standings", title: "Standings"),
 		]
@@ -57,9 +57,9 @@ struct GameDetailsBuilder {
 
 		let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
 		let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
-		let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil, in: tableData)
+		let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil)
 
-		if let spreadsheet = Spreadsheet.section(key: "Standings", config: config) {
+		if let spreadsheet = Spreadsheet.section(key: "GameStandings", builder: builder, config: config) {
 			rows.append(contentsOf: spreadsheet.rows)
 		}
 

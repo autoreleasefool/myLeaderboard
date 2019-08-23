@@ -10,10 +10,14 @@ import UIKit
 import FunctionalTableData
 
 class SpreadsheetBuilder {
-	static let shared = SpreadsheetBuilder()
+	private weak var tableData: FunctionalTableData?
 
 	private var configs: [String: Spreadsheet.Config] = [:]
 	private var offsets: [String: CGPoint] = [:]
+
+	init(tableData: FunctionalTableData) {
+		self.tableData = tableData
+	}
 
 	func spreadsheet(forKey key: String, config: Spreadsheet.Config) -> TableSection {
 		if configs[key] != config {
@@ -65,7 +69,7 @@ class SpreadsheetBuilder {
 	private func didUpdateVisibility(key: String, cell: UIView, isVisible: Bool) {
 		guard isVisible else { return }
 
-		guard let config = configs[key], config.tableData != nil else {
+		guard tableData != nil else {
 			clearKey(key: key)
 			return
 		}
@@ -79,7 +83,7 @@ class SpreadsheetBuilder {
 	}
 
 	private func didScroll(key: String, offset: CGPoint) {
-		guard let config = configs[key], let tableData = config.tableData, let tableView = tableData.tableView else {
+		guard let tableView = tableData?.tableView else {
 			clearKey(key: key)
 			return
 		}

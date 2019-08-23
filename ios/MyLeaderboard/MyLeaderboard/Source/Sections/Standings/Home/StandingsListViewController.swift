@@ -12,6 +12,7 @@ import Loaf
 class StandingsListViewController: FTDViewController {
 	private var api: LeaderboardAPI
 	private var viewModel: StandingsListViewModel!
+	private var spreadsheetBuilder: SpreadsheetBuilder!
 
 	init(api: LeaderboardAPI) {
 		self.api = api
@@ -46,13 +47,14 @@ class StandingsListViewController: FTDViewController {
 
 		self.title = "Standings"
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(recordPlay))
+		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 
 		viewModel.postViewAction(.initialize)
 		render()
 	}
 
 	private func render() {
-		let sections = StandingsListBuilder.sections(standings: viewModel.standings, players: viewModel.players, tableData: tableData, actionable: self)
+		let sections = StandingsListBuilder.sections(standings: viewModel.standings, players: viewModel.players, builder: spreadsheetBuilder, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 

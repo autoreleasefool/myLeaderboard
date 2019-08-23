@@ -17,7 +17,7 @@ protocol PlayerDetailsActionable: AnyObject {
 struct PlayerDetailsBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
-	static func sections(player: Player, records: [Game: PlayerStandings?], players: [Player], plays: [GamePlay], tableData: FunctionalTableData, actionable: PlayerDetailsActionable) -> [TableSection] {
+	static func sections(player: Player, records: [Game: PlayerStandings?], players: [Player], plays: [GamePlay], builder: SpreadsheetBuilder, actionable: PlayerDetailsActionable) -> [TableSection] {
 		let visiblePlayers = players.filter { player in
 			return records.first(where: { $0.value?.records[player.id] != nil }) != nil
 		}
@@ -27,7 +27,7 @@ struct PlayerDetailsBuilder {
 		]
 
 		sections.append(contentsOf: scoreSections(records: records, actionable: actionable))
-		sections.append(recordsSection(player: player, records: records, players: visiblePlayers, tableData: tableData, actionable: actionable))
+		sections.append(recordsSection(player: player, records: records, players: visiblePlayers, builder: builder, actionable: actionable))
 		sections.append(playsSection(games: records.keys.sorted(), player: player, players: players, plays: plays, actionable: actionable))
 
 		return sections
@@ -81,7 +81,7 @@ struct PlayerDetailsBuilder {
 		return sections
 	}
 
-	private static func recordsSection(player: Player, records: [Game: PlayerStandings?], players: [Player], tableData: FunctionalTableData, actionable: PlayerDetailsActionable) -> TableSection {
+	private static func recordsSection(player: Player, records: [Game: PlayerStandings?], players: [Player], builder: SpreadsheetBuilder, actionable: PlayerDetailsActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.sectionHeader(key: "Header", title: "Records")
 		]
@@ -97,9 +97,9 @@ struct PlayerDetailsBuilder {
 
 		let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
 		let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
-		let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil, in: tableData)
+		let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil)
 
-		if let spreadsheet = Spreadsheet.section(key: "Records", config: config) {
+		if let spreadsheet = Spreadsheet.section(key: "PlayerRecord-\(player.id)", builder: builder, config: config) {
 			rows.append(contentsOf: spreadsheet.rows)
 		}
 
