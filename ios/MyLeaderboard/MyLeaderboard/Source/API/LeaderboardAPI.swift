@@ -51,7 +51,7 @@ class LeaderboardAPI {
 			}
 		}
 		guard var urlComponents = URLComponents(url: LeaderboardAPI.baseURL.appendingPathComponent("/players/list"), resolvingAgainstBaseURL: true) else { return }
-		let queryItems: [URLQueryItem] = [URLQueryItem(name: "withAvatars", value: "\(withAvatars)")]
+		let queryItems: [URLQueryItem] = [URLQueryItem(name: "includeAvatars", value: "\(withAvatars)")]
 		urlComponents.queryItems = queryItems
 		guard let url = urlComponents.url else { return }
 		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
