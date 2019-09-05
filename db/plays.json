@@ -248,5 +248,6 @@
     {"game":1,"id":246,"playedOn":"2019-08-22T17:41:34.543Z","players":[1,6],"winners":[1],"scores":[29,23]},
     {"game":1,"id":247,"playedOn":"2019-08-27T21:48:22.774Z","players":[1,10],"winners":[10],"scores":[13,19]},
     {"game":1,"id":248,"playedOn":"2019-08-29T21:41:08.117Z","players":[1,10],"winners":[10],"scores":[10,16]},
-    {"game":1,"id":249,"playedOn":"2019-09-04T20:49:03.298Z","players":[5,0],"winners":[0],"scores":[-4,17]}
+    {"game":1,"id":249,"playedOn":"2019-09-04T20:49:03.298Z","players":[5,0],"winners":[0],"scores":[-4,17]},
+    {"game":1,"id":250,"playedOn":"2019-09-05T21:24:10.349Z","players":[1,0],"winners":[0],"scores":[6,26]}
 ]
