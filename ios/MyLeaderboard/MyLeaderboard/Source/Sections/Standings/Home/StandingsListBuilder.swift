@@ -29,17 +29,27 @@ struct StandingsListBuilder {
 				spreadsheetCells = standingsRows(from: gameStandings, players: players, actionable: actionable)
 			}
 
-			let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
-			let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
-			let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil)
+			var hasRecentPlays: Bool = false
+			if spreadsheetCells.count > 1 {
+				let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
+				let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
+				let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil)
 
-			if let spreadsheet = Spreadsheet.section(key: "StandingsList-\(game.id)", builder: builder, config: config) {
-				rows.append(contentsOf: spreadsheet.rows)
+				if let spreadsheet = Spreadsheet.section(key: "StandingsList-\(game.id)", builder: builder, config: config) {
+					rows.append(contentsOf: spreadsheet.rows)
+				}
+				hasRecentPlays = true
+			} else {
+				rows.append(LabelCell(
+					key: "no-recent-plays",
+					state: LabelState(text: .attributed(NSAttributedString(string: "No recent plays", textColor: .text)), size: Metrics.Text.title),
+					cellUpdater: LabelState.updateView
+				))
 			}
 
 			sections.append(TableSection(key: "game-\(game.id)", rows: rows))
 
-			if let optionalGameStandings = standings[game], let gameStandings = optionalGameStandings {
+			if hasRecentPlays, let optionalGameStandings = standings[game], let gameStandings = optionalGameStandings {
 				if let limbo = limboSection(forGame: game, players: Players.limboing(from: players, standings: gameStandings), actionable: actionable) {
 					sections.append(limbo)
 				}
