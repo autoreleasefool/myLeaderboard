@@ -9,7 +9,8 @@ iLeaderboard, meet myLeaderboard
 2. `yarn`
 3. `yarn start`
 4. The console will start an ngrok instance and provide a URL which tunnels to your local instance. You should be able to hit the various endpoints from here.
-5. Check out the [API Reference](/api/README.md)
+5. You'll probably want to update `api/.env` with a [GitHub API Token](https://github.com/settings/tokens) so you aren't rate limited while testing.
+6. Check out the [API Reference](/api/README.md)
 
 ### Dashboard
 
