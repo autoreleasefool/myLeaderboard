@@ -5,3 +5,7 @@
 .game-dashboard {
     padding-top: 3.2rem;
 }
+
+h1.no-recent-plays {
+    font-size: 2rem;
+}

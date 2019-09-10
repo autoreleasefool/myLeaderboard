@@ -5,7 +5,7 @@ import App from './App';
 import './index.css';
 
 ReactDOM.render(
-    <AppProvider>
+    <AppProvider i18n={{}}>
         <App />
     </AppProvider>,
     document.getElementById('root'),

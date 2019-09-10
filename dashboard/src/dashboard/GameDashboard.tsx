@@ -1,10 +1,12 @@
 import React from 'react';
+import { Page } from '@shopify/polaris';
 import LeaderboardAPI from '../api/LeaderboardAPI';
 import { Game, GameStandings, Player } from '../lib/types';
 import './GameDashboard.css';
 import Limbo from './limbo/Limbo';
 import ShadowRealm from './shadowRealm/ShadowRealm';
 import Standings from './Standings';
+import { isBanished } from '../lib/Freshness';
 
 interface Props {
     game: Game;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 interface State {
+    banishedPlayers: Set<number>;
+    playersWithGames: Array<Player>;
     refresh: boolean;
     standings: GameStandings | undefined;
 }
@@ -24,6 +28,8 @@ class Dashboard extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            banishedPlayers: new Set(),
+            playersWithGames: [],
             refresh: false,
             standings: undefined,
         };
@@ -35,22 +41,22 @@ class Dashboard extends React.Component<Props, State> {
     }
 
     public render() {
-        const { refresh, standings } = this.state;
-        const { game, players } = this.props;
+        const { refresh, standings, playersWithGames } = this.state;
+        const { game } = this.props;
 
-        if (standings == null || players.length === 0) {
+        if (standings == null || playersWithGames.length === 0) {
             return null;
         }
 
-        const playersWithGames = players.filter(player => {
-            const playerRecord = standings.records[player.id];
-            if (playerRecord == null) {
-                return false;
-            }
+        const visiblePlayers = playersWithGames.filter(player => this.state.banishedPlayers.has(player.id) === false);
 
-            const { wins, losses, ties } = playerRecord.overallRecord;
-            return (wins > 0 || losses > 0 || ties > 0);
-        });
+        if (playersWithGames.length > 0 && visiblePlayers.length === 0) {
+            return (
+                <Page title={game.name}>
+                    <h1 className={'no-recent-plays'}>No recent plays...</h1>
+                </Page>
+            );
+        }
 
         return (
             <div className={'game-dashboard'}>
@@ -62,11 +68,30 @@ class Dashboard extends React.Component<Props, State> {
     }
 
     private async _fetchStandings() {
+        const { players } = this.props;
         const standings = await LeaderboardAPI.getInstance().gameStandings(this.props.game.id);
 
+        const playersWithGames = players.filter(player => {
+            const playerRecord = standings.records[player.id];
+            if (playerRecord == null) {
+                return false;
+            }
+
+            const { wins, losses, ties } = playerRecord.overallRecord;
+            return (wins > 0 || losses > 0 || ties > 0);
+        });
+
+        const banishedPlayers = this._identifyBanishedPlayers(standings, playersWithGames);
+
         this.setState({
+            banishedPlayers,
+            playersWithGames,
             standings,
         });
+    }
+
+    private _identifyBanishedPlayers(standings: GameStandings, players: Array<Player>): Set<number> {
+        return new Set(players.filter(player => isBanished(standings.records[player.id])).map(player => player.id));
     }
 
     private _startRefreshLoop() {

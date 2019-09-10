@@ -2,13 +2,6 @@ import './env';
 
 import express, { NextFunction, Request, Response } from 'express';
 import Octo from './common/Octo';
-import Games from './db/games';
-import Players from './db/players';
-import Plays from './db/plays';
-
-Games.getInstance().refreshData();
-Players.getInstance().refreshData();
-Plays.getInstance().refreshData();
 
 // tslint:disable:no-console
 
@@ -104,3 +97,11 @@ if (process.env.SSL_ENABLED) {
         console.log(`myLeaderboard API listening on port ${port}`);
     });
 }
+
+import Games from './db/games';
+import Players from './db/players';
+import Plays from './db/plays';
+
+Games.getInstance().refreshData();
+Players.getInstance().refreshData();
+Plays.getInstance().refreshData();
