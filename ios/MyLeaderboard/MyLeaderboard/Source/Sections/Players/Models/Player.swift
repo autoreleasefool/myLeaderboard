@@ -39,6 +39,8 @@ extension Player {
 		set {
 			if let data = try? JSONEncoder().encode(newValue) {
 				UserDefaults.standard.set(data, forKey: Player.preferredPlayerKey)
+			} else if newValue == nil {
+				UserDefaults.standard.removeObject(forKey: Player.preferredPlayerKey)
 			}
 		}
 	}

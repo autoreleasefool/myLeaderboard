@@ -78,8 +78,8 @@ class SettingsViewController: FTDViewController {
 		}
 
 		let playerPicker = PlayerPickerViewController(api: api, multiSelect: false, initiallySelected: initiallySelected) { [weak self] selectedPlayers in
-			guard let selectedPlayer = selectedPlayers.first else { return }
-			self?.viewModel.postViewAction(.selectPreferredPlayer(selectedPlayer))
+			self?.viewModel.postViewAction(.selectPreferredPlayer(selectedPlayers.first))
+			self?.render()
 		}
 		presentModal(playerPicker)
 	}

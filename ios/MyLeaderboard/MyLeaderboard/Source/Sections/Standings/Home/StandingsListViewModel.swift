@@ -16,15 +16,18 @@ enum StandingsListAction: BaseAction {
 	case openGameDetails(Game)
 	case openPlayerDetails(Player)
 	case openPlays(Game, [Player])
+	case showPreferredPlayerSelection
 }
 
 enum StandingsListViewAction: BaseViewAction {
 	case initialize
+	case willAppear
 	case reload
 	case recordPlay
 	case selectGame(Game)
 	case selectPlayer(Player)
 	case showPlays(Game, [Player])
+	case selectPreferredPlayer(Player?)
 }
 
 class StandingsListViewModel: ViewModel {
@@ -45,6 +48,12 @@ class StandingsListViewModel: ViewModel {
 		}
 	}
 
+	private var hasCheckedForPreferredPlayer: Bool = false
+
+	private var shouldCheckForPreferredPlayer: Bool {
+		return !hasCheckedForPreferredPlayer && Player.preferred == nil
+	}
+
 	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
 		self.api = api
 		self.handleAction = handleAction
@@ -54,6 +63,11 @@ class StandingsListViewModel: ViewModel {
 		switch viewAction {
 		case .initialize:
 			loadData()
+		case .willAppear:
+			if shouldCheckForPreferredPlayer {
+				hasCheckedForPreferredPlayer = true
+				handleAction(.showPreferredPlayerSelection)
+			}
 		case .reload:
 			reloadData()
 		case .recordPlay:
@@ -64,6 +78,8 @@ class StandingsListViewModel: ViewModel {
 			handleAction(.openPlayerDetails(player))
 		case .showPlays(let game, let players):
 			handleAction(.openPlays(game, players))
+		case .selectPreferredPlayer(let player):
+			Player.preferred = player
 		}
 	}
 

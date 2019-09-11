@@ -19,7 +19,7 @@ enum SettingsAction: BaseAction {
 enum SettingsViewAction: BaseViewAction {
 	case initialize
 	case editPlayer
-	case selectPreferredPlayer(Player)
+	case selectPreferredPlayer(Player?)
 	case viewSource
 	case viewLicenses
 	case viewContributors

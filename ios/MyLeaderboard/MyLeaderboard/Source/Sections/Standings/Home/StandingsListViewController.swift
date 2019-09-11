@@ -44,6 +44,8 @@ class StandingsListViewController: FTDViewController {
 				self.showPlayerDetails(for: player)
 			case .openPlays(let game, let players):
 				self.openPlays(game: game, players: players)
+			case .showPreferredPlayerSelection:
+				self.openPreferredPlayerSelection()
 			}
 		}
 
@@ -54,6 +56,11 @@ class StandingsListViewController: FTDViewController {
 
 		viewModel.postViewAction(.initialize)
 		render()
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		viewModel.postViewAction(.willAppear)
 	}
 
 	private func render() {
@@ -81,6 +88,24 @@ class StandingsListViewController: FTDViewController {
 
 	private func openPlays(game: Game, players: [Player]) {
 		show(PlaysListViewController(api: api, games: [game], players: players), sender: self)
+	}
+
+	private func openPreferredPlayerSelection() {
+		let alert = UIAlertController(
+			title: "Select a preferred player?",
+			message: "You haven't selected a preferred player yet. Choosing a preferred player makes it easier to record games by automatically adding them (yourself) to games you record! Pick a preferred player now?",
+			preferredStyle: .alert
+		)
+
+		alert.addAction(UIAlertAction(title: "Pick", style: .default) { [weak self] _ in
+			guard let self = self else { return }
+			self.presentModal(PlayerPickerViewController(api: self.api, multiSelect: false, initiallySelected: []) { [weak self] selected in
+				self?.viewModel.postViewAction(.selectPreferredPlayer(selected.first))
+			})
+		})
+		alert.addAction(UIAlertAction(title: "Later", style: .cancel))
+
+		present(alert, animated: true)
 	}
 
 	@objc private func openSettings() {
