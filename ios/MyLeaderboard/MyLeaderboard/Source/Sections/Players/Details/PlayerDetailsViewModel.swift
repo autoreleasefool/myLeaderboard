@@ -13,7 +13,7 @@ enum PlayerDetailsAction: BaseAction {
 	case apiError(LeaderboardAPIError)
 	case gameSelected(Game)
 	case playerSelected(Player)
-	case openAllPlays
+	case showPlays([Game], [Player])
 }
 
 enum PlayerDetailsViewAction: BaseViewAction {
@@ -21,7 +21,7 @@ enum PlayerDetailsViewAction: BaseViewAction {
 	case reload
 	case selectGame(Game)
 	case selectPlayer(Player)
-	case showAllPlays
+	case showPlays([Game], [Player])
 }
 
 class PlayerDetailsViewModel: ViewModel {
@@ -66,8 +66,8 @@ class PlayerDetailsViewModel: ViewModel {
 			handleAction(.gameSelected(game))
 		case .selectPlayer(let player):
 			handleAction(.playerSelected(player))
-		case .showAllPlays:
-			handleAction(.openAllPlays)
+		case .showPlays(let games, let players):
+			handleAction(.showPlays(games, players))
 		}
 	}
 

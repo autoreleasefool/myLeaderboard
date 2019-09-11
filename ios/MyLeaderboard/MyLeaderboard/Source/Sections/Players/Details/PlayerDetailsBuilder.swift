@@ -11,7 +11,7 @@ import FunctionalTableData
 protocol PlayerDetailsActionable: AnyObject {
 	func selectedGame(game: Game)
 	func selectedPlayer(player: Player)
-	func showAllPlays()
+	func showPlays(games: [Game], players: [Player])
 }
 
 struct PlayerDetailsBuilder {
@@ -97,7 +97,7 @@ struct PlayerDetailsBuilder {
 
 		records.keys.sorted().forEach {
 			if let optionalPlayerStandings = records[$0], let playerStandings = optionalPlayerStandings {
-				spreadsheetCells.append(SpreadsheetCells.gameRow(game: $0, players: players, record: playerStandings, actionable: actionable))
+				spreadsheetCells.append(SpreadsheetCells.gameRow(game: $0, player: player, players: players, record: playerStandings, actionable: actionable))
 			}
 		}
 
@@ -115,7 +115,7 @@ struct PlayerDetailsBuilder {
 	private static func playsSection(games: [Game], player: Player, players: [Player], plays: [GamePlay], actionable: PlayerDetailsActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.sectionHeader(key: "MostRecentPlays", title: "Most Recent Plays", action: "View All") { [weak actionable] in
-				actionable?.showAllPlays()
+				actionable?.showPlays(games: [], players: [])
 			}
 		]
 
@@ -193,7 +193,7 @@ struct PlayerDetailsBuilder {
 
 			return PlayerGamePlayCell(
 				key: "Play-\(play.id)",
-				state: PlayerGamePlayState(game: game, player: player, opponent: opponent, winners: play.winners, playerScore: playerScore, opponentScore: opponentScore),
+				state: PlayerGamePlayState(game: game, playerID: player.id, opponent: opponent, winners: play.winners, playerScore: playerScore, opponentScore: opponentScore),
 				cellUpdater: PlayerGamePlayState.updateView
 			)
 		}
@@ -222,15 +222,19 @@ struct PlayerDetailsBuilder {
 			return headerRow
 		}
 
-		static func gameRow(game: Game, players: [Player], record: PlayerStandings, actionable: PlayerDetailsActionable) -> [GridCellConfig] {
+		static func gameRow(game: Game, player: Player, players: [Player], record: PlayerStandings, actionable: PlayerDetailsActionable) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
 				gameCell(for: game, actionable: actionable),
-				textGridCell(key: "Total", text: record.overallRecord.formatted, backgroundColor: record.overallRecord.backgroundColor),
+				textGridCell(key: "Total", text: record.overallRecord.formatted, backgroundColor: record.overallRecord.backgroundColor) { [weak actionable] in
+					actionable?.showPlays(games: [game], players: [])
+				},
 			]
 
 			players.forEach { opponent in
 				if let recordAgainstOpponent = record.records[opponent.id] {
-					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: recordAgainstOpponent.formatted, backgroundColor: recordAgainstOpponent.backgroundColor))
+					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: recordAgainstOpponent.formatted, backgroundColor: recordAgainstOpponent.backgroundColor) { [weak actionable] in
+						actionable?.showPlays(games: [game], players: [player, opponent])
+					})
 				} else {
 					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil).formatted))
 				}
@@ -239,16 +243,21 @@ struct PlayerDetailsBuilder {
 			return row
 		}
 
-		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil) -> GridCellConfig {
+		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil, onAction: (() -> Void)? = nil) -> GridCellConfig {
 			return Spreadsheet.TextGridCellConfig(
 				key: key,
-				actions: CellActions(),
+				style: CellStyle(selectionColor: .primaryExtraLight),
+				actions: CellActions(
+					canSelectAction: { callback in
+						callback(onAction != nil)
+					},
+					selectionAction: { _ in
+						onAction?()
+						return .deselected
+					}
+				),
 				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
-				backgroundColor: backgroundColor,
-				topBorder: nil,
-				bottomBorder: nil,
-				leftBorder: nil,
-				rightBorder: nil
+				backgroundColor: backgroundColor
 			)
 		}
 
@@ -266,12 +275,7 @@ struct PlayerDetailsBuilder {
 					actionable?.selectedPlayer(player: player)
 					return .deselected
 				}),
-				state: ImageState(url: avatarURL, width: PlayerDetailsBuilder.avatarImageSize, height: PlayerDetailsBuilder.avatarImageSize, rounded: true),
-				backgroundColor: nil,
-				topBorder: nil,
-				bottomBorder: nil,
-				leftBorder: nil,
-				rightBorder: nil
+				state: ImageState(url: avatarURL, width: PlayerDetailsBuilder.avatarImageSize, height: PlayerDetailsBuilder.avatarImageSize, rounded: true)
 			)
 		}
 
@@ -289,12 +293,7 @@ struct PlayerDetailsBuilder {
 					actionable?.selectedGame(game: game)
 					return .deselected
 				}),
-				state: ImageState(url: imageURL, width: PlayerDetailsBuilder.avatarImageSize, height: PlayerDetailsBuilder.avatarImageSize, rounded: false),
-				backgroundColor: nil,
-				topBorder: nil,
-				bottomBorder: nil,
-				leftBorder: nil,
-				rightBorder: nil
+				state: ImageState(url: imageURL, width: PlayerDetailsBuilder.avatarImageSize, height: PlayerDetailsBuilder.avatarImageSize, rounded: false)
 			)
 		}
 	}
