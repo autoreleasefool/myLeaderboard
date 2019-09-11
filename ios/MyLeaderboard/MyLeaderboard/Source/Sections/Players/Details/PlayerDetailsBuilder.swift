@@ -115,7 +115,7 @@ struct PlayerDetailsBuilder {
 	private static func playsSection(games: [Game], player: Player, players: [Player], plays: [GamePlay], actionable: PlayerDetailsActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.sectionHeader(key: "MostRecentPlays", title: "Most Recent Plays", action: "View All") { [weak actionable] in
-				actionable?.showPlays(games: [], players: [])
+				actionable?.showPlays(games: [], players: [player])
 			}
 		]
 
