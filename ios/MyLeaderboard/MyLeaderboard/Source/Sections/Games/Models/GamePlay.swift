@@ -35,6 +35,17 @@ struct GamePlay: Identifiable, Codable {
 
 extension GamePlay: Comparable {
 	static func < (lhs: GamePlay, rhs: GamePlay) -> Bool {
+		switch (lhs.playedOnDate, rhs.playedOnDate) {
+		case (.some(let lhsDate), .some(let rhsDate)):
+			if lhsDate != rhsDate {
+				return lhsDate < rhsDate
+			}
+		case (nil, _):
+			return false
+		case (_, nil):
+			return true
+		}
+
 		return lhs.id < rhs.id
 	}
 }
