@@ -27,8 +27,8 @@ class GameDetailsViewController: FTDViewController {
 				self?.showPlayerDetails(for: player)
 			case .apiError(let error):
 				self?.presentError(error)
-			case .openAllPlays:
-				self?.openAllPlays()
+			case .openPlays(let players):
+				self?.openPlays(players: players)
 			}
 		}
 
@@ -55,8 +55,8 @@ class GameDetailsViewController: FTDViewController {
 		show(PlayerDetailsViewController(api: api, player: player), sender: self)
 	}
 
-	private func openAllPlays() {
-		show(PlaysListViewController(api: api, game: viewModel.game), sender: self)
+	private func openPlays(players: [Player]) {
+		show(PlaysListViewController(api: api, games: [viewModel.game], players: players), sender: self)
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {
@@ -80,7 +80,7 @@ extension GameDetailsViewController: GameDetailsActionable {
 		viewModel.postViewAction(.selectPlayer(player))
 	}
 
-	func showAllPlays() {
-		viewModel.postViewAction(.showAllPlays)
+	func showPlays(players: [Player]) {
+		viewModel.postViewAction(.showPlays(players))
 	}
 }

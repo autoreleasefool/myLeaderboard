@@ -10,7 +10,7 @@ import FunctionalTableData
 
 protocol GameDetailsActionable: AnyObject {
 	func selectedPlayer(player: Player)
-	func showAllPlays()
+	func showPlays(players: [Player])
 }
 
 struct GameDetailsBuilder {
@@ -49,7 +49,7 @@ struct GameDetailsBuilder {
 	static func playsSection(players: [Player], plays: [GamePlay], actionable: GameDetailsActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.sectionHeader(key: "MostRecent", title: "Most Recent Plays", action: "View All") { [weak actionable] in
-				actionable?.showAllPlays()
+				actionable?.showPlays(players: [])
 			},
 		]
 
@@ -166,35 +166,44 @@ struct GameDetailsBuilder {
 		static func spreadsheetRow(player: Player, opponents: [Player], record: PlayerRecord, actionable: GameDetailsActionable) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
 				playerCell(for: player, actionable: actionable),
-				textGridCell(key: "Total", text: record.overallRecord.formatted, backgroundColor: record.overallRecord.backgroundColor),
+				textGridCell(key: "Total", text: record.overallRecord.formatted, backgroundColor: record.overallRecord.backgroundColor) { [weak actionable] in
+					actionable?.showPlays(players: [player])
+				},
 			]
 
-			opponents.forEach {
-				guard player.id != $0.id else {
+			opponents.forEach { opponent in
+				guard player.id != opponent.id else {
 					row.append(textGridCell(key: "\(player.id)-\(player.id)", text: "—"))
 					return
 				}
 
-				if let recordAgainstOpponent = record.records[$0.id] {
-					row.append(textGridCell(key: "\(player.id)-\($0.id)", text: recordAgainstOpponent.formatted, backgroundColor: recordAgainstOpponent.backgroundColor))
+				if let recordAgainstOpponent = record.records[opponent.id] {
+					row.append(textGridCell(key: "\(player.id)-\(opponent.id)", text: recordAgainstOpponent.formatted, backgroundColor: recordAgainstOpponent.backgroundColor) { [weak actionable] in
+						actionable?.showPlays(players: [player, opponent])
+					})
 				} else {
-					row.append(textGridCell(key: "\(player.id)-\($0.id)", text: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil).formatted))
+					row.append(textGridCell(key: "\(player.id)-\(opponent.id)", text: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil).formatted))
 				}
 			}
 
 			return row
 		}
 
-		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil) -> GridCellConfig {
+		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil, onAction: (() -> Void)? = nil) -> GridCellConfig {
 			return Spreadsheet.TextGridCellConfig(
 				key: key,
-				actions: CellActions(),
+				style: CellStyle(selectionColor: .primaryExtraLight),
+				actions: CellActions(
+					canSelectAction: { callback in
+						callback(onAction != nil)
+					},
+					selectionAction: { _ in
+						onAction?()
+						return .deselected
+					}
+				),
 				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
-				backgroundColor: backgroundColor,
-				topBorder: nil,
-				bottomBorder: nil,
-				leftBorder: nil,
-				rightBorder: nil
+				backgroundColor: backgroundColor
 			)
 		}
 
@@ -212,12 +221,7 @@ struct GameDetailsBuilder {
 					actionable?.selectedPlayer(player: player)
 					return .deselected
 				}),
-				state: ImageState(url: avatarURL, width: GameDetailsBuilder.avatarImageSize, height: GameDetailsBuilder.avatarImageSize, rounded: true),
-				backgroundColor: nil,
-				topBorder: nil,
-				bottomBorder: nil,
-				leftBorder: nil,
-				rightBorder: nil
+				state: ImageState(url: avatarURL, width: GameDetailsBuilder.avatarImageSize, height: GameDetailsBuilder.avatarImageSize, rounded: true)
 			)
 		}
 	}
