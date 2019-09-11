@@ -28,6 +28,7 @@ extension Spreadsheet {
 		private typealias Cell = HostCell<UILabel, LabelState, LayoutMarginsTableItemLayout>
 
 		let key: String
+		let style: CellStyle?
 		let actions: CellActions
 		let state: LabelState
 		let backgroundColor: UIColor?
@@ -37,9 +38,22 @@ extension Spreadsheet {
 		let leftBorder: Spreadsheet.BorderConfig?
 		let rightBorder: Spreadsheet.BorderConfig?
 
+		init(key: String, style: CellStyle? = nil, actions: CellActions = CellActions(), state: LabelState, backgroundColor: UIColor? = nil, topBorder: Spreadsheet.BorderConfig? = nil, bottomBorder: Spreadsheet.BorderConfig? = nil, leftBorder: Spreadsheet.BorderConfig? = nil, rightBorder: Spreadsheet.BorderConfig? = nil) {
+			self.key = key
+			self.style = style
+			self.actions = actions
+			self.state = state
+			self.backgroundColor = backgroundColor
+			self.topBorder = topBorder
+			self.bottomBorder = bottomBorder
+			self.leftBorder = leftBorder
+			self.rightBorder = rightBorder
+		}
+
 		var view: CellConfigType {
 			return Cell(
 				key: key,
+				style: style,
 				actions: actions,
 				state: state,
 				cellUpdater: LabelState.updateView
@@ -49,6 +63,7 @@ extension Spreadsheet {
 		func isEqual(to other: GridCellConfig?) -> Bool {
 			guard let other = other as? TextGridCellConfig else { return false }
 			return key == other.key &&
+				style == other.style &&
 				state == other.state &&
 				backgroundColor == other.backgroundColor &&
 				topBorder == other.topBorder &&
@@ -62,6 +77,7 @@ extension Spreadsheet {
 		private typealias Cell = HostCell<ImageView, ImageState, LayoutMarginsTableItemLayout>
 
 		let key: String
+		let style: CellStyle?
 		let actions: CellActions
 		let state: ImageState
 		let backgroundColor: UIColor?
@@ -71,9 +87,22 @@ extension Spreadsheet {
 		let leftBorder: Spreadsheet.BorderConfig?
 		let rightBorder: Spreadsheet.BorderConfig?
 
+		init(key: String, style: CellStyle? = nil, actions: CellActions = CellActions(), state: ImageState, backgroundColor: UIColor? = nil, topBorder: Spreadsheet.BorderConfig? = nil, bottomBorder: Spreadsheet.BorderConfig? = nil, leftBorder: Spreadsheet.BorderConfig? = nil, rightBorder: Spreadsheet.BorderConfig? = nil) {
+			self.key = key
+			self.style = style
+			self.actions = actions
+			self.state = state
+			self.backgroundColor = backgroundColor
+			self.topBorder = topBorder
+			self.bottomBorder = bottomBorder
+			self.leftBorder = leftBorder
+			self.rightBorder = rightBorder
+		}
+
 		var view: CellConfigType {
 			return Cell(
 				key: key,
+				style: style,
 				actions: actions,
 				state: state,
 				cellUpdater: ImageState.updateImageView
@@ -83,6 +112,7 @@ extension Spreadsheet {
 		func isEqual(to other: GridCellConfig?) -> Bool {
 			guard let other = other as? ImageGridCellConfig else { return false }
 			return key == other.key &&
+				style == other.style &&
 				state == other.state &&
 				backgroundColor == other.backgroundColor &&
 				topBorder == other.topBorder &&
