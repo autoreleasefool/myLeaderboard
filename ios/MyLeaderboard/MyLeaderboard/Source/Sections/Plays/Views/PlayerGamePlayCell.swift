@@ -106,7 +106,7 @@ class PlayerGamePlayView: UIView {
 
 struct PlayerGamePlayState: ViewState {
 	let game: Game
-	let player: Player
+	let playerID: ID
 	let opponent: Player
 	let winners: [ID]
 	let playerScore: Int?
@@ -137,7 +137,7 @@ struct PlayerGamePlayState: ViewState {
 		if state.winners.count == 2 {
 			view.result.text = "T"
 			view.result.textColor = .warning
-		} else if state.winners.contains(state.player.id) {
+		} else if state.winners.contains(state.playerID) {
 			view.result.text = "W"
 			view.result.textColor = .success
 		} else {
