@@ -15,6 +15,7 @@ enum StandingsListAction: BaseAction {
 	case openRecordPlay
 	case openGameDetails(Game)
 	case openPlayerDetails(Player)
+	case openPlays(Game, [Player])
 }
 
 enum StandingsListViewAction: BaseViewAction {
@@ -23,6 +24,7 @@ enum StandingsListViewAction: BaseViewAction {
 	case recordPlay
 	case selectGame(Game)
 	case selectPlayer(Player)
+	case showPlays(Game, [Player])
 }
 
 class StandingsListViewModel: ViewModel {
@@ -60,6 +62,8 @@ class StandingsListViewModel: ViewModel {
 			handleAction(.openGameDetails(game))
 		case .selectPlayer(let player):
 			handleAction(.openPlayerDetails(player))
+		case .showPlays(let game, let players):
+			handleAction(.openPlays(game, players))
 		}
 	}
 

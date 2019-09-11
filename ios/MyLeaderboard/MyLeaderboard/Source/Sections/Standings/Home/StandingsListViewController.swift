@@ -42,6 +42,8 @@ class StandingsListViewController: FTDViewController {
 				self.showGameDetails(for: game)
 			case .openPlayerDetails(let player):
 				self.showPlayerDetails(for: player)
+			case .openPlays(let game, let players):
+				self.openPlays(game: game, players: players)
 			}
 		}
 
@@ -77,6 +79,10 @@ class StandingsListViewController: FTDViewController {
 		show(PlayerDetailsViewController(api: api, player: player), sender: self)
 	}
 
+	private func openPlays(game: Game, players: [Player]) {
+		show(PlaysListViewController(api: api, games: [game], players: players), sender: self)
+	}
+
 	@objc private func openSettings() {
 		presentModal(SettingsViewController(api: api))
 	}
@@ -104,5 +110,9 @@ extension StandingsListViewController: StandingsListActionable {
 
 	func selectedPlayer(player: Player) {
 		viewModel.postViewAction(.selectPlayer(player))
+	}
+
+	func showPlays(game: Game, players: [Player]) {
+		viewModel.postViewAction(.showPlays(game, players))
 	}
 }

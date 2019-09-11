@@ -11,6 +11,7 @@ import FunctionalTableData
 protocol StandingsListActionable: AnyObject {
 	func selectedPlayer(player: Player)
 	func selectedGame(game: Game)
+	func showPlays(game: Game, players: [Player])
 }
 
 struct StandingsListBuilder {
@@ -26,7 +27,7 @@ struct StandingsListBuilder {
 
 			var spreadsheetCells: [[GridCellConfig]] = []
 			if let optionalGameStandings = standings[game], let gameStandings = optionalGameStandings {
-				spreadsheetCells = standingsRows(from: gameStandings, players: players, actionable: actionable)
+				spreadsheetCells = standingsRows(game: game, standings: gameStandings, players: players, actionable: actionable)
 			}
 
 			var hasRecentPlays: Bool = false
@@ -62,24 +63,26 @@ struct StandingsListBuilder {
 		return sections
 	}
 
-	private static func standingsRows(from gameStandings: Standings, players: [Player], actionable: StandingsListActionable) -> [[GridCellConfig]] {
+	private static func standingsRows(game: Game, standings: Standings, players: [Player], actionable: StandingsListActionable) -> [[GridCellConfig]] {
 		var spreadsheetCells: [[GridCellConfig]] = []
-		let visiblePlayers = Players.visible(from: players, standings: gameStandings)
+		let visiblePlayers = Players.visible(from: players, standings: standings)
 
 		var headerRow: [GridCellConfig] = [
 			SpreadsheetCells.textGridCell(key: "Header", text: ""),
 			SpreadsheetCells.textGridCell(key: "Total", text: "Total"),
 		]
 		visiblePlayers.forEach {
-			headerRow.append(SpreadsheetCells.playerCell(for: $0, record: gameStandings.records[$0.id], actionable: actionable))
+			headerRow.append(SpreadsheetCells.playerCell(for: $0, record: standings.records[$0.id], actionable: actionable))
 		}
 		spreadsheetCells.append(headerRow)
 
 		visiblePlayers.forEach { player in
-			if let playerRecord = gameStandings.records[player.id] {
+			if let playerRecord = standings.records[player.id] {
 				var cells: [GridCellConfig] = [
-					SpreadsheetCells.playerCell(for: player, record: gameStandings.records[player.id], actionable: actionable),
-					SpreadsheetCells.textGridCell(key: "Total", text: playerRecord.overallRecord.formatted, backgroundColor: playerRecord.overallRecord.backgroundColor)
+					SpreadsheetCells.playerCell(for: player, record: standings.records[player.id], actionable: actionable),
+					SpreadsheetCells.textGridCell(key: "Total", text: playerRecord.overallRecord.formatted, backgroundColor: playerRecord.overallRecord.backgroundColor) { [weak actionable] in
+						actionable?.showPlays(game: game, players: [player])
+					}
 				]
 
 				visiblePlayers.forEach { opponent in
@@ -89,7 +92,9 @@ struct StandingsListBuilder {
 					}
 
 					if let recordAgainstOpponent = playerRecord.records[opponent.id] {
-						cells.append(SpreadsheetCells.textGridCell(key: "\(player.id)-\(opponent.id)", text: recordAgainstOpponent.formatted, backgroundColor: recordAgainstOpponent.backgroundColor))
+						cells.append(SpreadsheetCells.textGridCell(key: "\(player.id)-\(opponent.id)", text: recordAgainstOpponent.formatted, backgroundColor: recordAgainstOpponent.backgroundColor) { [weak actionable] in
+							actionable?.showPlays(game: game, players: [player, opponent])
+						})
 					} else {
 						cells.append(SpreadsheetCells.textGridCell(key: "\(player.id)-\(opponent.id)", text: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil).formatted))
 					}
@@ -235,16 +240,21 @@ struct StandingsListBuilder {
 	}
 
 	private struct SpreadsheetCells {
-		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil) -> GridCellConfig {
+		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil, onAction: (() -> Void)? = nil) -> GridCellConfig {
 			return Spreadsheet.TextGridCellConfig(
 				key: key,
-				actions: CellActions(),
+				style: CellStyle(selectionColor: .primaryExtraLight),
+				actions: CellActions(
+					canSelectAction: { callback in
+						callback(onAction != nil)
+					},
+					selectionAction: { _ in
+						onAction?()
+						return .deselected
+					}
+				),
 				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
-				backgroundColor: backgroundColor,
-				topBorder: nil,
-				bottomBorder: nil,
-				leftBorder: nil,
-				rightBorder: nil
+				backgroundColor: backgroundColor
 			)
 		}
 
@@ -257,12 +267,7 @@ struct StandingsListBuilder {
 					actionable?.selectedPlayer(player: player)
 					return .deselected
 				}),
-				state: Cells.playerAvatarState(for: player, opacity: opacity),
-				backgroundColor: nil,
-				topBorder: nil,
-				bottomBorder: nil,
-				leftBorder: nil,
-				rightBorder: nil
+				state: Cells.playerAvatarState(for: player, opacity: opacity)
 			)
 		}
 	}
