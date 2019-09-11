@@ -20,7 +20,7 @@ struct PlaysListBuilder {
 		return formatter
 	}()
 
-	static func sections(forPlayer player: Player, plays: [GamePlay], games: [Game], players: [Player], actionable: PlaysListActionable) -> [TableSection] {
+	static func sections(forPlayer playerID: ID, plays: [GamePlay], games: [Game], players: [Player], actionable: PlaysListActionable) -> [TableSection] {
 		var lastDatePlayed: Date?
 		var rows: [CellConfigType] = []
 		plays.forEach { play in
@@ -31,7 +31,7 @@ struct PlaysListBuilder {
 			let opponent: Player
 			var playerScore: Int?
 			var opponentScore: Int?
-			if firstPlayer == player {
+			if firstPlayer.id == playerID {
 				opponent = secondPlayer
 				if let scores = play.scores, scores.count >= 2 {
 					playerScore = scores[0]
@@ -52,16 +52,12 @@ struct PlaysListBuilder {
 
 			rows.append(PlayerGamePlayCell(
 				key: "Play-\(play.id)",
-				state: PlayerGamePlayState(game: game, player: player, opponent: opponent, winners: play.winners, playerScore: playerScore, opponentScore: opponentScore),
+				state: PlayerGamePlayState(game: game, playerID: playerID, opponent: opponent, winners: play.winners, playerScore: playerScore, opponentScore: opponentScore),
 				cellUpdater: PlayerGamePlayState.updateView
 			))
 		}
 
 		return [TableSection(key: "Plays", rows: rows)]
-	}
-
-	static func sections(forGame game: Game, plays: [GamePlay], players: [Player], actionable: PlaysListActionable) -> [TableSection] {
-		return sections(plays: plays, players: players, actionable: actionable)
 	}
 
 	static func sections(plays: [GamePlay], players: [Player], actionable: PlaysListActionable) -> [TableSection] {

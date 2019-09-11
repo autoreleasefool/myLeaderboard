@@ -24,8 +24,8 @@ class PlaysListViewModel: ViewModel {
 	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	let game: Game?
-	let player: Player?
+	let specifiedGameIDs: Set<ID>
+	let specifiedPlayerIDs: Set<ID>
 
 	private(set) var games: [Game] = [] {
 		didSet {
@@ -45,10 +45,10 @@ class PlaysListViewModel: ViewModel {
 		}
 	}
 
-	init(api: LeaderboardAPI, game: Game?, player: Player?, handleAction: @escaping ActionHandler) {
+	init(api: LeaderboardAPI, games: [Game] = [], players: [Player] = [], handleAction: @escaping ActionHandler) {
 		self.api = api
-		self.game = game
-		self.player = player
+		self.specifiedGameIDs = Set(games.map { $0.id })
+		self.specifiedPlayerIDs = Set(players.map { $0.id })
 		self.handleAction = handleAction
 	}
 
@@ -82,7 +82,7 @@ class PlaysListViewModel: ViewModel {
 			}
 		}
 
-		if player != nil {
+		if specifiedPlayerIDs.count == 1 {
 			api.games { [weak self] in
 				switch $0 {
 				case .failure(let error):
@@ -94,16 +94,17 @@ class PlaysListViewModel: ViewModel {
 		}
 
 		api.plays { [weak self] in
+			guard let self = self else { return }
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
+				self.handleAction(.apiError(error))
 			case .success(let plays):
-				self?.plays = plays.filter {
-					if let game = self?.game, $0.game != game.id {
+				self.plays = plays.filter {
+					if self.specifiedGameIDs.count > 0, self.specifiedGameIDs.contains($0.game) == false {
 						return false
 					}
 
-					if let player = self?.player, !$0.players.contains(player.id) {
+					if self.specifiedPlayerIDs.count > 0, self.specifiedPlayerIDs.intersection($0.players).count != self.specifiedPlayerIDs.count {
 						return false
 					}
 

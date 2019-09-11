@@ -14,12 +14,12 @@ class PlaysListViewController: FTDViewController {
 	private var api: LeaderboardAPI
 	private var viewModel: PlaysListViewModel!
 
-	init(api: LeaderboardAPI, game: Game? = nil, player: Player? = nil) {
+	init(api: LeaderboardAPI, games: [Game] = [], players: [Player] = []) {
 		self.api = api
 		super.init()
 		refreshable = true
 
-		viewModel = PlaysListViewModel(api: api, game: game, player: player) { [weak self] action in
+		viewModel = PlaysListViewModel(api: api, games: games, players: players) { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .dataChanged:
@@ -30,11 +30,17 @@ class PlaysListViewController: FTDViewController {
 			}
 		}
 
-		if let game = game, let player = player {
+		if games.count > 1, players.count > 1 {
+			self.title = "Filtered plays"
+		} else if games.count == 1 && players.count > 1, let game = games.first {
+			self.title = "Filtered \(game.name) Plays"
+		} else if players.count == 1 && games.count > 1, let player = players.first {
+			self.title = "Filtered \(player.displayName)'s Plays"
+		} else if let game = games.first, let player = players.first {
 			self.title = "\(player.displayName)'s \(game.name) Plays"
-		} else if let game = game {
+		} else if games.count == 1, let game = games.first {
 			self.title = "\(game.name) Plays"
-		} else if let player = player {
+		} else if players.count == 1, let player = players.first {
 			self.title = "\(player.displayName)'s Plays"
 		} else {
 			self.title = "All Plays"
@@ -53,10 +59,8 @@ class PlaysListViewController: FTDViewController {
 
 	private func render() {
 		let sections: [TableSection]
-		if let player = viewModel.player {
+		if viewModel.specifiedPlayerIDs.count == 1, let player = viewModel.specifiedPlayerIDs.first {
 			sections = PlaysListBuilder.sections(forPlayer: player, plays: viewModel.plays, games: viewModel.games, players: viewModel.players, actionable: self)
-		} else if let game = viewModel.game {
-			sections = PlaysListBuilder.sections(forGame: game, plays: viewModel.plays, players: viewModel.players, actionable: self)
 		} else {
 			sections = PlaysListBuilder.sections(plays: viewModel.plays, players: viewModel.players, actionable: self)
 		}
