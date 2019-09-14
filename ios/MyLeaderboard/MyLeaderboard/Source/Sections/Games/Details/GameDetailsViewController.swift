@@ -46,6 +46,11 @@ class GameDetailsViewController: FTDViewController {
 		render()
 	}
 
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		spreadsheetBuilder.interfaceSize = traitCollection.horizontalSizeClass
+		render()
+	}
+
 	private func render() {
 		let sections = GameDetailsBuilder.sections(game: viewModel.game, plays: viewModel.plays, players: viewModel.players, standings: viewModel.standings, builder: spreadsheetBuilder, actionable: self)
 		tableData.renderAndDiff(sections)

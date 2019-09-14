@@ -14,6 +14,7 @@ class SpreadsheetBuilder {
 
 	private var configs: [String: Spreadsheet.Config] = [:]
 	private var offsets: [String: CGPoint] = [:]
+	public var interfaceSize: UIUserInterfaceSizeClass = .unspecified
 
 	init(tableData: FunctionalTableData) {
 		self.tableData = tableData
@@ -25,28 +26,47 @@ class SpreadsheetBuilder {
 			offsets[key] = .zero
 		}
 
+		let padRows: Bool
+		switch interfaceSize {
+		case .regular: padRows = true
+		case .compact, .unspecified: padRows = false
+		@unknown default: padRows = false
+		}
+
 		let rows: [CellConfigType] = config.cells.enumerated().map { index, row in
 			let border = rowCellBorderConfig(for: index, totalRows: config.cells.count, from: config.border)
-
-			return Spreadsheet.RowCell(
-				key: "\(key)-row-\(index)",
-				actions: CellActions(
-					visibilityAction: { [weak self] cell, visibility in
-						self?.didUpdateVisibility(key: key, cell: cell, isVisible: visibility)
-					}
-				),
-				state: Spreadsheet.RowCellState(
-					spreadsheetKey: key,
-					config: config.rows[index] ?? Spreadsheet.CommonRowConfig(),
-					columns: config.columns,
-					cells: row,
-					border: border,
-					didScroll: { [weak self] offset in
-						self?.didScroll(key: key, offset: offset)
-					}
-				),
-				cellUpdater: Spreadsheet.RowCellState.updateView
+			let rowKey = "\(key)-row-\(index)"
+			let rowActions = CellActions(
+				visibilityAction: { [weak self] cell, visibility in
+					self?.didUpdateVisibility(key: key, cell: cell, isVisible: visibility)
+				}
 			)
+			let rowState = Spreadsheet.RowCellState(
+				spreadsheetKey: key,
+				config: config.rows[index] ?? Spreadsheet.CommonRowConfig(),
+				columns: config.columns,
+				cells: row,
+				border: border,
+				didScroll: { [weak self] offset in
+					self?.didScroll(key: key, offset: offset)
+				}
+			)
+
+			if padRows {
+				return Spreadsheet.RowCellPadded(
+					key: rowKey,
+					actions: rowActions,
+					state: rowState,
+					cellUpdater: Spreadsheet.RowCellState.updateView
+				)
+			} else {
+				return Spreadsheet.RowCell(
+					key: rowKey,
+					actions: rowActions,
+					state: rowState,
+					cellUpdater: Spreadsheet.RowCellState.updateView
+				)
+			}
 		}
 
 		return TableSection(key: key, rows: rows)

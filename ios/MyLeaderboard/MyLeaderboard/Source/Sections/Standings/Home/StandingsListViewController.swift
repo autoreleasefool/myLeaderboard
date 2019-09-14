@@ -58,6 +58,11 @@ class StandingsListViewController: FTDViewController {
 		render()
 	}
 
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		spreadsheetBuilder.interfaceSize = traitCollection.horizontalSizeClass
+		render()
+	}
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.postViewAction(.willAppear)

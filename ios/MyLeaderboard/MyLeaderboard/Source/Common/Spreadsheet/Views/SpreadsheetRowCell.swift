@@ -10,7 +10,8 @@ import UIKit
 import FunctionalTableData
 
 extension Spreadsheet {
-	typealias RowCell = HostCell<RowCellView, RowCellState, Layout<EdgeLayout.Top, MarginsLayout.Leading, EdgeLayout.Bottom, MarginsLayout.Trailing>>
+	typealias RowCell = HostCell<RowCellView, RowCellState, EdgeBasedTableItemLayout>
+	typealias RowCellPadded = HostCell<RowCellView, RowCellState, Layout<EdgeLayout.Top, MarginsLayout.Leading, EdgeLayout.Bottom, MarginsLayout.Trailing>>
 
 	class RowCellView: UIView {
 		var spreadsheetKey: String?
