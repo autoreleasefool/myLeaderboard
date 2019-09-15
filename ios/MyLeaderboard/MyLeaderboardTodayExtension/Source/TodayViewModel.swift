@@ -29,8 +29,12 @@ class TodayViewModel: ViewModel {
 	private(set) var preferredPlayer: Player?
 	private(set) var players: [Player] = [] {
 		didSet {
-			if visiblePlayers.count <= firstPlayerIndex {
-				firstPlayerIndex = visiblePlayers.count - 1
+			let visible = visiblePlayers
+			if visible.count <= firstPlayerIndex {
+				firstPlayerIndex = visible.count - 1
+			}
+			if firstPlayerIndex < 0 {
+				firstPlayerIndex = 0
 			}
 		}
 	}
@@ -60,14 +64,14 @@ class TodayViewModel: ViewModel {
 			fetchPlayerData(completionHandler: completionHandler)
 		case .nextPlayer:
 			firstPlayerIndex += 1
-			if firstPlayerIndex == visiblePlayers.count - 2 {
+			if firstPlayerIndex == visiblePlayers.count - 1 {
 				firstPlayerIndex = 0
 			}
 			handleAction(.dataChanged(nil))
 		case .previousPlayer:
 			firstPlayerIndex -= 1
 			if firstPlayerIndex == -1 {
-				firstPlayerIndex = visiblePlayers.count - 3
+				firstPlayerIndex = visiblePlayers.count - 2
 			}
 			if firstPlayerIndex < 0 {
 				firstPlayerIndex = 0
