@@ -8,16 +8,16 @@
 
 import UIKit
 
-protocol RowConfig {
+protocol SpreadsheetRowConfig {
 	var rowHeight: CGFloat { get }
 	var topBorder: Spreadsheet.BorderConfig? { get }
 	var bottomBorder: Spreadsheet.BorderConfig? { get }
 
-	func isEqual(to other: RowConfig?) -> Bool
+	func isEqual(to other: SpreadsheetRowConfig?) -> Bool
 }
 
 extension Spreadsheet {
-	typealias RowConfig = MyLeaderboard.RowConfig
+	typealias RowConfig = SpreadsheetRowConfig
 
 	struct HeaderRowConfig: RowConfig {
 		let header: GridCellConfig?

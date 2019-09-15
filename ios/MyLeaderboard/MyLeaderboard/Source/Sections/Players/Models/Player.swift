@@ -29,7 +29,7 @@ extension Player {
 
 	static var preferred: Player? {
 		get {
-			if let data = UserDefaults.standard.value(forKey: Player.preferredPlayerKey) as? Data,
+			if let data = UserDefaults.group.value(forKey: Player.preferredPlayerKey) as? Data,
 				let player = try? JSONDecoder().decode(Player.self, from: data) {
 				return player
 			}
@@ -38,9 +38,9 @@ extension Player {
 		}
 		set {
 			if let data = try? JSONEncoder().encode(newValue) {
-				UserDefaults.standard.set(data, forKey: Player.preferredPlayerKey)
+				UserDefaults.group.set(data, forKey: Player.preferredPlayerKey)
 			} else if newValue == nil {
-				UserDefaults.standard.removeObject(forKey: Player.preferredPlayerKey)
+				UserDefaults.group.removeObject(forKey: Player.preferredPlayerKey)
 			}
 		}
 	}
