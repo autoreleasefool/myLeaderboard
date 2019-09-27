@@ -60,3 +60,30 @@ class RootTabBarController: UITabBarController {
 		}
 	}
 }
+
+extension RootTabBarController: RouteHandler {
+	func openRoute(_ route: Route) {
+		let controller: UIViewController?
+
+		switch route {
+		case .gameDetails:
+			let gameTabItem = tabItems.first { $0.title == "Games" }
+			self.selectedViewController = gameTabItem?.controller
+			controller = gameTabItem?.controller.children.first
+		case .playerDetails:
+			let playerTabItem = tabItems.first { $0.title == "Players" }
+			self.selectedViewController = playerTabItem?.controller
+			controller = playerTabItem?.controller.children.first
+		case .standings:
+			let standingsTabItem = tabItems.first { $0.title == "Standin gs" }
+			self.selectedViewController = standingsTabItem?.controller
+			controller = standingsTabItem?.controller.children.first
+		}
+
+		DispatchQueue.main.async {
+			if let routeHandler = controller as? RouteHandler {
+				routeHandler.openRoute(route)
+			}
+		}
+	}
+}

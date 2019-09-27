@@ -13,6 +13,7 @@ enum LeaderboardAPIError: LocalizedError {
 	case invalidResponse
 	case invalidHTTPResponse(Int)
 	case invalidData
+	case missingData
 
 	var errorDescription: String? {
 		switch self {
@@ -26,6 +27,8 @@ enum LeaderboardAPIError: LocalizedError {
 			} else {
 				return "Unexpected HTTP error: \(code)"
 			}
+		case .missingData:
+			return "Could not find data."
 		}
 	}
 }

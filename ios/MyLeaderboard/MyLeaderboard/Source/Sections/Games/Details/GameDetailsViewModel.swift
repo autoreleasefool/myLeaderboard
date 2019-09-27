@@ -9,6 +9,7 @@
 import Foundation
 
 enum GameDetailsAction: BaseAction {
+	case gameLoaded(Game)
 	case dataChanged
 	case playerSelected(Player)
 	case apiError(LeaderboardAPIError)
@@ -28,7 +29,14 @@ class GameDetailsViewModel: ViewModel {
 	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	private(set) var game: Game
+	private var gameID: ID?
+	private(set) var game: Game? {
+		didSet {
+			if let game = self.game {
+				handleAction(.gameLoaded(game))
+			}
+		}
+	}
 
 	private(set) var plays: [GamePlay] = [] {
 		didSet {
@@ -48,8 +56,16 @@ class GameDetailsViewModel: ViewModel {
 		}
 	}
 
+	init(api: LeaderboardAPI, id: ID, handleAction: @escaping ActionHandler) {
+		self.api = api
+		self.gameID = id
+		self.game = nil
+		self.handleAction = handleAction
+	}
+
 	init(api: LeaderboardAPI, game: Game, handleAction: @escaping ActionHandler) {
 		self.api = api
+		self.gameID = game.id
 		self.game = game
 		self.handleAction = handleAction
 	}
@@ -78,13 +94,22 @@ class GameDetailsViewModel: ViewModel {
 		}
 	}
 
-	private func loadData() {
+	private func loadData(retry: Bool = true) {
+		guard let game = game else {
+			if retry {
+				loadGame()
+			} else {
+				self.handleAction(.apiError(.missingData))
+			}
+			return
+		}
+
 		api.plays { [weak self] result in
 			switch result {
 			case .failure(let error):
 				self?.handleAction(.apiError(error))
 			case .success(let plays):
-				self?.plays = plays.filter { $0.game == self?.game.id }.sorted().reversed()
+				self?.plays = plays.filter { $0.game == game.id }.sorted().reversed()
 			}
 		}
 
@@ -103,6 +128,18 @@ class GameDetailsViewModel: ViewModel {
 				self?.handleAction(.apiError(error))
 			case .success(let players):
 				self?.players = players.sorted()
+			}
+		}
+	}
+
+	private func loadGame() {
+		api.games { [weak self] result in
+			switch result {
+			case .failure(let error):
+				self?.handleAction(.apiError(error))
+			case .success(let games):
+				self?.game = games.first { $0.id == self?.gameID }
+				self?.loadData(retry: false)
 			}
 		}
 	}

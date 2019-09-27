@@ -88,3 +88,13 @@ extension GameListViewController: GameListActionable {
 		viewModel.postViewAction(.selectGame(game))
 	}
 }
+
+extension GameListViewController: RouteHandler {
+	func openRoute(_ route: Route) {
+		guard case .gameDetails(let gameID) = route else {
+			return
+		}
+
+		show(GameDetailsViewController(api: api, gameID: gameID), sender: self)
+	}
+}

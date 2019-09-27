@@ -12,12 +12,16 @@ enum TodayAction: BaseAction {
 	case noPreferredPlayer(TodayCompletionHandler?)
 	case dataChanged(TodayCompletionHandler?)
 	case apiError(LeaderboardAPIError, TodayCompletionHandler)
+	case presentRoute(Route)
 }
 
 enum TodayViewAction: BaseViewAction {
 	case performUpdate(TodayCompletionHandler)
 	case nextPlayer
 	case previousPlayer
+	case openPlayerDetails(Player)
+	case openGameDetails(Game)
+	case openStandings
 }
 
 class TodayViewModel: ViewModel {
@@ -77,6 +81,12 @@ class TodayViewModel: ViewModel {
 				firstPlayerIndex = 0
 			}
 			handleAction(.dataChanged(nil))
+		case .openGameDetails(let game):
+			handleAction(.presentRoute(.gameDetails(game.id)))
+		case .openPlayerDetails(let player):
+			handleAction(.presentRoute(.playerDetails(player.id)))
+		case .openStandings:
+			handleAction(.presentRoute(.standings))
 		}
 	}
 

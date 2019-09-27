@@ -48,6 +48,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 			case .apiError(let error, let completionHandler):
 				completionHandler(.failed)
 				self?.render(error: error)
+			case .presentRoute(let route):
+				self?.open(route: route)
 			}
 		}
 
@@ -95,19 +97,24 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 			return CGSize(width: 0, height: 96)
 		}
 	}
+
+	private func open(route: Route) {
+		guard let extensionContext = extensionContext else { return }
+		extensionContext.open(route.url)
+	}
 }
 
 extension TodayViewController: TodayActionable {
 	func openStandings() {
-//		guard let extensionContext = extensionContext else { return }
+		viewModel.postViewAction(.openStandings)
 	}
 
 	func openPlayerDetails(player: Player) {
-//		guard let extensionContext = extensionContext else { return }
+		viewModel.postViewAction(.openPlayerDetails(player))
 	}
 
 	func openGameDetails(game: Game) {
-//		guard let extensionContext = extensionContext else { return }
+		viewModel.postViewAction(.openGameDetails(game))
 	}
 
 	func nextPlayer() {

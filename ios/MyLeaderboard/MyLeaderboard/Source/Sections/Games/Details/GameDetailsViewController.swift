@@ -14,13 +14,33 @@ class GameDetailsViewController: FTDViewController {
 	private var viewModel: GameDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
+	init(api: LeaderboardAPI, gameID: ID) {
+		self.api = api
+		super.init()
+
+		setup(withID: gameID)
+	}
+
 	init(api: LeaderboardAPI, game: Game) {
 		self.api = api
 		super.init()
 
+		setup(withGame: game)
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	private func setup(withID id: ID? = nil, withGame game: Game? = nil) {
 		refreshable = true
-		viewModel = GameDetailsViewModel(api: api, game: game) { [weak self] action in
+		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
+		self.title = game?.name
+
+		let handleAction = { [weak self] (action: GameDetailsAction) in
 			switch action {
+			case .gameLoaded(let game):
+				self?.title = game.name
 			case .dataChanged:
 				self?.render()
 			case .playerSelected(let player):
@@ -32,12 +52,13 @@ class GameDetailsViewController: FTDViewController {
 			}
 		}
 
-		self.title = game.name
-		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
-	}
-
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+		if let game = game {
+			viewModel = GameDetailsViewModel(api: api, game: game, handleAction: handleAction)
+		} else if let id = id {
+			viewModel = GameDetailsViewModel(api: api, id: id, handleAction: handleAction)
+		} else {
+			fatalError("ID or Game must be provided")
+		}
 	}
 
 	override func viewDidLoad() {
@@ -47,12 +68,18 @@ class GameDetailsViewController: FTDViewController {
 	}
 
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		guard let spreadsheetBuilder = spreadsheetBuilder else { return }
 		spreadsheetBuilder.interfaceSize = traitCollection.horizontalSizeClass
 		render()
 	}
 
 	private func render() {
-		let sections = GameDetailsBuilder.sections(game: viewModel.game, plays: viewModel.plays, players: viewModel.players, standings: viewModel.standings, builder: spreadsheetBuilder, actionable: self)
+		guard let game = viewModel.game else {
+			tableData.renderAndDiff([])
+			return
+		}
+
+		let sections = GameDetailsBuilder.sections(game: game, plays: viewModel.plays, players: viewModel.players, standings: viewModel.standings, builder: spreadsheetBuilder, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -61,7 +88,13 @@ class GameDetailsViewController: FTDViewController {
 	}
 
 	private func openPlays(players: [Player]) {
-		show(PlaysListViewController(api: api, games: [viewModel.game], players: players), sender: self)
+		let games: [Game]
+		if let game = viewModel.game {
+			games = [game]
+		} else {
+			games = []
+		}
+		show(PlaysListViewController(api: api, games: games, players: players), sender: self)
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {

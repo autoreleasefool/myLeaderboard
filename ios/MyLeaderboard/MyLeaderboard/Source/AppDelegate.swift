@@ -46,4 +46,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
+
+	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+		guard let route = Route(from: url),
+			let routeHandler = window?.rootViewController as? RouteHandler else { return false }
+
+		routeHandler.openRoute(route)
+		return true
+	}
 }
