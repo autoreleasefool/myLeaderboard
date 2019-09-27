@@ -87,3 +87,13 @@ extension PlayerListViewController: PlayerListActionable {
 		viewModel.postViewAction(.selectPlayer(player))
 	}
 }
+
+extension PlayerListViewController: RouteHandler {
+	func openRoute(_ route: Route) {
+		guard case .playerDetails(let playerID) = route else {
+			return
+		}
+
+		show(PlayerDetailsViewController(api: api, playerID: playerID), sender: self)
+	}
+}

@@ -8,33 +8,49 @@
 
 import UIKit
 
+enum TabType {
+	case standings, games, players
+
+	var title: String {
+		switch self {
+		case .standings: return "Standings"
+		case .games: return "Games"
+		case .players: return "Players"
+		}
+	}
+
+	private var imageName: String {
+		return "Tabs/\(self.title)"
+	}
+
+	var image: UIImage {
+		return UIImage(named: self.imageName)!
+	}
+
+	var selectedImage: UIImage {
+		return UIImage(named: "\(self.imageName)-selected")!
+	}
+}
+
 struct TabItem {
-	let title: String
+	let type: TabType
 	let controller: UIViewController
-	let image: UIImage
-	let selectedImage: UIImage
 }
 
 class RootTabBarController: UITabBarController {
 	private lazy var tabItems: [TabItem] = {
 		return [
 			TabItem(
-				title: "Standings",
-				controller: UINavigationController(rootViewController: StandingsListViewController(api: api)),
-				image: UIImage(named: "Tabs/Standings")!,
-				selectedImage: UIImage(named: "Tabs/Standings-selected")!
+				type: .standings,
+				controller: UINavigationController(rootViewController: StandingsListViewController(api: api))
 			),
 			TabItem(
-				title: "Games",
-				controller: UINavigationController(rootViewController: GameListViewController(api: api)),
-				image: UIImage(named: "Tabs/Games")!,
-				selectedImage: UIImage(named: "Tabs/Games-selected")!
+				type: .games,
+				controller: UINavigationController(rootViewController: GameListViewController(api: api))
 			),
 			TabItem(
-				title: "Players",
-				controller: UINavigationController(rootViewController: PlayerListViewController(api: api)),
-				image: UIImage(named: "Tabs/Players")!,
-				selectedImage: UIImage(named: "Tabs/Players-selected")!
+				type: .players,
+				controller: UINavigationController(rootViewController: PlayerListViewController(api: api))
 			),
 		]
 	}()
@@ -51,9 +67,9 @@ class RootTabBarController: UITabBarController {
 		return tabItems.map {
 			let viewController = $0.controller
 			viewController.tabBarItem = UITabBarItem(
-				title: $0.title,
-				image: $0.image,
-				selectedImage: $0.selectedImage
+				title: $0.type.title,
+				image: $0.type.image,
+				selectedImage: $0.type.selectedImage
 			)
 
 			return viewController
@@ -67,15 +83,15 @@ extension RootTabBarController: RouteHandler {
 
 		switch route {
 		case .gameDetails:
-			let gameTabItem = tabItems.first { $0.title == "Games" }
+			let gameTabItem = tabItems.first { $0.type == .games }
 			self.selectedViewController = gameTabItem?.controller
 			controller = gameTabItem?.controller.children.first
 		case .playerDetails:
-			let playerTabItem = tabItems.first { $0.title == "Players" }
+			let playerTabItem = tabItems.first { $0.type == .players }
 			self.selectedViewController = playerTabItem?.controller
 			controller = playerTabItem?.controller.children.first
 		case .standings:
-			let standingsTabItem = tabItems.first { $0.title == "Standin gs" }
+			let standingsTabItem = tabItems.first { $0.type == .standings }
 			self.selectedViewController = standingsTabItem?.controller
 			controller = standingsTabItem?.controller.children.first
 		}

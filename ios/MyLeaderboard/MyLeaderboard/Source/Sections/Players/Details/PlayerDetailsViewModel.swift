@@ -9,6 +9,7 @@
 import Foundation
 
 enum PlayerDetailsAction: BaseAction {
+	case playerLoaded(Player)
 	case dataChanged
 	case apiError(LeaderboardAPIError)
 	case gameSelected(Game)
@@ -30,7 +31,14 @@ class PlayerDetailsViewModel: ViewModel {
 	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	let player: Player
+	private var playerID: ID?
+	private(set) var player: Player? {
+		didSet {
+			if let player = self.player {
+				handleAction(.playerLoaded(player))
+			}
+		}
+	}
 
 	private(set) var records: [Game: PlayerStandings?] = [:] {
 		didSet {
@@ -50,8 +58,16 @@ class PlayerDetailsViewModel: ViewModel {
 		}
 	}
 
+	init(api: LeaderboardAPI, id: ID, handleAction: @escaping ActionHandler) {
+		self.api = api
+		self.playerID = id
+		self.player = nil
+		self.handleAction = handleAction
+	}
+
 	init(api: LeaderboardAPI, player: Player, handleAction: @escaping ActionHandler) {
 		self.api = api
+		self.playerID = player.id
 		self.player = player
 		self.handleAction = handleAction
 	}
@@ -82,7 +98,16 @@ class PlayerDetailsViewModel: ViewModel {
 		}
 	}
 
-	private func loadData() {
+	private func loadData(retry: Bool = true) {
+		guard let player = player else {
+			if retry {
+				loadPlayer()
+			} else {
+				self.handleAction(.apiError(.missingData))
+			}
+			return
+		}
+
 		api.games { [weak self] result in
 			switch result {
 			case .failure(let error):
@@ -90,7 +115,7 @@ class PlayerDetailsViewModel: ViewModel {
 			case .success(let games):
 				games.forEach {
 					self?.records[$0] = nil
-					self?.fetchPlayerStandings(for: $0)
+					self?.fetchPlayerStandings(for: $0, player: player)
 				}
 			}
 		}
@@ -111,19 +136,31 @@ class PlayerDetailsViewModel: ViewModel {
 				self.handleAction(.apiError(error))
 			case .success(let plays):
 				self.plays = plays.filter {
-					$0.players.contains(self.player.id)
+					$0.players.contains(player.id)
 				}.sorted().reversed()
 			}
 		}
 	}
 
-	private func fetchPlayerStandings(for game: Game) {
+	private func fetchPlayerStandings(for game: Game, player: Player) {
 		api.playerRecord(playerID: player.id, gameID: game.id) { [weak self] result in
 			switch result {
 			case .failure(let error):
 				self?.handleAction(.apiError(error))
 			case .success(let playerRecord):
 				self?.records[game] = playerRecord
+			}
+		}
+	}
+
+	private func loadPlayer() {
+		api.players { [weak self] result in
+			switch result {
+			case .failure(let error):
+				self?.handleAction(.apiError(error))
+			case .success(let players):
+				self?.player = players.first { $0.id == self?.playerID }
+				self?.loadData(retry: false)
 			}
 		}
 	}

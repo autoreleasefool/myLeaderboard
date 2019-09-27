@@ -14,13 +14,33 @@ class PlayerDetailsViewController: FTDViewController {
 	private var viewModel: PlayerDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
+	init(api: LeaderboardAPI, playerID: ID) {
+		self.api = api
+		super.init()
+
+		setup(withID: playerID)
+	}
+
 	init(api: LeaderboardAPI, player: Player) {
 		self.api = api
 		super.init()
-		refreshable = true
 
-		viewModel = PlayerDetailsViewModel(api: api, player: player) { [weak self] action in
+		setup(withPlayer: player)
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	private func setup(withID id: ID? = nil, withPlayer player: Player? = nil) {
+		refreshable = true
+		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
+		self.title = player?.displayName
+
+		let handleAction = { [weak self] (action: PlayerDetailsAction) in
 			switch action {
+			case .playerLoaded(let player):
+				self?.title = player.displayName
 			case .dataChanged:
 				self?.finishRefresh()
 				self?.render()
@@ -35,12 +55,13 @@ class PlayerDetailsViewController: FTDViewController {
 			}
 		}
 
-		self.title = player.displayName
-		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
-	}
-
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+		if let player = player {
+			viewModel = PlayerDetailsViewModel(api: api, player: player, handleAction: handleAction)
+		} else if let id = id {
+			viewModel = PlayerDetailsViewModel(api: api, id: id, handleAction: handleAction)
+		} else {
+			fatalError("ID or Game must be provided")
+		}
 	}
 
 	override func viewDidLoad() {
@@ -55,7 +76,12 @@ class PlayerDetailsViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = PlayerDetailsBuilder.sections(player: viewModel.player, records: viewModel.records, players: viewModel.players, plays: viewModel.plays, builder: spreadsheetBuilder, actionable: self)
+		guard let player = viewModel.player else {
+			tableData.renderAndDiff([])
+			return
+		}
+
+		let sections = PlayerDetailsBuilder.sections(player: player, records: viewModel.records, players: viewModel.players, plays: viewModel.plays, builder: spreadsheetBuilder, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
