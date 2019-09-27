@@ -64,6 +64,10 @@ struct GameDetailsBuilder {
 			}
 		}
 
+		if rows.count == 1 {
+			rows.append(Cells.loadingCell())
+		}
+
 		return TableSection(key: "Plays", rows: rows)
 	}
 
@@ -85,8 +89,10 @@ struct GameDetailsBuilder {
 		let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
 		let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil)
 
-		if let spreadsheet = Spreadsheet.section(key: "GameStandings", builder: builder, config: config) {
+		if spreadsheetCells.count > 1, let spreadsheet = Spreadsheet.section(key: "GameStandings", builder: builder, config: config) {
 			rows.append(contentsOf: spreadsheet.rows)
+		} else {
+			rows.append(Cells.loadingCell())
 		}
 
 		return TableSection(key: "Standings", rows: rows)
@@ -144,6 +150,14 @@ struct GameDetailsBuilder {
 			return LabelCell(
 				key: "Date-\(dateString)",
 				state: LabelState(text: .attributed(NSAttributedString(string: dateString, textColor: .textSecondary)), size: Metrics.Text.caption),
+				cellUpdater: LabelState.updateView
+			)
+		}
+
+		static func loadingCell() -> CellConfigType {
+			return LabelCell(
+				key: "NoData",
+				state: LabelState(text: .attributed(NSAttributedString(string: "Waiting for data", textColor: .textSecondary)), size: Metrics.Text.body),
 				cellUpdater: LabelState.updateView
 			)
 		}
