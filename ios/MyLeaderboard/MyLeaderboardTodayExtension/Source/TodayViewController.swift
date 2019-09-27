@@ -75,19 +75,29 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 	}
 
 	private func render(error: LeaderboardAPIError? = nil) {
-		guard let preferredPlayer = viewModel.preferredPlayer else { return }
+		guard let preferredPlayer = viewModel.preferredPlayer else {
+			extensionContext?.widgetLargestAvailableDisplayMode = .compact
+			tableData.renderAndDiff(TodayBuilder.noPreferredPlayerSection(actionable: self), animated: true) { [weak self] in
+				guard let self = self else { return }
+				DispatchQueue.main.async {
+					self.preferredContentSize = self.estimatedWidgetSize()
+				}
+			}
+			return
+		}
+
 		let maxRows = extensionContext?.widgetActiveDisplayMode == .expanded ? Int.max : 2
 
 		let sections = TodayBuilder.sections(player: preferredPlayer, standings: viewModel.gameStandings, players: viewModel.visiblePlayers, firstPlayer: viewModel.firstPlayerIndex, builder: spreadsheetBuilder, maxRows: maxRows, error: error, actionable: self)
 
 		extensionContext?.widgetLargestAvailableDisplayMode = viewModel.gameStandings.count > 1 ? .expanded : .compact
 
-		tableData.renderAndDiff(sections, animated: true, completion: { [weak self] in
+		tableData.renderAndDiff(sections, animated: true) { [weak self] in
 			guard let self = self else { return }
 			DispatchQueue.main.async {
 				self.preferredContentSize = self.estimatedWidgetSize()
 			}
-		})
+		}
 	}
 
 	private func estimatedWidgetSize() -> CGSize {
@@ -119,5 +129,9 @@ extension TodayViewController: TodayActionable {
 
 	func nextPlayer() {
 		viewModel.postViewAction(.nextPlayer)
+	}
+
+	func openPreferredPlayerSelection() {
+		viewModel.postViewAction(.openPreferredPlayerSelection)
 	}
 }

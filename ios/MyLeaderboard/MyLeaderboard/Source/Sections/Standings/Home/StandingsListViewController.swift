@@ -104,13 +104,22 @@ class StandingsListViewController: FTDViewController {
 
 		alert.addAction(UIAlertAction(title: "Pick", style: .default) { [weak self] _ in
 			guard let self = self else { return }
-			self.presentModal(PlayerPickerViewController(api: self.api, multiSelect: false, initiallySelected: []) { [weak self] selected in
-				self?.viewModel.postViewAction(.selectPreferredPlayer(selected.first))
-			})
+			self.openPreferredPlayerModal()
 		})
 		alert.addAction(UIAlertAction(title: "Later", style: .cancel))
 
 		present(alert, animated: true)
+	}
+
+	private func openPreferredPlayerModal() {
+		var initiallySelected: Set<ID> = []
+		if let player = Player.preferred {
+			initiallySelected.insert(player.id)
+		}
+
+		presentModal(PlayerPickerViewController(api: self.api, multiSelect: false, initiallySelected: initiallySelected) { [weak self] selected in
+			self?.viewModel.postViewAction(.selectPreferredPlayer(selected.first))
+		})
 	}
 
 	@objc private func openSettings() {
@@ -144,5 +153,15 @@ extension StandingsListViewController: StandingsListActionable {
 
 	func showPlays(game: Game, players: [Player]) {
 		viewModel.postViewAction(.showPlays(game, players))
+	}
+}
+
+extension StandingsListViewController: RouteHandler {
+	func openRoute(_ route: Route) {
+		guard case .preferredPlayer = route else {
+			return
+		}
+
+		openPreferredPlayerModal()
 	}
 }

@@ -14,6 +14,7 @@ protocol TodayActionable: AnyObject {
 	func openPlayerDetails(player: Player)
 	func openGameDetails(game: Game)
 	func nextPlayer()
+	func openPreferredPlayerSelection()
 }
 
 enum TodayBuilder {
@@ -47,6 +48,29 @@ enum TodayBuilder {
 		}
 
 		return [TableSection(key: "Records", rows: rows)]
+	}
+
+	static func noPreferredPlayerSection(actionable: TodayActionable) -> [TableSection] {
+		return [TableSection(
+			key: "NoPreferredPlayer",
+			rows: [
+				LabelCell(
+					key: "NoPreferredPlayer",
+					style: CellStyle(highlight: true),
+					actions: CellActions(selectionAction: { [weak actionable] _ in
+						actionable?.openPreferredPlayerSelection()
+						return .deselected
+					}),
+					state: LabelState(
+						text: .attributed(NSAttributedString(string: "No preferred player selected. Choose one in the settings.", textColor: .text)),
+						truncationStyle: .multiline,
+						alignment: .center,
+						size: Metrics.Text.body
+					),
+					cellUpdater: LabelState.updateView
+				)
+			]
+		)]
 	}
 
 	enum Sections {

@@ -90,7 +90,7 @@ extension RootTabBarController: RouteHandler {
 			let playerTabItem = tabItems.first { $0.type == .players }
 			self.selectedViewController = playerTabItem?.controller
 			controller = playerTabItem?.controller.children.first
-		case .standings:
+		case .standings, .preferredPlayer:
 			let standingsTabItem = tabItems.first { $0.type == .standings }
 			self.selectedViewController = standingsTabItem?.controller
 			controller = standingsTabItem?.controller.children.first

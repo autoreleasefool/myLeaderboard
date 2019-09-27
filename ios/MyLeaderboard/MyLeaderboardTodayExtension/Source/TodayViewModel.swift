@@ -22,6 +22,7 @@ enum TodayViewAction: BaseViewAction {
 	case openPlayerDetails(Player)
 	case openGameDetails(Game)
 	case openStandings
+	case openPreferredPlayerSelection
 }
 
 class TodayViewModel: ViewModel {
@@ -87,6 +88,8 @@ class TodayViewModel: ViewModel {
 			handleAction(.presentRoute(.playerDetails(player.id)))
 		case .openStandings:
 			handleAction(.presentRoute(.standings))
+		case .openPreferredPlayerSelection:
+			handleAction(.presentRoute(.preferredPlayer))
 		}
 	}
 
