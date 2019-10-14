@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -66,6 +66,8 @@
 		CA519468230F986B0041105B /* SettingsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA519467230F986B0041105B /* SettingsBuilder.swift */; };
 		CA51946B230FA8720041105B /* ContributorsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946A230FA8720041105B /* ContributorsListViewController.swift */; };
 		CA51946D230FA9F80041105B /* LicensesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946C230FA9F80041105B /* LicensesListViewController.swift */; };
+		CA6E045723551BC1000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045623551BC1000CB3E0 /* FunctionalTableData */; };
+		CA6E045923551BCB000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045823551BCB000CB3E0 /* FunctionalTableData */; };
 		CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
 		CA834B87230A1D8500A48C9B /* StandingsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D93992308E601003FF844 /* StandingsListViewController.swift */; };
 		CA834B88230A1D8900A48C9B /* StandingsListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */; };
@@ -82,8 +84,6 @@
 		CA920A0222E93666008E1B96 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0122E93666008E1B96 /* Score.swift */; };
 		CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0522E94911008E1B96 /* PlayerStandings.swift */; };
 		CA920A0822E94A84008E1B96 /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0722E94A84008E1B96 /* GamePlay.swift */; };
-		CA93292E230C397600599122 /* FunctionalTableData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */; };
-		CA93292F230C397600599122 /* FunctionalTableData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA932931230C397700599122 /* Loaf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; };
 		CA932932230C397700599122 /* Loaf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220222D592AA00479A0B /* CreateGameViewController.swift */; };
@@ -185,7 +185,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				CA932932230C397700599122 /* Loaf.framework in Embed Frameworks */,
-				CA93292F230C397600599122 /* FunctionalTableData.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,7 +260,6 @@
 		CAB88E3B230DF4620022281D /* GameDetailsBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsBuilder.swift; sourceTree = "<group>"; };
 		CABA3EA122D36BAD00960758 /* LeaderboardAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardAPI.swift; sourceTree = "<group>"; };
 		CABA3EA322D42DC300960758 /* GameListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListBuilder.swift; sourceTree = "<group>"; };
-		CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FunctionalTableData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CABA3EA722D4B2BE00960758 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		CABA3EA922D4B4DB00960758 /* FTDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTDViewController.swift; sourceTree = "<group>"; };
 		CABA3EAC22D4B83D00960758 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
@@ -308,6 +306,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA6E045923551BCB000CB3E0 /* FunctionalTableData in Frameworks */,
 				CA27F9A2232D59A40023924A /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,8 +315,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA6E045723551BC1000CB3E0 /* FunctionalTableData in Frameworks */,
 				CA932931230C397700599122 /* Loaf.framework in Frameworks */,
-				CA93292E230C397600599122 /* FunctionalTableData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,7 +625,6 @@
 			isa = PBXGroup;
 			children = (
 				CA51636D22F465AA002E0A90 /* Loaf.framework */,
-				CABA3EA522D4B15C00960758 /* FunctionalTableData.framework */,
 				CA27F9A1232D59A40023924A /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
@@ -812,6 +810,9 @@
 			dependencies = (
 			);
 			name = MyLeaderboardTodayExtension;
+			packageProductDependencies = (
+				CA6E045823551BCB000CB3E0 /* FunctionalTableData */,
+			);
 			productName = MyLeaderboardTodayExtension;
 			productReference = CA27F9A0232D59A40023924A /* MyLeaderboardTodayExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -833,6 +834,9 @@
 				CA27F9AB232D59A40023924A /* PBXTargetDependency */,
 			);
 			name = MyLeaderboard;
+			packageProductDependencies = (
+				CA6E045623551BC1000CB3E0 /* FunctionalTableData */,
+			);
 			productName = MyLeaderboard;
 			productReference = CAC9066922D0F70B0075B033 /* MyLeaderboard.app */;
 			productType = "com.apple.product-type.application";
@@ -869,6 +873,8 @@
 				CAC9068A22D0F70F0075B033 /* PBXTargetDependency */,
 			);
 			name = MyLeaderboardUITests;
+			packageProductDependencies = (
+			);
 			productName = MyLeaderboardUITests;
 			productReference = CAC9068822D0F70F0075B033 /* MyLeaderboardUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -913,6 +919,9 @@
 				Base,
 			);
 			mainGroup = CAC9066022D0F70B0075B033;
+			packageReferences = (
+				CA6E045523551BC1000CB3E0 /* XCRemoteSwiftPackageReference "FunctionalTableData" */,
+			);
 			productRefGroup = CAC9066A22D0F70B0075B033 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1491,6 +1500,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CA6E045523551BC1000CB3E0 /* XCRemoteSwiftPackageReference "FunctionalTableData" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Shopify/FunctionalTableData.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CA6E045623551BC1000CB3E0 /* FunctionalTableData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA6E045523551BC1000CB3E0 /* XCRemoteSwiftPackageReference "FunctionalTableData" */;
+			productName = FunctionalTableData;
+		};
+		CA6E045823551BCB000CB3E0 /* FunctionalTableData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA6E045523551BC1000CB3E0 /* XCRemoteSwiftPackageReference "FunctionalTableData" */;
+			productName = FunctionalTableData;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CAC9066122D0F70B0075B033 /* Project object */;
 }
