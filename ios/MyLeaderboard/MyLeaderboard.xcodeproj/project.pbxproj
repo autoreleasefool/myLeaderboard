@@ -84,8 +84,6 @@
 		CA920A0222E93666008E1B96 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0122E93666008E1B96 /* Score.swift */; };
 		CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0522E94911008E1B96 /* PlayerStandings.swift */; };
 		CA920A0822E94A84008E1B96 /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA920A0722E94A84008E1B96 /* GamePlay.swift */; };
-		CA932931230C397700599122 /* Loaf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; };
-		CA932932230C397700599122 /* Loaf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA51636D22F465AA002E0A90 /* Loaf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220222D592AA00479A0B /* CreateGameViewController.swift */; };
 		CA96220522D592B400479A0B /* CreateGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220422D592B400479A0B /* CreateGameViewModel.swift */; };
 		CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */; };
@@ -121,6 +119,7 @@
 		CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */; };
 		CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */; };
 		CAE16DFF22F45FCE00F1304C /* BasePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */; };
+		CAE48980237348E400B213C1 /* Loaf in Frameworks */ = {isa = PBXBuildFile; productRef = CAE4897F237348E400B213C1 /* Loaf */; };
 		CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8722F4712500FE0998 /* CombinedView.swift */; };
 		CAE56F8A22F47AAB00FE0998 /* ImageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8922F47AAB00FE0998 /* ImageState.swift */; };
 		CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8B22F47CD000FE0998 /* ViewState.swift */; };
@@ -184,7 +183,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CA932932230C397700599122 /* Loaf.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,7 +215,6 @@
 		CA4BABA122D77089003347AF /* PlayerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewController.swift; sourceTree = "<group>"; };
 		CA4BABA322D77103003347AF /* PlayerListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListBuilder.swift; sourceTree = "<group>"; };
 		CA4BABA522D77187003347AF /* PlayerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewModel.swift; sourceTree = "<group>"; };
-		CA51636D22F465AA002E0A90 /* Loaf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Loaf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA519463230F98580041105B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		CA519465230F98620041105B /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		CA519467230F986B0041105B /* SettingsBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBuilder.swift; sourceTree = "<group>"; };
@@ -315,8 +312,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAE48980237348E400B213C1 /* Loaf in Frameworks */,
 				CA6E045723551BC1000CB3E0 /* FunctionalTableData in Frameworks */,
-				CA932931230C397700599122 /* Loaf.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,7 +621,6 @@
 		CAB3872A22D22DA100349B1F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CA51636D22F465AA002E0A90 /* Loaf.framework */,
 				CA27F9A1232D59A40023924A /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
@@ -836,6 +832,7 @@
 			name = MyLeaderboard;
 			packageProductDependencies = (
 				CA6E045623551BC1000CB3E0 /* FunctionalTableData */,
+				CAE4897F237348E400B213C1 /* Loaf */,
 			);
 			productName = MyLeaderboard;
 			productReference = CAC9066922D0F70B0075B033 /* MyLeaderboard.app */;
@@ -921,6 +918,7 @@
 			mainGroup = CAC9066022D0F70B0075B033;
 			packageReferences = (
 				CA6E045523551BC1000CB3E0 /* XCRemoteSwiftPackageReference "FunctionalTableData" */,
+				CAE4897E237348E400B213C1 /* XCRemoteSwiftPackageReference "Loaf" */,
 			);
 			productRefGroup = CAC9066A22D0F70B0075B033 /* Products */;
 			projectDirPath = "";
@@ -1516,6 +1514,14 @@
 				kind = branch;
 			};
 		};
+		CAE4897E237348E400B213C1 /* XCRemoteSwiftPackageReference "Loaf" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/schmidyy/Loaf.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1528,6 +1534,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA6E045523551BC1000CB3E0 /* XCRemoteSwiftPackageReference "FunctionalTableData" */;
 			productName = FunctionalTableData;
+		};
+		CAE4897F237348E400B213C1 /* Loaf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAE4897E237348E400B213C1 /* XCRemoteSwiftPackageReference "Loaf" */;
+			productName = Loaf;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
