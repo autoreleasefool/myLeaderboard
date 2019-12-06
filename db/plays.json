@@ -270,5 +270,6 @@
     {"game":1,"id":268,"playedOn":"2019-11-15T22:04:50.345Z","players":[1,14],"winners":[1],"scores":[35,1]},
     {"game":0,"id":269,"playedOn":"2019-12-06T21:28:43.748Z","players":[10,3],"winners":[3]},
     {"game":0,"id":270,"playedOn":"2019-12-06T21:33:14.786Z","players":[10,3],"winners":[3]},
-    {"game":0,"id":271,"playedOn":"2019-12-06T21:38:38.387Z","players":[10,3],"winners":[3]}
+    {"game":0,"id":271,"playedOn":"2019-12-06T21:38:38.387Z","players":[10,3],"winners":[3]},
+    {"game":0,"id":272,"playedOn":"2019-12-06T21:41:51.379Z","players":[10,3],"winners":[10]}
 ]
