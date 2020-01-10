@@ -26,10 +26,6 @@ enum TabType {
 	var image: UIImage {
 		return UIImage(named: self.imageName)!
 	}
-
-	var selectedImage: UIImage {
-		return UIImage(named: "\(self.imageName)-selected")!
-	}
 }
 
 struct TabItem {
@@ -61,6 +57,7 @@ class RootTabBarController: UITabBarController {
 		super.viewDidLoad()
 		self.api = LeaderboardAPI()
 		self.viewControllers = createTabBarItems()
+		self.tabBar.tintColor = .tab
 	}
 
 	private func createTabBarItems() -> [UIViewController] {
@@ -69,7 +66,7 @@ class RootTabBarController: UITabBarController {
 			viewController.tabBarItem = UITabBarItem(
 				title: $0.type.title,
 				image: $0.type.image,
-				selectedImage: $0.type.selectedImage
+				selectedImage: $0.type.image
 			)
 
 			return viewController

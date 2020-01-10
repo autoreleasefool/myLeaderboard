@@ -31,12 +31,14 @@ class ScoreCellView: UIView {
 		bestScore.font = bestScore.font.withSize(Metrics.Text.body)
 
 		let rainyView = setupImageView(UIImage(named: "Score/Rain"), size: Metrics.Image.small)
+		rainyView.tintColor = .textSecondary
 		rainyView.alpha = 0.5
 		rainyView.isOpaque = false
 		worstScore.textColor = .text
 		worstScore.font = worstScore.font.withSize(Metrics.Text.caption)
 
 		let averageView = setupImageView(UIImage(named: "Score/Average"), size: Metrics.Image.small)
+		averageView.tintColor = .textSecondary
 		averageView.alpha = 0.7
 		averageView.isOpaque = false
 		averageScore.textColor = .text

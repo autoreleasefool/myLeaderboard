@@ -59,8 +59,8 @@ class PlayerPlayCellView: UIView {
 		score.placeholder = "0"
 		score.keyboardType = .numbersAndPunctuation
 		score.textAlignment = .right
-		score.backgroundColor = .text
-		score.textColor = .primaryExtraDark
+		score.backgroundColor = .primaryExtraDark
+		score.textColor = .text
 		score.layer.cornerRadius = Metrics.Spacing.small
 		score.translatesAutoresizingMaskIntoConstraints = false
 		addSubview(score)

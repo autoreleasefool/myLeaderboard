@@ -14,6 +14,7 @@ extension UIColor {
 	static let primary = UIColor(named: "Primary")!
 	static let primaryLight = UIColor(named: "PrimaryLight")!
 	static let primaryExtraLight = UIColor(named: "PrimaryExtraLight")!
+	static let tab = UIColor(named: "Tab")!
 
 	static let text = UIColor(named: "Text")!
 	static let textSecondary = UIColor(named: "TextSecondary")!
