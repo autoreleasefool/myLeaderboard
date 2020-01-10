@@ -7,7 +7,7 @@
         "state": {
           "branch": null,
           "revision": "f809deb30dc5c9d9b78c872e553261a61177721a",
-          "version": "2.0.0-beta.1"
+          "version": "2.0.0"
         }
       },
       {
@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/Shopify/FunctionalTableData.git",
         "state": {
           "branch": "master",
-          "revision": "27dce3932e296ad84e5609d11d1ead50c26b37d8",
+          "revision": "5e88bc6cbd8eaac9a77613c5b1f44ae41ea1d394",
           "version": null
         }
       },
@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/schmidyy/Loaf.git",
         "state": {
           "branch": "master",
-          "revision": "31f3b3fff28918c49d69ee76be72b041161b67c7",
+          "revision": "3d0991dc2e36b43d6ffb6934ec2436275cfb8ca3",
           "version": null
         }
       }
