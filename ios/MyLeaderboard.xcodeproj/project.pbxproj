@@ -66,6 +66,7 @@
 		CA519468230F986B0041105B /* SettingsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA519467230F986B0041105B /* SettingsBuilder.swift */; };
 		CA51946B230FA8720041105B /* ContributorsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946A230FA8720041105B /* ContributorsListViewController.swift */; };
 		CA51946D230FA9F80041105B /* LicensesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946C230FA9F80041105B /* LicensesListViewController.swift */; };
+		CA5FC5EE23C921390029DD61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
 		CA6E045723551BC1000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045623551BC1000CB3E0 /* FunctionalTableData */; };
 		CA6E045923551BCB000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045823551BCB000CB3E0 /* FunctionalTableData */; };
 		CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
@@ -937,6 +938,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA5FC5EE23C921390029DD61 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
