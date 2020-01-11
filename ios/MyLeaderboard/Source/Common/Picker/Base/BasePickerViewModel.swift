@@ -16,6 +16,7 @@ protocol PickerItemQueryable {
 
 enum PickerAction<Item: Identifiable>: BaseAction {
 	case itemsUpdated
+	case limitExceeded(Int)
 	case donePicking([Item])
 	case apiError(LeaderboardAPIError)
 }
@@ -32,6 +33,7 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 
 	private var api: LeaderboardAPI
 	private let multiSelect: Bool
+	private let limit: Int?
 	private var queryable: Queryable
 	var handleAction: ActionHandler
 
@@ -47,10 +49,19 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		}
 	}
 
-	init(api: LeaderboardAPI, initiallySelected: Set<ID>, multiSelect: Bool, queryable: Queryable, handleAction: @escaping ActionHandler) {
+	private var limitReached: Bool {
+		if let limit = self.limit {
+			return selectedItems.count >= limit
+		}
+
+		return false
+	}
+
+	init(api: LeaderboardAPI, initiallySelected: Set<ID>, multiSelect: Bool, limit: Int?, queryable: Queryable, handleAction: @escaping ActionHandler) {
 		self.api = api
 		self.selectedItems = initiallySelected
 		self.multiSelect = multiSelect
+		self.limit = limit
 		self.queryable = queryable
 		self.handleAction = handleAction
 	}
@@ -93,6 +104,11 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 	private func selectItem(_ id: ID, selected: Bool) {
 		var selectedItems = Set(self.selectedItems)
 		if selected {
+			if limitReached {
+				handleAction(.limitExceeded(limit!))
+				return
+			}
+
 			if !multiSelect {
 				selectedItems.removeAll()
 			}

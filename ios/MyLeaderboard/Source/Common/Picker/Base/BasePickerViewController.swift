@@ -17,15 +17,17 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 	private var viewModel: BasePickerViewModel<Item, Queryable>!
 	private var finishedSelection: FinishedSelection
 
-	init(api: LeaderboardAPI, initiallySelected: Set<ID>, multiSelect: Bool, queryable: Queryable, completion: @escaping FinishedSelection) {
+	init(api: LeaderboardAPI, initiallySelected: Set<ID>, multiSelect: Bool, limit: Int?, queryable: Queryable, completion: @escaping FinishedSelection) {
 		self.api = api
 		self.finishedSelection = completion
 		super.init()
 
-		self.viewModel = BasePickerViewModel(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, queryable: queryable) { [weak self] action in
+		self.viewModel = BasePickerViewModel(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, limit: limit, queryable: queryable) { [weak self] action in
 			switch action {
 			case .itemsUpdated:
 				self?.render()
+			case .limitExceeded(let limit):
+				self?.notifyLimitExceeded(limit)
 			case .donePicking(let selectedItems):
 				self?.finish(with: selectedItems)
 			case .apiError(let error):
@@ -65,6 +67,16 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 		}
 
 		Loaf(message, state: .error, sender: self).show()
+	}
+
+	private func notifyLimitExceeded(_ limit: Int) {
+		let limitMessage: String
+		if limit == 1 {
+			limitMessage = "\(limit) item"
+		} else {
+			limitMessage = "\(limit) items"
+		}
+		Loaf("You can only select up to \(limitMessage)", state: .error, sender: self).show()
 	}
 
 	@objc private func submit() {

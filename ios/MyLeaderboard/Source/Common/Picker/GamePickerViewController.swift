@@ -17,9 +17,9 @@ struct GameListQueryable: PickerItemQueryable {
 typealias GamePicker = BasePickerViewController<Game, GameListItemState, GameListQueryable>
 
 class GamePickerViewController: GamePicker {
-	init(api: LeaderboardAPI, multiSelect: Bool = true, initiallySelected: Set<ID>, completion: @escaping GamePicker.FinishedSelection) {
+	init(api: LeaderboardAPI, multiSelect: Bool = true, limit: Int? = nil, initiallySelected: Set<ID>, completion: @escaping GamePicker.FinishedSelection) {
 		let queryable = GameListQueryable()
-		super.init(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, queryable: queryable, completion: completion)
+		super.init(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, limit: limit, queryable: queryable, completion: completion)
 
 		self.title = "Games"
 	}
