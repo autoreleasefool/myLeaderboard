@@ -63,7 +63,7 @@ enum TodayBuilder {
 						return .deselected
 					}),
 					state: LabelState(
-						text: .attributed(NSAttributedString(string: "No preferred player selected. Choose one in the settings.", textColor: .text)),
+						text: .attributed(NSAttributedString(string: "No preferred player selected.", textColor: .text)),
 						truncationStyle: .multiline,
 						alignment: .center,
 						size: Metrics.Text.body
