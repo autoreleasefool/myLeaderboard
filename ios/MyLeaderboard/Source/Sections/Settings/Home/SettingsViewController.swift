@@ -39,6 +39,8 @@ class SettingsViewController: FTDViewController {
 				self?.openLicenses()
 			case .openContributors:
 				self?.openContributors()
+			case .updateInterfaceStyle:
+				self?.updateInterfaceStyle()
 			}
 		}
 
@@ -51,7 +53,7 @@ class SettingsViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = SettingsBuilder.sections(preferredPlayer: viewModel.preferredPlayer, actionable: self)
+		let sections = SettingsBuilder.sections(preferredPlayer: viewModel.preferredPlayer, interfaceStyle: Theme.interfaceStyle, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -83,6 +85,21 @@ class SettingsViewController: FTDViewController {
 		}
 		presentModal(playerPicker)
 	}
+
+	private func updateInterfaceStyle() {
+		switch Theme.interfaceStyle {
+		case .dark: Theme.interfaceStyle = .light
+		case .light: Theme.interfaceStyle = .unspecified
+		case .unspecified: Theme.interfaceStyle = .dark
+		@unknown default: Theme.interfaceStyle = .dark
+		}
+
+		if let delegate = UIApplication.shared.delegate as? AppDelegate {
+			delegate.window?.overrideUserInterfaceStyle = Theme.interfaceStyle
+		}
+
+		render()
+	}
 }
 
 extension SettingsViewController: SettingsActionable {
@@ -100,5 +117,9 @@ extension SettingsViewController: SettingsActionable {
 
 	func viewContributors() {
 		viewModel.postViewAction(.viewContributors)
+	}
+
+	func nextInterfaceStyle() {
+		viewModel.postViewAction(.nextInterfaceStyle)
 	}
 }

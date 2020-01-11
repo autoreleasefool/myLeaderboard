@@ -14,12 +14,14 @@ protocol SettingsActionable: AnyObject {
 	func viewSource()
 	func viewLicenses()
 	func viewContributors()
+	func nextInterfaceStyle()
 }
 
 struct SettingsBuilder {
-	static func sections(preferredPlayer: Player?, actionable: SettingsActionable) -> [TableSection] {
+	static func sections(preferredPlayer: Player?, interfaceStyle: UIUserInterfaceStyle, actionable: SettingsActionable) -> [TableSection] {
 		return [
 			playerSection(preferredPlayer: preferredPlayer, actionable: actionable),
+			settingsSection(interfaceStyle: interfaceStyle, actionable: actionable),
 			aboutSection(actionable: actionable),
 		]
 	}
@@ -54,6 +56,17 @@ struct SettingsBuilder {
 		}
 
 		return TableSection(key: "PreferredPlayer", rows: rows)
+	}
+
+	private static func settingsSection(interfaceStyle: UIUserInterfaceStyle, actionable: SettingsActionable) -> TableSection {
+		let rows: [CellConfigType] = [
+			Cells.header(key: "Header", title: "Settings"),
+			Cells.toggle(key: "InterfaceStyle", text: "Override interface style", option: interfaceStyle.stringValue) { [weak actionable] in
+				actionable?.nextInterfaceStyle()
+			},
+		]
+
+		return TableSection(key: "Settings", rows: rows)
 	}
 
 	private static func aboutSection(actionable: SettingsActionable) -> TableSection {
@@ -109,6 +122,22 @@ struct SettingsBuilder {
 				}),
 				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), size: Metrics.Text.body),
 				cellUpdater: LabelState.updateView
+			)
+		}
+
+		static func toggle(key: String, text: String, option: String, onAction: @escaping () -> Void) -> CellConfigType {
+			return CombinedCell<UILabel, LabelState, UILabel, LabelState, LayoutMarginsTableItemLayout>(
+				key: key,
+				style: CellStyle(highlight: true),
+				actions: CellActions(selectionAction: { _ in
+					onAction()
+					return .deselected
+				}),
+				state: CombinedState(
+					state1: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), size: Metrics.Text.body),
+					state2: LabelState(text: .attributed(NSAttributedString(string: option, textColor: .text)), size: Metrics.Text.body)
+				),
+				cellUpdater: CombinedState<LabelState, LabelState>.updateView
 			)
 		}
 	}

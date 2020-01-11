@@ -14,6 +14,7 @@ enum SettingsAction: BaseAction {
 	case openPlayerPicker
 	case openLicenses
 	case openContributors
+	case updateInterfaceStyle
 }
 
 enum SettingsViewAction: BaseViewAction {
@@ -23,6 +24,7 @@ enum SettingsViewAction: BaseViewAction {
 	case viewSource
 	case viewLicenses
 	case viewContributors
+	case nextInterfaceStyle
 }
 
 class SettingsViewModel: ViewModel {
@@ -53,6 +55,8 @@ class SettingsViewModel: ViewModel {
 			handleAction(.openLicenses)
 		case .viewContributors:
 			handleAction(.openContributors)
+		case .nextInterfaceStyle:
+			handleAction(.updateInterfaceStyle)
 		}
 	}
 
