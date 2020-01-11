@@ -102,12 +102,12 @@ enum TodayBuilder {
 		static func gameRow(game: Game, player: Player, players: [Player], record: PlayerStandings, actionable: TodayActionable) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
 				gameCell(for: game, actionable: actionable),
-				textGridCell(key: "Total", text: record.overallRecord.formatted, backgroundColor: record.overallRecord.backgroundColor),
+				textGridCell(key: "Total", text: record.overallRecord.formatted),
 			]
 
 			players.prefix(2).forEach { opponent in
 				if let recordAgainstOpponent = record.records[opponent.id] {
-					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: recordAgainstOpponent.formatted, backgroundColor: recordAgainstOpponent.backgroundColor) { [weak actionable] in
+					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: recordAgainstOpponent.formatted) { [weak actionable] in
 						actionable?.openPlayerDetails(player: player)
 					})
 				} else {
@@ -120,10 +120,9 @@ enum TodayBuilder {
 			return row
 		}
 
-		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil, onAction: (() -> Void)? = nil) -> GridCellConfig {
+		static func textGridCell(key: String, text: String, onAction: (() -> Void)? = nil) -> GridCellConfig {
 			return Spreadsheet.TextGridCellConfig(
 				key: key,
-				style: CellStyle(selectionColor: .primaryExtraLight),
 				actions: CellActions(
 					canSelectAction: { callback in
 						callback(onAction != nil)
@@ -133,8 +132,7 @@ enum TodayBuilder {
 						return .deselected
 				}
 				),
-				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
-				backgroundColor: backgroundColor
+				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center)
 			)
 		}
 
@@ -180,9 +178,9 @@ enum TodayBuilder {
 			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
 			cells.enumerated().forEach { index, _ in
 				if index == 0 {
-					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: Spreadsheet.BorderConfig(color: .standingsBorder), bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
+					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: Spreadsheet.BorderConfig(color: .todayBorder), bottomBorder: Spreadsheet.BorderConfig(color: .todayBorder))
 				} else {
-					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
+					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .todayBorder))
 				}
 			}
 			return rowConfigs
@@ -192,9 +190,9 @@ enum TodayBuilder {
 			var columnConfigs: [Int: Spreadsheet.ColumnConfig] = [:]
 			cells.first?.enumerated().forEach { index, _ in
 				if index == 0 {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: Spreadsheet.BorderConfig(color: .standingsBorder), rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
+					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: Spreadsheet.BorderConfig(color: .todayBorder), rightBorder: Spreadsheet.BorderConfig(color: .todayBorder))
 				} else {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
+					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: Spreadsheet.BorderConfig(color: .todayBorder))
 				}
 			}
 			return columnConfigs

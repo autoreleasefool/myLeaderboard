@@ -43,7 +43,6 @@
 		CA27F9DA232EE9680023924A /* PlayerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9209FF22E9360F008E1B96 /* PlayerRecord.swift */; };
 		CA27F9DD232EEE410023924A /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9DC232EEE410023924A /* UserDefaults+Extensions.swift */; };
 		CA27F9DE232EEE970023924A /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9DC232EEE410023924A /* UserDefaults+Extensions.swift */; };
-		CA27F9DF232EEF530023924A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9522D76322003347AF /* Theme.swift */; };
 		CA27F9E223306E820023924A /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9E123306E820023924A /* Route.swift */; };
 		CA362F79230EBE41001063B9 /* PlayerDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA362F78230EBE41001063B9 /* PlayerDetailsViewController.swift */; };
 		CA362F7B230EBE4B001063B9 /* PlayerDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA362F7A230EBE4B001063B9 /* PlayerDetailsViewModel.swift */; };
@@ -67,6 +66,7 @@
 		CA51946B230FA8720041105B /* ContributorsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946A230FA8720041105B /* ContributorsListViewController.swift */; };
 		CA51946D230FA9F80041105B /* LicensesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946C230FA9F80041105B /* LicensesListViewController.swift */; };
 		CA5FC5EE23C921390029DD61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
+		CA5FC5F223C9F1290029DD61 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9522D76322003347AF /* Theme.swift */; };
 		CA6E045723551BC1000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045623551BC1000CB3E0 /* FunctionalTableData */; };
 		CA6E045923551BCB000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045823551BCB000CB3E0 /* FunctionalTableData */; };
 		CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
@@ -1019,6 +1019,7 @@
 				CA27F9C2232E95DD0023924A /* PlayerStandings.swift in Sources */,
 				CA27F9D6232EE8FA0023924A /* ViewState.swift in Sources */,
 				CA27F9DA232EE9680023924A /* PlayerRecord.swift in Sources */,
+				CA5FC5F223C9F1290029DD61 /* Theme.swift in Sources */,
 				CA27F9CC232EE5500023924A /* SpreadsheetGridCellConfig.swift in Sources */,
 				CA27F9CE232EE5550023924A /* SpreadsheetBorderConfig.swift in Sources */,
 				CA27F9D9232EE95F0023924A /* ImageLoader.swift in Sources */,
@@ -1026,7 +1027,6 @@
 				CA27F9C4232E95E60023924A /* Score.swift in Sources */,
 				CA27F9BC232E93060023924A /* TodayViewModel.swift in Sources */,
 				CA397957233EC13B000B3322 /* Route.swift in Sources */,
-				CA27F9DF232EEF530023924A /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

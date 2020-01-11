@@ -24,6 +24,7 @@ extension UIColor {
 	static let warning = UIColor(named: "Warning")!
 	static let success = UIColor(named: "Success")!
 
+	static let todayBorder = UIColor(named: "BorderToday")!
 	static let standingsBorder = UIColor(named: "BorderStandings")!
 	static let bestRecord = UIColor(named: "RecordBest")!
 	static let worstRecord = UIColor(named: "RecordWorst")!

@@ -22,6 +22,11 @@ struct Theme {
 		UILabel.appearance().textColor = .text
 	}
 
+	static func applyToday() {
+		CellStyle.defaultSelectionColor = .selection
+		CellStyle.defaultBackgroundColor = nil
+	}
+
 	private static var interfaceStyleKey = "Settings.Theme.InterfaceStyle"
 
 	static var interfaceStyle: UIUserInterfaceStyle {

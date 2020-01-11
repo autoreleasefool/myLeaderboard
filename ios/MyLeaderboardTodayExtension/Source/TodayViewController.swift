@@ -37,7 +37,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		Theme.apply()
+		Theme.applyToday()
 		spreadsheetBuilder.interfaceSize = .compact
 
 		viewModel = TodayViewModel(api: api) { [weak self] action in
@@ -69,8 +69,6 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 	}
 
 	private func setupView() {
-		view.backgroundColor = .primaryDark
-		tableView.backgroundColor = .primaryDark
 		tableData.tableView = tableView
 	}
 
