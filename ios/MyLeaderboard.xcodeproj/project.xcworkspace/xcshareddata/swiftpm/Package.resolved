@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CwlCatchException",
+        "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
+        "state": {
+          "branch": null,
+          "revision": "f809deb30dc5c9d9b78c872e553261a61177721a",
+          "version": "2.0.0"
+        }
+      },
+      {
+        "package": "FunctionalTableData",
+        "repositoryURL": "https://github.com/Shopify/FunctionalTableData.git",
+        "state": {
+          "branch": "master",
+          "revision": "5e88bc6cbd8eaac9a77613c5b1f44ae41ea1d394",
+          "version": null
+        }
+      },
+      {
+        "package": "Loaf",
+        "repositoryURL": "https://github.com/schmidyy/Loaf.git",
+        "state": {
+          "branch": "master",
+          "revision": "3d0991dc2e36b43d6ffb6934ec2436275cfb8ca3",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
