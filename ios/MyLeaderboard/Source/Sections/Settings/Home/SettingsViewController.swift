@@ -90,7 +90,7 @@ class SettingsViewController: FTDViewController {
 
 	private func openOpponentPicker() {
 		let initiallySelected = Set(viewModel.preferredOpponents.map { $0.id })
-		let opponentPicker = PlayerPickerViewController(api: api, multiSelect: true, limit: 2, initiallySelected: initiallySelected) { [weak self] selectedOpponents in
+		let opponentPicker = PlayerPickerViewController(api: api, multiSelect: true, limit: Player.preferredOpponentsLimit, initiallySelected: initiallySelected) { [weak self] selectedOpponents in
 			self?.viewModel.postViewAction(.selectPreferredOpponents(selectedOpponents))
 			self?.render()
 		}

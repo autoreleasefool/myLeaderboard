@@ -60,7 +60,7 @@ class SettingsViewModel: ViewModel {
 		case .editOpponents:
 			handleAction(.openOpponentPicker)
 		case .selectPreferredOpponents(let opponents):
-			Player.preferredOpponents = opponents
+			Player.preferredOpponents = opponents.sorted()
 			handleAction(.opponentsUpdated)
 		case .viewSource:
 			viewSource()

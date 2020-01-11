@@ -17,6 +17,7 @@ enum Route {
 	case playerDetails(ID)
 	case standings
 	case preferredPlayer
+	case preferredOpponents
 
 	init?(from url: URL) {
 		switch url.host {
@@ -30,6 +31,8 @@ enum Route {
 			self = .standings
 		case "preferredPlayer":
 			self = .preferredPlayer
+		case "preferredOpponents":
+			self = .preferredOpponents
 		default:
 			return nil
 		}
@@ -50,6 +53,8 @@ enum Route {
 			components.host = "standings"
 		case .preferredPlayer:
 			components.host = "preferredPlayer"
+		case .preferredOpponents:
+			components.host = "preferredOpponents"
 		}
 
 		return components.url!

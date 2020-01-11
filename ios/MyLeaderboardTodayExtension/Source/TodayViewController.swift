@@ -42,7 +42,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 
 		viewModel = TodayViewModel(api: api) { [weak self] action in
 			switch action {
-			case .noPreferredPlayer(let completionHandler), .dataChanged(let completionHandler):
+			case .noPreferredPlayer(let completionHandler), .noPreferredOpponents(let completionHandler), .dataChanged(let completionHandler):
 				completionHandler?(.newData)
 				self?.render()
 			case .apiError(let error, let completionHandler):
@@ -84,9 +84,20 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 			return
 		}
 
+		guard viewModel.preferredOpponents.count > 0 else {
+			extensionContext?.widgetLargestAvailableDisplayMode = .compact
+			tableData.renderAndDiff(TodayBuilder.noPreferredOpponentsSection(actionable: self), animated: true) { [weak self] in
+				guard let self = self else { return }
+				DispatchQueue.main.async {
+					self.preferredContentSize = self.estimatedWidgetSize()
+				}
+			}
+			return
+		}
+
 		let maxRows = extensionContext?.widgetActiveDisplayMode == .expanded ? Int.max : 2
 
-		let sections = TodayBuilder.sections(player: preferredPlayer, standings: viewModel.gameStandings, players: viewModel.visiblePlayers, firstPlayer: viewModel.firstPlayerIndex, builder: spreadsheetBuilder, maxRows: maxRows, error: error, actionable: self)
+		let sections = TodayBuilder.sections(player: preferredPlayer, standings: viewModel.gameStandings, opponents: viewModel.visiblePlayers, builder: spreadsheetBuilder, maxRows: maxRows, error: error, actionable: self)
 
 		extensionContext?.widgetLargestAvailableDisplayMode = viewModel.gameStandings.count > 1 ? .expanded : .compact
 
@@ -125,11 +136,11 @@ extension TodayViewController: TodayActionable {
 		viewModel.postViewAction(.openGameDetails(game))
 	}
 
-	func nextPlayer() {
-		viewModel.postViewAction(.nextPlayer)
-	}
-
 	func openPreferredPlayerSelection() {
 		viewModel.postViewAction(.openPreferredPlayerSelection)
+	}
+
+	func openPreferredOpponentsSelection() {
+		viewModel.postViewAction(.openPreferredOpponentsSelection)
 	}
 }

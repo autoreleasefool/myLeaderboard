@@ -10,6 +10,7 @@ import Foundation
 
 enum TodayAction: BaseAction {
 	case noPreferredPlayer(TodayCompletionHandler?)
+	case noPreferredOpponents(TodayCompletionHandler?)
 	case dataChanged(TodayCompletionHandler?)
 	case apiError(LeaderboardAPIError, TodayCompletionHandler)
 	case presentRoute(Route)
@@ -17,12 +18,11 @@ enum TodayAction: BaseAction {
 
 enum TodayViewAction: BaseViewAction {
 	case performUpdate(TodayCompletionHandler)
-	case nextPlayer
-	case previousPlayer
 	case openPlayerDetails(Player)
 	case openGameDetails(Game)
 	case openStandings
 	case openPreferredPlayerSelection
+	case openPreferredOpponentsSelection
 }
 
 class TodayViewModel: ViewModel {
@@ -32,22 +32,11 @@ class TodayViewModel: ViewModel {
 	var handleAction: ActionHandler
 
 	private(set) var preferredPlayer: Player?
-	private(set) var players: [Player] = [] {
-		didSet {
-			let visible = visiblePlayers
-			if visible.count <= firstPlayerIndex {
-				firstPlayerIndex = visible.count - 1
-			}
-			if firstPlayerIndex < 0 {
-				firstPlayerIndex = 0
-			}
-		}
-	}
+	private(set) var preferredOpponents: [Player] = []
 	private(set) var gameStandings: [Game: PlayerStandings?] = [:]
-	private(set) var firstPlayerIndex: Int = 0
 
 	var visiblePlayers: [Player] {
-		return players.filter { player in
+		return preferredOpponents.filter { player in
 			return gameStandings.first(where: { $0.value?.records[player.id] != nil }) != nil
 		}
 	}
@@ -66,22 +55,14 @@ class TodayViewModel: ViewModel {
 			}
 
 			preferredPlayer = player
+
+			guard Player.preferredOpponents.count > 0 else {
+				handleAction(.noPreferredOpponents(completionHandler))
+				return
+			}
+
+			preferredOpponents = Player.preferredOpponents
 			fetchPlayerData(completionHandler: completionHandler)
-		case .nextPlayer:
-			firstPlayerIndex += 1
-			if firstPlayerIndex == visiblePlayers.count - 1 {
-				firstPlayerIndex = 0
-			}
-			handleAction(.dataChanged(nil))
-		case .previousPlayer:
-			firstPlayerIndex -= 1
-			if firstPlayerIndex == -1 {
-				firstPlayerIndex = visiblePlayers.count - 2
-			}
-			if firstPlayerIndex < 0 {
-				firstPlayerIndex = 0
-			}
-			handleAction(.dataChanged(nil))
 		case .openGameDetails(let game):
 			handleAction(.presentRoute(.gameDetails(game.id)))
 		case .openPlayerDetails(let player):
@@ -90,25 +71,14 @@ class TodayViewModel: ViewModel {
 			handleAction(.presentRoute(.standings))
 		case .openPreferredPlayerSelection:
 			handleAction(.presentRoute(.preferredPlayer))
+		case .openPreferredOpponentsSelection:
+			handleAction(.presentRoute(.preferredOpponents))
 		}
 	}
 
 	private func fetchPlayerData(completionHandler: @escaping TodayCompletionHandler) {
 		// DispatchGroup to wait to fetch all players and game standings
 		let dispatchGroup = DispatchGroup()
-		dispatchGroup.enter()
-
-		api.players { [weak self] result in
-			switch result {
-			case .success(let players):
-				self?.players = players.sorted()
-			case .failure(let error):
-				self?.players = []
-				self?.handleAction(.apiError(error, completionHandler))
-			}
-
-			dispatchGroup.leave()
-		}
 
 		api.games { [weak self] result in
 			switch result {

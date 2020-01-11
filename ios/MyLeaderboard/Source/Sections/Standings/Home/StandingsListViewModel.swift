@@ -28,6 +28,7 @@ enum StandingsListViewAction: BaseViewAction {
 	case selectPlayer(Player)
 	case showPlays(Game, [Player])
 	case selectPreferredPlayer(Player?)
+	case selectPreferredOpponents([Player])
 }
 
 class StandingsListViewModel: ViewModel {
@@ -80,6 +81,8 @@ class StandingsListViewModel: ViewModel {
 			handleAction(.openPlays(game, players))
 		case .selectPreferredPlayer(let player):
 			Player.preferred = player
+		case .selectPreferredOpponents(let opponents):
+			Player.preferredOpponents = opponents.sorted()
 		}
 	}
 

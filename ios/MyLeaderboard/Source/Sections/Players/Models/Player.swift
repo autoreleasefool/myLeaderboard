@@ -69,6 +69,8 @@ extension Player {
 		}
 	}
 
+	static var preferredOpponentsLimit: Int = 2
+
 	static var preferredOpponents: [Player] {
 		get {
 			if let data = UserDefaults.group.value(forKey: Player.preferredOpponentsKey) as? Data,
@@ -79,7 +81,7 @@ extension Player {
 			return []
 		}
 		set {
-			if let data = try? JSONEncoder().encode(newValue) {
+			if let data = try? JSONEncoder().encode(Array(newValue.prefix(preferredOpponentsLimit))) {
 				UserDefaults.group.set(data, forKey: Player.preferredOpponentsKey)
 			}
 		}

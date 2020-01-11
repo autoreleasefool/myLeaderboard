@@ -14,28 +14,26 @@ protocol TodayActionable: AnyObject {
 	func openStandings()
 	func openPlayerDetails(player: Player)
 	func openGameDetails(game: Game)
-	func nextPlayer()
 	func openPreferredPlayerSelection()
+	func openPreferredOpponentsSelection()
 }
 
 enum TodayBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
-	static func sections(player: Player, standings: [Game: PlayerStandings?], players: [Player], firstPlayer: Int, builder: SpreadsheetBuilder, maxRows: Int, error: LeaderboardAPIError?, actionable: TodayActionable) -> [TableSection] {
+	static func sections(player: Player, standings: [Game: PlayerStandings?], opponents: [Player], builder: SpreadsheetBuilder, maxRows: Int, error: LeaderboardAPIError?, actionable: TodayActionable) -> [TableSection] {
 		if let error = error {
 			return [Sections.error(error, actionable: actionable)]
 		}
 
-		let visiblePlayers = Array(players.dropFirst(firstPlayer))
-
 		var rows: [CellConfigType] = []
 		var spreadsheetCells: [[GridCellConfig]] = []
 
-		spreadsheetCells.append(SpreadsheetCells.headerRow(players: visiblePlayers, actionable: actionable))
+		spreadsheetCells.append(SpreadsheetCells.headerRow(opponents: opponents, actionable: actionable))
 
 		standings.keys.sorted().forEach {
 			guard let optionalStandings = standings[$0], let gameStandings = optionalStandings else { return }
-			spreadsheetCells.append(SpreadsheetCells.gameRow(game: $0, player: player, players: visiblePlayers, record: gameStandings, actionable: actionable))
+			spreadsheetCells.append(SpreadsheetCells.gameRow(game: $0, player: player, opponents: opponents, record: gameStandings, actionable: actionable))
 		}
 
 		spreadsheetCells = Array(spreadsheetCells.prefix(maxRows))
@@ -74,6 +72,29 @@ enum TodayBuilder {
 		)]
 	}
 
+	static func noPreferredOpponentsSection(actionable: TodayActionable) -> [TableSection] {
+		return [TableSection(
+			key: "NoPreferredOpponents",
+			rows: [
+				LabelCell(
+					key: "NoPreferredOpponents",
+					style: CellStyle(highlight: true),
+					actions: CellActions(selectionAction: { [weak actionable] _ in
+						actionable?.openPreferredOpponentsSelection()
+						return .deselected
+					}),
+					state: LabelState(
+						text: .attributed(NSAttributedString(string: "No opponents selected.", textColor: .text)),
+						truncationStyle: .multiline,
+						alignment: .center,
+						size: Metrics.Text.body
+					),
+					cellUpdater: LabelState.updateView
+				)
+			]
+		)]
+	}
+
 	enum Sections {
 		static func error(_ error: LeaderboardAPIError, actionable: TodayActionable) -> TableSection {
 			let rows: [CellConfigType] = []
@@ -82,30 +103,24 @@ enum TodayBuilder {
 	}
 
 	enum SpreadsheetCells {
-		static func headerRow(players: [Player], actionable: TodayActionable) -> [GridCellConfig] {
+		static func headerRow(opponents: [Player], actionable: TodayActionable) -> [GridCellConfig] {
 			var headerRow: [GridCellConfig] = [
 				textGridCell(key: "Header", text: ""),
 				textGridCell(key: "Total", text: "Total"),
 			]
 
-			players.prefix(2).forEach {
-				headerRow.append(playerCell(for: $0, actionable: actionable))
-			}
-
-			headerRow.append(textGridCell(key: "Next", text: "Next") { [weak actionable] in
-				actionable?.nextPlayer()
-			})
+			headerRow.append(contentsOf: opponents.map { playerCell(for: $0, actionable: actionable) })
 
 			return headerRow
 		}
 
-		static func gameRow(game: Game, player: Player, players: [Player], record: PlayerStandings, actionable: TodayActionable) -> [GridCellConfig] {
+		static func gameRow(game: Game, player: Player, opponents: [Player], record: PlayerStandings, actionable: TodayActionable) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
 				gameCell(for: game, actionable: actionable),
 				textGridCell(key: "Total", text: record.overallRecord.formatted),
 			]
 
-			players.prefix(2).forEach { opponent in
+			opponents.forEach { opponent in
 				if let recordAgainstOpponent = record.records[opponent.id] {
 					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: recordAgainstOpponent.formatted) { [weak actionable] in
 						actionable?.openPlayerDetails(player: player)
@@ -114,8 +129,6 @@ enum TodayBuilder {
 					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil).formatted))
 				}
 			}
-
-			row.append(textGridCell(key: "Empty", text: ""))
 
 			return row
 		}

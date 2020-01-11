@@ -122,6 +122,14 @@ class StandingsListViewController: FTDViewController {
 		})
 	}
 
+	private func openPreferredOpponentsModal() {
+		let initiallySelected = Set(Player.preferredOpponents.map { $0.id })
+
+		presentModal(PlayerPickerViewController(api: self.api, multiSelect: true, limit: Player.preferredOpponentsLimit, initiallySelected: initiallySelected) { [weak self] selected in
+			self?.viewModel.postViewAction(.selectPreferredOpponents(selected))
+		})
+	}
+
 	@objc private func openSettings() {
 		presentModal(SettingsViewController(api: api))
 	}
@@ -158,10 +166,13 @@ extension StandingsListViewController: StandingsListActionable {
 
 extension StandingsListViewController: RouteHandler {
 	func openRoute(_ route: Route) {
-		guard case .preferredPlayer = route else {
-			return
+		switch route {
+		case .preferredOpponents:
+			openPreferredOpponentsModal()
+		case .preferredPlayer:
+			openPreferredPlayerModal()
+		default:
+			break
 		}
-
-		openPreferredPlayerModal()
 	}
 }
