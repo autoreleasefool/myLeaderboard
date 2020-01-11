@@ -49,6 +49,7 @@ extension Player: Comparable {
 
 extension Player {
 	private static let preferredPlayerKey = "Settings.PreferredPlayer"
+	private static let preferredOpponentsKey = "Settings.PreferredOpponents"
 
 	static var preferred: Player? {
 		get {
@@ -64,6 +65,22 @@ extension Player {
 				UserDefaults.group.set(data, forKey: Player.preferredPlayerKey)
 			} else if newValue == nil {
 				UserDefaults.group.removeObject(forKey: Player.preferredPlayerKey)
+			}
+		}
+	}
+
+	static var preferredOpponents: [Player] {
+		get {
+			if let data = UserDefaults.group.value(forKey: Player.preferredOpponentsKey) as? Data,
+				let opponents = try? JSONDecoder().decode([Player].self, from: data) {
+				return opponents
+			}
+
+			return []
+		}
+		set {
+			if let data = try? JSONEncoder().encode(newValue) {
+				UserDefaults.group.set(data, forKey: Player.preferredOpponentsKey)
 			}
 		}
 	}

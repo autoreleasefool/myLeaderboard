@@ -29,12 +29,14 @@ class SettingsViewController: FTDViewController {
 
 		viewModel = SettingsViewModel { [weak self] action in
 			switch action {
-			case .playerUpdated:
+			case .playerUpdated, .opponentsUpdated:
 				self?.render()
 			case .openURL(let url):
 				self?.openURL(url)
 			case .openPlayerPicker:
 				self?.openPlayerPicker()
+			case .openOpponentPicker:
+				self?.openOpponentPicker()
 			case .openLicenses:
 				self?.openLicenses()
 			case .openContributors:
@@ -53,7 +55,7 @@ class SettingsViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = SettingsBuilder.sections(preferredPlayer: viewModel.preferredPlayer, interfaceStyle: Theme.interfaceStyle, actionable: self)
+		let sections = SettingsBuilder.sections(preferredPlayer: viewModel.preferredPlayer, preferredOpponents: viewModel.preferredOpponents, interfaceStyle: Theme.interfaceStyle, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -86,6 +88,15 @@ class SettingsViewController: FTDViewController {
 		presentModal(playerPicker)
 	}
 
+	private func openOpponentPicker() {
+		let initiallySelected = Set(viewModel.preferredOpponents.map { $0.id })
+		let opponentPicker = PlayerPickerViewController(api: api, multiSelect: true, limit: 2, initiallySelected: initiallySelected) { [weak self] selectedOpponents in
+			self?.viewModel.postViewAction(.selectPreferredOpponents(selectedOpponents))
+			self?.render()
+		}
+		presentModal(opponentPicker)
+	}
+
 	private func updateInterfaceStyle() {
 		switch Theme.interfaceStyle {
 		case .dark: Theme.interfaceStyle = .light
@@ -105,6 +116,10 @@ class SettingsViewController: FTDViewController {
 extension SettingsViewController: SettingsActionable {
 	func changePreferredPlayer() {
 		viewModel.postViewAction(.editPlayer)
+	}
+
+	func changePreferredOpponents() {
+		viewModel.postViewAction(.editOpponents)
 	}
 
 	func viewSource() {

@@ -10,17 +10,21 @@ import Foundation
 
 enum SettingsAction: BaseAction {
 	case playerUpdated
+	case opponentsUpdated
 	case openURL(URL)
 	case openPlayerPicker
 	case openLicenses
 	case openContributors
 	case updateInterfaceStyle
+	case openOpponentPicker
 }
 
 enum SettingsViewAction: BaseViewAction {
 	case initialize
 	case editPlayer
 	case selectPreferredPlayer(Player?)
+	case editOpponents
+	case selectPreferredOpponents([Player])
 	case viewSource
 	case viewLicenses
 	case viewContributors
@@ -36,6 +40,10 @@ class SettingsViewModel: ViewModel {
 		return Player.preferred
 	}
 
+	var preferredOpponents: [Player] {
+		return Player.preferredOpponents
+	}
+
 	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
@@ -49,6 +57,11 @@ class SettingsViewModel: ViewModel {
 		case .selectPreferredPlayer(let player):
 			Player.preferred = player
 			handleAction(.playerUpdated)
+		case .editOpponents:
+			handleAction(.openOpponentPicker)
+		case .selectPreferredOpponents(let opponents):
+			Player.preferredOpponents = opponents
+			handleAction(.opponentsUpdated)
 		case .viewSource:
 			viewSource()
 		case .viewLicenses:

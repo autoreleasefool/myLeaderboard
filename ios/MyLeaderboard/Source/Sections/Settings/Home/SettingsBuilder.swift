@@ -11,6 +11,7 @@ import FunctionalTableData
 
 protocol SettingsActionable: AnyObject {
 	func changePreferredPlayer()
+	func changePreferredOpponents()
 	func viewSource()
 	func viewLicenses()
 	func viewContributors()
@@ -18,35 +19,63 @@ protocol SettingsActionable: AnyObject {
 }
 
 struct SettingsBuilder {
-	static func sections(preferredPlayer: Player?, interfaceStyle: UIUserInterfaceStyle, actionable: SettingsActionable) -> [TableSection] {
+	static func sections(preferredPlayer: Player?, preferredOpponents: [Player], interfaceStyle: UIUserInterfaceStyle, actionable: SettingsActionable) -> [TableSection] {
 		return [
 			playerSection(preferredPlayer: preferredPlayer, actionable: actionable),
+			opponentsSection(preferredOpponents: preferredOpponents, actionable: actionable),
 			settingsSection(interfaceStyle: interfaceStyle, actionable: actionable),
 			aboutSection(actionable: actionable),
 		]
 	}
 
 	private static func playerSection(preferredPlayer: Player?, actionable: SettingsActionable) -> TableSection {
-		var rows: [CellConfigType] = [
+		let rows: [CellConfigType] = [
 			Cells.header(key: "Header", title: "Preferred Player"),
+			PlayerListItemCell(
+				key: "Player",
+				style: CellStyle(highlight: true, accessoryType: .disclosureIndicator),
+				actions: CellActions(selectionAction: { [weak actionable] _ in
+					actionable?.changePreferredPlayer()
+					return .deselected
+				}),
+				state: PlayerListItemState(
+					displayName: preferredPlayer?.displayName ?? "No player selected",
+					username: preferredPlayer?.username ?? "Tap to choose...",
+					avatar: preferredPlayer.qualifiedAvatar
+				),
+				cellUpdater: PlayerListItemState.updateView
+			)
 		]
 
-		rows.append(PlayerListItemCell(
-			key: "Player",
-			style: CellStyle(highlight: true, accessoryType: .disclosureIndicator),
-			actions: CellActions(selectionAction: { [weak actionable] _ in
-				actionable?.changePreferredPlayer()
-				return .deselected
-			}),
-			state: PlayerListItemState(
-				displayName: preferredPlayer?.displayName ?? "No player selected",
-				username: preferredPlayer?.username ?? "Tap to choose...",
-				avatar: preferredPlayer.qualifiedAvatar
-			),
-			cellUpdater: PlayerListItemState.updateView
+		return TableSection(key: "PreferredPlayer", rows: rows)
+	}
+
+	private static func opponentsSection(preferredOpponents: [Player], actionable: SettingsActionable) -> TableSection {
+		var rows: [CellConfigType] = [
+			Cells.header(key: "Header", title: "Opponents in Widget")
+		]
+
+		rows.append(contentsOf: preferredOpponents.map {
+			return PlayerListItemCell(
+				key: "Opponent-\($0.id)",
+				state: PlayerListItemState(
+					displayName: $0.displayName,
+					username: $0.username,
+					avatar: $0.qualifiedAvatar
+				),
+				cellUpdater: PlayerListItemState.updateView
+			)
+		})
+
+		rows.append(Cells.label(
+			key: "ChangeOpponents",
+			text: preferredOpponents.count == 0 ? "Add opponents" : "Change opponents",
+			onAction: { [weak actionable] in
+				actionable?.changePreferredOpponents()
+			}
 		))
 
-		return TableSection(key: "PreferredPlayer", rows: rows)
+		return TableSection(key: "PreferredOpponents", rows: rows)
 	}
 
 	private static func settingsSection(interfaceStyle: UIUserInterfaceStyle, actionable: SettingsActionable) -> TableSection {
