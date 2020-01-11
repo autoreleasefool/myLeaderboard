@@ -4,18 +4,18 @@
   "private": true,
   "homepage": "https://josephroque.dev/myLeaderboard/site",
   "dependencies": {
-    "@shopify/polaris": "^4.2.1",
-    "@types/jest": "^24.0.15",
-    "@types/node": "^12.0.10",
-    "@types/react": "^16.8.22",
-    "@types/react-dom": "^16.8.4",
+    "@shopify/polaris": "^4.10.2",
+    "@types/jest": "^24.0.25",
+    "@types/node": "^13.1.6",
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
     "octokat": "^0.10.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "3.1.1",
-    "tslint": "^5.18.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "^3.3.0",
+    "tslint": "^5.20.1",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.7.4"
   },
   "scripts": {
     "start": "yarn copy-common && react-scripts start",
