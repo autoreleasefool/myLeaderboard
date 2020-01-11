@@ -68,7 +68,7 @@ class PlayerListItemView: UIView {
 struct PlayerListItemState: ViewState {
 	let displayName: String
 	let username: String
-	let avatar: String?
+	let avatar: Avatar?
 
 	static func updateView(_ view: PlayerListItemView, state: PlayerListItemState?) {
 		guard let state = state else {
@@ -78,13 +78,6 @@ struct PlayerListItemState: ViewState {
 
 		view.displayName.text = state.displayName
 		view.username.text = state.username
-
-		if let avatar = state.avatar {
-			view.playerImage.image = ImageLoader.shared.fetch(string: avatar) { result in
-				if case .success(let url, let image) = result, url.absoluteString == state.avatar {
-					view.playerImage.image = image
-				}
-			}
-		}
+		state.avatar.applyImage(to: view.playerImage)
 	}
 }

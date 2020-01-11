@@ -67,6 +67,8 @@
 		CA51946D230FA9F80041105B /* LicensesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946C230FA9F80041105B /* LicensesListViewController.swift */; };
 		CA5FC5EE23C921390029DD61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
 		CA5FC5F223C9F1290029DD61 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9522D76322003347AF /* Theme.swift */; };
+		CA5FC5F423CA0F890029DD61 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FC5F323CA0F890029DD61 /* Avatar.swift */; };
+		CA5FC5F523CA0FB10029DD61 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FC5F323CA0F890029DD61 /* Avatar.swift */; };
 		CA6E045723551BC1000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045623551BC1000CB3E0 /* FunctionalTableData */; };
 		CA6E045923551BCB000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045823551BCB000CB3E0 /* FunctionalTableData */; };
 		CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
@@ -221,6 +223,7 @@
 		CA519467230F986B0041105B /* SettingsBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBuilder.swift; sourceTree = "<group>"; };
 		CA51946A230FA8720041105B /* ContributorsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsListViewController.swift; sourceTree = "<group>"; };
 		CA51946C230FA9F80041105B /* LicensesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensesListViewController.swift; sourceTree = "<group>"; };
+		CA5FC5F323CA0F890029DD61 /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		CA80CD912310174400C0D30C /* MyLeaderboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyLeaderboard.entitlements; sourceTree = "<group>"; };
 		CA834B8D230A1E4D00A48C9B /* SpreadsheetRowConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetRowConfig.swift; sourceTree = "<group>"; };
 		CA834B8F230A1EB900A48C9B /* SpreadsheetColumnConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetColumnConfig.swift; sourceTree = "<group>"; };
@@ -609,6 +612,7 @@
 				CAE16DF922F44C3800F1304C /* Picker */,
 				CA4BAB8722D6CEBC003347AF /* Cells */,
 				CABA3EAB22D4B81F00960758 /* MVVM */,
+				CA5FC5F323CA0F890029DD61 /* Avatar.swift */,
 				CABA3EA922D4B4DB00960758 /* FTDViewController.swift */,
 				CAAE778723024565001A37DC /* LoadingHUD.swift */,
 				CABA3EAC22D4B83D00960758 /* ImageLoader.swift */,
@@ -1022,6 +1026,7 @@
 				CA5FC5F223C9F1290029DD61 /* Theme.swift in Sources */,
 				CA27F9CC232EE5500023924A /* SpreadsheetGridCellConfig.swift in Sources */,
 				CA27F9CE232EE5550023924A /* SpreadsheetBorderConfig.swift in Sources */,
+				CA5FC5F523CA0FB10029DD61 /* Avatar.swift in Sources */,
 				CA27F9D9232EE95F0023924A /* ImageLoader.swift in Sources */,
 				CA27F9C7232EE1DE0023924A /* TodayBuilder.swift in Sources */,
 				CA27F9C4232E95E60023924A /* Score.swift in Sources */,
@@ -1113,6 +1118,7 @@
 				CABA3EA222D36BAD00960758 /* LeaderboardAPI.swift in Sources */,
 				CAE9CF6B230F2EDD00D4850E /* SwitchState.swift in Sources */,
 				CAE56F8A22F47AAB00FE0998 /* ImageState.swift in Sources */,
+				CA5FC5F423CA0F890029DD61 /* Avatar.swift in Sources */,
 				CAAE778A2302DAF0001A37DC /* CreatePlayerViewController.swift in Sources */,
 				CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */,
 				CAB3871422D18C5700349B1F /* Game.swift in Sources */,
@@ -1268,7 +1274,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1323,7 +1329,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1343,7 +1349,6 @@
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1365,7 +1370,6 @@
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

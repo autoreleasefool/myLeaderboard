@@ -32,7 +32,7 @@ class PlayerPickerViewController: PlayerPicker {
 		return items.map {
 			return PickerItem(
 				id: $0.id,
-				state: PlayerListItemState(displayName: $0.displayName, username: $0.username, avatar: $0.avatar)
+				state: PlayerListItemState(displayName: $0.displayName, username: $0.username, avatar: $0.qualifiedAvatar)
 			)
 		}
 	}

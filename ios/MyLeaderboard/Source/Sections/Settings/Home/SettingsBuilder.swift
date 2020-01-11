@@ -31,29 +31,20 @@ struct SettingsBuilder {
 			Cells.header(key: "Header", title: "Preferred Player"),
 		]
 
-		if let preferredPlayer = preferredPlayer {
-			rows.append(PlayerListItemCell(
-				key: "Player",
-				style: CellStyle(highlight: true, accessoryType: .disclosureIndicator),
-				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.changePreferredPlayer()
-					return .deselected
-				}),
-				state: PlayerListItemState(displayName: preferredPlayer.displayName, username: preferredPlayer.username, avatar: preferredPlayer.avatar),
-				cellUpdater: PlayerListItemState.updateView
-			))
-		} else {
-			rows.append(GameListItemCell(
-				key: "Player",
-				style: CellStyle(highlight: true, accessoryType: .disclosureIndicator),
-				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.changePreferredPlayer()
-					return .deselected
-				}),
-				state: GameListItemState(name: "No player selected", image: nil),
-				cellUpdater: GameListItemState.updateView
-			))
-		}
+		rows.append(PlayerListItemCell(
+			key: "Player",
+			style: CellStyle(highlight: true, accessoryType: .disclosureIndicator),
+			actions: CellActions(selectionAction: { [weak actionable] _ in
+				actionable?.changePreferredPlayer()
+				return .deselected
+			}),
+			state: PlayerListItemState(
+				displayName: preferredPlayer?.displayName ?? "No player selected",
+				username: preferredPlayer?.username ?? "Tap to choose...",
+				avatar: preferredPlayer.qualifiedAvatar
+			),
+			cellUpdater: PlayerListItemState.updateView
+		))
 
 		return TableSection(key: "PreferredPlayer", rows: rows)
 	}

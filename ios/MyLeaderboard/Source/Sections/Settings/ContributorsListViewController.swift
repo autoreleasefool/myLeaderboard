@@ -28,7 +28,7 @@ class ContributorsListViewController: FTDViewController {
 					self?.openURL(URL(string: "https://github.com/\(contributor.username)"))
 					return .deselected
 				}),
-				state: PlayerListItemState(displayName: contributor.displayName, username: contributor.username, avatar: contributor.avatar),
+				state: PlayerListItemState(displayName: contributor.displayName, username: contributor.username, avatar: contributor.qualifiedAvatar),
 				cellUpdater: PlayerListItemState.updateView
 			)
 		}

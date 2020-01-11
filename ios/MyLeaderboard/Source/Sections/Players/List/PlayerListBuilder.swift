@@ -22,7 +22,7 @@ struct PlayerListBuilder {
 					actionable?.selectedPlayer(player: player)
 					return .deselected
 				}),
-				state: PlayerListItemState(displayName: player.displayName, username: player.username, avatar: player.avatar),
+				state: PlayerListItemState(displayName: player.displayName, username: player.username, avatar: player.qualifiedAvatar),
 				cellUpdater: PlayerListItemState.updateView
 			)
 		}
