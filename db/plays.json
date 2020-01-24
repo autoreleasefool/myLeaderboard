@@ -279,5 +279,6 @@
     {"game":1,"id":277,"playedOn":"2019-12-20T00:22:34.703Z","players":[1,5],"winners":[5],"scores":[10,11]},
     {"game":1,"id":278,"playedOn":"2020-01-15T22:17:47.742Z","players":[1,3],"winners":[1],"scores":[16,4]},
     {"game":1,"id":279,"playedOn":"2020-01-17T22:22:20.382Z","players":[5,14],"winners":[5],"scores":[5,3]},
-    {"game":1,"id":280,"playedOn":"2020-01-17T22:22:41.876Z","players":[10,5],"winners":[5],"scores":[2,5]}
+    {"game":1,"id":280,"playedOn":"2020-01-17T22:22:41.876Z","players":[10,5],"winners":[5],"scores":[2,5]},
+    {"game":0,"id":281,"playedOn":"2020-01-24T21:33:28.895Z","players":[10,3],"winners":[3]}
 ]
