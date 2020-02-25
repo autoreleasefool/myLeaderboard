@@ -2,6 +2,7 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import {
     resolvePlayers as players,
     resolvePlayerRecord as playerRecord,
+    resolveCreatePlayer as createPlayer,
 } from './players';
 import {
     resolveGames as games,
@@ -14,6 +15,7 @@ const resolvers = {
     DateTime: GraphQLDateTime,
     players,
     playerRecord,
+    createPlayer,
     games,
     gameStandings,
     hasAnyUpdates,

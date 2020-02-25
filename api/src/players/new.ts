@@ -6,6 +6,10 @@ export default async function add(req: Request): Promise<Player> {
     const playerName: string = req.body.name;
     let playerUsername: string = req.body.username;
 
+    return addPlayer(playerName, playerUsername);
+}
+
+export async function addPlayer(playerName: string, playerUsername: string): Promise<Player> {
     // Input validation
     if (playerName == null || playerName.length === 0) {
         throw new Error('Missing "name".');
