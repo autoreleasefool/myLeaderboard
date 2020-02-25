@@ -1,12 +1,8 @@
 import { Request } from 'express';
-import { checkCache } from '../common/utils';
 import Games from '../db/games';
 import Players from '../db/players';
 import Plays from '../db/plays';
 import { PlayerStandings, Record } from '../lib/types';
-
-let cacheFreshness = new Date();
-const cachedStandings: Map<number, PlayerStandings> = new Map();
 
 enum GameResult {
     WON,
@@ -24,14 +20,6 @@ interface RecordHighlight {
 export default async function record(req: Request): Promise<PlayerStandings> {
     const playerId = parseInt(req.params.playerId, 10);
     const gameId = parseInt(req.params.gameId, 10);
-    const key = playerId * 1000 + gameId;
-
-    const dependencies = [Plays.getInstance()];
-    const cachedValue = await checkCache(cachedStandings, key, cacheFreshness, dependencies);
-    if (cachedValue != null) {
-        return cachedValue;
-    }
-    cacheFreshness = new Date();
 
     const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
 
@@ -110,7 +98,6 @@ export default async function record(req: Request): Promise<PlayerStandings> {
 
     highlightRecords(playerRecord);
 
-    cachedStandings.set(key, playerRecord);
     return playerRecord;
 }
 
