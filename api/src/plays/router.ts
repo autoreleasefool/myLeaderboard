@@ -20,6 +20,6 @@ router.get('/list', (_, res, next) => {
     });
 });
 
-export default function applyRouter(app: express.Express) {
+export default function applyRouter(app: express.Express): void {
     app.use('/plays', router);
 }

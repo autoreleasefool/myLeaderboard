@@ -75,5 +75,5 @@ export interface PlayerStandings {
     overallRecord: Record;
     records: {
         [key: number]: Record;
-    }
+    };
 }

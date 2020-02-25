@@ -114,19 +114,19 @@ export default async function record(req: Request): Promise<PlayerStandings> {
     return playerRecord;
 }
 
-function highlightRecords(standings: PlayerStandings) {
+function highlightRecords(standings: PlayerStandings): void {
     const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
     const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
     const opponentIds: Array<number> = [];
     for (const recordAgainstOpponent in standings.records) {
-        if (standings.records.hasOwnProperty(recordAgainstOpponent)) {
+        if (Object.prototype.hasOwnProperty.call(standings.records, recordAgainstOpponent)) {
             opponentIds.push(parseInt(recordAgainstOpponent, 10));
         }
     }
 
     for (const opponentId of opponentIds) {
         const vsRecord = standings.records[opponentId];
-        if (vsRecord == null) {
+        if (vsRecord === null) {
             continue;
         }
 
@@ -145,7 +145,7 @@ function highlightRecords(standings: PlayerStandings) {
     markBestAndWorstRecords(playerVs, bestVsRecords, worstVsRecords);
 }
 
-function updateHighlightedRecords(recordHighlight: RecordHighlight, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
+function updateHighlightedRecords(recordHighlight: RecordHighlight, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>): void {
     if (recordHighlight.winRate > bestRecords[0].winRate) {
         bestRecords.length = 0;
         bestRecords.push(recordHighlight);
@@ -170,9 +170,12 @@ function updateHighlightedRecords(recordHighlight: RecordHighlight, bestRecords:
     }
 }
 
-function markBestAndWorstRecords(records: Map<number, Record>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>) {
+function markBestAndWorstRecords(records: Map<number, Record>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>): void {
     for (const player of records.keys()) {
-        const playerRecord = records.get(player)!;
+        const playerRecord = records.get(player);
+        if (!playerRecord) {
+            continue;
+        }
 
         for (const best of bestRecords) {
             if (best.player === player) {

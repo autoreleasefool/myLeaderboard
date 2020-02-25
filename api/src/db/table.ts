@@ -5,8 +5,8 @@ class Table<Row extends Identifiable> {
     private tableName: string;
     private path: string;
     private blob: Blob | undefined;
-    private blobOutdated: boolean = true;
-    private latestUpdate: Date = new Date();
+    private blobOutdated = true;
+    private latestUpdate = new Date();
     private rows: Array<Row> = [];
 
     constructor(tableName: string) {
@@ -14,7 +14,7 @@ class Table<Row extends Identifiable> {
         this.path = `db/${tableName}.json`;
     }
 
-    public async refreshData() {
+    public async refreshData(): Promise<void> {
         this.blob = await Octo.getInstance().blob(this.path);
         this.blobOutdated = false;
 
@@ -54,7 +54,7 @@ class Table<Row extends Identifiable> {
         return undefined;
     }
 
-    public async add(row: Row, message?: string) {
+    public async add(row: Row, message?: string): Promise<void> {
         this.rows.push(row);
 
         if (message == null) {
@@ -72,7 +72,9 @@ class Table<Row extends Identifiable> {
             message,
             path: this.path,
             sha: (this.blob != null) ? this.blob.sha : undefined,
-        }]).then(() => this.blobOutdated = true);
+        }]).then(() => {
+            this.blobOutdated = true;
+        });
     }
 
     private stringifyRows(): string {

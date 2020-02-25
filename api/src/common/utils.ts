@@ -40,7 +40,11 @@ export async function refreshDependencies(lastUpdate: Date, dependencies: Array<
 }
 
 export function apiURL(withScheme: boolean): string {
-    const baseURL: string = process.env.API_URL!;
+    const baseURL = process.env.API_URL;
+    if (!baseURL) {
+        throw Error("API URL could not be determined");
+    }
+
     if (baseURL.startsWith('http')) {
         if (withScheme) {
             return baseURL;

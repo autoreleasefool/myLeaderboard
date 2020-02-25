@@ -29,6 +29,6 @@ router.get('/record/:playerId/:gameId', (req, res, next) => {
     });
 });
 
-export default function applyRouter(app: Express) {
+export default function applyRouter(app: Express): void {
     app.use('/players', router);
 }

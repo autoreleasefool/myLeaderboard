@@ -1,8 +1,4 @@
-// tslint:disable
-
-// @ts-ignore: Common module in api/dashboard
 import * as Octokat from 'octokat';
-// @ts-ignore: Common module in api/dashboard
 import { base64decode, base64encode } from './Base64';
 import { GitHubUser } from '../lib/types';
 import fs from 'fs';
@@ -38,16 +34,16 @@ export interface Writeable {
 }
 
 class Octo {
-    public static setToken(token: string | undefined) {
+    public static setToken(token: string | undefined): void {
         Octo.token = token;
         Octo.instance = undefined;
     }
 
-    public static setBranch(branch: string) {
+    public static setBranch(branch: string): void {
         Octo.branch = branch;
     }
 
-    public static setUseLocal(useLocal: boolean) {
+    public static setUseLocal(useLocal: boolean): void {
         Octo.useLocal = useLocal;
     }
 
@@ -60,15 +56,14 @@ class Octo {
     }
 
     private static instance: Octo | undefined;
-    private static branch: string = 'master';
+    private static branch = 'master';
     private static token: string | undefined;
-    private static useLocal: boolean = false;
+    private static useLocal = false;
 
     private octo: any;
     private repo: any;
 
     private constructor(token: string | undefined) {
-        // @ts-ignore Octokat isn't playing nice with TS, so ignore the error that it's not a constructor.
         this.octo = Octokat.default({ token });
         this.repo = this.octo.repos('josephroquedev', 'myLeaderboard');
     }
@@ -100,7 +95,7 @@ class Octo {
                 path: filename,
                 content: fs.readFileSync(`../${filename}`, 'utf8').toString(),
                 sha: '',
-            }
+            };
         } else {
             const contents = await this.repo.contents(filename).fetch({ ref: Octo.branch });
             contents.content = base64decode(contents.content);

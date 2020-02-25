@@ -67,7 +67,7 @@ function mapPlayerIdsToNames(ids: Array<number>, existingPlayers: Array<Player>)
     return names;
 }
 
-function validateWinnersExist(winners: Array<number>, players: Array<number>) {
+function validateWinnersExist(winners: Array<number>, players: Array<number>): void {
     for (const winnerId of winners) {
         let idFound = false;
         for (const playerId of players) {
@@ -83,7 +83,7 @@ function validateWinnersExist(winners: Array<number>, players: Array<number>) {
     }
 }
 
-function validateGameExists(id: number, games: Array<Game>) {
+function validateGameExists(id: number, games: Array<Game>): void {
     for (const game of games) {
         if (game.id === id) {
             return;

@@ -20,6 +20,6 @@ router.get('/hasUpdates', (req, res, next) => {
     });
 });
 
-export default function applyRouter(app: Express) {
+export default function applyRouter(app: Express): void {
     app.use('/misc', router);
 }
