@@ -56,6 +56,18 @@ export interface PlayerRecord {
     };
 }
 
+export interface PlayerRecordGraphQL {
+    scoreStats?: ScoreStats;
+    lastPlayed: string;
+    overallRecord: Record;
+    records: PlayerVSRecord;
+}
+
+export interface PlayerVSRecord {
+    opponents: Array<number>;
+    records: Array<Record>;
+}
+
 export interface ScoreStats {
     best: number;
     worst: number;
@@ -70,10 +82,26 @@ export interface GameStandings {
     };
 }
 
+export interface GameStandingsGraphQL {
+    scoreStats?: ScoreStats;
+    records: GamePlayerRecords;
+}
+
+export interface GamePlayerRecords {
+    players: Array<number>;
+    records: Array<PlayerRecordGraphQL>;
+}
+
 export interface PlayerStandings {
     scoreStats?: ScoreStats;
     overallRecord: Record;
     records: {
         [key: number]: Record;
     };
+}
+
+export interface PlayerStandingsGraphQL {
+    scoreStats?: ScoreStats;
+    overallRecord: Record;
+    records: PlayerVSRecord;
 }
