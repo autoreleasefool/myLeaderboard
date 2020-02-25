@@ -23,7 +23,7 @@ interface GameStandingsQueryArguments {
 }
 
 export async function resolveGameStandings({id}: GameStandingsQueryArguments): Promise<GameStandingsGraphQL> {
-    let standings = await gameStandings(id);
+    const standings = await gameStandings(id);
     return gameStandingsToGraphQL(standings);
 }
 

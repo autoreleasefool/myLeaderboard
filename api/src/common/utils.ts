@@ -36,7 +36,7 @@ export function apiURL(withScheme: boolean): string {
 }
 
 export function playerRecordToGraphQL(playerRecord: PlayerRecord): PlayerRecordGraphQL {
-    let opponents = Object.keys(playerRecord.records).map(id => parseInt(id, 10));
+    const opponents = Object.keys(playerRecord.records).map(id => parseInt(id, 10));
 
     return {
         scoreStats: playerRecord.scoreStats,
@@ -46,11 +46,11 @@ export function playerRecordToGraphQL(playerRecord: PlayerRecord): PlayerRecordG
             opponents,
             records: opponents.map(id => playerRecord.records[id]),
         }
-    }
+    };
 }
 
 export function gameStandingsToGraphQL(gameStandings: GameStandings): GameStandingsGraphQL {
-    let players = Object.keys(gameStandings.records).map(id => parseInt(id, 10));
+    const players = Object.keys(gameStandings.records).map(id => parseInt(id, 10));
 
     return {
         scoreStats: gameStandings.scoreStats,
@@ -62,7 +62,7 @@ export function gameStandingsToGraphQL(gameStandings: GameStandings): GameStandi
 }
 
 export function playerStandingsToGraphQL(playerStandings: PlayerStandings): PlayerStandingsGraphQL {
-    let opponents = Object.keys(playerStandings.records).map(id => parseInt(id, 10));
+    const opponents = Object.keys(playerStandings.records).map(id => parseInt(id, 10));
 
     return {
         scoreStats: playerStandings.scoreStats,
@@ -71,5 +71,5 @@ export function playerStandingsToGraphQL(playerStandings: PlayerStandings): Play
             opponents,
             records: opponents.map(id => playerStandings.records[id]),
         }
-    }
+    };
 }

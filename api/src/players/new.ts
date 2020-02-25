@@ -4,7 +4,7 @@ import { Player } from '../lib/types';
 
 export default async function add(req: Request): Promise<Player> {
     const playerName: string = req.body.name;
-    let playerUsername: string = req.body.username;
+    const playerUsername: string = req.body.username;
 
     return addPlayer(playerName, playerUsername);
 }
