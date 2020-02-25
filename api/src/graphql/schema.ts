@@ -59,15 +59,28 @@ const schema = buildSchema(`
         lastPlayed: String!
         overallRecord: Record!
         scoreStats: ScoreStats
+        records: PlayerVSRecords!
     },
+
+    type PlayerVSRecords {
+        opponents: [Int!]!
+        records: [Record!]!
+    }
 
     type GameStandings {
         scoreStats: ScoreStats
+        records: GamePlayerRecords
     },
+
+    type GamePlayerRecords {
+        players: [Int!]!
+        records: [PlayerRecord!]!
+    }
 
     type PlayerStandings {
         scoreStats: ScoreStats
         overallRecord: Record!
+        records: PlayerVSRecords!
     }
 `);
 

@@ -1,4 +1,4 @@
-import { Identifiable } from '../lib/types';
+import { Identifiable, PlayerRecord, PlayerRecordGraphQL, GameStandingsGraphQL, PlayerStandings, PlayerStandingsGraphQL, GameStandings } from '../lib/types';
 
 export function findMaxId(items: Array<Identifiable>): number {
     let maxId = 0;
@@ -31,6 +31,45 @@ export function apiURL(withScheme: boolean): string {
             }
         } else {
             return baseURL;
+        }
+    }
+}
+
+export function playerRecordToGraphQL(playerRecord: PlayerRecord): PlayerRecordGraphQL {
+    let opponents = Object.keys(playerRecord.records).map(id => parseInt(id, 10));
+
+    return {
+        scoreStats: playerRecord.scoreStats,
+        lastPlayed: playerRecord.lastPlayed,
+        overallRecord: playerRecord.overallRecord,
+        records: {
+            opponents,
+            records: opponents.map(id => playerRecord.records[id]),
+        }
+    }
+}
+
+export function gameStandingsToGraphQL(gameStandings: GameStandings): GameStandingsGraphQL {
+    let players = Object.keys(gameStandings.records).map(id => parseInt(id, 10));
+
+    return {
+        scoreStats: gameStandings.scoreStats,
+        records: {
+            players,
+            records: players.map(id => playerRecordToGraphQL(gameStandings.records[id])),
+        },
+    };
+}
+
+export function playerStandingsToGraphQL(playerStandings: PlayerStandings): PlayerStandingsGraphQL {
+    let opponents = Object.keys(playerStandings.records).map(id => parseInt(id, 10));
+
+    return {
+        scoreStats: playerStandings.scoreStats,
+        overallRecord: playerStandings.overallRecord,
+        records: {
+            opponents,
+            records: opponents.map(id => playerStandings.records[id]),
         }
     }
 }
