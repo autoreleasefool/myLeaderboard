@@ -1,5 +1,6 @@
-import { Game } from "../../lib/types";
+import { Game, GameStandings } from "../../lib/types";
 import Games from '../../db/games';
+import { gameStandings } from "../../games/standings";
 
 interface GameListQueryArguments {
     first: number;
@@ -13,4 +14,12 @@ export async function resolveGames({first = 25, offset = 0}: GameListQueryArgume
     }
 
     return allGames.slice(offset, offset + first);
+}
+
+interface GameStandingsQueryArguments {
+    id: number;
+}
+
+export async function resolveGameStandings({id}: GameStandingsQueryArguments): Promise<GameStandings> {
+    return gameStandings(id);
 }
