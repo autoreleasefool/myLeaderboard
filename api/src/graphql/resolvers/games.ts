@@ -19,11 +19,11 @@ export async function resolveGames({first = 25, offset = 0}: GameListQueryArgume
 }
 
 interface GameStandingsQueryArguments {
-    id: number;
+    id: string;
 }
 
 export async function resolveGameStandings({id}: GameStandingsQueryArguments): Promise<GameStandingsGraphQL> {
-    const standings = await gameStandings(id);
+    const standings = await gameStandings(parseInt(id, 10));
     return gameStandingsToGraphQL(standings);
 }
 

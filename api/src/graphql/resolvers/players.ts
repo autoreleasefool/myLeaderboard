@@ -1,7 +1,8 @@
-import { Player, PlayerStandings } from "../../lib/types";
+import { Player, PlayerStandingsGraphQL } from "../../lib/types";
 import Players from '../../db/players';
 import { playerRecord } from "../../players/record";
 import { addPlayer } from "../../players/new";
+import { playerStandingsToGraphQL } from "../../common/utils";
 
 interface PlayerListQueryArguments {
     first: number;
@@ -18,12 +19,13 @@ export async function resolvePlayers({first = 25, offset = 0}: PlayerListQueryAr
 }
 
 interface PlayerRecordQueryArguments {
-    id: number;
-    game: number;
+    id: string;
+    game: string;
 }
 
-export async function resolvePlayerRecord({id, game}: PlayerRecordQueryArguments): Promise<PlayerStandings> {
-    return playerRecord(id, game);
+export async function resolvePlayerRecord({id, game}: PlayerRecordQueryArguments): Promise<PlayerStandingsGraphQL> {
+    const standings = await playerRecord(parseInt(id, 10), parseInt(game, 10));
+    return playerStandingsToGraphQL(standings);
 }
 
 interface CreatePlayerArguments {

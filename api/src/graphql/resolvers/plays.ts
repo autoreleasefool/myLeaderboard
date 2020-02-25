@@ -17,12 +17,17 @@ export async function resolvePlays({first = 25, offset = 0}: PlayListArguments):
 }
 
 interface RecordPlayArguments {
-    players: Array<number>;
-    winners: Array<number>;
+    players: Array<string>;
+    winners: Array<string>;
     scores?: Array<number>;
-    game: number;
+    game: string;
 }
 
 export async function resolveRecordPlay({players, winners, scores, game}: RecordPlayArguments): Promise<Play> {
-    return recordPlay(players, winners, scores, game);
+    return recordPlay(
+        players.map(player => parseInt(player, 10)),
+        winners.map(winner => parseInt(winner, 10)),
+        scores,
+        parseInt(game, 10)
+    );
 }

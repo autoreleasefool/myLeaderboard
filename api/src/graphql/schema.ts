@@ -5,9 +5,9 @@ const schema = buildSchema(`
 
     type Query {
         players(first: Int, offset: Int): [Player!]!
-        playerRecord(id: Int!, game: Int!): PlayerStandings
+        playerRecord(id: ID!, game: ID!): PlayerStandings
         games(first: Int, offset: Int): [Game!]!
-        gameStandings(id: Int!): GameStandings
+        gameStandings(id: ID!): GameStandings
         plays(first: Int, offset: Int): [Play!]!
         hasAnyUpdates(since: DateTime): Boolean!
     },
@@ -15,25 +15,25 @@ const schema = buildSchema(`
     type Mutation {
         createGame(name: String!, hasScores: Boolean!): Game
         createPlayer(name: String!, username: String!): Player
-        recordPlay(players: [Int!]!, winners: [Int!]!, scores: [Int!], game: Int!): Play
+        recordPlay(players: [ID!]!, winners: [ID!]!, scores: [Int!], game: ID!): Play
     },
 
     type Player {
-        id: Int!
+        id: ID!
         displayName: String!
         username: String!
         avatar: String
     },
 
     type Game {
-        id: Int!
+        id: ID!
         name: String!
         hasScores: Boolean!
         image: String
     },
 
     type Play {
-        id: Int!
+        id: ID!
         game: Int!
         playedOn: String!
         players: [Int!]!
@@ -64,7 +64,7 @@ const schema = buildSchema(`
     },
 
     type PlayerVSRecords {
-        opponents: [Int!]!
+        opponents: [ID!]!
         records: [Record!]!
     }
 
@@ -74,7 +74,7 @@ const schema = buildSchema(`
     },
 
     type GamePlayerRecords {
-        players: [Int!]!
+        players: [ID!]!
         records: [PlayerRecord!]!
     }
 
