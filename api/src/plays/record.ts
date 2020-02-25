@@ -8,9 +8,13 @@ import { Game, Play, Player } from '../lib/types';
 export default async function record(req: Request): Promise<Play> {
     const playerIds: Array<number> = typeof(req.body.players) === 'string' ? JSON.parse(req.body.players) : req.body.players;
     const winnerIds: Array<number> = typeof(req.body.winners) === 'string' ? JSON.parse(req.body.winners) : req.body.winners;
-    const scores: Array<number> = req.body.scores != null ? (typeof(req.body.scores) === 'string' ? JSON.parse(req.body.scores) : req.body.scores) : null;
+    const scores: Array<number> | undefined = req.body.scores != null ? (typeof(req.body.scores) === 'string' ? JSON.parse(req.body.scores) : req.body.scores) : undefined;
     const game: number = req.body.game;
 
+    return recordPlay(playerIds, winnerIds, scores, game);
+}
+
+export async function recordPlay(playerIds: Array<number>, winnerIds: Array<number>, scores: Array<number> | undefined, game: number): Promise<Play> {
     if (playerIds.length === 0) {
         throw new Error('No players.');
     } else if (winnerIds.length === 0) {
