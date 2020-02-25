@@ -8,6 +8,7 @@ import {
     resolveGameStandings as gameStandings
 } from './games';
 import { resolveHasAnyUpdates as hasAnyUpdates } from './misc';
+import { resolvePlays as plays } from './plays';
 
 const resolvers = {
     DateTime: GraphQLDateTime,
@@ -16,6 +17,7 @@ const resolvers = {
     games,
     gameStandings,
     hasAnyUpdates,
+    plays,
 };
 
 export default resolvers;
