@@ -20,7 +20,10 @@ interface RecordHighlight {
 export default async function record(req: Request): Promise<PlayerStandings> {
     const playerId = parseInt(req.params.playerId, 10);
     const gameId = parseInt(req.params.gameId, 10);
+    return playerRecord(playerId, gameId)
+}
 
+export async function playerRecord(playerId: number, gameId: number): Promise<PlayerStandings> {
     const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
 
     const player = Players.getInstance().findById(playerId);

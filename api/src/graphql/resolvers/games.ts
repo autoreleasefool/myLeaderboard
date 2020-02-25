@@ -6,7 +6,7 @@ interface GameListQueryArguments {
     offset: number;
 }
 
-export async function games({first = 25, offset = 0}: GameListQueryArguments): Promise<Game[]> {
+export async function resolveGames({first = 25, offset = 0}: GameListQueryArguments): Promise<Game[]> {
     const allGames = Games.getInstance().allWithImages();
     if (offset >= allGames.length) {
         return [];

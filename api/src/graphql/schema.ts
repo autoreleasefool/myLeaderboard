@@ -3,8 +3,18 @@ import { buildSchema } from 'graphql';
 const schema = buildSchema(`
     type Query {
         players(first: Int, offset: Int): [Player!]!
+        playerRecord(id: Int!, game: Int!): PlayerStandings
         games(first: Int, offset: Int): [Game!]!
+        gameStandings(id: Int!): GameStandings
+        plays(first: Int, offset: Int): [Play!]!
+        hasAnyUpdates: Boolean!
     },
+
+    type Mutation {
+        createGame(name: String!, hasScores: Boolean!): Game
+        createPlayer(name: String!, username: String!): Player
+        recordPlay(players: [Int!]!, winners: [Int!]!, scores: [Int!], game: Int!): Play
+    }
 
     type Player {
         id: Int!
