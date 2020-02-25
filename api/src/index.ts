@@ -37,8 +37,8 @@ app.use((req, _, next) => {
     next();
 });
 
-function errorHandler(err: any, req: Request, res: Response): void {
-    console.log(err, req);
+function errorHandler(err: any, _: Request, res: Response, __: NextFunction): void {
+    console.log(err);
     res.json(err);
 }
 
@@ -55,6 +55,7 @@ import applyGamesRouter from './games/router';
 import applyMiscRouter from './misc/router';
 import applyPlayersRouter from './players/router';
 import applyPlaysRouter from './plays/router';
+import applyGraphQLRouter from './graphql/router';
 
 app.use(express.static('./static'));
 app.use(tokenExtraction);
@@ -62,6 +63,7 @@ applyGamesRouter(app);
 applyPlayersRouter(app);
 applyPlaysRouter(app);
 applyMiscRouter(app);
+applyGraphQLRouter(app);
 app.use(errorHandler);
 
 // SSL
@@ -88,6 +90,7 @@ if (process.env.SSL_ENABLED) {
 } else {
     app.listen(port, () => {
         console.log(`myLeaderboard API listening on port ${port}`);
+        console.log(`http://localhost:${port}`);
     });
 }
 
