@@ -1,3 +1,4 @@
+import { GraphQLDateTime } from 'graphql-iso-date';
 import {
     resolvePlayers as players,
     resolvePlayerRecord as playerRecord,
@@ -5,6 +6,7 @@ import {
 import { resolveGames as games } from './games';
 
 const resolvers = {
+    DateTime: GraphQLDateTime,
     players,
     playerRecord,
     games,
