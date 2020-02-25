@@ -2,9 +2,7 @@ import { buildSchema } from 'graphql';
 
 const schema = buildSchema(`
     type Query {
-        player(id: Int!): Player
         players(first: Int, offset: Int): [Player!]!
-        game(id: Int!): Game
         games(first: Int, offset: Int): [Game!]!
     },
 

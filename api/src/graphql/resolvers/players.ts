@@ -1,14 +1,6 @@
 import { Player } from "../../lib/types";
 import Players from '../../db/players';
 
-interface PlayerQueryArguments {
-    id: number;
-}
-
-export async function player({id}: PlayerQueryArguments): Promise<Player | undefined> {
-    return Players.getInstance().findById(id);
-}
-
 interface PlayerListQueryArguments {
     first: number;
     offset: number;

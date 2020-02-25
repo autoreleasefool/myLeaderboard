@@ -1,10 +1,8 @@
-import { player, players } from './players';
-import { game, games } from './games';
+import { players } from './players';
+import { games } from './games';
 
 const resolvers = {
-    player,
     players,
-    game,
     games,
 };
 

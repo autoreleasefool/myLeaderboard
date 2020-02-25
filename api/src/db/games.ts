@@ -1,5 +1,6 @@
 import { Game } from '../lib/types';
 import Table from './table';
+import { apiURL } from '../common/utils';
 
 class Games extends Table<Game> {
     public static getInstance(): Games {
@@ -14,6 +15,14 @@ class Games extends Table<Game> {
 
     private constructor() {
         super('games');
+    }
+
+    public allWithImages(): Array<Game> {
+        const gameList = this.all();
+        for (const game of gameList) {
+            game.image = `${apiURL(true)}/img/games/${game.name}.png`;
+        }
+        return gameList;
     }
 }
 
