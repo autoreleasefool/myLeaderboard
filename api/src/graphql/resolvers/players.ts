@@ -9,7 +9,7 @@ interface PlayerListQueryArguments {
 }
 
 export async function resolvePlayers({first = 25, offset = 0}: PlayerListQueryArguments): Promise<Array<Player>> {
-    const allPlayers = Players.getInstance().all();
+    const allPlayers = await Players.getInstance().allWithAvatars();
     if (offset >= allPlayers.length) {
         return [];
     }
