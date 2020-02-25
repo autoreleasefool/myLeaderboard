@@ -2,6 +2,7 @@ import { Game, GameStandingsGraphQL } from "../../lib/types";
 import Games from '../../db/games';
 import { gameStandings } from "../../games/standings";
 import { gameStandingsToGraphQL } from "../../common/utils";
+import { addGame } from "../../games/new";
 
 interface GameListQueryArguments {
     first: number;
@@ -24,4 +25,13 @@ interface GameStandingsQueryArguments {
 export async function resolveGameStandings({id}: GameStandingsQueryArguments): Promise<GameStandingsGraphQL> {
     let standings = await gameStandings(id);
     return gameStandingsToGraphQL(standings);
+}
+
+interface CreateGameArguments {
+    name: string;
+    hasScores: boolean;
+}
+
+export async function resolveCreateGame({name, hasScores}: CreateGameArguments): Promise<Game> {
+    return addGame(name, hasScores);
 }

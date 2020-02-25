@@ -6,6 +6,10 @@ export default async function add(req: Request): Promise<Game> {
     const name = req.body.name;
     const hasScores = req.body.hasScores;
 
+    return addGame(name, hasScores);
+}
+
+export async function addGame(name: string, hasScores: boolean): Promise<Game> {
     // Input validation
     if (name == null || name.length === 0) {
         throw new Error('Missing "name".');

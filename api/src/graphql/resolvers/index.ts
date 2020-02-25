@@ -6,7 +6,8 @@ import {
 } from './players';
 import {
     resolveGames as games,
-    resolveGameStandings as gameStandings
+    resolveGameStandings as gameStandings,
+    resolveCreateGame as createGame,
 } from './games';
 import { resolveHasAnyUpdates as hasAnyUpdates } from './misc';
 import { resolvePlays as plays } from './plays';
@@ -18,6 +19,7 @@ const resolvers = {
     createPlayer,
     games,
     gameStandings,
+    createGame,
     hasAnyUpdates,
     plays,
 };
