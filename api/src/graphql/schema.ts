@@ -33,6 +33,7 @@ const schema = buildSchema(`
     },
 
     type Play {
+        id: Int!
         game: Int!
         playedOn: String!
         players: [Int!]!
