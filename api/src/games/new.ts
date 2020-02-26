@@ -18,7 +18,7 @@ export async function addGame(name: string, hasScores: boolean): Promise<Game> {
         throw new Error('Missing "hasScores" or value is not boolean.');
     }
 
-    const gameList = Games.getInstance().all();
+    const gameList = Games.getInstance().all({});
     const newGame = createGame(name, hasScores, gameList);
     Games.getInstance().add(newGame, `Adding game ${name}`);
 
