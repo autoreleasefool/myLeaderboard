@@ -39,8 +39,8 @@ const schema = buildSchema(`
         id: ID!
         game: Int!
         playedOn: String!
-        players: [Int!]!
-        winners: [Int!]!
+        players: [Player!]!
+        winners: [Player!]!
         scores: [Int!]
     },
 
@@ -63,28 +63,28 @@ const schema = buildSchema(`
         lastPlayed: String!
         overallRecord: Record!
         scoreStats: ScoreStats
-        records: PlayerVSRecords!
+        records: [PlayerVSRecord!]!
     },
 
-    type PlayerVSRecords {
-        opponents: [ID!]!
-        records: [Record!]!
+    type PlayerVSRecord {
+        player: Player!
+        record: Record!
     }
 
     type GameStandings {
         scoreStats: ScoreStats
-        records: GamePlayerRecords
+        records: [GamePlayerRecord!]!
     },
 
     type GamePlayerRecords {
-        players: [ID!]!
-        records: [PlayerRecord!]!
+        player: Player!
+        record: PlayerRecord!
     }
 
     type PlayerStandings {
         scoreStats: ScoreStats
         overallRecord: Record!
-        records: PlayerVSRecords!
+        records: [PlayerVSRecords!]!
     }
 `);
 

@@ -13,13 +13,13 @@ const graphQL = graphQLHTTP({
 const router = express.Router();
 
 router.get('/graphql/introspection', (_, res, next) => {
-    let query = getIntrospectionQuery();
+    const query = getIntrospectionQuery();
     graphql(schema, query, resolvers).then(introspection => {
         res.json(introspection);
     }).catch(error => {
         next(error);
     });
-})
+});
 
 export default function applyRouter(app: express.Express): void {
     app.use(router);

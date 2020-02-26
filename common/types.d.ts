@@ -37,6 +37,14 @@ export interface Play extends Identifiable {
     scores?: Array<number>;
 }
 
+export interface PlayGraphQL extends Identifiable {
+    game: Game;
+    playedOn: string;
+    players: Array<Player>;
+    winners: Array<Player>;
+    scores?: Array<number>;
+}
+
 // Standings
 
 export interface Record {
@@ -60,12 +68,12 @@ export interface PlayerRecordGraphQL {
     scoreStats?: ScoreStats;
     lastPlayed: string;
     overallRecord: Record;
-    records: PlayerVSRecord;
+    records: Array<PlayerVSRecord>;
 }
 
 export interface PlayerVSRecord {
-    opponents: Array<number>;
-    records: Array<Record>;
+    player: Player;
+    record: Record;
 }
 
 export interface ScoreStats {
@@ -84,12 +92,12 @@ export interface GameStandings {
 
 export interface GameStandingsGraphQL {
     scoreStats?: ScoreStats;
-    records: GamePlayerRecords;
+    records: Array<GamePlayerRecord>;
 }
 
-export interface GamePlayerRecords {
-    players: Array<number>;
-    records: Array<PlayerRecordGraphQL>;
+export interface GamePlayerRecord {
+    player: Player;
+    record: PlayerRecordGraphQL;
 }
 
 export interface PlayerStandings {
@@ -103,5 +111,5 @@ export interface PlayerStandings {
 export interface PlayerStandingsGraphQL {
     scoreStats?: ScoreStats;
     overallRecord: Record;
-    records: PlayerVSRecord;
+    records: Array<PlayerVSRecord>;
 }

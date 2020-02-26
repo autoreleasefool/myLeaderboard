@@ -28,11 +28,11 @@ class Players extends Table<Player> {
     }
 
     private async addAvatar(player: Player): Promise<Player> {
-        let user = await Octo.getInstance().user(player.username);
+        const user = await Octo.getInstance().user(player.username);
         return {
             ...player,
             avatar: user.avatarUrl,
-        }
+        };
     }
 }
 
