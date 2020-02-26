@@ -21,13 +21,13 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
         throw new Error('No winners.');
     }
 
-    validateGameExists(game, await Games.getInstance().all());
+    validateGameExists(game, await Games.getInstance().all({}));
     validateWinnersExist(winnerIds, playerIds);
 
-    const existingPlayers = await Players.getInstance().all();
+    const existingPlayers = await Players.getInstance().all({});
     const players = mapPlayerIdsToNames(playerIds, existingPlayers);
 
-    const playList = Plays.getInstance().all();
+    const playList = Plays.getInstance().all({});
     const maxId = findMaxId(playList);
 
     const newPlay: Play = {

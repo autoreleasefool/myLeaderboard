@@ -24,13 +24,13 @@ export default async function generateGameStandings(req: Request): Promise<GameS
 }
 
 export async function gameStandings(gameId: number): Promise<GameStandings> {
-    const game = Games.getInstance().findById(gameId);
+    const game = Games.getInstance().findByIdWithImage(gameId);
     if (game == null) {
         return { records: {}};
     }
 
     const gameStandings = await buildStandings(game);
-    const allPlayers = await Players.getInstance().all();
+    const allPlayers = await Players.getInstance().all({});
     const players = allPlayers.filter(player => {
         const playerRecord = gameStandings.records[player.id];
         return playerRecord == null ? false : isBanished(playerRecord) === false;
@@ -49,7 +49,7 @@ async function buildStandings(game: Game): Promise<GameStandings> {
     let bestScore = -Infinity;
     let worstScore = Infinity;
 
-    const plays = Plays.getInstance().all();
+    const plays = Plays.getInstance().all({});
     plays.filter(play => play.game === game.id)
         .forEach(play => {
             totalGames += 1;

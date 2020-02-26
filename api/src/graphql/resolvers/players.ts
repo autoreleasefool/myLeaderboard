@@ -2,20 +2,11 @@ import { Player, PlayerStandingsGraphQL } from "../../lib/types";
 import Players from '../../db/players';
 import { playerRecord } from "../../players/record";
 import { addPlayer } from "../../players/new";
-import { playerStandingsToGraphQL } from "../../common/utils";
+import { playerStandingsToGraphQL, parseID } from "../../common/utils";
+import { ListArguments } from "../../db/table";
 
-interface PlayerListQueryArguments {
-    first: number;
-    offset: number;
-}
-
-export async function resolvePlayers({first = 25, offset = 0}: PlayerListQueryArguments): Promise<Array<Player>> {
-    const allPlayers = await Players.getInstance().allWithAvatars();
-    if (offset >= allPlayers.length) {
-        return [];
-    }
-
-    return allPlayers.slice(offset, offset + first);
+interface PlayerArguments {
+    id: string;
 }
 
 interface PlayerRecordQueryArguments {
@@ -23,14 +14,22 @@ interface PlayerRecordQueryArguments {
     game: string;
 }
 
-export async function resolvePlayerRecord({id, game}: PlayerRecordQueryArguments): Promise<PlayerStandingsGraphQL> {
-    const standings = await playerRecord(parseInt(id, 10), parseInt(game, 10));
-    return playerStandingsToGraphQL(standings);
-}
-
 interface CreatePlayerArguments {
     name: string;
     username: string;
+}
+
+export async function resolvePlayer({id}: PlayerArguments): Promise<Player | undefined> {
+    return Players.getInstance().findByIdWithAvatar(parseID(id));
+}
+
+export async function resolvePlayers(args: ListArguments): Promise<Array<Player>> {
+    return Players.getInstance().allWithAvatars(args);
+}
+
+export async function resolvePlayerRecord({id, game}: PlayerRecordQueryArguments): Promise<PlayerStandingsGraphQL> {
+    const standings = await playerRecord(parseInt(id, 10), parseInt(game, 10));
+    return playerStandingsToGraphQL(standings);
 }
 
 export async function resolveCreatePlayer({name, username}: CreatePlayerArguments): Promise<Player> {

@@ -1,35 +1,34 @@
 import { Game, GameStandingsGraphQL } from "../../lib/types";
 import Games from '../../db/games';
 import { gameStandings } from "../../games/standings";
-import { gameStandingsToGraphQL } from "../../common/utils";
+import { gameStandingsToGraphQL, parseID } from "../../common/utils";
 import { addGame } from "../../games/new";
+import { ListArguments } from "../../db/table";
 
-interface GameListQueryArguments {
-    first: number;
-    offset: number;
-}
-
-export async function resolveGames({first = 25, offset = 0}: GameListQueryArguments): Promise<Array<Game>> {
-    const allGames = Games.getInstance().allWithImages();
-    if (offset >= allGames.length) {
-        return [];
-    }
-
-    return allGames.slice(offset, offset + first);
+interface GameArguments {
+    id: string;
 }
 
 interface GameStandingsQueryArguments {
     id: string;
 }
 
-export async function resolveGameStandings({id}: GameStandingsQueryArguments): Promise<GameStandingsGraphQL> {
-    const standings = await gameStandings(parseInt(id, 10));
-    return gameStandingsToGraphQL(standings);
-}
-
 interface CreateGameArguments {
     name: string;
     hasScores: boolean;
+}
+
+export async function resolveGame({id}: GameArguments): Promise<Game | undefined> {
+    return Games.getInstance().findByIdWithImage(parseID(id));
+}
+
+export async function resolveGames(args: ListArguments): Promise<Array<Game>> {
+    return Games.getInstance().allWithImages(args);
+}
+
+export async function resolveGameStandings({id}: GameStandingsQueryArguments): Promise<GameStandingsGraphQL> {
+    const standings = await gameStandings(parseInt(id, 10));
+    return gameStandingsToGraphQL(standings);
 }
 
 export async function resolveCreateGame({name, hasScores}: CreateGameArguments): Promise<Game> {

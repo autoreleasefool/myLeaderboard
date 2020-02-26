@@ -1,5 +1,5 @@
 import { Game } from '../lib/types';
-import Table from './table';
+import Table, { ListArguments } from './table';
 import { apiURL } from '../common/utils';
 
 class Games extends Table<Game> {
@@ -17,12 +17,20 @@ class Games extends Table<Game> {
         super('games');
     }
 
-    public allWithImages(): Array<Game> {
-        const gameList = this.all();
-        for (const game of gameList) {
-            game.image = `${apiURL(true)}/img/games/${game.name}.png`;
-        }
-        return gameList;
+    public findByIdWithImage(id: number): Game | undefined {
+        const game = this.findById(id);
+        return game ? this.addImage(game) : undefined;
+    }
+
+    public allWithImages(args: ListArguments): Array<Game> {
+        return this.all(args).map(game => this.addImage(game));
+    }
+
+    private addImage(game: Game): Game {
+        return {
+            ...game,
+            image: `${apiURL(true)}/img/games/${game.name}.png`,
+        };
     }
 }
 

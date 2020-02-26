@@ -1,5 +1,9 @@
 import { Identifiable, PlayerRecord, PlayerRecordGraphQL, GameStandingsGraphQL, PlayerStandings, PlayerStandingsGraphQL, GameStandings } from '../lib/types';
 
+export function parseID(id: string): number {
+    return parseInt(id, 10);
+}
+
 export function findMaxId(items: Array<Identifiable>): number {
     let maxId = 0;
     for (const item of items) {

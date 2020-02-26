@@ -1,19 +1,11 @@
 import { Play } from "../../lib/types";
 import Plays from "../../db/plays";
 import { recordPlay } from "../../plays/record";
+import { ListArguments } from "../../db/table";
+import { parseID } from "../../common/utils";
 
-interface PlayListArguments {
-    first: number;
-    offset: number;
-}
-
-export async function resolvePlays({first = 25, offset = 0}: PlayListArguments): Promise<Array<Play>> {
-    const allPlays = Plays.getInstance().all();
-    if (offset >= allPlays.length) {
-        return [];
-    }
-
-    return allPlays.slice(offset, offset + first);
+interface PlayArguments {
+    id: string;
 }
 
 interface RecordPlayArguments {
@@ -21,6 +13,14 @@ interface RecordPlayArguments {
     winners: Array<string>;
     scores?: Array<number>;
     game: string;
+}
+
+export async function resolvePlay({id}: PlayArguments): Promise<Play | undefined> {
+    return Plays.getInstance().findById(parseID(id));
+}
+
+export async function resolvePlays(args: ListArguments): Promise<Array<Play>> {
+    return Plays.getInstance().all(args);
 }
 
 export async function resolveRecordPlay({players, winners, scores, game}: RecordPlayArguments): Promise<Play> {

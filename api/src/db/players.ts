@@ -1,6 +1,6 @@
 import Octo from '../common/Octo';
-import { GitHubUser, Player } from '../lib/types';
-import Table from './table';
+import { Player } from '../lib/types';
+import Table, { ListArguments } from './table';
 
 class Players extends Table<Player> {
     public static getInstance(): Players {
@@ -17,25 +17,22 @@ class Players extends Table<Player> {
         super('players');
     }
 
-    public async allWithAvatars(): Promise<Array<Player>> {
-        const rows = this.all();
+    public async findByIdWithAvatar(id: number): Promise<Player | undefined> {
+        const player = this.findById(id);
+        return player ? this.addAvatar(player) : undefined;
+    }
 
-        const gitHubDetailsPromises: Array<Promise<GitHubUser>> = [];
-        for (const player of rows) {
-            gitHubDetailsPromises.push(Octo.getInstance().user(player.username));
+    public async allWithAvatars(args: ListArguments): Promise<Array<Player>> {
+        const rows = this.all(args);
+        return Promise.all(rows.map(player => this.addAvatar(player)));
+    }
+
+    private async addAvatar(player: Player): Promise<Player> {
+        let user = await Octo.getInstance().user(player.username);
+        return {
+            ...player,
+            avatar: user.avatarUrl,
         }
-
-        const gitHubUsers = await Promise.all(gitHubDetailsPromises);
-
-        for (const player of rows) {
-            for (const user of gitHubUsers) {
-                if (user.login === player.username) {
-                    player.avatar = user.avatarUrl;
-                }
-            }
-        }
-
-        return rows;
     }
 }
 

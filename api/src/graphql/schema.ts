@@ -4,10 +4,13 @@ const schema = buildSchema(`
     scalar DateTime,
 
     type Query {
+        player(id: ID!): Player
         players(first: Int, offset: Int): [Player!]!
         playerRecord(id: ID!, game: ID!): PlayerStandings
+        game(id: ID!): Game
         games(first: Int, offset: Int): [Game!]!
         gameStandings(id: ID!): GameStandings
+        play(id: ID!): Play
         plays(first: Int, offset: Int): [Play!]!
         hasAnyUpdates(since: DateTime): Boolean!
     },

@@ -1,6 +1,11 @@
 import Octo, { Blob } from '../common/Octo';
 import { Identifiable } from '../lib/types';
 
+export interface ListArguments {
+    first?: number;
+    offset?: number;
+}
+
 class Table<Row extends Identifiable> {
     private tableName: string;
     private path: string;
@@ -27,8 +32,8 @@ class Table<Row extends Identifiable> {
         return this.tableName;
     }
 
-    public all(): Array<Row> {
-        return this.rows;
+    public all({first = 25, offset = 0}: ListArguments): Array<Row> {
+        return this.rows.slice(offset, offset + first);
     }
 
     public anyUpdatesSince(date: Date): boolean {

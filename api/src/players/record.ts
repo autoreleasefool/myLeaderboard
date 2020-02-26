@@ -26,17 +26,17 @@ export default async function record(req: Request): Promise<PlayerStandings> {
 export async function playerRecord(playerId: number, gameId: number): Promise<PlayerStandings> {
     const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
 
-    const player = Players.getInstance().findById(playerId);
+    const player = Players.getInstance().findByIdWithAvatar(playerId);
     if (player == null) {
         return playerRecord;
     }
 
-    const game = Games.getInstance().findById(gameId);
+    const game = Games.getInstance().findByIdWithImage(gameId);
     if (game == null) {
         return playerRecord;
     }
 
-    const plays = await Plays.getInstance().all();
+    const plays = await Plays.getInstance().all({});
 
     let gamesPlayed = 0;
     let gamesWithScores = 0;

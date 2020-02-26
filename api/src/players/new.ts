@@ -21,7 +21,7 @@ export async function addPlayer(playerName: string, playerUsername: string): Pro
         playerUsername = playerUsername.substr(1);
     }
 
-    const playerList = Players.getInstance().all();
+    const playerList = Players.getInstance().all({});
     const newPlayer = createPlayer(playerName, playerUsername, playerList);
     Players.getInstance().add(newPlayer, `Adding player "${playerUsername}`);
 
