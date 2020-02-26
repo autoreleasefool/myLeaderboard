@@ -37,7 +37,7 @@ const schema = buildSchema(`
 
     type Play {
         id: ID!
-        game: Int!
+        game: Game!
         playedOn: String!
         players: [Player!]!
         winners: [Player!]!
@@ -76,7 +76,7 @@ const schema = buildSchema(`
         records: [GamePlayerRecord!]!
     },
 
-    type GamePlayerRecords {
+    type GamePlayerRecord {
         player: Player!
         record: PlayerRecord!
     }
@@ -84,7 +84,7 @@ const schema = buildSchema(`
     type PlayerStandings {
         scoreStats: ScoreStats
         overallRecord: Record!
-        records: [PlayerVSRecords!]!
+        records: [PlayerVSRecord!]!
     }
 `);
 
