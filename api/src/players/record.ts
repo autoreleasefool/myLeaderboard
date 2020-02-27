@@ -3,6 +3,7 @@ import Games from '../db/games';
 import Players from '../db/players';
 import Plays from '../db/plays';
 import { PlayerStandings, Record } from '../lib/types';
+import { parseID } from '../common/utils';
 
 enum GameResult {
     WON,
@@ -18,8 +19,8 @@ interface RecordHighlight {
 }
 
 export default async function record(req: Request): Promise<PlayerStandings> {
-    const playerId = parseInt(req.params.playerId, 10);
-    const gameId = parseInt(req.params.gameId, 10);
+    const playerId = parseID(req.params.playerId);
+    const gameId = parseID(req.params.gameId);
     return playerRecord(playerId, gameId);
 }
 
@@ -110,7 +111,7 @@ function highlightRecords(standings: PlayerStandings): void {
     const opponentIds: Array<number> = [];
     for (const recordAgainstOpponent in standings.records) {
         if (Object.prototype.hasOwnProperty.call(standings.records, recordAgainstOpponent)) {
-            opponentIds.push(parseInt(recordAgainstOpponent, 10));
+            opponentIds.push(parseID(recordAgainstOpponent));
         }
     }
 

@@ -8,8 +8,8 @@ import scoreStats from './scoreStats';
 import gamePlayerRecord from './gamePlayerRecord';
 
 export default new GraphQLObjectType({
-    name: 'PlayerRecord',
-    description: 'Player record',
+    name: 'GameStandings',
+    description: 'Standings for a game',
     fields: () => ({
         scoreStats: {
             type: scoreStats,

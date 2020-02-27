@@ -4,6 +4,7 @@ import Players from '../db/players';
 import Plays from '../db/plays';
 import { isBanished } from '../lib/Freshness';
 import { Game, GameStandings, Player, Record } from '../lib/types';
+import { parseID } from '../common/utils';
 
 enum GameResult {
     WON,
@@ -19,7 +20,7 @@ interface RecordHighlight {
 }
 
 export default async function generateGameStandings(req: Request): Promise<GameStandings> {
-    const gameId = parseInt(req.params.id, 10);
+    const gameId = parseID(req.params.id);
     return gameStandings(gameId);
 }
 
