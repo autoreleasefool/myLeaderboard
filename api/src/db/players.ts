@@ -27,7 +27,13 @@ class Players extends Table<Player> {
         return Promise.all(rows.map(player => this.addAvatar(player)));
     }
 
+    public async allByIdsWithAvatars(ids: Array<number>): Promise<Array<Player>> {
+        const rows = this.allByIds(ids);
+        return Promise.all(rows.map(player => this.addAvatar(player)));
+    }
+
     private async addAvatar(player: Player): Promise<Player> {
+        console.log(`Finding player ${player.id}`);
         const user = await Octo.getInstance().user(player.username);
         return {
             ...player,

@@ -59,6 +59,11 @@ class Table<Row extends Identifiable> {
         return undefined;
     }
 
+    public allByIds(ids: Array<number>): Array<Row> {
+        const idSet = new Set(ids);
+        return this.rows.filter(row => idSet.has(row.id));
+    }
+
     public async add(row: Row, message?: string): Promise<void> {
         this.rows.push(row);
 

@@ -1,14 +1,15 @@
 import express from 'express';
-import {graphql, getIntrospectionQuery} from 'graphql';
+import { graphql, getIntrospectionQuery } from 'graphql';
 import graphQLHTTP from 'express-graphql';
 import schema from './schema';
 import resolvers from './resolvers';
+import Loader from './dataloader';
 
-const graphQL = graphQLHTTP({
+const graphQL = graphQLHTTP(_ => ({
     schema,
     graphiql: true,
-    rootValue: resolvers,
-});
+    context: { loader: Loader() },
+}));
 
 const router = express.Router();
 
