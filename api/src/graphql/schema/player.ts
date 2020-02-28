@@ -11,7 +11,7 @@ import playerBasic from './playerBasic';
 import { playerRecord as generatePlayerRecord } from '../../players/record';
 import { playerStandingsToGraphQL } from './playerStandings';
 import { Player } from '../../lib/types';
-import { MyLeaderboardLoader } from '../dataloader';
+import { MyLeaderboardLoader } from '../DataLoader';
 
 interface QueryContext {
     loader: MyLeaderboardLoader;

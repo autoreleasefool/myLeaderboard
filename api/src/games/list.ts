@@ -1,6 +1,6 @@
 import Games from '../db/games';
 import { Game } from '../lib/types';
-import DataLoader from '../graphql/dataloader';
+import DataLoader from '../graphql/DataLoader';
 import { Request } from 'express';
 import { getListParams, isGame } from '../common/utils';
 

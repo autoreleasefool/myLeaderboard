@@ -7,7 +7,7 @@ import {
 import scoreStats from './scoreStats';
 import gamePlayerRecord from './gamePlayerRecord';
 import { GameStandings, GameStandingsGraphQL, Player } from '../../lib/types';
-import { MyLeaderboardLoader } from '../dataloader';
+import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer } from '../../common/utils';
 import { playerRecordToGraphQL } from './playerRecord';
 

@@ -20,7 +20,7 @@ import { anyUpdatesSince } from '../misc/hasUpdates';
 import { addGame } from '../games/new';
 import { addPlayer } from '../players/new';
 import { recordPlay } from '../plays/record';
-import { MyLeaderboardLoader } from './dataloader';
+import { MyLeaderboardLoader } from './DataLoader';
 import { ListArguments } from '../db/table';
 
 export interface SchemaContext {

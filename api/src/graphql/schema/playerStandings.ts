@@ -8,7 +8,7 @@ import scoreStats from './scoreStats';
 import record from './record';
 import playerVSRecord from './playerVSRecord';
 import { PlayerStandings, PlayerStandingsGraphQL, Player } from '../../lib/types';
-import { MyLeaderboardLoader } from '../dataloader';
+import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer } from '../../common/utils';
 
 export async function playerStandingsToGraphQL(playerStandings: PlayerStandings, loader: MyLeaderboardLoader): Promise<PlayerStandingsGraphQL> {

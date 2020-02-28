@@ -2,7 +2,7 @@ import express from 'express';
 import { graphql, getIntrospectionQuery } from 'graphql';
 import graphQLHTTP from 'express-graphql';
 import schema from './schema';
-import Loader from './dataloader';
+import Loader from './DataLoader';
 
 const graphQL = graphQLHTTP(_ => ({
     schema,

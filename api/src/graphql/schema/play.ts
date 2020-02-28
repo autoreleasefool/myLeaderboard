@@ -8,7 +8,7 @@ import {
 } from 'graphql';
 import game from './game';
 import { Play, PlayGraphQL, Player } from '../../lib/types';
-import { MyLeaderboardLoader } from '../dataloader';
+import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer } from '../../common/utils';
 import playerBasic from './playerBasic';
 import { SchemaContext } from '../schema';

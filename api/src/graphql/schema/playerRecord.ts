@@ -9,7 +9,7 @@ import record from './record';
 import scoreStats from './scoreStats';
 import playerVSRecord from './playerVSRecord';
 import { PlayerRecord, PlayerRecordGraphQL, Player } from '../../lib/types';
-import { MyLeaderboardLoader } from '../dataloader';
+import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer } from '../../common/utils';
 
 export async function playerRecordToGraphQL(playerRecord: PlayerRecord, loader: MyLeaderboardLoader): Promise<PlayerRecordGraphQL> {

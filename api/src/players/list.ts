@@ -1,6 +1,6 @@
 import { Player } from '../lib/types';
 import { getListParams, isPlayer } from '../common/utils';
-import DataLoader from '../graphql/dataloader';
+import DataLoader from '../graphql/DataLoader';
 import { Request } from 'express';
 import Players from '../db/players';
 
