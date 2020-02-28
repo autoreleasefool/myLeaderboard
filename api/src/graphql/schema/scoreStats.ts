@@ -4,7 +4,7 @@ import {
     GraphQLInt,
 } from 'graphql';
 
-export default new GraphQLObjectType({
+export default new GraphQLObjectType<void, void, {}>({
     name: 'ScoreStats',
     description: 'Score statistics for a given game',
     fields: () => ({

@@ -5,8 +5,12 @@ import {
     GraphQLBoolean,
     GraphQLID,
 } from 'graphql';
+import gameStandings, { gameStandingsToGraphQL } from './gameStandings';
+import { gameStandings as generateGameStandings } from '../../games/standings';
+import { Game } from '../../lib/types';
+import { SchemaContext} from '../schema';
 
-export default new GraphQLObjectType({
+export default new GraphQLObjectType<Game, SchemaContext, {}>({
     name: 'Game',
     description: 'Game from the MyLeaderboard API',
     fields: () => ({
@@ -22,5 +26,13 @@ export default new GraphQLObjectType({
         image: {
             type: GraphQLString,
         },
+        standings: {
+            type: GraphQLNonNull(gameStandings),
+            resolve: async (game, _, {loader}) =>
+                gameStandingsToGraphQL(
+                    await generateGameStandings(game.id),
+                    loader
+                ),
+        }
     }),
 });

@@ -1,5 +1,4 @@
-import { Identifiable, PlayerRecord, PlayerRecordGraphQL, GameStandingsGraphQL, PlayerStandings, PlayerStandingsGraphQL, GameStandings, PlayGraphQL, Play, Player, Game } from '../lib/types';
-import { MyLeaderboardLoader } from '../graphql/dataloader';
+import { Identifiable, Play, Player, Game } from '../lib/types';
 
 export function parseID(id: string): number {
     return parseInt(id, 10);
@@ -62,72 +61,4 @@ export function isGame(item: any): item is Game {
 
 export function isPlay(item: any): item is Play {
     return item.game !== undefined && item.players !== undefined;
-}
-
-export async function playerRecordToGraphQL(playerRecord: PlayerRecord, loader: MyLeaderboardLoader): Promise<PlayerRecordGraphQL> {
-    const playerIds = Object.keys(playerRecord.records);
-    const players = await loader.playerLoader.loadMany(playerIds);
-
-    return {
-        scoreStats: playerRecord.scoreStats,
-        lastPlayed: playerRecord.lastPlayed,
-        overallRecord: playerRecord.overallRecord,
-        records: players.filter(player => isPlayer(player))
-            .map(player => player as Player)
-            .map(player => ({
-                player,
-                record: playerRecord.records[player.id],
-            })),
-    };
-}
-
-export async function gameStandingsToGraphQL(gameStandings: GameStandings, loader: MyLeaderboardLoader): Promise<GameStandingsGraphQL> {
-    const playerIds = Object.keys(gameStandings.records);
-    const players = await loader.playerLoader.loadMany(playerIds);
-
-    return {
-        scoreStats: gameStandings.scoreStats,
-        records: await Promise.all(players.filter(player => isPlayer(player))
-            .map(player => player as Player)
-            .map(async player => ({
-                player,
-                record: await playerRecordToGraphQL(gameStandings.records[player.id], loader),
-            }))),
-    };
-}
-
-export async function playerStandingsToGraphQL(playerStandings: PlayerStandings, loader: MyLeaderboardLoader): Promise<PlayerStandingsGraphQL> {
-    const playerIds = Object.keys(playerStandings.records);
-    const players = await loader.playerLoader.loadMany(playerIds);
-
-    return {
-        scoreStats: playerStandings.scoreStats,
-        overallRecord: playerStandings.overallRecord,
-        records: players.filter(player => isPlayer(player))
-            .map(player => player as Player)
-            .map(player => ({
-                player,
-                record: playerStandings.records[player.id],
-            })),
-    };
-}
-
-export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Promise<PlayGraphQL | undefined> {
-    const playerIds = play.players.map(id => String(id));
-    const players = await loader.playerLoader.loadMany(playerIds);
-
-    const game = await loader.gameLoader.load(String(play.game));
-    if (!game) {
-        return undefined;
-    }
-
-    return {
-        ...play,
-        players: players.filter(player => isPlayer(player))
-            .map(player => player as Player),
-        game,
-        winners: players.filter(player => isPlayer(player))
-            .map(player => player as Player)
-            .filter(player => player.id in play.winners),
-    };
 }

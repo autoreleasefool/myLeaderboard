@@ -15,11 +15,7 @@ import Players from '../db/players';
 import Games from '../db/games';
 import play from './schema/play';
 import Plays from '../db/plays';
-import playerStandings from './schema/playerStandings';
-import { playerStandingsToGraphQL, gameStandingsToGraphQL, parseID, playToGraphQL } from '../common/utils';
-import { playerRecord } from '../players/record';
-import gameStandings from './schema/gameStandings';
-import { gameStandings as generateGameStandings } from '../games/standings';
+import { parseID } from '../common/utils';
 import { anyUpdatesSince } from '../misc/hasUpdates';
 import { addGame } from '../games/new';
 import { addPlayer } from '../players/new';
@@ -27,7 +23,7 @@ import { recordPlay } from '../plays/record';
 import { MyLeaderboardLoader } from './dataloader';
 import { ListArguments } from '../db/table';
 
-interface QueryContext {
+export interface SchemaContext {
     loader: MyLeaderboardLoader;
 }
 
@@ -41,7 +37,7 @@ interface HasUpdatesQueryArgs {
     since: string;
 }
 
-let RootQuery = new GraphQLObjectType<any, QueryContext, any>({
+let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
     name: 'Query',
     description: 'Realize Root Query',
     fields: () => ({
@@ -75,20 +71,20 @@ let RootQuery = new GraphQLObjectType<any, QueryContext, any>({
             }
         },
 
-        playerRecord: {
-            type: playerStandings,
-            args: {
-                id: {
-                    type: GraphQLID,
-                },
-                game: {
-                    type: GraphQLID,
-                },
-            },
-            resolve: async(_, {id, game}, {loader}) => {
-                return playerStandingsToGraphQL(await playerRecord(id, game), loader)
-            }
-        },
+        // playerRecord: {
+        //     type: playerStandings,
+        //     args: {
+        //         id: {
+        //             type: GraphQLID,
+        //         },
+        //         game: {
+        //             type: GraphQLID,
+        //         },
+        //     },
+        //     resolve: async(_, {id, game}, {loader}) => {
+        //         return playerStandingsToGraphQL(await playerRecord(id, game), loader)
+        //     }
+        // },
 
         game: {
             type: game,
@@ -119,17 +115,17 @@ let RootQuery = new GraphQLObjectType<any, QueryContext, any>({
             },
         },
 
-        gameStandings: {
-            type: gameStandings,
-            args: {
-                id: {
-                    type: GraphQLID,
-                },
-            },
-            resolve: async (_, {id}: ItemQueryArgs, {loader}) => {
-                return gameStandingsToGraphQL(await generateGameStandings(parseID(id)), loader);
-            },
-        },
+        // gameStandings: {
+        //     type: gameStandings,
+        //     args: {
+        //         id: {
+        //             type: GraphQLID,
+        //         },
+        //     },
+        //     resolve: async (_, {id}: ItemQueryArgs, {loader}) => {
+        //         return gameStandingsToGraphQL(await generateGameStandings(parseID(id)), loader);
+        //     },
+        // },
 
         play: {
             type: play,
@@ -172,10 +168,6 @@ let RootQuery = new GraphQLObjectType<any, QueryContext, any>({
     }),
 });
 
-interface MutationContext {
-    loader: MyLeaderboardLoader;
-}
-
 interface CreatePlayerArgs {
     displayName: string;
     username: string;
@@ -193,7 +185,7 @@ interface RecordPlayArgs {
     scores?: Array<number>;
 }
 
-let RootMutation = new GraphQLObjectType<any, MutationContext, any>({
+let RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
     name: 'Mutation',
     description: 'Realize Root Mutation',
     fields: () => ({
@@ -239,13 +231,13 @@ let RootMutation = new GraphQLObjectType<any, MutationContext, any>({
                     type: GraphQLList(GraphQLNonNull(GraphQLInt)),
                 },
             },
-            resolve: async (_, {players, winners, game, scores}: RecordPlayArgs, {loader}) => {
-                return playToGraphQL(await recordPlay(
+            resolve: async (_, {players, winners, game, scores}: RecordPlayArgs, {}) => {
+                return await recordPlay(
                     players.map(player => parseID(player)),
                     winners.map(winner => parseID(winner)),
                     scores,
                     parseID(game),
-                ), loader);
+                );
             }
         }
     }),

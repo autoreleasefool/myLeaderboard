@@ -4,14 +4,14 @@ import {
 } from 'graphql';
 
 import playerRecord from './playerRecord';
-import player from './player';
+import playerBasic from './playerBasic';
 
-export default new GraphQLObjectType({
+export default new GraphQLObjectType<void, void, {}>({
     name: 'GamePlayerRecord',
     description: 'Player record for a game',
     fields: () => ({
         player: {
-            type: GraphQLNonNull(player),
+            type: GraphQLNonNull(playerBasic),
         },
         record: {
             type: GraphQLNonNull(playerRecord),

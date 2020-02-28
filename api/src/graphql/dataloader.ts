@@ -34,6 +34,6 @@ export default (): MyLeaderboardLoader => ({
         async keys => await batchGames(keys)
     ),
     playLoader: new DataLoader<string, Play>(
-        async keys => await batchPlays(keys),
+        async keys => await batchPlays(keys)
     ),
 });

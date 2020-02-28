@@ -5,7 +5,7 @@ import {
     GraphQLBoolean,
 } from 'graphql';
 
-export default new GraphQLObjectType({
+export default new GraphQLObjectType<void, void, {}>({
     name: 'Record',
     description: 'Win/Loss record',
     fields: () => ({
