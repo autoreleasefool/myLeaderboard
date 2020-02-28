@@ -36,6 +36,10 @@ class Table<Row extends Identifiable> {
         return this.rows.slice(offset, offset + first);
     }
 
+    public allIds(args: ListArguments): Array<number> {
+        return this.all(args).map(row => row.id);
+    }
+
     public anyUpdatesSince(date: Date): boolean {
         return date < this.latestUpdate;
     }

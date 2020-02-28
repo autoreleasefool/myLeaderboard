@@ -1,4 +1,5 @@
 import { Identifiable, Play, Player, Game } from '../lib/types';
+import { Request } from 'express';
 
 export function parseID(id: string): number {
     return parseInt(id, 10);
@@ -61,4 +62,16 @@ export function isGame(item: any): item is Game {
 
 export function isPlay(item: any): item is Play {
     return item.game !== undefined && item.players !== undefined;
+}
+
+function getNumberParam(name: string, req: Request, minValue: number, defaultValue: number): number {
+    let value = parseInt(req.params[name]);
+    return value < minValue ? value : defaultValue;
+}
+
+export function getListParams(req: Request): Array<number> {
+    return [
+        getNumberParam('first', req, 1, 25),
+        getNumberParam('offset', req, 0, 0),
+    ];
 }

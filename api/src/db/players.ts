@@ -33,7 +33,6 @@ class Players extends Table<Player> {
     }
 
     private async addAvatar(player: Player): Promise<Player> {
-        console.log(`Finding player ${player.id}`);
         const user = await Octo.getInstance().user(player.username);
         return {
             ...player,
