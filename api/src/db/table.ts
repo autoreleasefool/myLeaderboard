@@ -32,6 +32,14 @@ class Table<Row extends Identifiable> {
         return this.tableName;
     }
 
+    public getNextId(): number {
+        if (this.rows.length === 0) {
+            return 0;
+        }
+
+        return this.rows[this.rows.length - 1].id + 1;
+    }
+
     public all({first = 25, offset = 0}: ListArguments): Array<Row> {
         if (first < 0) {
             return this.rows.slice(offset)
