@@ -1,38 +1,39 @@
 import { Request } from 'express';
-import { findMaxId } from '../common/utils';
-import Games from '../db/games';
-import Players from '../db/players';
+import { isPlayer } from '../common/utils';
 import Plays from '../db/plays';
-import { Game, Play, Player } from '../lib/types';
+import { Play, Player } from '../lib/types';
+import DataLoader, { MyLeaderboardLoader } from '../graphql/DataLoader';
 
 export default async function record(req: Request): Promise<Play> {
     const playerIds: Array<number> = typeof(req.body.players) === 'string' ? JSON.parse(req.body.players) : req.body.players;
     const winnerIds: Array<number> = typeof(req.body.winners) === 'string' ? JSON.parse(req.body.winners) : req.body.winners;
     const scores: Array<number> | undefined = req.body.scores != null ? (typeof(req.body.scores) === 'string' ? JSON.parse(req.body.scores) : req.body.scores) : undefined;
     const game: number = req.body.game;
+    const loader = DataLoader();
 
-    return recordPlay(playerIds, winnerIds, scores, game);
+    return recordPlay(playerIds, winnerIds, scores, game, loader);
 }
 
-export async function recordPlay(playerIds: Array<number>, winnerIds: Array<number>, scores: Array<number> | undefined, game: number): Promise<Play> {
+export async function recordPlay(playerIds: Array<number>, winnerIds: Array<number>, scores: Array<number> | undefined, game: number, loader: MyLeaderboardLoader): Promise<Play> {
     if (playerIds.length === 0) {
         throw new Error('No players.');
     } else if (winnerIds.length === 0) {
         throw new Error('No winners.');
     }
 
-    validateGameExists(game, await Games.getInstance().all({}));
+    await validateGameExists(game, loader);
+    await validatePlayersExist(playerIds, loader);
     validateWinnersExist(winnerIds, playerIds);
 
-    const existingPlayers = await Players.getInstance().all({});
-    const players = mapPlayerIdsToNames(playerIds, existingPlayers);
+    const players = (await loader.playerLoader.loadMany(playerIds))
+        .filter(player => isPlayer(player))
+        .map(player => player as Player);
 
-    const playList = Plays.getInstance().all({});
-    const maxId = findMaxId(playList);
+    const id = Plays.getInstance().getNextId()
 
     const newPlay: Play = {
         game,
-        id: maxId + 1,
+        id,
         playedOn: new Date().toISOString(),
         players: playerIds,
         winners: winnerIds,
@@ -42,7 +43,8 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
         newPlay.scores = scores;
     }
 
-    const playerList = Array.from(players)
+    const playerList = players
+            .map(player => player.username)
             .sort((first, second) => first.toLowerCase().localeCompare(second.toLowerCase()))
             .join(', ');
 
@@ -51,24 +53,13 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
     return newPlay;
 }
 
-function mapPlayerIdsToNames(ids: Array<number>, existingPlayers: Array<Player>): Array<string> {
-    const names: Array<string> = [];
-    for (const id of ids) {
-        let idFound = false;
-        for (const existingPlayer of existingPlayers) {
-            if (existingPlayer.id === id) {
-                names.push(existingPlayer.username);
-                idFound = true;
-                break;
-            }
-        }
-
-        if (!idFound) {
-            throw new Error(`Player "${id}" does not exist.`);
+async function validatePlayersExist(winners: Array<number>, loader: MyLeaderboardLoader): Promise<void> {
+    let players = await loader.playerLoader.loadMany(winners);
+    for (const player of players) {
+        if (!isPlayer(player)) {
+            throw player
         }
     }
-
-    return names;
 }
 
 function validateWinnersExist(winners: Array<number>, players: Array<number>): void {
@@ -87,12 +78,6 @@ function validateWinnersExist(winners: Array<number>, players: Array<number>): v
     }
 }
 
-function validateGameExists(id: number, games: Array<Game>): void {
-    for (const game of games) {
-        if (game.id === id) {
-            return;
-        }
-    }
-
-    throw new Error(`Game "${id}" does not exist.`);
+async function validateGameExists(id: number, loader: MyLeaderboardLoader): Promise<void> {
+    await loader.gameLoader.load(id);
 }

@@ -12,8 +12,8 @@ router.post('/record', (req, res, next) => {
     });
 });
 
-router.get('/list', (_, res, next) => {
-    listPlays().then(plays => {
+router.get('/list', (req, res, next) => {
+    listPlays(req).then(plays => {
         res.json(plays);
     }).catch(error => {
         next(error);
