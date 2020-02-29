@@ -27,7 +27,7 @@ class Players extends Table<Player> {
         return Promise.all(rows.map(player => this.addAvatar(player)));
     }
 
-    public async allByIdsWithAvatars(ids: Array<number>): Promise<Array<Player>> {
+    public async allByIdsWithAvatars(ids: readonly number[]): Promise<Array<Player>> {
         const rows = this.allByIds(ids);
         return Promise.all(rows.map(player => this.addAvatar(player)));
     }

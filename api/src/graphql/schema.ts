@@ -65,26 +65,11 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
             resolve: async (_, {first, offset}: ListQueryArgs, {loader}) => {
                 const players = await Players.getInstance().allWithAvatars({first, offset});
                 for (const player of players) {
-                    loader.playerLoader.prime(String(player.id), player);
+                    loader.playerLoader.prime(player.id, player);
                 }
                 return players;
             }
         },
-
-        // playerRecord: {
-        //     type: playerStandings,
-        //     args: {
-        //         id: {
-        //             type: GraphQLID,
-        //         },
-        //         game: {
-        //             type: GraphQLID,
-        //         },
-        //     },
-        //     resolve: async(_, {id, game}, {loader}) => {
-        //         return playerStandingsToGraphQL(await playerRecord(id, game), loader)
-        //     }
-        // },
 
         game: {
             type: game,
@@ -109,23 +94,11 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
             resolve: async (_, {first, offset}: ListQueryArgs, {loader}) => {
                 const games = await Games.getInstance().allWithImages({first, offset});
                 for (const game of games) {
-                    loader.gameLoader.prime(String(game.id), game);
+                    loader.gameLoader.prime(game.id, game);
                 }
                 return games;
             },
         },
-
-        // gameStandings: {
-        //     type: gameStandings,
-        //     args: {
-        //         id: {
-        //             type: GraphQLID,
-        //         },
-        //     },
-        //     resolve: async (_, {id}: ItemQueryArgs, {loader}) => {
-        //         return gameStandingsToGraphQL(await generateGameStandings(parseID(id)), loader);
-        //     },
-        // },
 
         play: {
             type: play,
@@ -134,7 +107,7 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLID,
                 },
             },
-            resolve: async (_, {id}: ItemQueryArgs, {loader}) => loader.playLoader.load(id),
+            resolve: async (_, {id}: ItemQueryArgs, {loader}) => loader.playLoader.load(parseID(id)),
         },
 
         plays: {
@@ -150,7 +123,7 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
             resolve: async (_, {first, offset}: ListQueryArgs, {loader}) => {
                 const plays = await Plays.getInstance().all({first, offset});
                 for (const play of plays) {
-                    loader.playLoader.prime(String(play.id), play);
+                    loader.playLoader.prime(play.id, play);
                 }
                 return plays;
             }
@@ -231,7 +204,7 @@ let RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLList(GraphQLNonNull(GraphQLInt)),
                 },
             },
-            resolve: async (_, {players, winners, game, scores}: RecordPlayArgs, {}) => {
+            resolve: async (_, {players, winners, game, scores}: RecordPlayArgs, {loader}) => {
                 return await recordPlay(
                     players.map(player => parseID(player)),
                     winners.map(winner => parseID(winner)),

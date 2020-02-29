@@ -26,7 +26,7 @@ class Games extends Table<Game> {
         return this.all(args).map(game => this.addImage(game));
     }
 
-    public allByIdsWithImages(ids: Array<number>): Array<Game> {
+    public allByIdsWithImages(ids: readonly number[]): Array<Game> {
         return this.allByIds(ids).map(game => this.addImage(game));
     }
 

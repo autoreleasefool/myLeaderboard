@@ -6,34 +6,31 @@ import DataLoader from 'dataloader';
 import { Player, Game, Play } from '../lib/types';
 
 export interface MyLeaderboardLoader {
-    playerLoader: DataLoader<string, Player>;
-    gameLoader: DataLoader<string, Game>;
-    playLoader: DataLoader<string, Play>;
+    playerLoader: DataLoader<number, Player>;
+    gameLoader: DataLoader<number, Game>;
+    playLoader: DataLoader<number, Play>;
 }
 
-async function batchPlayers(keys: readonly string[]) {
-    let ids = keys.map(key => parseID(key));
-    return Players.getInstance().allByIdsWithAvatars(ids);
+async function batchPlayers(keys: readonly number[]) {
+    return Players.getInstance().allByIdsWithAvatars(keys);
 }
 
-async function batchGames(keys: readonly string[]) {
-    let ids = keys.map(key => parseID(key));
-    return Games.getInstance().allByIdsWithImages(ids);
+async function batchGames(keys: readonly number[]) {
+    return Games.getInstance().allByIdsWithImages(keys);
 }
 
-async function batchPlays(keys: readonly string[]) {
-    let ids = keys.map(key => parseID(key));
-    return Plays.getInstance().allByIds(ids);
+async function batchPlays(keys: readonly number[]) {
+    return Plays.getInstance().allByIds(keys);
 }
 
 export default (): MyLeaderboardLoader => ({
-    playerLoader: new DataLoader<string, Player>(
+    playerLoader: new DataLoader<number, Player>(
         async keys => await batchPlayers(keys)
     ),
-    gameLoader: new DataLoader<string, Game>(
+    gameLoader: new DataLoader<number, Game>(
         async keys => await batchGames(keys)
     ),
-    playLoader: new DataLoader<string, Play>(
+    playLoader: new DataLoader<number, Play>(
         async keys => await batchPlays(keys)
     ),
 });

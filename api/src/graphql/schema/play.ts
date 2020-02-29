@@ -14,10 +14,9 @@ import playerBasic from './playerBasic';
 import { SchemaContext } from '../schema';
 
 export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Promise<PlayGraphQL | undefined> {
-    const playerIds = play.players.map(id => String(id));
-    const players = await loader.playerLoader.loadMany(playerIds);
+    const players = await loader.playerLoader.loadMany(play.players);
 
-    const game = await loader.gameLoader.load(String(play.game));
+    const game = await loader.gameLoader.load(play.game);
     if (!game) {
         return undefined;
     }
@@ -44,23 +43,19 @@ export default new GraphQLObjectType<Play, SchemaContext, {}>({
             type: GraphQLNonNull(GraphQLString),
         },
         scores: {
-            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(GraphQLInt))),
+            type: GraphQLList(GraphQLNonNull(GraphQLInt)),
         },
         game: {
             type: GraphQLNonNull(game),
-            resolve: async (play, _, {loader}) => loader.gameLoader.load(String(play.game)),
+            resolve: async (play, _, {loader}) => loader.gameLoader.load(play.game),
         },
         players: {
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerBasic))),
-            resolve: async (play, _, {loader}) => loader.playerLoader.loadMany(
-                play.players.map(id => String(id)),
-            ),
+            resolve: async (play, _, {loader}) => loader.playerLoader.loadMany(play.players),
         },
         winners: {
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerBasic))),
-            resolve: async (play, _, {loader}) => loader.playerLoader.loadMany(
-                play.winners.map(id => String(id)),
-            ),
+            resolve: async (play, _, {loader}) => loader.playerLoader.loadMany(play.winners),
         },
     }),
 });

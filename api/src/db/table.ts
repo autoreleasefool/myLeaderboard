@@ -33,6 +33,9 @@ class Table<Row extends Identifiable> {
     }
 
     public all({first = 25, offset = 0}: ListArguments): Array<Row> {
+        if (first < 0) {
+            return this.rows.slice(offset)
+        }
         return this.rows.slice(offset, offset + first);
     }
 
@@ -63,7 +66,7 @@ class Table<Row extends Identifiable> {
         return undefined;
     }
 
-    public allByIds(ids: Array<number>): Array<Row> {
+    public allByIds(ids: readonly number[]): Array<Row> {
         const idSet = new Set(ids);
         return this.rows.filter(row => idSet.has(row.id));
     }
