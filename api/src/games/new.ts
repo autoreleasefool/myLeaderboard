@@ -3,8 +3,8 @@ import Games from '../db/games';
 import { Game } from '../lib/types';
 
 export default async function add(req: Request): Promise<Game> {
-    const name = req.body.name;
-    const hasScores = req.body.hasScores;
+    const name: string = req.body.name;
+    const hasScores: boolean = req.body.hasScores;
 
     return addGame(name, hasScores);
 }
@@ -18,28 +18,20 @@ export async function addGame(name: string, hasScores: boolean): Promise<Game> {
         throw new Error('Missing "hasScores" or value is not boolean.');
     }
 
-    const gameList = Games.getInstance().all({});
-    const newGame = createGame(name, hasScores, gameList);
+    const newGame = createGame(name, hasScores);
     Games.getInstance().add(newGame, `Adding game ${name}`);
 
     return newGame;
 }
 
-function createGame(name: string, hasScores: boolean, existingGames: Array<Game>): Game {
-    let maxId = 0;
-    for (const existingGame of existingGames) {
-        if (existingGame.id > maxId) {
-            maxId = existingGame.id;
-        }
-
-        if (existingGame.name === name) {
-            throw new Error(`A game with name "${name}" already exists.`);
-        }
+function createGame(name: string, hasScores: boolean): Game {
+    if (Games.getInstance().isNameTaken(name)) {
+        throw new Error(`A game with the name "${name}" already exists.`);
     }
 
     return {
         hasScores,
-        id: maxId + 1,
+        id: Games.getInstance().getNextId(),
         name,
     };
 }

@@ -17,6 +17,16 @@ class Games extends Table<Game> {
         super('games');
     }
 
+    public isNameTaken(name: string): boolean {
+        for (const game of this.all({first: -1, offset: 0})) {
+            if (game.name === name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public findByIdWithImage(id: number): Game | undefined {
         const game = this.findById(id);
         return game ? this.addImage(game) : undefined;
