@@ -1,6 +1,5 @@
 import {
     GraphQLObjectType,
-    GraphQLString,
     GraphQLNonNull,
     GraphQLID,
     GraphQLList,
@@ -12,6 +11,7 @@ import { isPlayer } from '../../common/utils';
 import playerBasic from './playerBasic';
 import { SchemaContext } from '../schema';
 import gameBasic from './gameBasic';
+import { GraphQLDateTime } from 'graphql-iso-date';
 
 export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Promise<PlayGraphQL> {
     const players = await loader.playerLoader.loadMany(play.players);
@@ -37,7 +37,7 @@ export default new GraphQLObjectType<Play, SchemaContext, {}>({
             type: GraphQLNonNull(GraphQLID),
         },
         playedOn: {
-            type: GraphQLNonNull(GraphQLString),
+            type: GraphQLNonNull(GraphQLDateTime),
         },
         scores: {
             type: GraphQLList(GraphQLNonNull(GraphQLInt)),
