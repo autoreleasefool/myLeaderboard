@@ -7,3 +7,5 @@ disabled_rules:
   - nesting
   - type_body_length
   - cyclomatic_complexity
+excluded:
+  - MyLeaderboard/Source/API/Generated

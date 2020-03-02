@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA018481240D25090080A5B8 /* GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018480240D25090080A5B8 /* GraphQL.swift */; };
+		CA018483240D25840080A5B8 /* Syrup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018482240D25840080A5B8 /* Syrup+Extensions.swift */; };
+		CA018485240D292C0080A5B8 /* CustomScalarResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018484240D292B0080A5B8 /* CustomScalarResolver.swift */; };
 		CA1D97E42406EE650011786E /* Players.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA1D97E32406EE650011786E /* Players.graphql */; };
 		CA27F9A2232D59A40023924A /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA27F9A1232D59A40023924A /* NotificationCenter.framework */; };
 		CA27F9A5232D59A40023924A /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9A4232D59A40023924A /* TodayViewController.swift */; };
@@ -199,6 +202,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CA018480240D25090080A5B8 /* GraphQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQL.swift; sourceTree = "<group>"; };
+		CA018482240D25840080A5B8 /* Syrup+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Syrup+Extensions.swift"; sourceTree = "<group>"; };
+		CA018484240D292B0080A5B8 /* CustomScalarResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScalarResolver.swift; sourceTree = "<group>"; };
 		CA1D97E32406EE650011786E /* Players.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Players.graphql; sourceTree = "<group>"; };
 		CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsListBuilder.swift; sourceTree = "<group>"; };
 		CA27F9A0232D59A40023924A /* MyLeaderboardTodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyLeaderboardTodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -362,6 +368,7 @@
 		CA1D97E02406EE170011786E /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				CA018484240D292B0080A5B8 /* CustomScalarResolver.swift */,
 				CA6D05DE240D147900412D54 /* Enums */,
 				CA6D05DA240D147900412D54 /* Fragments */,
 				CA6D05DF240D147900412D54 /* GraphApi.swift */,
@@ -532,6 +539,8 @@
 				CA1D97E02406EE170011786E /* Generated */,
 				CA1D97DF2406EDFA0011786E /* GraphQL */,
 				CABA3EA122D36BAD00960758 /* LeaderboardAPI.swift */,
+				CA018480240D25090080A5B8 /* GraphQL.swift */,
+				CA018482240D25840080A5B8 /* Syrup+Extensions.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1167,6 +1176,7 @@
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
 				CAE56F9C22F9C28E00FE0998 /* PlayerListItemView.swift in Sources */,
 				CAE9CF64230F074300D4850E /* PlaysListViewModel.swift in Sources */,
+				CA018483240D25840080A5B8 /* Syrup+Extensions.swift in Sources */,
 				CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */,
 				CAE9CF5E230EEBAC00D4850E /* GamePlayCell.swift in Sources */,
 				CA51946B230FA8720041105B /* ContributorsListViewController.swift in Sources */,
@@ -1192,6 +1202,7 @@
 				CA834B9F230A346400A48C9B /* SpreadsheetRowCell.swift in Sources */,
 				CA6D05E2240D147900412D54 /* PlayerListItem.swift in Sources */,
 				CAE16DFF22F45FCE00F1304C /* BasePickerBuilder.swift in Sources */,
+				CA018481240D25090080A5B8 /* GraphQL.swift in Sources */,
 				CA4BAB9622D76322003347AF /* Theme.swift in Sources */,
 				CAB3872022D2254000349B1F /* Action.swift in Sources */,
 				CA834B8E230A1E4D00A48C9B /* SpreadsheetRowConfig.swift in Sources */,
@@ -1229,6 +1240,7 @@
 				CA9D412722FA5DD50027E2D0 /* RecordPlayViewController.swift in Sources */,
 				CAAE778C2302DB01001A37DC /* CreatePlayerViewModel.swift in Sources */,
 				CAB3871E22D224A100349B1F /* ViewModel.swift in Sources */,
+				CA018485240D292C0080A5B8 /* CustomScalarResolver.swift in Sources */,
 				CA4BABA622D77187003347AF /* PlayerListViewModel.swift in Sources */,
 				CAAE778823024565001A37DC /* LoadingHUD.swift in Sources */,
 				CA920A0822E94A84008E1B96 /* GamePlay.swift in Sources */,

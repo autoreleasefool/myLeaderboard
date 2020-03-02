@@ -1,4 +1,5 @@
 // Syrup auto-generated support file
+import Foundation
 #if !os(Linux)
 import os
 #endif

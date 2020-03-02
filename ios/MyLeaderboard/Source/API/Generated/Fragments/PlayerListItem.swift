@@ -1,4 +1,5 @@
 // Syrup auto-generated file
+import Foundation
 
 public extension MyLeaderboardAPI {
 struct PlayerListItem: GraphApiResponse, Equatable {

@@ -2,3 +2,4 @@ location: http://localhost:3001/graphql/introspection
 customScalars:
 - graphType: DateTime
   nativeType: Date
+  rawValueType: String
