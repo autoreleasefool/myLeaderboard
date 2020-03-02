@@ -21,7 +21,8 @@ import { addGame } from '../games/new';
 import { addPlayer } from '../players/new';
 import { recordPlay } from '../plays/record';
 import { MyLeaderboardLoader } from './DataLoader';
-import { ListArguments } from '../db/table';
+
+export const DEFAULT_PAGE_SIZE = 25;
 
 export interface SchemaContext {
     loader: MyLeaderboardLoader;
@@ -33,6 +34,11 @@ interface ItemQueryArgs {
 
 interface HasUpdatesQueryArgs {
     since: string;
+}
+
+export interface ListQueryArguments {
+    first?: number;
+    offset?: number;
 }
 
 const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
@@ -63,8 +69,11 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 }
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {first, offset}: ListArguments, {loader}) => {
-                const players = await Players.getInstance().allWithAvatars({first, offset});
+            resolve: async (_, {first, offset}: ListQueryArguments, {loader}) => {
+                const players = await Players.getInstance().allWithAvatars({
+                    first: first ? first : DEFAULT_PAGE_SIZE,
+                    offset: offset ? offset : 0,
+                });
                 for (const player of players) {
                     loader.playerLoader.prime(player.id, player);
                 }
@@ -94,8 +103,11 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 }
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {first, offset}: ListArguments, {loader}) => {
-                const games = await Games.getInstance().allWithImages({first, offset});
+            resolve: async (_, {first, offset}: ListQueryArguments, {loader}) => {
+                const games = await Games.getInstance().allWithImages({
+                    first: first ? first : DEFAULT_PAGE_SIZE,
+                    offset: offset ? offset : 0,
+                });
                 for (const game of games) {
                     loader.gameLoader.prime(game.id, game);
                 }
@@ -125,8 +137,11 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 }
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, args: ListArguments, {loader}) => {
-                const plays = await Plays.getInstance().all(args);
+            resolve: async (_, {first, offset}: ListQueryArguments, {loader}) => {
+                const plays = await Plays.getInstance().all({
+                    first: first ? first : DEFAULT_PAGE_SIZE,
+                    offset: offset ? offset : 0,
+                });
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);
                 }
@@ -138,7 +153,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
             type: GraphQLNonNull(GraphQLBoolean),
             args: {
                 since: {
-                    type: GraphQLString,
+                    type: GraphQLNonNull(GraphQLString),
                 },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type

@@ -6,20 +6,16 @@ import {
     GraphQLList,
     GraphQLInt,
 } from 'graphql';
-import game from './game';
 import { Play, PlayGraphQL, Player } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer } from '../../common/utils';
 import playerBasic from './playerBasic';
 import { SchemaContext } from '../schema';
+import gameBasic from './gameBasic';
 
-export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Promise<PlayGraphQL | undefined> {
+export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Promise<PlayGraphQL> {
     const players = await loader.playerLoader.loadMany(play.players);
-
     const game = await loader.gameLoader.load(play.game);
-    if (!game) {
-        return undefined;
-    }
 
     return {
         ...play,
@@ -47,7 +43,7 @@ export default new GraphQLObjectType<Play, SchemaContext, {}>({
             type: GraphQLList(GraphQLNonNull(GraphQLInt)),
         },
         game: {
-            type: GraphQLNonNull(game),
+            type: GraphQLNonNull(gameBasic),
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (play, _, {loader}) => loader.gameLoader.load(play.game),
         },
