@@ -17,6 +17,16 @@ class Players extends Table<Player> {
         super('players');
     }
 
+    public isUsernameTaken(username: string): boolean {
+        for (const player of this.all({first: -1, offset: 0})) {
+            if (player.username === username) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public async findByIdWithAvatar(id: number): Promise<Player | undefined> {
         const player = this.findById(id);
         return player ? this.addAvatar(player) : undefined;

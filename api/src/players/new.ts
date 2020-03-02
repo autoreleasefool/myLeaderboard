@@ -21,28 +21,20 @@ export async function addPlayer(playerName: string, playerUsername: string): Pro
         playerUsername = playerUsername.substr(1);
     }
 
-    const playerList = Players.getInstance().all({});
-    const newPlayer = createPlayer(playerName, playerUsername, playerList);
+    const newPlayer = createPlayer(playerName, playerUsername);
     Players.getInstance().add(newPlayer, `Adding player "${playerUsername}`);
 
     return newPlayer;
 }
 
-function createPlayer(displayName: string, username: string, existingPlayers: Array<Player>): Player {
-    let maxId = 0;
-    for (const existingPlayer of existingPlayers) {
-        if (existingPlayer.id > maxId) {
-            maxId = existingPlayer.id;
-        }
-
-        if (existingPlayer.username === username) {
-            throw new Error(`A player with username "${username}" already exists.`);
-        }
+function createPlayer(displayName: string, username: string): Player {
+    if (Players.getInstance().isUsernameTaken(username)) {
+        throw new Error(`A player with username "${username}" already exists.`);
     }
 
     return {
+        id: Players.getInstance().getNextId(),
         displayName,
-        id: maxId + 1,
         username,
     };
 }
