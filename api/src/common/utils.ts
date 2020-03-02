@@ -1,18 +1,8 @@
-import { Identifiable, Play, Player, Game } from '../lib/types';
+import { Play, Player, Game } from '../lib/types';
 import { Request } from 'express';
 
 export function parseID(id: string): number {
     return parseInt(id, 10);
-}
-
-export function findMaxId(items: Array<Identifiable>): number {
-    let maxId = 0;
-    for (const item of items) {
-        if (item.id > maxId) {
-            maxId = item.id;
-        }
-    }
-    return maxId;
 }
 
 export function apiURL(withScheme: boolean): string {

@@ -2,8 +2,8 @@ import Octo, { Blob } from '../common/Octo';
 import { Identifiable } from '../lib/types';
 
 export interface ListArguments {
-    first?: number;
-    offset?: number;
+    first: number;
+    offset: number;
 }
 
 class Table<Row extends Identifiable> {
@@ -44,7 +44,7 @@ class Table<Row extends Identifiable> {
         return this.rows[this.rows.length - 1].id + 1;
     }
 
-    public all({first = 25, offset = 0}: ListArguments): Array<Row> {
+    public all({first, offset}: ListArguments): Array<Row> {
         if (first < 0) {
             return this.rows.slice(offset)
         }

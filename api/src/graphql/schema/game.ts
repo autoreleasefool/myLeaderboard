@@ -30,7 +30,7 @@ export default new GraphQLObjectType<Game, SchemaContext, {}>({
             type: GraphQLNonNull(gameStandings),
             resolve: async (game, _, {loader}) =>
                 gameStandingsToGraphQL(
-                    await generateGameStandings(game.id),
+                    await generateGameStandings(game.id, loader),
                     loader
                 ),
         }

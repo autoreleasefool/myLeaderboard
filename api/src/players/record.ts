@@ -1,9 +1,8 @@
 import { Request } from 'express';
-import Games from '../db/games';
-import Players from '../db/players';
 import Plays from '../db/plays';
 import { PlayerStandings, Record } from '../lib/types';
 import { parseID } from '../common/utils';
+import DataLoader, { MyLeaderboardLoader } from '../graphql/DataLoader';
 
 enum GameResult {
     WON,
@@ -21,23 +20,18 @@ interface RecordHighlight {
 export default async function record(req: Request): Promise<PlayerStandings> {
     const playerId = parseID(req.params.playerId);
     const gameId = parseID(req.params.gameId);
-    return playerRecord(playerId, gameId);
+    const loader = DataLoader();
+    return playerRecord(playerId, gameId, loader);
 }
 
-export async function playerRecord(playerId: number, gameId: number): Promise<PlayerStandings> {
+export async function playerRecord(playerId: number, gameId: number, loader: MyLeaderboardLoader): Promise<PlayerStandings> {
     const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
 
-    const player = Players.getInstance().findByIdWithAvatar(playerId);
-    if (player == null) {
-        return playerRecord;
-    }
+    // Ensure that the player exists
+    await loader.playerLoader.load(playerId)
 
-    const game = Games.getInstance().findByIdWithImage(gameId);
-    if (game == null) {
-        return playerRecord;
-    }
-
-    const plays = await Plays.getInstance().all({});
+    const game = await loader.gameLoader.load(gameId);
+    const plays = await Plays.getInstance().all({first: -1, offset: 0});
 
     let gamesPlayed = 0;
     let gamesWithScores = 0;

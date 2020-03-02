@@ -120,8 +120,8 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLInt,
                 }
             },
-            resolve: async (_, {first, offset}: ListQueryArgs, {loader}) => {
-                const plays = await Plays.getInstance().all({first, offset});
+            resolve: async (_, args: ListQueryArgs, {loader}) => {
+                const plays = await Plays.getInstance().all(args);
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);
                 }
@@ -210,6 +210,7 @@ let RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
                     winners.map(winner => parseID(winner)),
                     scores,
                     parseID(game),
+                    loader
                 );
             }
         }

@@ -1,10 +1,10 @@
 import { Request } from 'express';
-import Games from '../db/games';
 import Players from '../db/players';
 import Plays from '../db/plays';
 import { isBanished } from '../lib/Freshness';
 import { Game, GameStandings, Player, Record } from '../lib/types';
 import { parseID } from '../common/utils';
+import DataLoader, { MyLeaderboardLoader } from '../graphql/DataLoader';
 
 enum GameResult {
     WON,
@@ -21,22 +21,20 @@ interface RecordHighlight {
 
 export default async function generateGameStandings(req: Request): Promise<GameStandings> {
     const gameId = parseID(req.params.id);
-    return gameStandings(gameId);
+    const loader = DataLoader();
+    return gameStandings(gameId, loader);
 }
 
-export async function gameStandings(gameId: number): Promise<GameStandings> {
-    const game = Games.getInstance().findByIdWithImage(gameId);
-    if (game == null) {
-        return { records: {}};
-    }
+export async function gameStandings(gameId: number, loader: MyLeaderboardLoader): Promise<GameStandings> {
+    const game = await loader.gameLoader.load(gameId);
 
     const gameStandings = await buildStandings(game);
-    const allPlayers = await Players.getInstance().all({});
-    const players = allPlayers.filter(player => {
-        const playerRecord = gameStandings.records[player.id];
+    const allPlayers = Players.getInstance().allIds({first: -1, offset: 0});
+    const players = allPlayers.filter(id => {
+        const playerRecord = gameStandings.records[id];
         return playerRecord == null ? false : isBanished(playerRecord) === false;
     });
-    highlightRecords(gameStandings, players);
+    await highlightRecords(gameStandings, players, loader);
 
     return gameStandings;
 }
@@ -50,7 +48,7 @@ async function buildStandings(game: Game): Promise<GameStandings> {
     let bestScore = -Infinity;
     let worstScore = Infinity;
 
-    const plays = Plays.getInstance().all({});
+    const plays = Plays.getInstance().all({first: -1, offset: 0});
     plays.filter(play => play.game === game.id)
         .forEach(play => {
             totalGames += 1;
@@ -155,11 +153,12 @@ async function buildStandings(game: Game): Promise<GameStandings> {
     return gameStandings;
 }
 
-function highlightRecords(standings: GameStandings, players: Array<Player>): void {
+async function highlightRecords(standings: GameStandings, playerIds: Array<number>, loader: MyLeaderboardLoader): Promise<void> {
     const worstRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
     const bestRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
 
-    for (const player of players) {
+    for (const playerId of playerIds) {
+        const player = await loader.playerLoader.load(playerId);
         const playerDetails = standings.records[player.id];
         if (playerDetails == null) {
             continue;
@@ -173,34 +172,34 @@ function highlightRecords(standings: GameStandings, players: Array<Player>): voi
 
         const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
         const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
-        for (const opponent of players) {
-            const vsRecord = playerDetails.records[opponent.id];
-            if (opponent.id === player.id || vsRecord == null) {
+        for (const opponentId of playerIds) {
+            const vsRecord = playerDetails.records[playerId];
+            if (opponentId === player.id || vsRecord == null) {
                 continue;
             }
 
             const vsTotalGames = vsRecord.wins + vsRecord.losses + vsRecord.ties;
             const vsWinRate = Math.floor(vsRecord.wins / vsTotalGames * 100);
 
-            const vsRecordForHighlight = { player: opponent.id, winRate: vsWinRate, losses: vsRecord.losses, wins: vsRecord.wins };
+            const vsRecordForHighlight = { player: opponentId, winRate: vsWinRate, losses: vsRecord.losses, wins: vsRecord.wins };
             updateHighlightedRecords(vsRecordForHighlight, bestVsRecords, worstVsRecords);
         }
 
         const playerVs: Map<number, Record> = new Map();
-        for (const opponent of players) {
-            if (opponent.id === player.id) {
+        for (const opponentId of playerIds) {
+            if (opponentId === player.id) {
                 continue;
             }
 
-            playerVs.set(opponent.id, playerDetails.records[opponent.id]);
+            playerVs.set(opponentId, playerDetails.records[opponentId]);
         }
 
         markBestAndWorstRecords(playerVs, bestVsRecords, worstVsRecords);
     }
 
     const playerTotals: Map<number, Record> = new Map();
-    for (const player of players) {
-        playerTotals.set(player.id, standings.records[player.id].overallRecord);
+    for (const playerId of playerIds) {
+        playerTotals.set(playerId, standings.records[playerId].overallRecord);
     }
     markBestAndWorstRecords(playerTotals, bestRecords, worstRecords);
 }
