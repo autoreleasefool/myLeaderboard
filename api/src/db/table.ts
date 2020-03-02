@@ -13,6 +13,7 @@ class Table<Row extends Identifiable> {
     private blobOutdated = true;
     private latestUpdate = new Date();
     private rows: Array<Row> = [];
+    private rowsById: { [key: number]: Row } = {};
 
     constructor(tableName: string) {
         this.tableName = tableName;
@@ -25,6 +26,9 @@ class Table<Row extends Identifiable> {
 
         const unsortedRows: Array<Row> = JSON.parse(this.blob.content);
         this.rows = unsortedRows.sort((first, second) => first.id - second.id);
+        for (const row of this.rows) {
+            this.rowsById[row.id] = row;
+        }
         this.latestUpdate = new Date();
     }
 
@@ -56,31 +60,20 @@ class Table<Row extends Identifiable> {
     }
 
     public findById(id: number): Row | undefined {
-        let low = 0;
-        let high = this.rows.length - 1;
-
-        while (low <= high) {
-            const mid = Math.floor((low + high) / 2);
-            const currentId = this.rows[mid].id;
-            if (currentId === id) {
-                return this.rows[mid];
-            } else if (currentId < id) {
-                low = mid + 1;
-            } else if (currentId > id) {
-                high = mid - 1;
-            }
-        }
-
-        return undefined;
+        return this.rowsById[id];
     }
 
     public allByIds(ids: readonly number[]): Array<Row> {
-        const idSet = new Set(ids);
-        return this.rows.filter(row => idSet.has(row.id));
+        let result: Array<Row> = [];
+        for (const id of ids) {
+            result.push(this.rowsById[id]);
+        }
+        return result;
     }
 
     public async add(row: Row, message?: string): Promise<void> {
         this.rows.push(row);
+        this.rowsById[row.id] = row;
 
         if (message == null) {
             message = `Adding row ${row.id}`;
