@@ -10,10 +10,10 @@ import scoreStats from './scoreStats';
 import playerVSRecord from './playerVSRecord';
 import { PlayerRecord, PlayerRecordGraphQL, Player } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
-import { isPlayer } from '../../common/utils';
+import { isPlayer, parseID } from '../../common/utils';
 
 export async function playerRecordToGraphQL(playerRecord: PlayerRecord, loader: MyLeaderboardLoader): Promise<PlayerRecordGraphQL> {
-    const playerIds = Object.keys(playerRecord.records);
+    const playerIds = Object.keys(playerRecord.records).map(id => parseID(id));
     const players = await loader.playerLoader.loadMany(playerIds);
 
     return {
@@ -32,6 +32,7 @@ export async function playerRecordToGraphQL(playerRecord: PlayerRecord, loader: 
 export default new GraphQLObjectType<void, void, {}>({
     name: 'PlayerRecord',
     description: 'Player record',
+    // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         lastPlayed: {
             type: GraphQLString,

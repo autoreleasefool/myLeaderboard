@@ -28,7 +28,7 @@ export async function playerRecord(playerId: number, gameId: number, loader: MyL
     const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
 
     // Ensure that the player exists
-    await loader.playerLoader.load(playerId)
+    await loader.playerLoader.load(playerId);
 
     const game = await loader.gameLoader.load(gameId);
     const plays = await Plays.getInstance().all({first: -1, offset: 0});

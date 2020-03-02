@@ -2,7 +2,7 @@ import { Request } from 'express';
 import Players from '../db/players';
 import Plays from '../db/plays';
 import { isBanished } from '../lib/Freshness';
-import { Game, GameStandings, Player, Record } from '../lib/types';
+import { Game, GameStandings, Record } from '../lib/types';
 import { parseID } from '../common/utils';
 import DataLoader, { MyLeaderboardLoader } from '../graphql/DataLoader';
 

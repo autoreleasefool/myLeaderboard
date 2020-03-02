@@ -7,7 +7,7 @@ import {
     GraphQLInt,
     GraphQLBoolean,
     GraphQLString
-} from 'graphql'
+} from 'graphql';
 
 import player from './schema/player';
 import game from './schema/game';
@@ -31,15 +31,14 @@ interface ItemQueryArgs {
     id: string;
 }
 
-interface ListQueryArgs extends ListArguments {}
-
 interface HasUpdatesQueryArgs {
     since: string;
 }
 
-let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
+const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
     name: 'Query',
     description: 'Realize Root Query',
+    // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
 
         player: {
@@ -49,7 +48,8 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLNonNull(GraphQLID),
                 }
             },
-            resolve: async (_, {id}: ItemQueryArgs, {loader}) => loader.playerLoader.load(id),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {id}: ItemQueryArgs, {loader}) => loader.playerLoader.load(parseID(id)),
         },
 
         players: {
@@ -62,7 +62,8 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLInt,
                 }
             },
-            resolve: async (_, {first, offset}: ListQueryArgs, {loader}) => {
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {first, offset}: ListArguments, {loader}) => {
                 const players = await Players.getInstance().allWithAvatars({first, offset});
                 for (const player of players) {
                     loader.playerLoader.prime(player.id, player);
@@ -78,7 +79,8 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLNonNull(GraphQLID),
                 }
             },
-            resolve: async (_, {id}: ItemQueryArgs, {loader}) => loader.gameLoader.load(id),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {id}: ItemQueryArgs, {loader}) => loader.gameLoader.load(parseID(id)),
         },
 
         games: {
@@ -91,7 +93,8 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLInt,
                 }
             },
-            resolve: async (_, {first, offset}: ListQueryArgs, {loader}) => {
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {first, offset}: ListArguments, {loader}) => {
                 const games = await Games.getInstance().allWithImages({first, offset});
                 for (const game of games) {
                     loader.gameLoader.prime(game.id, game);
@@ -107,6 +110,7 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLID,
                 },
             },
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (_, {id}: ItemQueryArgs, {loader}) => loader.playLoader.load(parseID(id)),
         },
 
@@ -120,7 +124,8 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLInt,
                 }
             },
-            resolve: async (_, args: ListQueryArgs, {loader}) => {
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, args: ListArguments, {loader}) => {
                 const plays = await Plays.getInstance().all(args);
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);
@@ -136,7 +141,8 @@ let RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLString,
                 },
             },
-            resolve: async (_, {since}: HasUpdatesQueryArgs, {}) => anyUpdatesSince(new Date(since)),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {since}: HasUpdatesQueryArgs) => anyUpdatesSince(new Date(since)),
         }
     }),
 });
@@ -158,9 +164,10 @@ interface RecordPlayArgs {
     scores?: Array<number>;
 }
 
-let RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
+const RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
     name: 'Mutation',
     description: 'Realize Root Mutation',
+    // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         createPlayer: {
             type: player,
@@ -172,7 +179,8 @@ let RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLNonNull(GraphQLString),
                 },
             },
-            resolve: async (_, {displayName, username}: CreatePlayerArgs, {}) => addPlayer(displayName, username),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {displayName, username}: CreatePlayerArgs) => addPlayer(displayName, username),
         },
 
         createGame: {
@@ -185,7 +193,8 @@ let RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLNonNull(GraphQLBoolean),
                 },
             },
-            resolve: async (_, {name, hasScores}: CreateGameArgs, {}) => addGame(name, hasScores),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {name, hasScores}: CreateGameArgs) => addGame(name, hasScores),
         },
 
         recordPlay: {
@@ -204,6 +213,7 @@ let RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
                     type: GraphQLList(GraphQLNonNull(GraphQLInt)),
                 },
             },
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (_, {players, winners, game, scores}: RecordPlayArgs, {loader}) => {
                 return await recordPlay(
                     players.map(player => parseID(player)),

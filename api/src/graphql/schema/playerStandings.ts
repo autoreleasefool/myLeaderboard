@@ -9,10 +9,10 @@ import record from './record';
 import playerVSRecord from './playerVSRecord';
 import { PlayerStandings, PlayerStandingsGraphQL, Player } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
-import { isPlayer } from '../../common/utils';
+import { isPlayer, parseID } from '../../common/utils';
 
 export async function playerStandingsToGraphQL(playerStandings: PlayerStandings, loader: MyLeaderboardLoader): Promise<PlayerStandingsGraphQL> {
-    const playerIds = Object.keys(playerStandings.records);
+    const playerIds = Object.keys(playerStandings.records).map(id => parseID(id));
     const players = await loader.playerLoader.loadMany(playerIds);
 
     return {
@@ -30,6 +30,7 @@ export async function playerStandingsToGraphQL(playerStandings: PlayerStandings,
 export default new GraphQLObjectType<void, void, {}>({
     name: 'PlayerStandings',
     description: 'Player record for a game against all opponents',
+    // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         scoreStats: {
             type: scoreStats,

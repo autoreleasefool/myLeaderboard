@@ -30,6 +30,7 @@ export async function gameStandingsToGraphQL(gameStandings: GameStandings, loade
 export default new GraphQLObjectType<void, void, {}>({
     name: 'GameStandings',
     description: 'Standings for a game',
+    // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         scoreStats: {
             type: scoreStats,

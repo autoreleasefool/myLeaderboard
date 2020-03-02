@@ -8,6 +8,7 @@ import {
 export default new GraphQLObjectType<void, void, {}>({
     name: 'Record',
     description: 'Win/Loss record',
+    // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         wins: {
             type: GraphQLNonNull(GraphQLInt),

@@ -46,7 +46,7 @@ class Table<Row extends Identifiable> {
 
     public all({first, offset}: ListArguments): Array<Row> {
         if (first < 0) {
-            return this.rows.slice(offset)
+            return this.rows.slice(offset);
         }
         return this.rows.slice(offset, offset + first);
     }
@@ -64,7 +64,7 @@ class Table<Row extends Identifiable> {
     }
 
     public allByIds(ids: readonly number[]): Array<Row> {
-        let result: Array<Row> = [];
+        const result: Array<Row> = [];
         for (const id of ids) {
             result.push(this.rowsById[id]);
         }

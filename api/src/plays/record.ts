@@ -29,7 +29,7 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
         .filter(player => isPlayer(player))
         .map(player => player as Player);
 
-    const id = Plays.getInstance().getNextId()
+    const id = Plays.getInstance().getNextId();
 
     const newPlay: Play = {
         game,
@@ -54,10 +54,10 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
 }
 
 async function validatePlayersExist(winners: Array<number>, loader: MyLeaderboardLoader): Promise<void> {
-    let players = await loader.playerLoader.loadMany(winners);
+    const players = await loader.playerLoader.loadMany(winners);
     for (const player of players) {
         if (!isPlayer(player)) {
-            throw player
+            throw player;
         }
     }
 }

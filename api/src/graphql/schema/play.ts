@@ -35,6 +35,7 @@ export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Pr
 export default new GraphQLObjectType<Play, SchemaContext, {}>({
     name: 'Play',
     description: 'Play from the MyLeaderboard API',
+    // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         id: {
             type: GraphQLNonNull(GraphQLID),
@@ -47,14 +48,17 @@ export default new GraphQLObjectType<Play, SchemaContext, {}>({
         },
         game: {
             type: GraphQLNonNull(game),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (play, _, {loader}) => loader.gameLoader.load(play.game),
         },
         players: {
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerBasic))),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (play, _, {loader}) => loader.playerLoader.loadMany(play.players),
         },
         winners: {
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerBasic))),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (play, _, {loader}) => loader.playerLoader.loadMany(play.winners),
         },
     }),

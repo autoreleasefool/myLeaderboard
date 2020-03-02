@@ -55,7 +55,7 @@ export function isPlay(item: any): item is Play {
 }
 
 function getNumberParam(name: string, req: Request, minValue: number, defaultValue: number): number {
-    let value = parseInt(req.params[name]);
+    const value = parseInt(req.params[name]);
     return value < minValue ? value : defaultValue;
 }
 

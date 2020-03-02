@@ -25,6 +25,7 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
     name: 'Player',
     description: 'Player from the MyLeaderboard API with complex information',
     extensions: playerBasic,
+    // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         id: {
             type: GraphQLNonNull(GraphQLID),
@@ -45,9 +46,10 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
                 }
             },
             type: GraphQLNonNull(playerRecord),
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (player: Player, {gameId}: PlayerRecordArguments, {loader}) =>
                 playerStandingsToGraphQL(
-                    await generatePlayerRecord(player.id, parseID(gameId)), loader
+                    await generatePlayerRecord(player.id, parseID(gameId), loader), loader
                 ),
         }
     }),
