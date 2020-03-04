@@ -40,6 +40,7 @@ class LeaderboardAPI {
 
 	// MARK: - Players
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func players(withAvatars: Bool = true, completion: @escaping (LeaderboardAPIResult<[Player]>) -> Void) {
 		func finishRequest(_ intermediateResult: LeaderboardAPIResult<[Player]>) {
 			let result: LeaderboardAPIResult<[Player]>
@@ -62,6 +63,7 @@ class LeaderboardAPI {
 		}.resume()
 	}
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func playerRecord(playerID: ID, gameID: ID, completion: @escaping (LeaderboardAPIResult<PlayerStandings>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<PlayerStandings>) {
 			DispatchQueue.main.async {
@@ -75,6 +77,7 @@ class LeaderboardAPI {
 		}.resume()
 	}
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func createPlayer(name: String, username: String, completion: @escaping (LeaderboardAPIResult<Player>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<Player>) {
 			DispatchQueue.main.async {
@@ -100,6 +103,7 @@ class LeaderboardAPI {
 
 	// MARK: - Games
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func games(completion: @escaping (LeaderboardAPIResult<[Game]>) -> Void) {
 		func finishRequest(_ intermediateResult: LeaderboardAPIResult<[Game]>) {
 			let result: LeaderboardAPIResult<[Game]>
@@ -120,6 +124,7 @@ class LeaderboardAPI {
 		}.resume()
 	}
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func createGame(withName name: String, hasScores: Bool, completion: @escaping (LeaderboardAPIResult<Game>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<Game>) {
 			DispatchQueue.main.async {
@@ -146,6 +151,7 @@ class LeaderboardAPI {
 		}.resume()
 	}
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func standings(for game: Game, completion: @escaping (LeaderboardAPIResult<(Game, Standings)>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<Standings>) {
 			DispatchQueue.main.async {
@@ -169,6 +175,7 @@ class LeaderboardAPI {
 
 	// MARK: - Play
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func plays(completion: @escaping (LeaderboardAPIResult<[GamePlay]>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<[GamePlay]>) {
 			DispatchQueue.main.async {
@@ -182,6 +189,7 @@ class LeaderboardAPI {
 		}.resume()
 	}
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func record(gameID: ID, playerIDs: [ID], winnerIDs: [ID], scores: [ID]?, completion: @escaping (LeaderboardAPIResult<GamePlay>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<GamePlay>) {
 			DispatchQueue.main.async {
@@ -216,6 +224,7 @@ class LeaderboardAPI {
 
 	// MARK: - Misc
 
+	@available(*, deprecated, message: "Use GraphQL API instead")
 	func refresh(completion: @escaping (LeaderboardAPIResult<Bool>) -> Void) {
 		func finishRequest(_ result: LeaderboardAPIResult<Bool>) {
 			DispatchQueue.main.async {

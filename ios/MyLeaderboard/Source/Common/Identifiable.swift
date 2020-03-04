@@ -10,5 +10,10 @@ import Foundation
 typealias ID = Int
 
 protocol Identifiable {
+	@available(*, deprecated, message: "Use graphID instead")
 	var id: ID { get }
+}
+
+protocol GraphQLIdentifiable {
+	var graphID: GraphID { get }
 }

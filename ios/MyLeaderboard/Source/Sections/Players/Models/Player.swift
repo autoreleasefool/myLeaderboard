@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Player: Identifiable, Equatable, Codable, Hashable {
+struct Player: Identifiable, GraphQLIdentifiable, Equatable, Codable, Hashable {
 	let id: ID
 	let avatar: String?
 	let displayName: String
@@ -24,6 +24,10 @@ struct Player: Identifiable, Equatable, Codable, Hashable {
 		}
 
 		return nil
+	}
+
+	var graphID: GraphID {
+		return GraphID(rawValue: String(id))
 	}
 }
 
