@@ -10,6 +10,8 @@
 		CA018481240D25090080A5B8 /* GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018480240D25090080A5B8 /* GraphQL.swift */; };
 		CA018483240D25840080A5B8 /* Syrup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018482240D25840080A5B8 /* Syrup+Extensions.swift */; };
 		CA018485240D292C0080A5B8 /* CustomScalarResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018484240D292B0080A5B8 /* CustomScalarResolver.swift */; };
+		CA018487240EFDBD0080A5B8 /* MyLeaderboardAPI+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardAPI+Networking.swift */; };
+		CA01848A240F23E20080A5B8 /* Player+PlayerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018489240F23E20080A5B8 /* Player+PlayerListItem.swift */; };
 		CA1D97E42406EE650011786E /* Players.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA1D97E32406EE650011786E /* Players.graphql */; };
 		CA27F9A2232D59A40023924A /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA27F9A1232D59A40023924A /* NotificationCenter.framework */; };
 		CA27F9A5232D59A40023924A /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9A4232D59A40023924A /* TodayViewController.swift */; };
@@ -205,6 +207,8 @@
 		CA018480240D25090080A5B8 /* GraphQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQL.swift; sourceTree = "<group>"; };
 		CA018482240D25840080A5B8 /* Syrup+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Syrup+Extensions.swift"; sourceTree = "<group>"; };
 		CA018484240D292B0080A5B8 /* CustomScalarResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScalarResolver.swift; sourceTree = "<group>"; };
+		CA018486240EFDBD0080A5B8 /* MyLeaderboardAPI+Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyLeaderboardAPI+Networking.swift"; sourceTree = "<group>"; };
+		CA018489240F23E20080A5B8 /* Player+PlayerListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Player+PlayerListItem.swift"; sourceTree = "<group>"; };
 		CA1D97E32406EE650011786E /* Players.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Players.graphql; sourceTree = "<group>"; };
 		CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsListBuilder.swift; sourceTree = "<group>"; };
 		CA27F9A0232D59A40023924A /* MyLeaderboardTodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyLeaderboardTodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -356,6 +360,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA018488240F23C80080A5B8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CA018489240F23E20080A5B8 /* Player+PlayerListItem.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		CA1D97DF2406EDFA0011786E /* GraphQL */ = {
 			isa = PBXGroup;
 			children = (
@@ -538,9 +550,11 @@
 			children = (
 				CA1D97E02406EE170011786E /* Generated */,
 				CA1D97DF2406EDFA0011786E /* GraphQL */,
+				CA018488240F23C80080A5B8 /* Extensions */,
 				CABA3EA122D36BAD00960758 /* LeaderboardAPI.swift */,
 				CA018480240D25090080A5B8 /* GraphQL.swift */,
 				CA018482240D25840080A5B8 /* Syrup+Extensions.swift */,
+				CA018486240EFDBD0080A5B8 /* MyLeaderboardAPI+Networking.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1157,6 +1171,7 @@
 				CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */,
 				CA519464230F98580041105B /* SettingsViewController.swift in Sources */,
 				CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */,
+				CA01848A240F23E20080A5B8 /* Player+PlayerListItem.swift in Sources */,
 				CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */,
 				CAE9CF66230F074A00D4850E /* PlaysListBuilder.swift in Sources */,
 				CAE9CF6D230F3E1300D4850E /* ScoreCell.swift in Sources */,
@@ -1171,6 +1186,7 @@
 				CAE9CF69230F197700D4850E /* PlayerGamePlayCell.swift in Sources */,
 				CAED76B422FA78CF000A2281 /* PlayerPlayCell.swift in Sources */,
 				CA4BAB9222D6E160003347AF /* GameNavigationController.swift in Sources */,
+				CA018487240EFDBD0080A5B8 /* MyLeaderboardAPI+Networking.swift in Sources */,
 				CAE56F8C22F47CD000FE0998 /* ViewState.swift in Sources */,
 				CABA3EAA22D4B4DB00960758 /* FTDViewController.swift in Sources */,
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,

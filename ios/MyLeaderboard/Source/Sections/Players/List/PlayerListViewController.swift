@@ -25,7 +25,7 @@ class PlayerListViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = PlayerListViewModel(api: api) { [weak self] action in
+		viewModel = PlayerListViewModel { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .playersUpdated:
@@ -34,6 +34,8 @@ class PlayerListViewController: FTDViewController {
 			case .playerSelected(let player):
 				self.showPlayerDetails(for: player)
 			case .apiError(let error):
+				self.presentError(error)
+			case .graphQLError(let error):
 				self.presentError(error)
 			case .addPlayer:
 				self.showCreatePlayer()
@@ -66,15 +68,8 @@ class PlayerListViewController: FTDViewController {
 		show(PlayerDetailsViewController(api: api, player: player), sender: self)
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: LocalizedError) {
+		Loaf(error.localizedDescription, state: .error, sender: self).show()
 	}
 
 	override func refresh() {

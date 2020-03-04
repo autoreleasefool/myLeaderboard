@@ -13,6 +13,7 @@ enum PlayerListAction: BaseAction {
 	case playerSelected(Player)
 	case addPlayer
 	case apiError(LeaderboardAPIError)
+	case graphQLError(GraphAPIError)
 }
 
 enum PlayerListViewAction: BaseViewAction {
@@ -23,9 +24,9 @@ enum PlayerListViewAction: BaseViewAction {
 }
 
 class PlayerListViewModel: ViewModel {
+	typealias PlayerListQuery = MyLeaderboardAPI.PlayerListQuery
 	typealias ActionHandler = (_ action: PlayerListAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
 	private(set) var players: [Player] = [] {
@@ -34,17 +35,14 @@ class PlayerListViewModel: ViewModel {
 		}
 	}
 
-	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
-		self.api = api
+	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
 
 	func postViewAction(_ viewAction: PlayerListViewAction) {
 		switch viewAction {
-		case .initialize:
+		case .initialize, .reload:
 			loadPlayerList()
-		case .reload:
-			reloadPlayerList()
 		case .selectPlayer(let player):
 			handleAction(.playerSelected(player))
 		case .addPlayer:
@@ -53,23 +51,12 @@ class PlayerListViewModel: ViewModel {
 	}
 
 	private func loadPlayerList() {
-		api.players { [weak self] in
+		PlayerListQuery(first: 25, offset: 0).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let players):
-				self?.players = players
-			}
-		}
-	}
-
-	private func reloadPlayerList() {
-		api.refresh { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success:
-				self?.loadPlayerList()
+				self?.handleAction(.graphQLError(error))
+			case .success(let response):
+				self?.players = response.players.compactMap { Player(from: $0?.asPlayerListItemFragment) }
 			}
 		}
 	}
