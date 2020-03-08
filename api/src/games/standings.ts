@@ -2,7 +2,7 @@ import { Request } from 'express';
 import Players from '../db/players';
 import Plays from '../db/plays';
 import { isBanished } from '../lib/Freshness';
-import { Game, GameStandings, Record } from '../lib/types';
+import { GameNext, GameRecordNext, RecordNext } from '../lib/types';
 import { parseID } from '../common/utils';
 import DataLoader, { MyLeaderboardLoader } from '../graphql/DataLoader';
 
@@ -19,13 +19,13 @@ interface RecordHighlight {
     wins: number;
 }
 
-export default async function generateGameStandings(req: Request): Promise<GameStandings> {
+export default async function generateGameStandings(req: Request): Promise<GameRecordNext> {
     const gameId = parseID(req.params.id);
     const loader = DataLoader();
     return gameStandings(gameId, loader);
 }
 
-export async function gameStandings(gameId: number, loader: MyLeaderboardLoader): Promise<GameStandings> {
+export async function gameStandings(gameId: number, loader: MyLeaderboardLoader): Promise<GameRecordNext> {
     const game = await loader.gameLoader.load(gameId);
 
     const gameStandings = await buildStandings(game);
@@ -39,8 +39,8 @@ export async function gameStandings(gameId: number, loader: MyLeaderboardLoader)
     return gameStandings;
 }
 
-async function buildStandings(game: Game): Promise<GameStandings> {
-    const gameStandings: GameStandings = { records: {}};
+async function buildStandings(game: GameNext): Promise<GameRecordNext> {
+    const gameStandings: GameRecordNext = { records: {}};
 
     let totalGames = 0;
     let gamesWithScores = 0;
@@ -97,7 +97,8 @@ async function buildStandings(game: Game): Promise<GameStandings> {
                     }
                 }
 
-                if (play.playedOn > gameStandings.records[playerId].lastPlayed) {
+                const lastPlayed = gameStandings.records[playerId].lastPlayed
+                if (!lastPlayed || play.playedOn > lastPlayed) {
                     gameStandings.records[playerId].lastPlayed = play.playedOn;
                 }
 
@@ -153,7 +154,7 @@ async function buildStandings(game: Game): Promise<GameStandings> {
     return gameStandings;
 }
 
-async function highlightRecords(standings: GameStandings, playerIds: Array<number>, loader: MyLeaderboardLoader): Promise<void> {
+async function highlightRecords(standings: GameRecordNext, playerIds: Array<number>, loader: MyLeaderboardLoader): Promise<void> {
     const worstRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
     const bestRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
 
@@ -185,7 +186,7 @@ async function highlightRecords(standings: GameStandings, playerIds: Array<numbe
             updateHighlightedRecords(vsRecordForHighlight, bestVsRecords, worstVsRecords);
         }
 
-        const playerVs: Map<number, Record> = new Map();
+        const playerVs: Map<number, RecordNext> = new Map();
         for (const opponentId of playerIds) {
             if (opponentId === player.id) {
                 continue;
@@ -197,7 +198,7 @@ async function highlightRecords(standings: GameStandings, playerIds: Array<numbe
         markBestAndWorstRecords(playerVs, bestVsRecords, worstVsRecords);
     }
 
-    const playerTotals: Map<number, Record> = new Map();
+    const playerTotals: Map<number, RecordNext> = new Map();
     for (const playerId of playerIds) {
         playerTotals.set(playerId, standings.records[playerId].overallRecord);
     }
@@ -229,7 +230,7 @@ function updateHighlightedRecords(record: RecordHighlight, bestRecords: Array<Re
     }
 }
 
-function markBestAndWorstRecords(records: Map<number, Record>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>): void {
+function markBestAndWorstRecords(records: Map<number, RecordNext>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>): void {
     for (const player of records.keys()) {
         const playerRecord = records.get(player);
         if (!playerRecord) {

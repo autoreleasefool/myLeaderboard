@@ -1,15 +1,15 @@
 import { Request } from 'express';
 import Games from '../db/games';
-import { Game } from '../lib/types';
+import { GameNext } from '../lib/types';
 
-export default async function add(req: Request): Promise<Game> {
+export default async function add(req: Request): Promise<GameNext> {
     const name: string = req.body.name;
     const hasScores: boolean = req.body.hasScores;
 
     return addGame(name, hasScores);
 }
 
-export async function addGame(name: string, hasScores: boolean): Promise<Game> {
+export async function addGame(name: string, hasScores: boolean): Promise<GameNext> {
     // Input validation
     if (name == null || name.length === 0) {
         throw new Error('Missing "name".');
@@ -24,7 +24,7 @@ export async function addGame(name: string, hasScores: boolean): Promise<Game> {
     return newGame;
 }
 
-function createGame(name: string, hasScores: boolean): Game {
+function createGame(name: string, hasScores: boolean): GameNext {
     if (Games.getInstance().isNameTaken(name)) {
         throw new Error(`A game with the name "${name}" already exists.`);
     }
