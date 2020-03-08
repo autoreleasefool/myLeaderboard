@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import Plays from '../db/plays';
-import { PlayerStandings, Record } from '../lib/types';
+import { PlayerRecordNext, RecordNext } from '../lib/types';
 import { parseID } from '../common/utils';
 import DataLoader, { MyLeaderboardLoader } from '../graphql/DataLoader';
 
@@ -17,15 +17,15 @@ interface RecordHighlight {
     wins: number;
 }
 
-export default async function record(req: Request): Promise<PlayerStandings> {
+export default async function record(req: Request): Promise<PlayerRecordNext> {
     const playerId = parseID(req.params.playerId);
     const gameId = parseID(req.params.gameId);
     const loader = DataLoader();
     return playerRecord(playerId, gameId, loader);
 }
 
-export async function playerRecord(playerId: number, gameId: number, loader: MyLeaderboardLoader): Promise<PlayerStandings> {
-    const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
+export async function playerRecord(playerId: number, gameId: number, loader: MyLeaderboardLoader): Promise<PlayerRecordNext> {
+    const playerRecord: PlayerRecordNext = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
 
     // Ensure that the player exists
     await loader.playerLoader.load(playerId);
@@ -99,7 +99,7 @@ export async function playerRecord(playerId: number, gameId: number, loader: MyL
     return playerRecord;
 }
 
-function highlightRecords(standings: PlayerStandings): void {
+function highlightRecords(standings: PlayerRecordNext): void {
     const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
     const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
     const opponentIds: Array<number> = [];
@@ -122,7 +122,7 @@ function highlightRecords(standings: PlayerStandings): void {
         updateHighlightedRecords(vsRecordForHighlight, bestVsRecords, worstVsRecords);
     }
 
-    const playerVs: Map<number, Record> = new Map();
+    const playerVs: Map<number, RecordNext> = new Map();
     for (const opponentId of opponentIds) {
         playerVs.set(opponentId, standings.records[opponentId]);
     }
@@ -155,7 +155,7 @@ function updateHighlightedRecords(recordHighlight: RecordHighlight, bestRecords:
     }
 }
 
-function markBestAndWorstRecords(records: Map<number, Record>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>): void {
+function markBestAndWorstRecords(records: Map<number, RecordNext>, bestRecords: Array<RecordHighlight>, worstRecords: Array<RecordHighlight>): void {
     for (const player of records.keys()) {
         const playerRecord = records.get(player);
         if (!playerRecord) {
