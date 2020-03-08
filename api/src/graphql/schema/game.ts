@@ -9,12 +9,12 @@ import {
 } from 'graphql';
 import gameRecord, { gameRecordToGraphQL } from './gameRecord';
 import { gameStandings as generateGameStandings } from '../../games/standings';
-import { GameNext } from '../../lib/types';
+import { Game } from '../../lib/types';
 import { SchemaContext, ListQueryArguments, DEFAULT_PAGE_SIZE} from '../schema';
 import play from './play';
 import Plays from '../../db/plays';
 
-export default new GraphQLObjectType<GameNext, SchemaContext, any>({
+export default new GraphQLObjectType<Game, SchemaContext, any>({
     name: 'Game',
     description: 'Game from the MyLeaderboard API with complex information',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type

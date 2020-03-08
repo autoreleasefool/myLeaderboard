@@ -11,7 +11,7 @@ import playerBasic from './playerBasic';
 
 import { playerRecord as generatePlayerRecord } from '../../players/record';
 import { playerRecordToGraphQL } from './playerGameRecord';
-import { PlayerNext } from '../../lib/types';
+import { Player } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
 import play from './play';
 import Plays from '../../db/plays';
@@ -22,7 +22,7 @@ interface QueryContext {
     loader: MyLeaderboardLoader;
 }
 
-export default new GraphQLObjectType<PlayerNext, QueryContext, any>({
+export default new GraphQLObjectType<Player, QueryContext, any>({
     name: 'Player',
     description: 'Player from the MyLeaderboard API with complex information',
     extensions: playerBasic,

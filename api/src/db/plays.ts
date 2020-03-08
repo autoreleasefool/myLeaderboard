@@ -1,7 +1,7 @@
-import { PlayNext } from '../lib/types';
+import { Play } from '../lib/types';
 import Table from './table';
 
-class Plays extends Table<PlayNext> {
+class Plays extends Table<Play> {
     public static getInstance(): Plays {
         if (Plays.instance == null) {
             Plays.instance = new Plays();

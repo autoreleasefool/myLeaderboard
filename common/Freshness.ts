@@ -1,6 +1,6 @@
-import { PlayerRecordNext } from './types';
+import { PlayerRecord } from './types';
 
-export function freshness(record: PlayerRecordNext): number {
+export function freshness(record: PlayerRecord): number {
     const today = new Date();
     const seconds = (today.getTime() - new Date(record.lastPlayed ? record.lastPlayed : "").getTime()) / 1000;
     const daysSinceLastPlayed = Math.floor(seconds / 86400);
@@ -20,6 +20,6 @@ export function freshness(record: PlayerRecordNext): number {
     }
 }
 
-export function isBanished(player: PlayerRecordNext): boolean {
+export function isBanished(player: PlayerRecord): boolean {
     return freshness(player) === 0;
 }

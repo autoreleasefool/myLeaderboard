@@ -6,19 +6,19 @@ import {
 
 import scoreStats from './scoreStats';
 import playerRecord from './playerRecord';
-import { PlayerNext, GameRecordNext, GameRecordGQL } from '../../lib/types';
+import { Player, GameRecord, GameRecordGQL } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer, parseID } from '../../common/utils';
 import { playerRecordToGraphQL } from './playerGameRecord';
 
-export async function gameRecordToGraphQL(gameId: number, gameRecord: GameRecordNext, loader: MyLeaderboardLoader): Promise<GameRecordGQL> {
+export async function gameRecordToGraphQL(gameId: number, gameRecord: GameRecord, loader: MyLeaderboardLoader): Promise<GameRecordGQL> {
     const playerIds = Object.keys(gameRecord.records).map(id => parseID(id));
     const players = await loader.playerLoader.loadMany(playerIds);
 
     return {
         scoreStats: gameRecord.scoreStats,
         records: await Promise.all(players.filter(player => isPlayer(player))
-            .map(player => player as PlayerNext)
+            .map(player => player as Player)
             .map(async player => ({
                     player,
                     record: await playerRecordToGraphQL(gameId, gameRecord.records[player.id], loader),

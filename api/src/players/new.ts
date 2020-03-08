@@ -1,15 +1,15 @@
 import { Request } from 'express';
 import Players from '../db/players';
-import { PlayerNext } from '../lib/types';
+import { Player } from '../lib/types';
 
-export default async function add(req: Request): Promise<PlayerNext> {
+export default async function add(req: Request): Promise<Player> {
     const playerName: string = req.body.name;
     const playerUsername: string = req.body.username;
 
     return addPlayer(playerName, playerUsername);
 }
 
-export async function addPlayer(playerName: string, playerUsername: string): Promise<PlayerNext> {
+export async function addPlayer(playerName: string, playerUsername: string): Promise<Player> {
     // Input validation
     if (playerName == null || playerName.length === 0) {
         throw new Error('Missing "name".');
@@ -27,7 +27,7 @@ export async function addPlayer(playerName: string, playerUsername: string): Pro
     return newPlayer;
 }
 
-function createPlayer(displayName: string, username: string): PlayerNext {
+function createPlayer(displayName: string, username: string): Player {
     if (Players.getInstance().isUsernameTaken(username)) {
         throw new Error(`A player with username "${username}" already exists.`);
     }

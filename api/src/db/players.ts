@@ -1,8 +1,8 @@
 import Octo from '../common/Octo';
-import { PlayerNext } from '../lib/types';
+import { Player } from '../lib/types';
 import Table, { ListArguments } from './table';
 
-class Players extends Table<PlayerNext> {
+class Players extends Table<Player> {
     public static getInstance(): Players {
         if (Players.instance == null) {
             Players.instance = new Players();
@@ -27,22 +27,22 @@ class Players extends Table<PlayerNext> {
         return false;
     }
 
-    public async findByIdWithAvatar(id: number): Promise<PlayerNext | undefined> {
+    public async findByIdWithAvatar(id: number): Promise<Player | undefined> {
         const player = this.findById(id);
         return player ? this.addAvatar(player) : undefined;
     }
 
-    public async allWithAvatars(args: ListArguments<PlayerNext>): Promise<Array<PlayerNext>> {
+    public async allWithAvatars(args: ListArguments<Player>): Promise<Array<Player>> {
         const rows = this.all(args);
         return Promise.all(rows.map(player => this.addAvatar(player)));
     }
 
-    public async allByIdsWithAvatars(ids: readonly number[]): Promise<Array<PlayerNext>> {
+    public async allByIdsWithAvatars(ids: readonly number[]): Promise<Array<Player>> {
         const rows = this.allByIds(ids);
         return Promise.all(rows.map(player => this.addAvatar(player)));
     }
 
-    private async addAvatar(player: PlayerNext): Promise<PlayerNext> {
+    private async addAvatar(player: Player): Promise<Player> {
         const user = await Octo.getInstance().user(player.username);
         return {
             ...player,

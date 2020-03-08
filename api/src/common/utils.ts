@@ -1,4 +1,4 @@
-import { PlayNext, PlayerNext, GameNext } from '../lib/types';
+import { Play, Player, Game } from '../lib/types';
 import { Request } from 'express';
 
 export function parseID(id: string): number {
@@ -42,15 +42,15 @@ export function filterDefined<T>(
     );
 }
 
-export function isPlayer(item: any): item is PlayerNext {
+export function isPlayer(item: any): item is Player {
     return item.displayName && item.username;
 }
 
-export function isGame(item: any): item is GameNext {
+export function isGame(item: any): item is Game {
     return item.name && item.hasScores !== undefined;
 }
 
-export function isPlay(item: any): item is PlayNext {
+export function isPlay(item: any): item is Play {
     return item.game !== undefined && item.players !== undefined;
 }
 
