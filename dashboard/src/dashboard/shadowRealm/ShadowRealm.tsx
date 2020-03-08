@@ -2,17 +2,17 @@ import { Page } from '@shopify/polaris';
 import React from 'react';
 import PlayerView from '../../components/PlayerView';
 import { isBanished } from '../../lib/Freshness';
-import { GameStandings, Player } from '../../lib/types';
+import { GameRecord, Player } from '../../lib/types';
 import './ShadowRealm.css';
 
 interface Props {
-    players: Array<Player>;
-    standings: GameStandings;
+    players: Player[];
+    standings: GameRecord;
     forceRefresh: boolean;
 }
 
 interface State {
-    banished: Array<Player>;
+    banished: Player[];
 }
 
 class ShadowRealm extends React.Component<Props, State> {

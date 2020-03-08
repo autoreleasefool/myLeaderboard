@@ -1,4 +1,4 @@
-import { Game, GameStandings, Player } from '../lib/types';
+import { Game, GameRecord, Player } from '../lib/types';
 
 class LeaderboardAPI {
     public static getInstance(): LeaderboardAPI {
@@ -10,23 +10,23 @@ class LeaderboardAPI {
     }
 
     private static instance: LeaderboardAPI;
-    private static baseURL = 'https://myleaderboard.josephroque.dev';
+    private static baseURL = 'https://6ee0fb75.ngrok.io';
 
     private constructor() {}
 
-    public async games(): Promise<Array<Game>> {
+    public async games(): Promise<Game[]> {
         const response = await fetch(`${LeaderboardAPI.baseURL}/games/list`);
         const gameList = await response.json();
         return gameList;
     }
 
-    public async players(): Promise<Array<Player>> {
+    public async players(): Promise<Player[]> {
         const response = await fetch(`${LeaderboardAPI.baseURL}/players/list?includeAvatars=true`);
         const playerList = await response.json();
         return playerList;
     }
 
-    public async gameStandings(id: number): Promise<GameStandings> {
+    public async gameStandings(id: number): Promise<GameRecord> {
         const response = await fetch(`${LeaderboardAPI.baseURL}/games/standings/${id}`);
         const standings = await response.json();
         return standings;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Page } from '@shopify/polaris';
 import LeaderboardAPI from '../api/LeaderboardAPI';
-import { Game, GameStandings, Player } from '../lib/types';
+import { Game, GameRecord, Player } from '../lib/types';
 import './GameDashboard.css';
 import Limbo from './limbo/Limbo';
 import ShadowRealm from './shadowRealm/ShadowRealm';
@@ -10,14 +10,14 @@ import { isBanished } from '../lib/Freshness';
 
 interface Props {
     game: Game;
-    players: Array<Player>;
+    players: Player[];
 }
 
 interface State {
     banishedPlayers: Set<number>;
-    playersWithGames: Array<Player>;
+    playersWithGames: Player[];
     refresh: boolean;
-    standings: GameStandings | undefined;
+    standings: GameRecord | undefined;
 }
 
 const softRefreshTime = 60 * 60 * 1000;
@@ -90,7 +90,7 @@ class Dashboard extends React.Component<Props, State> {
         });
     }
 
-    private _identifyBanishedPlayers(standings: GameStandings, players: Array<Player>): Set<number> {
+    private _identifyBanishedPlayers(standings: GameRecord, players: Player[]): Set<number> {
         return new Set(players.filter(player => isBanished(standings.records[player.id])).map(player => player.id));
     }
 

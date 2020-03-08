@@ -3,13 +3,13 @@ import React, { ReactNode } from 'react';
 import PlayerView from '../components/PlayerView';
 import Version from '../components/Version';
 import { isBanished } from '../lib/Freshness';
-import { Game, GameStandings, Player, Record } from '../lib/types';
+import { Game, GameRecord, Player, Record } from '../lib/types';
 import './Standings.css';
 
 interface Props {
     game: Game;
-    standings: GameStandings;
-    players: Array<Player>;
+    standings: GameRecord;
+    players: Player[];
     forceRefresh: boolean;
 }
 
@@ -84,7 +84,7 @@ class Standings extends React.Component<Props, State> {
         this.setState({ banishedPlayers });
     }
 
-    private _identifyBanishedPlayers(standings: GameStandings, players: Array<Player>): Set<number> {
+    private _identifyBanishedPlayers(standings: GameRecord, players: Player[]): Set<number> {
         return new Set(players.filter(player => isBanished(standings.records[player.id])).map(player => player.id));
     }
 

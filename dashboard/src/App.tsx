@@ -5,8 +5,8 @@ import GameDashboard from './dashboard/GameDashboard';
 import { Game, Player } from './lib/types';
 
 interface State {
-    games: Array<Game>;
-    players: Array<Player>;
+    games: Game[];
+    players: Player[];
 }
 
 class App extends React.Component<{}, State> {
