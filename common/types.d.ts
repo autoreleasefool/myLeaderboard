@@ -103,7 +103,7 @@ export interface GameRecordGQL {
 export interface PlayerGameRecordGQL {
     game: GameNext;
     scoreStats?: ScoreStatsNext;
-    lastPlayed: string;
+    lastPlayed?: string;
     overallRecord: RecordNext;
     records: PlayerRecordVSGQL[];
 }

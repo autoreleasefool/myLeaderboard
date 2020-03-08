@@ -1,8 +1,8 @@
-import { PlayerRecord } from './types';
+import { PlayerRecordNext } from './types';
 
-export function freshness(record: PlayerRecord): number {
+export function freshness(record: PlayerRecordNext): number {
     const today = new Date();
-    const seconds = (today.getTime() - new Date(record.lastPlayed).getTime()) / 1000;
+    const seconds = (today.getTime() - new Date(record.lastPlayed ? record.lastPlayed : "").getTime()) / 1000;
     const daysSinceLastPlayed = Math.floor(seconds / 86400);
     const veryFreshLimit = 7;
     const staleLimit = 21;
@@ -20,6 +20,6 @@ export function freshness(record: PlayerRecord): number {
     }
 }
 
-export function isBanished(player: PlayerRecord): boolean {
+export function isBanished(player: PlayerRecordNext): boolean {
     return freshness(player) === 0;
 }
