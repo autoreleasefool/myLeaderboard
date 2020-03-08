@@ -28,7 +28,7 @@ enum GraphAPIError: LocalizedError {
 }
 
 extension MyLeaderboardAPI {
-	static let baseURL = URL(string: "https://5998376e.ngrok.io")!
+	static let baseURL = URL(string: "https://myleaderboard.josephroque.dev")!
 }
 
 extension ResponseAssociable where Self: GraphAPIQuery {
