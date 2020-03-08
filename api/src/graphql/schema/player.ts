@@ -79,7 +79,7 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
                     filter: play => play.players.includes(player.id),
-                })
+                });
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);
                 }

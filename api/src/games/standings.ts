@@ -100,7 +100,7 @@ async function buildStandings(game: Game): Promise<GameRecord> {
                     }
                 }
 
-                const lastPlayed = gameStandings.records[playerId].lastPlayed
+                const lastPlayed = gameStandings.records[playerId].lastPlayed;
                 if (!lastPlayed || play.playedOn > lastPlayed) {
                     gameStandings.records[playerId].lastPlayed = play.playedOn;
                 }
