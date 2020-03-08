@@ -23,7 +23,7 @@ class Limbo extends React.Component<Props, State> {
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         const { players, standings } = this.props;
 
         const limboing = players.filter(player => {
@@ -39,7 +39,7 @@ class Limbo extends React.Component<Props, State> {
         this.setState({ limboing });
     }
 
-    public render() {
+    public render(): React.ReactNode {
         const { limboing } = this.state;
         if (limboing.length === 0) {
             return null;

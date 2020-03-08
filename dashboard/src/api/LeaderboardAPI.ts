@@ -10,9 +10,11 @@ class LeaderboardAPI {
     }
 
     private static instance: LeaderboardAPI;
-    private static baseURL = 'https://myleaderboard.josephroque.dev';
+    private static baseURL = 'https://4914bcc1.ngrok.io';
 
-    private constructor() {}
+    private constructor() {
+        // Does nothing
+    }
 
     public async games(): Promise<Game[]> {
         const response = await fetch(`${LeaderboardAPI.baseURL}/games/list`);

@@ -23,17 +23,17 @@ class ShadowRealm extends React.Component<Props, State> {
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         this._identifyBanishedPlayers();
     }
 
-    public componentDidUpdate(prevProps: Props) {
+    public componentDidUpdate(prevProps: Props): void {
         if (this.props.players !== prevProps.players) {
             this._identifyBanishedPlayers();
         }
     }
 
-    public render() {
+    public render(): React.ReactNode {
         const { banished } = this.state;
         if (banished.length === 0) {
             return null;
@@ -48,7 +48,7 @@ class ShadowRealm extends React.Component<Props, State> {
         );
     }
 
-    private _identifyBanishedPlayers() {
+    private _identifyBanishedPlayers(): void {
         const { players, standings } = this.props;
         const banished = players.filter(player => {
             const playerRecord = standings.records[player.id];
