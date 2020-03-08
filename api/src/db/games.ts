@@ -1,8 +1,8 @@
-import { Game } from '../lib/types';
+import { GameNext } from '../lib/types';
 import Table, { ListArguments } from './table';
 import { apiURL } from '../common/utils';
 
-class Games extends Table<Game> {
+class Games extends Table<GameNext> {
     public static getInstance(): Games {
         if (Games.instance == null) {
             Games.instance = new Games();
@@ -27,20 +27,20 @@ class Games extends Table<Game> {
         return false;
     }
 
-    public findByIdWithImage(id: number): Game | undefined {
+    public findByIdWithImage(id: number): GameNext | undefined {
         const game = this.findById(id);
         return game ? this.addImage(game) : undefined;
     }
 
-    public allWithImages(args: ListArguments): Array<Game> {
+    public allWithImages(args: ListArguments): Array<GameNext> {
         return this.all(args).map(game => this.addImage(game));
     }
 
-    public allByIdsWithImages(ids: readonly number[]): Array<Game> {
+    public allByIdsWithImages(ids: readonly number[]): Array<GameNext> {
         return this.allByIds(ids).map(game => this.addImage(game));
     }
 
-    private addImage(game: Game): Game {
+    private addImage(game: GameNext): GameNext {
         return {
             ...game,
             image: `${apiURL(true)}/img/games/${game.name}.png`,
