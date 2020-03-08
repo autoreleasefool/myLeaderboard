@@ -11,12 +11,15 @@ import { PlayerRecord, PlayerRecordGraphQL, Player } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer, parseID } from '../../common/utils';
 import { GraphQLDateTime } from 'graphql-iso-date';
+import gameBasic from './gameBasic';
 
-export async function playerRecordToGraphQL(playerRecord: PlayerRecord, loader: MyLeaderboardLoader): Promise<PlayerRecordGraphQL> {
+export async function playerRecordToGraphQL(gameId: number, playerRecord: PlayerRecord, loader: MyLeaderboardLoader): Promise<PlayerRecordGraphQL> {
     const playerIds = Object.keys(playerRecord.records).map(id => parseID(id));
     const players = await loader.playerLoader.loadMany(playerIds);
+    const game = await loader.gameLoader.load(gameId);
 
     return {
+        game,
         scoreStats: playerRecord.scoreStats,
         lastPlayed: playerRecord.lastPlayed,
         overallRecord: playerRecord.overallRecord,
@@ -34,6 +37,9 @@ export default new GraphQLObjectType<void, void, {}>({
     description: 'Player record',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
+        game: {
+            type: GraphQLNonNull(gameBasic),
+        },
         lastPlayed: {
             type: GraphQLDateTime,
         },

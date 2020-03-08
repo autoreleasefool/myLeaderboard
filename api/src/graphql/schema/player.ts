@@ -7,7 +7,6 @@ import {
     GraphQLList,
 } from 'graphql';
 import playerRecord from './playerRecord';
-import { parseID } from '../../common/utils';
 import playerBasic from './playerBasic';
 
 import { playerRecord as generatePlayerRecord } from '../../players/record';
@@ -17,13 +16,10 @@ import { MyLeaderboardLoader } from '../DataLoader';
 import play from './play';
 import Plays from '../../db/plays';
 import { ListQueryArguments, DEFAULT_PAGE_SIZE } from '../schema';
+import Games from '../../db/games';
 
 interface QueryContext {
     loader: MyLeaderboardLoader;
-}
-
-interface PlayerRecordArguments {
-    gameId: string;
 }
 
 export default new GraphQLObjectType<Player, QueryContext, any>({
@@ -44,18 +40,27 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
         avatar: {
             type: GraphQLString,
         },
-        record: {
+        records: {
             args: {
-                gameId: {
-                    type: GraphQLNonNull(GraphQLID),
+                first: {
+                    type: GraphQLInt,
+                },
+                offset: {
+                    type: GraphQLInt,
                 }
             },
-            type: GraphQLNonNull(playerRecord),
+            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerRecord))),
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (player: Player, {gameId}: PlayerRecordArguments, {loader}) =>
-                playerStandingsToGraphQL(
-                    await generatePlayerRecord(player.id, parseID(gameId), loader), loader
-                ),
+            resolve: async (player: Player, {first, offset}: ListQueryArguments, {loader}) => {
+                const gameIds = Games.getInstance().allIds({
+                    first: first ? first : DEFAULT_PAGE_SIZE,
+                    offset: offset ? offset : 0,
+                });
+                return Promise.all(gameIds.map(async gameId => playerStandingsToGraphQL(
+                    await generatePlayerRecord(player.id, gameId, loader),
+                    loader
+                )));
+            },
         },
         recentPlays: {
             args: {

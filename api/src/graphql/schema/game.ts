@@ -36,6 +36,7 @@ export default new GraphQLObjectType<Game, SchemaContext, any>({
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (game, _, {loader}) =>
                 gameStandingsToGraphQL(
+                    game.id,
                     await generateGameStandings(game.id, loader),
                     loader
                 ),

@@ -11,7 +11,8 @@ import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer, parseID } from '../../common/utils';
 import { playerRecordToGraphQL } from './playerRecord';
 
-export async function gameStandingsToGraphQL(gameStandings: GameStandings, loader: MyLeaderboardLoader): Promise<GameStandingsGraphQL> {
+
+export async function gameStandingsToGraphQL(gameId: number, gameStandings: GameStandings, loader: MyLeaderboardLoader): Promise<GameStandingsGraphQL> {
     const playerIds = Object.keys(gameStandings.records).map(id => parseID(id));
     const players = await loader.playerLoader.loadMany(playerIds);
 
@@ -21,7 +22,7 @@ export async function gameStandingsToGraphQL(gameStandings: GameStandings, loade
             .map(player => player as Player)
             .map(async player => ({
                     player,
-                    record: await playerRecordToGraphQL(gameStandings.records[player.id], loader),
+                    record: await playerRecordToGraphQL(gameId, gameStandings.records[player.id], loader),
                 })
             )),
     };
