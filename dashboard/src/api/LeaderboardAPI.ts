@@ -10,7 +10,7 @@ class LeaderboardAPI {
     }
 
     private static instance: LeaderboardAPI;
-    private static baseURL = 'https://6ee0fb75.ngrok.io';
+    private static baseURL = 'https://myleaderboard.josephroque.dev';
 
     private constructor() {}
 
