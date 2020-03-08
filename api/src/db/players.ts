@@ -32,7 +32,7 @@ class Players extends Table<PlayerNext> {
         return player ? this.addAvatar(player) : undefined;
     }
 
-    public async allWithAvatars(args: ListArguments): Promise<Array<PlayerNext>> {
+    public async allWithAvatars(args: ListArguments<PlayerNext>): Promise<Array<PlayerNext>> {
         const rows = this.all(args);
         return Promise.all(rows.map(player => this.addAvatar(player)));
     }

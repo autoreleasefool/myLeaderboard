@@ -1,9 +1,10 @@
 import Octo, { Blob } from '../common/Octo';
 import { Identifiable } from '../lib/types';
 
-export interface ListArguments {
+export interface ListArguments<Row extends Identifiable> {
     first: number;
     offset: number;
+    filter?: (row: Row) => void;
 }
 
 class Table<Row extends Identifiable> {
@@ -44,14 +45,15 @@ class Table<Row extends Identifiable> {
         return this.rows[this.rows.length - 1].id + 1;
     }
 
-    public all({first, offset}: ListArguments): Array<Row> {
+    public all({first, offset, filter}: ListArguments<Row>): Array<Row> {
+        const rows = filter ? this.rows.filter(filter) : this.rows;
         if (first < 0) {
-            return this.rows.slice(offset);
+            return rows.slice(offset);
         }
-        return this.rows.slice(offset, offset + first);
+        return rows.slice(offset, offset + first);
     }
 
-    public allIds(args: ListArguments): Array<number> {
+    public allIds(args: ListArguments<Row>): Array<number> {
         return this.all(args).map(row => row.id);
     }
 
