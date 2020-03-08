@@ -5,24 +5,23 @@ import {
 } from 'graphql';
 
 import scoreStats from './scoreStats';
-import gamePlayerRecord from './gamePlayerRecord';
-import { GameStandings, GameStandingsGraphQL, Player } from '../../lib/types';
+import playerRecord from './playerRecord';
+import { PlayerNext, GameRecordNext, GameRecordGQL } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer, parseID } from '../../common/utils';
-import { playerRecordToGraphQL } from './playerRecord';
+import { playerRecordToGraphQL } from './playerGameRecord';
 
-
-export async function gameStandingsToGraphQL(gameId: number, gameStandings: GameStandings, loader: MyLeaderboardLoader): Promise<GameStandingsGraphQL> {
-    const playerIds = Object.keys(gameStandings.records).map(id => parseID(id));
+export async function gameRecordToGraphQL(gameId: number, gameRecord: GameRecordNext, loader: MyLeaderboardLoader): Promise<GameRecordGQL> {
+    const playerIds = Object.keys(gameRecord.records).map(id => parseID(id));
     const players = await loader.playerLoader.loadMany(playerIds);
 
     return {
-        scoreStats: gameStandings.scoreStats,
+        scoreStats: gameRecord.scoreStats,
         records: await Promise.all(players.filter(player => isPlayer(player))
-            .map(player => player as Player)
+            .map(player => player as PlayerNext)
             .map(async player => ({
                     player,
-                    record: await playerRecordToGraphQL(gameId, gameStandings.records[player.id], loader),
+                    record: await playerRecordToGraphQL(gameId, gameRecord.records[player.id], loader),
                 })
             )),
     };
@@ -37,7 +36,7 @@ export default new GraphQLObjectType<void, void, {}>({
             type: scoreStats,
         },
         records: {
-            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(gamePlayerRecord))),
+            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerRecord))),
         },
     }),
 });

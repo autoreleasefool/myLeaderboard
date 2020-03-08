@@ -7,14 +7,14 @@ import {
     GraphQLInt,
     GraphQLList,
 } from 'graphql';
-import gameStandings, { gameStandingsToGraphQL } from './gameStandings';
+import gameRecord, { gameRecordToGraphQL } from './gameRecord';
 import { gameStandings as generateGameStandings } from '../../games/standings';
-import { Game } from '../../lib/types';
+import { GameNext } from '../../lib/types';
 import { SchemaContext, ListQueryArguments, DEFAULT_PAGE_SIZE} from '../schema';
 import play from './play';
 import Plays from '../../db/plays';
 
-export default new GraphQLObjectType<Game, SchemaContext, any>({
+export default new GraphQLObjectType<GameNext, SchemaContext, any>({
     name: 'Game',
     description: 'Game from the MyLeaderboard API with complex information',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
@@ -32,10 +32,10 @@ export default new GraphQLObjectType<Game, SchemaContext, any>({
             type: GraphQLString,
         },
         standings: {
-            type: GraphQLNonNull(gameStandings),
+            type: GraphQLNonNull(gameRecord),
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (game, _, {loader}) =>
-                gameStandingsToGraphQL(
+                gameRecordToGraphQL(
                     game.id,
                     await generateGameStandings(game.id, loader),
                     loader
@@ -52,10 +52,11 @@ export default new GraphQLObjectType<Game, SchemaContext, any>({
             },
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(play))),
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (game: Game, {first, offset}: ListQueryArguments, {loader}) => {
-                const plays = Plays.getInstance().allByPlayerId(game.id, {
+            resolve: async (game, {first, offset}: ListQueryArguments, {loader}) => {
+                const plays = Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
+                    filter: play => play.game === game.id
                 });
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);

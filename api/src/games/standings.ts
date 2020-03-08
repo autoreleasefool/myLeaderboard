@@ -48,9 +48,12 @@ async function buildStandings(game: GameNext): Promise<GameRecordNext> {
     let bestScore = -Infinity;
     let worstScore = Infinity;
 
-    const plays = Plays.getInstance().all({first: -1, offset: 0});
-    plays.filter(play => play.game === game.id)
-        .forEach(play => {
+    const plays = Plays.getInstance().all({
+        first: -1,
+        offset: 0,
+        filter: play => play.game === game.id,
+    });
+    plays.forEach(play => {
             totalGames += 1;
             if (game.hasScores && play.scores != null && play.scores.length > 1) {
                 gamesWithScores += 1;

@@ -4,9 +4,9 @@ import {
     GraphQLNonNull,
     GraphQLID,
 } from 'graphql';
-import { Player } from '../../lib/types';
+import { PlayerNext } from '../../lib/types';
 
-export default new GraphQLObjectType<Player, void, {}>({
+export default new GraphQLObjectType<PlayerNext, void, {}>({
     name: 'BasicPlayer',
     description: 'Player from the MyLeaderboard API',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type

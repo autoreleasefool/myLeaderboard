@@ -11,7 +11,7 @@ export default new GraphQLObjectType<void, void, {}>({
     description: 'Player record against another player',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
-        player: {
+        opponent: {
             type: GraphQLNonNull(playerBasic),
         },
         record: {

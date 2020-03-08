@@ -6,12 +6,12 @@ import {
     GraphQLInt,
     GraphQLList,
 } from 'graphql';
-import playerRecord from './playerRecord';
+import playerRecord from './playerGameRecord';
 import playerBasic from './playerBasic';
 
 import { playerRecord as generatePlayerRecord } from '../../players/record';
-import { playerStandingsToGraphQL } from './playerStandings';
-import { Player } from '../../lib/types';
+import { playerRecordToGraphQL } from './playerGameRecord';
+import { PlayerNext } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
 import play from './play';
 import Plays from '../../db/plays';
@@ -22,7 +22,7 @@ interface QueryContext {
     loader: MyLeaderboardLoader;
 }
 
-export default new GraphQLObjectType<Player, QueryContext, any>({
+export default new GraphQLObjectType<PlayerNext, QueryContext, any>({
     name: 'Player',
     description: 'Player from the MyLeaderboard API with complex information',
     extensions: playerBasic,
@@ -51,12 +51,13 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
             },
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerRecord))),
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (player: Player, {first, offset}: ListQueryArguments, {loader}) => {
+            resolve: async (player, {first, offset}: ListQueryArguments, {loader}) => {
                 const gameIds = Games.getInstance().allIds({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
                 });
-                return Promise.all(gameIds.map(async gameId => playerStandingsToGraphQL(
+                return Promise.all(gameIds.map(async gameId => playerRecordToGraphQL(
+                    gameId,
                     await generatePlayerRecord(player.id, gameId, loader),
                     loader
                 )));
@@ -73,11 +74,12 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
             },
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(play))),
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (player: Player, {first, offset}: ListQueryArguments, {loader}) => {
-                const plays = Plays.getInstance().allByPlayerId(player.id, {
+            resolve: async (player, {first, offset}: ListQueryArguments, {loader}) => {
+                const plays = Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
-                });
+                    filter: play => play.players.includes(player.id),
+                })
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);
                 }

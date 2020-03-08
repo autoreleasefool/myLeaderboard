@@ -5,7 +5,7 @@ import {
     GraphQLList,
     GraphQLInt,
 } from 'graphql';
-import { Play, PlayGraphQL, Player } from '../../lib/types';
+import { PlayNext, PlayGQL, PlayerNext } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
 import { isPlayer } from '../../common/utils';
 import playerBasic from './playerBasic';
@@ -13,22 +13,20 @@ import { SchemaContext } from '../schema';
 import gameBasic from './gameBasic';
 import { GraphQLDateTime } from 'graphql-iso-date';
 
-export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Promise<PlayGraphQL> {
+export async function playToGraphQL(play: PlayNext, loader: MyLeaderboardLoader): Promise<PlayGQL> {
     const players = await loader.playerLoader.loadMany(play.players);
     const game = await loader.gameLoader.load(play.game);
 
     return {
         ...play,
-        players: players.filter(player => isPlayer(player))
-            .map(player => player as Player),
         game,
-        winners: players.filter(player => isPlayer(player))
-            .map(player => player as Player)
+        players: players.filter(player => isPlayer(player))  as PlayerNext[],
+        winners: (players.filter(player => isPlayer(player))  as PlayerNext[])
             .filter(player => player.id in play.winners),
     };
 }
 
-export default new GraphQLObjectType<Play, SchemaContext, {}>({
+export default new GraphQLObjectType<PlayNext, SchemaContext, {}>({
     name: 'Play',
     description: 'Play from the MyLeaderboard API',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type

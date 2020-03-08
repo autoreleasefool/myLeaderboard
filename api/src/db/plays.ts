@@ -1,5 +1,5 @@
 import { PlayNext } from '../lib/types';
-import Table, { ListArguments } from './table';
+import Table from './table';
 
 class Plays extends Table<PlayNext> {
     public static getInstance(): Plays {

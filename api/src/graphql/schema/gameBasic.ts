@@ -5,10 +5,10 @@ import {
     GraphQLBoolean,
     GraphQLID,
 } from 'graphql';
-import { Game } from '../../lib/types';
+import { GameNext } from '../../lib/types';
 import { SchemaContext} from '../schema';
 
-export default new GraphQLObjectType<Game, SchemaContext, {}>({
+export default new GraphQLObjectType<GameNext, SchemaContext, {}>({
     name: 'BasicGame',
     description: 'Game from the MyLeaderboard API',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type

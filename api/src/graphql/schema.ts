@@ -41,6 +41,11 @@ export interface ListQueryArguments {
     offset?: number;
 }
 
+interface PlayFilterArguments extends ListQueryArguments {
+    game?: string;
+    player?: string;
+}
+
 const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
     name: 'Query',
     description: 'Realize Root Query',
@@ -134,13 +139,23 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 },
                 offset: {
                     type: GraphQLInt,
-                }
+                },
+                game: {
+                    type: GraphQLID,
+                },
+                player: {
+                    type: GraphQLID,
+                },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {first, offset}: ListQueryArguments, {loader}) => {
+            resolve: async (_, {first, offset, game, player}: PlayFilterArguments, {loader}) => {
+                const gameId = game ? parseID(game) : undefined;
+                const playerId = player ? parseID(player) : undefined;
                 const plays = await Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
+                    filter: play => (!gameId || play.game === gameId) &&
+                        (!playerId || play.players.includes(playerId)),
                 });
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);
