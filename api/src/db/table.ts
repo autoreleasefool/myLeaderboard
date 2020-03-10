@@ -4,6 +4,7 @@ import { Identifiable } from '../lib/types';
 export interface ListArguments<Row extends Identifiable> {
     first: number;
     offset: number;
+    reverse?: boolean;
     filter?: (row: Row) => void;
 }
 
@@ -45,11 +46,13 @@ class Table<Row extends Identifiable> {
         return this.rows[this.rows.length - 1].id + 1;
     }
 
-    public all({first, offset, filter}: ListArguments<Row>): Array<Row> {
-        const rows = filter ? this.rows.filter(filter) : this.rows;
+    public all({first, offset, reverse, filter}: ListArguments<Row>): Array<Row> {
+        let rows = reverse ? [...this.rows].reverse() : this.rows;
+        rows = filter ? rows.filter(filter) : rows;
         if (first < 0) {
             return rows.slice(offset);
         }
+        this.rows.reverse
         return rows.slice(offset, offset + first);
     }
 

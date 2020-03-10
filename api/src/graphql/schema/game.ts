@@ -56,6 +56,7 @@ export default new GraphQLObjectType<Game, SchemaContext, any>({
                 const plays = Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
+                    reverse: true,
                     filter: play => play.game === game.id
                 });
                 for (const play of plays) {

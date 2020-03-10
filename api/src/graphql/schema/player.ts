@@ -78,6 +78,7 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
                 const plays = Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
+                    reverse: true,
                     filter: play => play.players.includes(player.id),
                 });
                 for (const play of plays) {
