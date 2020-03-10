@@ -10,22 +10,22 @@ import Foundation
 
 enum GameListAction: BaseAction {
 	case gamesUpdated([Game])
-	case gameSelected(Game)
+	case gameSelected(GraphID)
 	case addGame
-	case apiError(LeaderboardAPIError)
+	case graphQLError(GraphAPIError)
 }
 
 enum GameListViewAction: BaseViewAction {
 	case initialize
 	case reload
-	case selectGame(Game)
+	case selectGame(GraphID)
 	case addGame
 }
 
 class GameListViewModel: ViewModel {
+	typealias GameListQuery = MyLeaderboardAPI.GameListQuery
 	typealias ActionHandler = (_ action: GameListAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
 	private(set) var games: [Game] = [] {
@@ -34,8 +34,7 @@ class GameListViewModel: ViewModel {
 		}
 	}
 
-	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
-		self.api = api
+	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
 
@@ -43,33 +42,22 @@ class GameListViewModel: ViewModel {
 		switch viewAction {
 		case .selectGame(let game):
 			handleAction(.gameSelected(game))
-		case .initialize:
+		case .initialize, .reload:
 			loadGameList()
-		case .reload:
-			reloadGameList()
 		case .addGame:
 			handleAction(.addGame)
 		}
 	}
 
 	private func loadGameList() {
-		api.games { [weak self] in
+		GameListQuery(first: 25, offset: 0).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let games):
-				self?.games = games
-			}
-		}
-	}
-
-	private func reloadGameList() {
-		api.refresh { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success:
-				self?.loadGameList()
+				self?.handleAction(.graphQLError(error))
+			case .success(let response):
+				self?.games = response.games.compactMap {
+					Game(from: $0?.asGameListItemFragment)
+				}.sorted()
 			}
 		}
 	}

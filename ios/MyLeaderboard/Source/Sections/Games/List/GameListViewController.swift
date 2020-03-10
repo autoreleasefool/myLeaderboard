@@ -26,7 +26,7 @@ class GameListViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = GameListViewModel(api: api) { [weak self] action in
+		viewModel = GameListViewModel { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .gamesUpdated:
@@ -36,7 +36,7 @@ class GameListViewController: FTDViewController {
 				self.showGameDetails(for: game)
 			case .addGame:
 				self.showCreateGame()
-			case .apiError(let error):
+			case .graphQLError(let error):
 				self.presentError(error)
 			}
 		}
@@ -63,19 +63,12 @@ class GameListViewController: FTDViewController {
 		})
 	}
 
-	private func showGameDetails(for game: Game) {
-		show(GameDetailsViewController(api: api, game: game), sender: self)
+	private func showGameDetails(for game: GraphID) {
+		show(GameDetailsViewController(api: api, gameID: Int(game.rawValue)!), sender: self)
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 
 	override func refresh() {
@@ -84,8 +77,8 @@ class GameListViewController: FTDViewController {
 }
 
 extension GameListViewController: GameListActionable {
-	func selectedGame(game: Game) {
-		viewModel.postViewAction(.selectGame(game))
+	func selectedGame(gameID: GraphID) {
+		viewModel.postViewAction(.selectGame(gameID))
 	}
 }
 

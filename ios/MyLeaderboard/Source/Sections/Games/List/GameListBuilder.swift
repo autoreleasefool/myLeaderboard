@@ -10,7 +10,7 @@ import UIKit
 import FunctionalTableData
 
 protocol GameListActionable: AnyObject {
-	func selectedGame(game: Game)
+	func selectedGame(gameID: GraphID)
 }
 
 struct GameListBuilder {
@@ -20,7 +20,7 @@ struct GameListBuilder {
 				key: "game-\(game.id)",
 				style: CellStyle(highlight: true),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.selectedGame(game: game)
+					actionable?.selectedGame(gameID: game.graphID)
 					return .deselected
 				}),
 				state: GameListItemState(name: game.name, image: game.image),

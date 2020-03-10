@@ -14,6 +14,10 @@ struct Game: Identifiable, Equatable, Codable, Hashable {
 	let name: String
 	let hasScores: Bool
 	let image: String?
+
+	var graphID: GraphID {
+		return GraphID(rawValue: String(id))
+	}
 }
 
 extension Game: Comparable {
