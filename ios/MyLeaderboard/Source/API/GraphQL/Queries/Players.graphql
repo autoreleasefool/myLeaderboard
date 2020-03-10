@@ -10,3 +10,63 @@ fragment PlayerListItem on Player {
 	username
 	avatar
 }
+
+query PlayerDetails($id: ID!) {
+	player(id: $id) {
+		id
+		displayName
+		username
+		avatar
+		records(first: -1) {
+			game {
+				id
+				image
+				name
+			}
+			overallRecord {
+				... RecordFragment
+			}
+			scoreStats {
+				best
+				worst
+				average
+			}
+			records {
+				opponent {
+					id
+					avatar
+				}
+				record {
+					... RecordFragment
+				}
+			}
+		}
+		recentPlays(first: 3) {
+			... RecentPlayFragment
+		}
+	}
+}
+
+fragment RecentPlayFragment on Play {
+	id
+	playedOn
+	scores
+	game {
+		image
+	}
+	players {
+		id
+		avatar
+	}
+	winners {
+		id
+	}
+}
+
+fragment RecordFragment on Record {
+	wins
+	losses
+	ties
+	isBest
+	isWorst
+}

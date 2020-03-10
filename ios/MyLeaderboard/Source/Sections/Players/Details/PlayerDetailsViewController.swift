@@ -14,7 +14,7 @@ class PlayerDetailsViewController: FTDViewController {
 	private var viewModel: PlayerDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(api: LeaderboardAPI, playerID: ID) {
+	init(api: LeaderboardAPI, playerID: GraphID) {
 		self.api = api
 		super.init()
 
@@ -32,7 +32,7 @@ class PlayerDetailsViewController: FTDViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup(withID id: ID? = nil, withPlayer player: Player? = nil) {
+	private func setup(withID id: GraphID? = nil, withPlayer player: Player? = nil) {
 		refreshable = true
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 		self.title = player?.displayName
@@ -44,7 +44,7 @@ class PlayerDetailsViewController: FTDViewController {
 			case .dataChanged:
 				self?.finishRefresh()
 				self?.render()
-			case .apiError(let error):
+			case .graphQLError(let error):
 				self?.presentError(error)
 			case .gameSelected(let game):
 				self?.showGameDetails(for: game)
@@ -81,31 +81,25 @@ class PlayerDetailsViewController: FTDViewController {
 			return
 		}
 
-		let sections = PlayerDetailsBuilder.sections(player: player, records: viewModel.records, players: viewModel.players, plays: viewModel.plays, builder: spreadsheetBuilder, actionable: self)
+		let sections = PlayerDetailsBuilder.sections(player: player, records: viewModel.records, recentPlays: viewModel.plays, builder: spreadsheetBuilder, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
-	private func showGameDetails(for game: Game) {
-		show(GameDetailsViewController(api: api, game: game), sender: self)
+	private func showGameDetails(for game: GraphID) {
+		show(GameDetailsViewController(api: api, gameID: Int(game.rawValue)!), sender: self)
 	}
 
-	private func showPlayerDetails(for player: Player) {
-		show(PlayerDetailsViewController(api: api, player: player), sender: self)
+	private func showPlayerDetails(for player: GraphID) {
+		show(PlayerDetailsViewController(api: api, playerID: player), sender: self)
 	}
 
-	private func openPlays(games: [Game], players: [Player]) {
-		show(PlaysListViewController(api: api, games: games, players: players), sender: self)
+	private func openPlays(games: [GraphID], players: [GraphID]) {
+//		show(PlaysListViewController(api: api, games: games, players: players), sender: self)
+		#warning("TODO: PlaysListViewController")
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 
 	override func refresh() {
@@ -114,15 +108,15 @@ class PlayerDetailsViewController: FTDViewController {
 }
 
 extension PlayerDetailsViewController: PlayerDetailsActionable {
-	func selectedGame(game: Game) {
-		viewModel.postViewAction(.selectGame(game))
+	func selectedGame(gameID: GraphID) {
+		viewModel.postViewAction(.selectGame(gameID))
 	}
 
-	func selectedPlayer(player: Player) {
-		viewModel.postViewAction(.selectPlayer(player))
+	func selectedPlayer(playerID: GraphID) {
+		viewModel.postViewAction(.selectPlayer(playerID))
 	}
 
-	func showPlays(games: [Game], players: [Player]) {
+	func showPlays(games: [GraphID], players: [GraphID]) {
 		viewModel.postViewAction(.showPlays(games, players))
 	}
 }

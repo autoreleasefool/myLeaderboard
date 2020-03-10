@@ -12,7 +12,6 @@ enum PlayerListAction: BaseAction {
 	case playersUpdated([Player])
 	case playerSelected(Player)
 	case addPlayer
-	case apiError(LeaderboardAPIError)
 	case graphQLError(GraphAPIError)
 }
 
@@ -56,7 +55,9 @@ class PlayerListViewModel: ViewModel {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			case .success(let response):
-				self?.players = response.players.compactMap { Player(from: $0?.asPlayerListItemFragment) }
+				self?.players = response.players.compactMap {
+					Player(from: $0?.asPlayerListItemFragment)
+				}.sorted()
 			}
 		}
 	}

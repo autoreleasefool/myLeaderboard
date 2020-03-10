@@ -33,8 +33,6 @@ class PlayerListViewController: FTDViewController {
 				self.render()
 			case .playerSelected(let player):
 				self.showPlayerDetails(for: player)
-			case .apiError(let error):
-				self.presentError(error)
 			case .graphQLError(let error):
 				self.presentError(error)
 			case .addPlayer:
@@ -68,8 +66,8 @@ class PlayerListViewController: FTDViewController {
 		show(PlayerDetailsViewController(api: api, player: player), sender: self)
 	}
 
-	private func presentError(_ error: LocalizedError) {
-		Loaf(error.localizedDescription, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 
 	override func refresh() {
@@ -89,6 +87,6 @@ extension PlayerListViewController: RouteHandler {
 			return
 		}
 
-		show(PlayerDetailsViewController(api: api, playerID: playerID), sender: self)
+		show(PlayerDetailsViewController(api: api, playerID: GraphID(rawValue: String(playerID))!), sender: self)
 	}
 }

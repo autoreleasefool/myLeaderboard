@@ -8,6 +8,21 @@
 
 import Foundation
 
+extension GraphID: Hashable {
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(self.rawValue)
+	}
+}
+
+extension GraphID: Comparable {
+	public static func < (lhs: GraphID, rhs: GraphID) -> Bool {
+		if let lhsInt = Int(lhs.rawValue), let rhsInt = Int(rhs.rawValue) {
+			return lhsInt < rhsInt
+		}
+		return lhs.rawValue < rhs.rawValue
+	}
+}
+
 public extension GraphApiQuery {
 	static var errorLogger: GraphApiLogger? {
 		return Logger()
