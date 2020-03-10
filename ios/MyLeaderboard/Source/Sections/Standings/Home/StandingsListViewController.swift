@@ -112,26 +112,26 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func openPreferredPlayerModal() {
-		var initiallySelected: Set<ID> = []
+		var initiallySelected: Set<GraphID> = []
 		if let player = Player.preferred {
-			initiallySelected.insert(player.id)
+			initiallySelected.insert(player.graphID)
 		}
 
-		presentModal(PlayerPickerViewController(api: self.api, multiSelect: false, initiallySelected: initiallySelected) { [weak self] selected in
+		presentModal(PlayerPickerViewController(multiSelect: false, initiallySelected: initiallySelected) { [weak self] selected in
 			self?.viewModel.postViewAction(.selectPreferredPlayer(selected.first))
 		})
 	}
 
 	private func openPreferredOpponentsModal() {
-		let initiallySelected = Set(Player.preferredOpponents.map { $0.id })
+		let initiallySelected = Set(Player.preferredOpponents.map { $0.graphID })
 
-		presentModal(PlayerPickerViewController(api: self.api, multiSelect: true, limit: Player.preferredOpponentsLimit, initiallySelected: initiallySelected) { [weak self] selected in
+		presentModal(PlayerPickerViewController(multiSelect: true, limit: Player.preferredOpponentsLimit, initiallySelected: initiallySelected) { [weak self] selected in
 			self?.viewModel.postViewAction(.selectPreferredOpponents(selected))
 		})
 	}
 
 	@objc private func openSettings() {
-		presentModal(SettingsViewController(api: api))
+		presentModal(SettingsViewController())
 	}
 
 	private func presentError(_ error: LeaderboardAPIError) {

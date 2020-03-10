@@ -64,21 +64,21 @@ class RecordPlayViewController: FTDViewController {
 	}
 
 	private func presentGamePicker() {
-		let initiallySelected: Set<ID>
+		let initiallySelected: Set<GraphID>
 		if let currentGame = viewModel.selectedGame {
-			initiallySelected = [currentGame.id]
+			initiallySelected = [currentGame.graphID]
 		} else {
 			initiallySelected = []
 		}
 
-		let gamePicker = GamePickerViewController(api: api, multiSelect: false, initiallySelected: initiallySelected) { [weak self] selectedGames in
+		let gamePicker = GamePickerViewController(multiSelect: false, initiallySelected: initiallySelected) { [weak self] selectedGames in
 			self?.viewModel.postViewAction(.selectGame(selectedGames.first))
 		}
 		presentModal(gamePicker)
 	}
 
 	private func presentPlayerPicker() {
-		let playerPicker = PlayerPickerViewController(api: api, initiallySelected: viewModel.selectedPlayerIDs) { [weak self] selectedPlayers in
+		let playerPicker = PlayerPickerViewController(initiallySelected: viewModel.selectedPlayerGraphIDs) { [weak self] selectedPlayers in
 			self?.viewModel.postViewAction(.selectPlayers(selectedPlayers))
 		}
 		presentModal(playerPicker)

@@ -46,7 +46,9 @@ class RecordPlayViewModel: ViewModel {
 		}
 	}
 
+	@available(*, deprecated, message: "Use selectedPlayerGraphIDs instead")
 	var selectedPlayerIDs: Set<ID> { return Set(selectedPlayers.map { $0.id }) }
+	var selectedPlayerGraphIDs: Set<GraphID> { return Set(selectedPlayers.map { $0.graphID })}
 
 	private(set) var winners: [Player] = [] {
 		didSet {
@@ -54,7 +56,9 @@ class RecordPlayViewModel: ViewModel {
 		}
 	}
 
+	@available(*, deprecated, message: "Use selectedPlayerGraphIDs instead")
 	var winnerIDs: Set<ID> { return Set(winners.map { $0.id }) }
+	var winnerGraphIDs: Set<GraphID> { return Set(winners.map { $0.graphID })}
 
 	private(set) var scores: [ID: Int] = [:] {
 		didSet {

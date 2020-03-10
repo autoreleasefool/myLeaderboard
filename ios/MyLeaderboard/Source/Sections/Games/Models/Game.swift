@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct Game: Identifiable, Equatable, Codable, Hashable {
+struct Game: Identifiable, GraphQLIdentifiable, Equatable, Codable, Hashable {
 	let id: ID
 	let name: String
 	let hasScores: Bool

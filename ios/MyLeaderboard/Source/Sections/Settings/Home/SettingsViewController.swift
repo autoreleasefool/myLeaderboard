@@ -10,11 +10,9 @@ import UIKit
 import Loaf
 
 class SettingsViewController: FTDViewController {
-	private let api: LeaderboardAPI
 	private var viewModel: SettingsViewModel!
 
-	init(api: LeaderboardAPI) {
-		self.api = api
+	override init() {
 		super.init()
 	}
 
@@ -74,14 +72,14 @@ class SettingsViewController: FTDViewController {
 	}
 
 	private func openPlayerPicker() {
-		let initiallySelected: Set<ID>
+		let initiallySelected: Set<GraphID>
 		if let player = viewModel.preferredPlayer {
-			initiallySelected = [player.id]
+			initiallySelected = [player.graphID]
 		} else {
 			initiallySelected = []
 		}
 
-		let playerPicker = PlayerPickerViewController(api: api, multiSelect: false, initiallySelected: initiallySelected) { [weak self] selectedPlayers in
+		let playerPicker = PlayerPickerViewController(multiSelect: false, initiallySelected: initiallySelected) { [weak self] selectedPlayers in
 			self?.viewModel.postViewAction(.selectPreferredPlayer(selectedPlayers.first))
 			self?.render()
 		}
@@ -89,8 +87,8 @@ class SettingsViewController: FTDViewController {
 	}
 
 	private func openOpponentPicker() {
-		let initiallySelected = Set(viewModel.preferredOpponents.map { $0.id })
-		let opponentPicker = PlayerPickerViewController(api: api, multiSelect: true, limit: Player.preferredOpponentsLimit, initiallySelected: initiallySelected) { [weak self] selectedOpponents in
+		let initiallySelected = Set(viewModel.preferredOpponents.map { $0.graphID })
+		let opponentPicker = PlayerPickerViewController(multiSelect: true, limit: Player.preferredOpponentsLimit, initiallySelected: initiallySelected) { [weak self] selectedOpponents in
 			self?.viewModel.postViewAction(.selectPreferredOpponents(selectedOpponents))
 			self?.render()
 		}

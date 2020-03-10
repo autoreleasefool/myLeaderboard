@@ -10,18 +10,18 @@ import UIKit
 import FunctionalTableData
 
 struct PickerItem<State: ViewState> {
-	let id: ID
+	let graphID: GraphID
 	let state: State.State
 }
 
 protocol BasePickerActionable: AnyObject {
-	func didSelectItem(_ item: ID, selected: Bool)
+	func didSelectItem(_ item: GraphID, selected: Bool)
 }
 
 struct BasePickerBuilder {
-	static func sections<State: ViewState>(items: [PickerItem<State>], selectedItems: Set<ID>, actionable: BasePickerActionable) -> [TableSection] {
+	static func sections<State: ViewState>(items: [PickerItem<State>], selectedItems: Set<GraphID>, actionable: BasePickerActionable) -> [TableSection] {
 		let rows = items.map {
-			cell(for: $0, selected: selectedItems.contains($0.id), actionable: actionable)
+			cell(for: $0, selected: selectedItems.contains($0.graphID), actionable: actionable)
 		}
 
 		return [TableSection(key: "Picker", rows: rows)]
@@ -35,10 +35,10 @@ struct BasePickerBuilder {
 		)
 
 		return CombinedCell<UIImageView, ImageState, State.View, State.State, LayoutMarginsTableItemLayout>(
-			key: "\(item.id)",
+			key: item.graphID.rawValue,
 			style: CellStyle(highlight: true),
 			actions: CellActions(selectionAction: { [weak actionable] _ in
-				actionable?.didSelectItem(item.id, selected: !selected)
+				actionable?.didSelectItem(item.graphID, selected: !selected)
 				return .deselected
 			}),
 			state: CombinedState(state1: checkedState, state2: item.state),
