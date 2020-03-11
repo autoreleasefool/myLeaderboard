@@ -21,6 +21,7 @@ import { addGame } from '../games/new';
 import { addPlayer } from '../players/new';
 import { recordPlay } from '../plays/record';
 import { MyLeaderboardLoader } from './DataLoader';
+import { GraphQLDateTime } from 'graphql-iso-date';
 
 export const DEFAULT_PAGE_SIZE = 25;
 
@@ -54,6 +55,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
 
         player: {
             type: player,
+            description: 'Find a single player.',
             args: {
                 id: {
                     type: GraphQLNonNull(GraphQLID),
@@ -65,6 +67,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
 
         players: {
             type: GraphQLNonNull(GraphQLList(player)),
+            description: `Get a list of players, ordered by ID ascending. Default page size is ${DEFAULT_PAGE_SIZE}.`,
             args: {
                 first: {
                     type: GraphQLInt,
@@ -88,6 +91,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
 
         game: {
             type: game,
+            description: 'Find a single game.',
             args: {
                 id: {
                     type: GraphQLNonNull(GraphQLID),
@@ -99,6 +103,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
 
         games: {
             type: GraphQLNonNull(GraphQLList(game)),
+            description: `Get a list of games, ordered by ID ascending. Default page size is ${DEFAULT_PAGE_SIZE}.`,
             args: {
                 first: {
                     type: GraphQLInt,
@@ -122,6 +127,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
 
         play: {
             type: play,
+            description: 'Find a single play.',
             args: {
                 id: {
                     type: GraphQLID,
@@ -133,6 +139,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
 
         plays: {
             type: GraphQLList(GraphQLNonNull(play)),
+            description: `Get a list of plays, ordered by ID ascending. Default page size is ${DEFAULT_PAGE_SIZE}. Filter by game or player`,
             args: {
                 first: {
                     type: GraphQLInt,
@@ -166,9 +173,10 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
 
         hasAnyUpdates: {
             type: GraphQLNonNull(GraphQLBoolean),
+            description: 'Returns true if there have been any updates to the database since the given date.',
             args: {
                 since: {
-                    type: GraphQLNonNull(GraphQLString),
+                    type: GraphQLNonNull(GraphQLDateTime),
                 },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
@@ -201,6 +209,7 @@ const RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
     fields: () => ({
         createPlayer: {
             type: player,
+            description: 'Create a new player.',
             args: {
                 displayName: {
                     type: GraphQLNonNull(GraphQLString),
@@ -215,6 +224,7 @@ const RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
 
         createGame: {
             type: game,
+            description: 'Create a new game.',
             args: {
                 name: {
                     type: GraphQLNonNull(GraphQLString),
@@ -229,6 +239,7 @@ const RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
 
         recordPlay: {
             type: play,
+            description: 'Record a play between at least two players.',
             args: {
                 players: {
                     type: GraphQLNonNull(GraphQLList(GraphQLNonNull(GraphQLID))),

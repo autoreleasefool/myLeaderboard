@@ -24,23 +24,29 @@ interface QueryContext {
 
 export default new GraphQLObjectType<Player, QueryContext, any>({
     name: 'Player',
-    description: 'Player from the MyLeaderboard API with complex information',
+    description: 'Player from the MyLeaderboard API with complex information.',
     extensions: playerBasic,
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         id: {
             type: GraphQLNonNull(GraphQLID),
+            description: 'Unique ID.',
         },
         username: {
             type: GraphQLNonNull(GraphQLString),
+            description: 'GitHub username of the player.',
         },
         displayName: {
             type: GraphQLNonNull(GraphQLString),
+            description: 'Display name of the player.',
         },
         avatar: {
             type: GraphQLString,
+            description: 'Avatar of the player.',
         },
         records: {
+            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerRecord))),
+            description: 'Game records.',
             args: {
                 first: {
                     type: GraphQLInt,
@@ -49,7 +55,6 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
                     type: GraphQLInt,
                 }
             },
-            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerRecord))),
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (player, {first, offset}: ListQueryArguments, {loader}) => {
                 const gameIds = Games.getInstance().allIds({
@@ -64,6 +69,8 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
             },
         },
         recentPlays: {
+            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(play))),
+            description: 'The player\'s most recent plays.',
             args: {
                 first: {
                     type: GraphQLInt,
@@ -72,7 +79,6 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
                     type: GraphQLInt,
                 }
             },
-            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(play))),
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (player, {first, offset}: ListQueryArguments, {loader}) => {
                 const plays = Plays.getInstance().all({

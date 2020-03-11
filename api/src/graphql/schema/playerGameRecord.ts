@@ -33,23 +33,28 @@ export async function playerRecordToGraphQL(gameId: number, playerRecord: Player
 
 export default new GraphQLObjectType<void, void, {}>({
     name: 'PlayerGameRecord',
-    description: 'Player record for a game',
+    description: 'Player record for a game.',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
         game: {
             type: GraphQLNonNull(gameBasic),
+            description: 'Game the record represents.',
         },
         lastPlayed: {
             type: GraphQLDateTime,
+            description: 'Date and time the player last played the game.',
         },
         overallRecord: {
             type: GraphQLNonNull(record),
+            description: 'All time record for the player.',
         },
         scoreStats: {
             type: scoreStats,
+            description: 'All time score statistics for the player.',
         },
         records: {
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(playerVSRecord))),
+            description: 'Records against other players.',
         },
     }),
 });
