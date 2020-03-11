@@ -4,11 +4,11 @@ import Foundation
 public extension MyLeaderboardAPI {
 	struct GameListQuery: GraphApiQuery, ResponseAssociable, Equatable {
 		// MARK: - Query Variables
-			public let first: Int32
-			public let offset: Int32
+			public let first: Int
+			public let offset: Int
 
 		// MARK: - Initializer
-		public init(first: Int32, offset: Int32) {
+		public init(first: Int, offset: Int) {
 				self.first = first
 				self.offset = offset
 		}

@@ -9,7 +9,7 @@
 import Foundation
 
 enum GameListAction: BaseAction {
-	case gamesUpdated([Game])
+	case gamesUpdated([GameListItem])
 	case gameSelected(GraphID)
 	case addGame
 	case graphQLError(GraphAPIError)
@@ -28,7 +28,7 @@ class GameListViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
-	private(set) var games: [Game] = [] {
+	private(set) var games: [GameListItem] = [] {
 		didSet {
 			handleAction(.gamesUpdated(games))
 		}
@@ -56,8 +56,8 @@ class GameListViewModel: ViewModel {
 				self?.handleAction(.graphQLError(error))
 			case .success(let response):
 				self?.games = response.games.compactMap {
-					Game(from: $0?.asGameListItemFragment)
-				}.sorted()
+					$0?.asGameListItemFragment
+				}
 			}
 		}
 	}

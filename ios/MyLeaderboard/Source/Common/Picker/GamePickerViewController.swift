@@ -16,12 +16,12 @@ struct GameListQueryable: PickerItemQueryable {
 		Query(first: 25, offset: 0).perform(callback: completion)
 	}
 
-	func pickerItems(from: Response) -> [Game] {
-		from.games.compactMap { Game(from: $0?.asGameListItemFragment) }
+	func pickerItems(from: Response) -> [GameListItem] {
+		from.games.compactMap { $0?.asGameListItemFragment }
 	}
 }
 
-typealias GamePicker = BasePickerViewController<Game, GameListItemState, GameListQueryable>
+typealias GamePicker = BasePickerViewController<GameListItem, GameListItemState, GameListQueryable>
 
 class GamePickerViewController: GamePicker {
 	init(multiSelect: Bool = true, limit: Int? = nil, initiallySelected: Set<GraphID>, completion: @escaping GamePicker.FinishedSelection) {
@@ -35,7 +35,7 @@ class GamePickerViewController: GamePicker {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	override func renderItems(_ items: [Game]) -> [PickerItem<GameListItemState>] {
+	override func renderItems(_ items: [GameListItem]) -> [PickerItem<GameListItemState>] {
 		return items.map {
 			return PickerItem(
 				graphID: $0.graphID,

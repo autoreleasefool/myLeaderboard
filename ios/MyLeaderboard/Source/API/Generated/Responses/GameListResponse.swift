@@ -4,6 +4,7 @@ import Foundation
 public extension MyLeaderboardAPI {
 struct GameListResponse: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
+		/// Get a list of games, ordered by ID ascending. Default page size is 25.
 		public var games: [Games?]
 
 	// MARK: - Helpers
@@ -20,6 +21,7 @@ struct GameListResponse: GraphApiResponse, Equatable {
 		// MARK: - Nested Types
 			public struct Games: GraphApiResponse, Equatable {
 		// MARK: - Response Fields
+			/// Unique ID.
 			public var id: GraphID {
 				get {
 					return asGameListItemFragment.id
@@ -28,6 +30,7 @@ struct GameListResponse: GraphApiResponse, Equatable {
 					asGameListItemFragment.id = newValue
 				}
 			}
+			/// Name of the game.
 			public var name: String {
 				get {
 					return asGameListItemFragment.name
@@ -36,6 +39,7 @@ struct GameListResponse: GraphApiResponse, Equatable {
 					asGameListItemFragment.name = newValue
 				}
 			}
+			/// Image for the game.
 			public var image: String? {
 				get {
 					return asGameListItemFragment.image
@@ -44,6 +48,7 @@ struct GameListResponse: GraphApiResponse, Equatable {
 					asGameListItemFragment.image = newValue
 				}
 			}
+			/// Indicates if the game includes score keeping.
 			public var hasScores: Bool {
 				get {
 					return asGameListItemFragment.hasScores

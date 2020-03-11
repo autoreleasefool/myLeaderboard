@@ -4,9 +4,13 @@ import Foundation
 public extension MyLeaderboardAPI {
 struct GameListItem: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
+		/// Unique ID.
 		public var id: GraphID
+		/// Name of the game.
 		public var name: String
+		/// Image for the game.
 		public var image: String?
+		/// Indicates if the game includes score keeping.
 		public var hasScores: Bool
 
 	// MARK: - Helpers

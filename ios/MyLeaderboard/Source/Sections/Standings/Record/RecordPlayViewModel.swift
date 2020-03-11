@@ -20,11 +20,11 @@ enum RecordPlayAction: BaseAction {
 enum RecordPlayViewAction: BaseViewAction {
 	case initialize
 	case editPlayers
-	case selectPlayers([Player])
+	case selectPlayers([PlayerListItem])
 	case editGame
-	case selectGame(Game?)
-	case selectWinner(Player, Bool)
-	case setPlayerScore(Player, Int)
+	case selectGame(GameListItem?)
+	case selectWinner(GraphID, Bool)
+	case setPlayerScore(GraphID, Int)
 	case submit
 }
 
@@ -34,33 +34,33 @@ class RecordPlayViewModel: ViewModel {
 	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	private(set) var selectedGame: Game? = nil {
+	private(set) var selectedGame: GameListItem? = nil {
 		didSet {
 			handleAction(.playUpdated)
 		}
 	}
 
-	private(set) var selectedPlayers: [Player] = [] {
+	private(set) var selectedPlayers: [PlayerListItem] = [] {
 		didSet {
-			winners = winners.filter { selectedPlayers.contains($0) }
+			winners = winners.filter { selectedPlayerGraphIDs.contains($0) }
 		}
 	}
 
 	@available(*, deprecated, message: "Use selectedPlayerGraphIDs instead")
-	var selectedPlayerIDs: Set<ID> { return Set(selectedPlayers.map { $0.id }) }
+	var selectedPlayerIDs: Set<ID> { return Set(selectedPlayers.map { Int($0.id.rawValue)! }) }
 	var selectedPlayerGraphIDs: Set<GraphID> { return Set(selectedPlayers.map { $0.graphID })}
 
-	private(set) var winners: [Player] = [] {
+	private(set) var winners: [GraphID] = [] {
 		didSet {
 			handleAction(.playUpdated)
 		}
 	}
 
 	@available(*, deprecated, message: "Use selectedPlayerGraphIDs instead")
-	var winnerIDs: Set<ID> { return Set(winners.map { $0.id }) }
-	var winnerGraphIDs: Set<GraphID> { return Set(winners.map { $0.graphID })}
+	var winnerIDs: Set<ID> { return Set(winners.map { Int($0.rawValue)! }) }
+	var winnerGraphIDs: Set<GraphID> { return Set(winners.map { $0 })}
 
-	private(set) var scores: [ID: Int] = [:] {
+	private(set) var scores: [GraphID: Int] = [:] {
 		didSet {
 			handleAction(.playUpdated)
 		}
@@ -94,7 +94,7 @@ class RecordPlayViewModel: ViewModel {
 		self.handleAction = handleAction
 
 		if let preferredPlayer = Player.preferred {
-			self.selectedPlayers = [preferredPlayer]
+			self.selectedPlayers = [PlayerListItem(from: preferredPlayer)]
 		}
 	}
 
@@ -110,16 +110,16 @@ class RecordPlayViewModel: ViewModel {
 		case .selectPlayers(let players):
 			selectedPlayers = players
 			updateErrors(for: RecordPlayBuilder.Keys.playerSection.rawValue)
-		case .selectWinner(let player, let selected):
+		case .selectWinner(let playerID, let selected):
 			if selected {
-				winners.append(player)
+				winners.append(playerID)
 			} else {
-				winners.removeAll { $0.id == player.id }
+				winners.removeAll { $0 == playerID }
 			}
 
 			updateErrors(for: RecordPlayBuilder.Keys.playerSection.rawValue)
-		case .setPlayerScore(let player, let score):
-			scores[player.id] = score
+		case .setPlayerScore(let playerID, let score):
+			scores[playerID] = score
 		case .editGame:
 			handleAction(.openGamePicker)
 		case .editPlayers:
@@ -162,12 +162,10 @@ class RecordPlayViewModel: ViewModel {
 
 		isLoading = true
 
-		let selectedPlayers = self.selectedPlayers.map { $0.id }
-		let winners = self.winners.map { $0.id }
 		var finalScores: [Int] = []
 
-		for player in selectedPlayers {
-			if let playerScore = scores[player] {
+		for player in self.selectedPlayers {
+			if let playerScore = scores[player.id] {
 				finalScores.append(playerScore)
 			} else {
 				break
@@ -175,9 +173,9 @@ class RecordPlayViewModel: ViewModel {
 		}
 
 		api.record(
-			gameID: game.id,
-			playerIDs: selectedPlayers,
-			winnerIDs: winners,
+			gameID: Int(game.id.rawValue)!,
+			playerIDs: self.selectedPlayers.map { Int($0.id.rawValue)! },
+			winnerIDs: self.winners.map { Int($0.rawValue)! },
 			scores: finalScores.isEmpty ? nil : finalScores
 		) { [weak self] result in
 			self?.isLoading = false

@@ -9,7 +9,7 @@
 import Foundation
 
 enum PlayerDetailsAction: BaseAction {
-	case playerLoaded(Player)
+	case playerLoaded(PlayerDetails)
 	case dataChanged
 	case graphQLError(GraphAPIError)
 	case gameSelected(GraphID)
@@ -31,7 +31,7 @@ class PlayerDetailsViewModel: ViewModel {
 	var handleAction: ActionHandler
 
 	private var playerID: GraphID
-	private(set) var player: Player? {
+	private(set) var player: PlayerDetails? {
 		didSet {
 			if let player = self.player {
 				handleAction(.playerLoaded(player))
@@ -39,7 +39,7 @@ class PlayerDetailsViewModel: ViewModel {
 		}
 	}
 
-	private(set) var records: [PlayerGameRecord] = [] {
+	private(set) var records: [PlayerDetailsRecord] = [] {
 		didSet {
 			handleAction(.dataChanged)
 		}
@@ -59,7 +59,7 @@ class PlayerDetailsViewModel: ViewModel {
 
 	init(api: LeaderboardAPI, player: Player, handleAction: @escaping ActionHandler) {
 		self.playerID = player.graphID
-		self.player = player
+		self.player = PlayerDetails(id: player.graphID, displayName: player.displayName, username: player.username, avatar: player.avatar)
 		self.handleAction = handleAction
 	}
 
@@ -88,16 +88,12 @@ class PlayerDetailsViewModel: ViewModel {
 	}
 
 	private func handle(response: MyLeaderboardAPI.PlayerDetailsResponse) {
-		guard let player = response.player else {
+		guard let player = response.player?.asPlayerDetailsFragmentFragment else {
 			return handleAction(.graphQLError(.missingData))
 		}
 
-		self.player = Player(from: player)
-		records = response.player?.records.map {
-			PlayerGameRecord(from: $0)
-		} ?? []
-		plays = response.player?.recentPlays.map {
-			RecentPlay(from: $0.asRecentPlayFragmentFragment)
-		} ?? []
+		self.player = player
+		records = response.player?.records.map { $0.asPlayerDetailsRecordFragmentFragment } ?? []
+		plays = response.player?.recentPlays.map { $0.asRecentPlayFragmentFragment } ?? []
 	}
 }

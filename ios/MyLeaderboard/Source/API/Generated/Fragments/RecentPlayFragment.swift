@@ -4,11 +4,17 @@ import Foundation
 public extension MyLeaderboardAPI {
 struct RecentPlayFragment: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
+		/// Unique ID.
 		public var id: GraphID
+		/// Date and time the play was recorded.
 		public var playedOn: Date
-		public var scores: [Int32]?
+		/// Scores for the game. Order is in respect to `players`.
+		public var scores: [Int]?
+		/// Game that was played.
 		public var game: Game
+		/// Players that played in the game.
 		public var players: [Players]
+		/// Winners of the game.
 		public var winners: [Winners]
 
 	// MARK: - Helpers
@@ -35,7 +41,7 @@ struct RecentPlayFragment: GraphApiResponse, Equatable {
 				self.playedOn = try customScalarResolver.decode(Date.self, rawValueType: String.self, forKey: .playedOn, container: container) { (value) -> Date in
 return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 }
-				self.scores = try container.decodeIfPresent([Int32].self, forKey: .scores)
+				self.scores = try container.decodeIfPresent([Int].self, forKey: .scores)
 				self.game = try container.decode(Game.self, forKey: .game)
 				self.players = try container.decode([Players].self, forKey: .players)
 				self.winners = try container.decode([Winners].self, forKey: .winners)
@@ -61,7 +67,7 @@ return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 		try container.encode(winners, forKey: .winners)
 		}
 
-	public init(id: GraphID, playedOn: Date, scores: [Int32]?, game: Game, players: [Players], winners: [Winners]) {
+	public init(id: GraphID, playedOn: Date, scores: [Int]?, game: Game, players: [Players], winners: [Winners]) {
 			self.id = id
 			self.playedOn = playedOn
 			self.scores = scores
@@ -74,6 +80,7 @@ return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 		// MARK: - Nested Types
 			public struct Game: GraphApiResponse, Equatable {
 		// MARK: - Response Fields
+			/// Image for the game.
 			public var image: String?
 		// MARK: - Helpers
 		public let __typename: String
@@ -86,7 +93,9 @@ return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 	}
 			public struct Players: GraphApiResponse, Equatable {
 		// MARK: - Response Fields
+			/// Unique ID.
 			public var id: GraphID
+			/// Avatar of the player.
 			public var avatar: String?
 		// MARK: - Helpers
 		public let __typename: String
@@ -100,6 +109,7 @@ return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 	}
 			public struct Winners: GraphApiResponse, Equatable {
 		// MARK: - Response Fields
+			/// Unique ID.
 			public var id: GraphID
 		// MARK: - Helpers
 		public let __typename: String

@@ -1,0 +1,15 @@
+fragment RecentPlayFragment on Play {
+	id
+	playedOn
+	scores
+	game {
+		image
+	}
+	players {
+		id
+		avatar
+	}
+	winners {
+		id
+	}
+}

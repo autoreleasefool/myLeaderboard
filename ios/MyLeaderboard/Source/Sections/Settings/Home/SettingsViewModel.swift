@@ -22,9 +22,9 @@ enum SettingsAction: BaseAction {
 enum SettingsViewAction: BaseViewAction {
 	case initialize
 	case editPlayer
-	case selectPreferredPlayer(Player?)
+	case selectPreferredPlayer(PlayerListItem?)
 	case editOpponents
-	case selectPreferredOpponents([Player])
+	case selectPreferredOpponents([PlayerListItem])
 	case viewSource
 	case viewLicenses
 	case viewContributors
@@ -55,12 +55,12 @@ class SettingsViewModel: ViewModel {
 		case .editPlayer:
 			handleAction(.openPlayerPicker)
 		case .selectPreferredPlayer(let player):
-			Player.preferred = player
+			Player.preferred = Player(from: player)
 			handleAction(.playerUpdated)
 		case .editOpponents:
 			handleAction(.openOpponentPicker)
 		case .selectPreferredOpponents(let opponents):
-			Player.preferredOpponents = opponents.sorted()
+			Player.preferredOpponents = opponents.compactMap { Player(from: $0) }.sorted()
 			handleAction(.opponentsUpdated)
 		case .viewSource:
 			viewSource()

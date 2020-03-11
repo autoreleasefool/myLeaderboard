@@ -4,6 +4,7 @@ import Foundation
 public extension MyLeaderboardAPI {
 struct PlayerDetailsResponse: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
+		/// Find a single player.
 		public var player: Player?
 
 	// MARK: - Helpers
@@ -20,246 +21,147 @@ struct PlayerDetailsResponse: GraphApiResponse, Equatable {
 		// MARK: - Nested Types
 			public struct Player: GraphApiResponse, Equatable {
 		// MARK: - Response Fields
-			public var id: GraphID
-			public var displayName: String
-			public var username: String
-			public var avatar: String?
+			/// Game records.
 			public var records: [Records]
+			/// The player's most recent plays.
 			public var recentPlays: [RecentPlays]
+			/// Unique ID.
+			public var id: GraphID {
+				get {
+					return asPlayerDetailsFragmentFragment.id
+				}
+				set {
+					asPlayerDetailsFragmentFragment.id = newValue
+				}
+			}
+			/// Display name of the player.
+			public var displayName: String {
+				get {
+					return asPlayerDetailsFragmentFragment.displayName
+				}
+				set {
+					asPlayerDetailsFragmentFragment.displayName = newValue
+				}
+			}
+			/// GitHub username of the player.
+			public var username: String {
+				get {
+					return asPlayerDetailsFragmentFragment.username
+				}
+				set {
+					asPlayerDetailsFragmentFragment.username = newValue
+				}
+			}
+			/// Avatar of the player.
+			public var avatar: String? {
+				get {
+					return asPlayerDetailsFragmentFragment.avatar
+				}
+				set {
+					asPlayerDetailsFragmentFragment.avatar = newValue
+				}
+			}
+			public var asPlayerDetailsFragmentFragment: MyLeaderboardAPI.PlayerDetailsFragment
 		// MARK: - Helpers
 		public let __typename: String
 		public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
 		public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-		public init(id: GraphID, displayName: String, username: String, avatar: String?, records: [Records], recentPlays: [RecentPlays]) {
-				self.id = id
-				self.displayName = displayName
-				self.username = username
-				self.avatar = avatar
+			private enum CodingKeys: String, CodingKey {
+				case __typename
+					case records
+					case recentPlays
+					case asPlayerDetailsFragmentFragment = "fragment:asPlayerDetailsFragmentFragment"
+			}
+			public init(from decoder: Decoder) throws {
+				let container = try decoder.container(keyedBy: CodingKeys.self)
+				self.__typename = try container.decode(String.self, forKey: .__typename)
+					self.records = try container.decode([Records].self, forKey: .records)
+					self.recentPlays = try container.decode([RecentPlays].self, forKey: .recentPlays)
+					do {
+						self.asPlayerDetailsFragmentFragment = try MyLeaderboardAPI.PlayerDetailsFragment(from: decoder)
+					} catch let originalError {
+						do {
+							self.asPlayerDetailsFragmentFragment = try container.decode(MyLeaderboardAPI.PlayerDetailsFragment.self, forKey: .asPlayerDetailsFragmentFragment)
+						} catch {
+								throw originalError
+						}
+					}
+			}
+		public init(records: [Records], recentPlays: [RecentPlays], playerDetailsFragmentFragment: MyLeaderboardAPI.PlayerDetailsFragment) {
 				self.records = records
 				self.recentPlays = recentPlays
+				self.asPlayerDetailsFragmentFragment = playerDetailsFragmentFragment
 				self.__typename = "Player"
 		}
 			// MARK: - Nested Types
 				public struct Records: GraphApiResponse, Equatable {
 			// MARK: - Response Fields
-				public var game: Game
-				public var overallRecord: OverallRecord
-				public var scoreStats: ScoreStats?
-				public var records: [Records]
+				/// Game the record represents.
+				public var game: MyLeaderboardAPI.PlayerDetailsRecordFragment.Game {
+					get {
+						return asPlayerDetailsRecordFragmentFragment.game
+					}
+					set {
+						asPlayerDetailsRecordFragmentFragment.game = newValue
+					}
+				}
+				/// All time record for the player.
+				public var overallRecord: MyLeaderboardAPI.PlayerDetailsRecordFragment.OverallRecord {
+					get {
+						return asPlayerDetailsRecordFragmentFragment.overallRecord
+					}
+					set {
+						asPlayerDetailsRecordFragmentFragment.overallRecord = newValue
+					}
+				}
+				/// All time score statistics for the player.
+				public var scoreStats: MyLeaderboardAPI.PlayerDetailsRecordFragment.ScoreStats? {
+					get {
+						return asPlayerDetailsRecordFragmentFragment.scoreStats
+					}
+					set {
+						asPlayerDetailsRecordFragmentFragment.scoreStats = newValue
+					}
+				}
+				/// Records against other players.
+				public var records: [MyLeaderboardAPI.PlayerDetailsRecordFragment.Records] {
+					get {
+						return asPlayerDetailsRecordFragmentFragment.records
+					}
+					set {
+						asPlayerDetailsRecordFragmentFragment.records = newValue
+					}
+				}
+				public var asPlayerDetailsRecordFragmentFragment: MyLeaderboardAPI.PlayerDetailsRecordFragment
 			// MARK: - Helpers
 			public let __typename: String
 			public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
 			public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-			public init(game: Game, overallRecord: OverallRecord, scoreStats: ScoreStats?, records: [Records]) {
-					self.game = game
-					self.overallRecord = overallRecord
-					self.scoreStats = scoreStats
-					self.records = records
-					self.__typename = "PlayerGameRecord"
-			}
-				// MARK: - Nested Types
-					public struct Game: GraphApiResponse, Equatable {
-				// MARK: - Response Fields
-					public var id: GraphID
-					public var image: String?
-					public var name: String
-				// MARK: - Helpers
-				public let __typename: String
-				public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
-				public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-				public init(id: GraphID, image: String?, name: String) {
-						self.id = id
-						self.image = image
-						self.name = name
-						self.__typename = "BasicGame"
+				private enum CodingKeys: String, CodingKey {
+					case __typename
+						case asPlayerDetailsRecordFragmentFragment = "fragment:asPlayerDetailsRecordFragmentFragment"
 				}
-			}
-					public struct OverallRecord: GraphApiResponse, Equatable {
-				// MARK: - Response Fields
-					public var wins: Int32 {
-						get {
-							return asRecordFragmentFragment.wins
-						}
-						set {
-							asRecordFragmentFragment.wins = newValue
-						}
-					}
-					public var losses: Int32 {
-						get {
-							return asRecordFragmentFragment.losses
-						}
-						set {
-							asRecordFragmentFragment.losses = newValue
-						}
-					}
-					public var ties: Int32 {
-						get {
-							return asRecordFragmentFragment.ties
-						}
-						set {
-							asRecordFragmentFragment.ties = newValue
-						}
-					}
-					public var isBest: Bool? {
-						get {
-							return asRecordFragmentFragment.isBest
-						}
-						set {
-							asRecordFragmentFragment.isBest = newValue
-						}
-					}
-					public var isWorst: Bool? {
-						get {
-							return asRecordFragmentFragment.isWorst
-						}
-						set {
-							asRecordFragmentFragment.isWorst = newValue
-						}
-					}
-					public var asRecordFragmentFragment: MyLeaderboardAPI.RecordFragment
-				// MARK: - Helpers
-				public let __typename: String
-				public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
-				public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-					private enum CodingKeys: String, CodingKey {
-						case __typename
-							case asRecordFragmentFragment = "fragment:asRecordFragmentFragment"
-					}
-					public init(from decoder: Decoder) throws {
-						let container = try decoder.container(keyedBy: CodingKeys.self)
-						self.__typename = try container.decode(String.self, forKey: .__typename)
+				public init(from decoder: Decoder) throws {
+					let container = try decoder.container(keyedBy: CodingKeys.self)
+					self.__typename = try container.decode(String.self, forKey: .__typename)
+						do {
+							self.asPlayerDetailsRecordFragmentFragment = try MyLeaderboardAPI.PlayerDetailsRecordFragment(from: decoder)
+						} catch let originalError {
 							do {
-								self.asRecordFragmentFragment = try MyLeaderboardAPI.RecordFragment(from: decoder)
-							} catch let originalError {
-								do {
-									self.asRecordFragmentFragment = try container.decode(MyLeaderboardAPI.RecordFragment.self, forKey: .asRecordFragmentFragment)
-								} catch {
-										throw originalError
-								}
+								self.asPlayerDetailsRecordFragmentFragment = try container.decode(MyLeaderboardAPI.PlayerDetailsRecordFragment.self, forKey: .asPlayerDetailsRecordFragmentFragment)
+							} catch {
+									throw originalError
 							}
-					}
-				public init(recordFragmentFragment: MyLeaderboardAPI.RecordFragment) {
-						self.asRecordFragmentFragment = recordFragmentFragment
-						self.__typename = "Record"
+						}
 				}
-			}
-					public struct ScoreStats: GraphApiResponse, Equatable {
-				// MARK: - Response Fields
-					public var best: Int32
-					public var worst: Int32
-					public var average: Double
-				// MARK: - Helpers
-				public let __typename: String
-				public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
-				public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-				public init(best: Int32, worst: Int32, average: Double) {
-						self.best = best
-						self.worst = worst
-						self.average = average
-						self.__typename = "ScoreStats"
-				}
-			}
-					public struct Records: GraphApiResponse, Equatable {
-				// MARK: - Response Fields
-					public var opponent: Opponent
-					public var record: Record
-				// MARK: - Helpers
-				public let __typename: String
-				public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
-				public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-				public init(opponent: Opponent, record: Record) {
-						self.opponent = opponent
-						self.record = record
-						self.__typename = "PlayerVSRecord"
-				}
-					// MARK: - Nested Types
-						public struct Opponent: GraphApiResponse, Equatable {
-					// MARK: - Response Fields
-						public var id: GraphID
-						public var avatar: String?
-					// MARK: - Helpers
-					public let __typename: String
-					public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
-					public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-					public init(id: GraphID, avatar: String?) {
-							self.id = id
-							self.avatar = avatar
-							self.__typename = "BasicPlayer"
-					}
-				}
-						public struct Record: GraphApiResponse, Equatable {
-					// MARK: - Response Fields
-						public var wins: Int32 {
-							get {
-								return asRecordFragmentFragment.wins
-							}
-							set {
-								asRecordFragmentFragment.wins = newValue
-							}
-						}
-						public var losses: Int32 {
-							get {
-								return asRecordFragmentFragment.losses
-							}
-							set {
-								asRecordFragmentFragment.losses = newValue
-							}
-						}
-						public var ties: Int32 {
-							get {
-								return asRecordFragmentFragment.ties
-							}
-							set {
-								asRecordFragmentFragment.ties = newValue
-							}
-						}
-						public var isBest: Bool? {
-							get {
-								return asRecordFragmentFragment.isBest
-							}
-							set {
-								asRecordFragmentFragment.isBest = newValue
-							}
-						}
-						public var isWorst: Bool? {
-							get {
-								return asRecordFragmentFragment.isWorst
-							}
-							set {
-								asRecordFragmentFragment.isWorst = newValue
-							}
-						}
-						public var asRecordFragmentFragment: MyLeaderboardAPI.RecordFragment
-					// MARK: - Helpers
-					public let __typename: String
-					public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
-					public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-						private enum CodingKeys: String, CodingKey {
-							case __typename
-								case asRecordFragmentFragment = "fragment:asRecordFragmentFragment"
-						}
-						public init(from decoder: Decoder) throws {
-							let container = try decoder.container(keyedBy: CodingKeys.self)
-							self.__typename = try container.decode(String.self, forKey: .__typename)
-								do {
-									self.asRecordFragmentFragment = try MyLeaderboardAPI.RecordFragment(from: decoder)
-								} catch let originalError {
-									do {
-										self.asRecordFragmentFragment = try container.decode(MyLeaderboardAPI.RecordFragment.self, forKey: .asRecordFragmentFragment)
-									} catch {
-											throw originalError
-									}
-								}
-						}
-					public init(recordFragmentFragment: MyLeaderboardAPI.RecordFragment) {
-							self.asRecordFragmentFragment = recordFragmentFragment
-							self.__typename = "Record"
-					}
-				}
+			public init(playerDetailsRecordFragmentFragment: MyLeaderboardAPI.PlayerDetailsRecordFragment) {
+					self.asPlayerDetailsRecordFragmentFragment = playerDetailsRecordFragmentFragment
+					self.__typename = "PlayerGameRecord"
 			}
 		}
 				public struct RecentPlays: GraphApiResponse, Equatable {
 			// MARK: - Response Fields
+				/// Unique ID.
 				public var id: GraphID {
 					get {
 						return asRecentPlayFragmentFragment.id
@@ -268,6 +170,7 @@ struct PlayerDetailsResponse: GraphApiResponse, Equatable {
 						asRecentPlayFragmentFragment.id = newValue
 					}
 				}
+				/// Date and time the play was recorded.
 				public var playedOn: Date {
 					get {
 						return asRecentPlayFragmentFragment.playedOn
@@ -276,7 +179,8 @@ struct PlayerDetailsResponse: GraphApiResponse, Equatable {
 						asRecentPlayFragmentFragment.playedOn = newValue
 					}
 				}
-				public var scores: [Int32]? {
+				/// Scores for the game. Order is in respect to `players`.
+				public var scores: [Int]? {
 					get {
 						return asRecentPlayFragmentFragment.scores
 					}
@@ -284,6 +188,7 @@ struct PlayerDetailsResponse: GraphApiResponse, Equatable {
 						asRecentPlayFragmentFragment.scores = newValue
 					}
 				}
+				/// Game that was played.
 				public var game: MyLeaderboardAPI.RecentPlayFragment.Game {
 					get {
 						return asRecentPlayFragmentFragment.game
@@ -292,6 +197,7 @@ struct PlayerDetailsResponse: GraphApiResponse, Equatable {
 						asRecentPlayFragmentFragment.game = newValue
 					}
 				}
+				/// Players that played in the game.
 				public var players: [MyLeaderboardAPI.RecentPlayFragment.Players] {
 					get {
 						return asRecentPlayFragmentFragment.players
@@ -300,6 +206,7 @@ struct PlayerDetailsResponse: GraphApiResponse, Equatable {
 						asRecentPlayFragmentFragment.players = newValue
 					}
 				}
+				/// Winners of the game.
 				public var winners: [MyLeaderboardAPI.RecentPlayFragment.Winners] {
 					get {
 						return asRecentPlayFragmentFragment.winners

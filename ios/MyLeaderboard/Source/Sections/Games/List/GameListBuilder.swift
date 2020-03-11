@@ -14,7 +14,7 @@ protocol GameListActionable: AnyObject {
 }
 
 struct GameListBuilder {
-	static func sections(games: [Game], actionable: GameListActionable) -> [TableSection] {
+	static func sections(games: [GameListItem], actionable: GameListActionable) -> [TableSection] {
 		let rows: [CellConfigType] = games.map { game in
 			return GameListItemCell(
 				key: "game-\(game.id)",

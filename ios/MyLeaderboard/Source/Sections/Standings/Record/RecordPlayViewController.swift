@@ -51,7 +51,7 @@ class RecordPlayViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = RecordPlayBuilder.sections(game: viewModel.selectedGame, players: viewModel.selectedPlayers, winners: viewModel.winnerIDs, scores: viewModel.scores, errors: viewModel.errors, actionable: self)
+		let sections = RecordPlayBuilder.sections(game: viewModel.selectedGame, players: viewModel.selectedPlayers, winners: viewModel.winnerGraphIDs, scores: viewModel.scores, errors: viewModel.errors, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -98,15 +98,15 @@ extension RecordPlayViewController: RecordPlayActionable {
 		viewModel.postViewAction(.editGame)
 	}
 
-	func selectWinner(_ player: Player, selected: Bool) {
-		viewModel.postViewAction(.selectWinner(player, selected))
+	func selectWinner(_ playerID: GraphID, selected: Bool) {
+		viewModel.postViewAction(.selectWinner(playerID, selected))
 	}
 
-	func selectGame(_ game: Game) {
+	func selectGame(_ game: GameListItem) {
 		viewModel.postViewAction(.selectGame(game))
 	}
 
-	func setScore(for player: Player, score: Int) {
-		viewModel.postViewAction(.setPlayerScore(player, score))
+	func setScore(for playerID: GraphID, score: Int) {
+		viewModel.postViewAction(.setPlayerScore(playerID, score))
 	}
 }

@@ -4,10 +4,15 @@ import Foundation
 public extension MyLeaderboardAPI {
 struct RecordFragment: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
-		public var wins: Int32
-		public var losses: Int32
-		public var ties: Int32
+		/// Number of wins.
+		public var wins: Int
+		/// Number of losses.
+		public var losses: Int
+		/// Number of ties.
+		public var ties: Int
+		/// True if this represents the best record relative to similar records (of the player or the game).
 		public var isBest: Bool?
+		/// True if this represents the worst record relative to similar records (of the player or the game).
 		public var isWorst: Bool?
 
 	// MARK: - Helpers
@@ -16,7 +21,7 @@ struct RecordFragment: GraphApiResponse, Equatable {
 	public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
 	public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
 
-	public init(wins: Int32, losses: Int32, ties: Int32, isBest: Bool?, isWorst: Bool?) {
+	public init(wins: Int, losses: Int, ties: Int, isBest: Bool?, isWorst: Bool?) {
 			self.wins = wins
 			self.losses = losses
 			self.ties = ties

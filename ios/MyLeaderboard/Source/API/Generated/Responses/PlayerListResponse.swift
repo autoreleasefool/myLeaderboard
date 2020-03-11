@@ -4,6 +4,7 @@ import Foundation
 public extension MyLeaderboardAPI {
 struct PlayerListResponse: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
+		/// Get a list of players, ordered by ID ascending. Default page size is 25.
 		public var players: [Players?]
 
 	// MARK: - Helpers
@@ -20,6 +21,7 @@ struct PlayerListResponse: GraphApiResponse, Equatable {
 		// MARK: - Nested Types
 			public struct Players: GraphApiResponse, Equatable {
 		// MARK: - Response Fields
+			/// Unique ID.
 			public var id: GraphID {
 				get {
 					return asPlayerListItemFragment.id
@@ -28,6 +30,7 @@ struct PlayerListResponse: GraphApiResponse, Equatable {
 					asPlayerListItemFragment.id = newValue
 				}
 			}
+			/// Display name of the player.
 			public var displayName: String {
 				get {
 					return asPlayerListItemFragment.displayName
@@ -36,6 +39,7 @@ struct PlayerListResponse: GraphApiResponse, Equatable {
 					asPlayerListItemFragment.displayName = newValue
 				}
 			}
+			/// GitHub username of the player.
 			public var username: String {
 				get {
 					return asPlayerListItemFragment.username
@@ -44,6 +48,7 @@ struct PlayerListResponse: GraphApiResponse, Equatable {
 					asPlayerListItemFragment.username = newValue
 				}
 			}
+			/// Avatar of the player.
 			public var avatar: String? {
 				get {
 					return asPlayerListItemFragment.avatar

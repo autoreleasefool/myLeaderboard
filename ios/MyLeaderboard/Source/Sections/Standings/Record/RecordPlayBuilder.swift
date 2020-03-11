@@ -12,8 +12,8 @@ import FunctionalTableData
 protocol RecordPlayActionable: AnyObject {
 	func openPlayerPicker()
 	func openGamePicker()
-	func selectWinner(_ player: Player, selected: Bool)
-	func setScore(for player: Player, score: Int)
+	func selectWinner(_ player: GraphID, selected: Bool)
+	func setScore(for player: GraphID, score: Int)
 }
 
 struct RecordPlayBuilder {
@@ -34,7 +34,7 @@ struct RecordPlayBuilder {
 		}
 	}
 
-	static func sections(game: Game?, players: [Player], winners: Set<ID>, scores: [ID: Int], errors: KeyedErrors, actionable: RecordPlayActionable) -> [TableSection] {
+	static func sections(game: GameListItem?, players: [PlayerListItem], winners: Set<GraphID>, scores: [GraphID: Int], errors: KeyedErrors, actionable: RecordPlayActionable) -> [TableSection] {
 		let sections: [TableSection] = [
 			gameSection(game: game, errors: errors, actionable: actionable),
 			playerSection(players: players, winners: winners, hasScores: game?.hasScores ?? true, scores: scores, errors: errors, actionable: actionable),
@@ -43,7 +43,7 @@ struct RecordPlayBuilder {
 		return sections
 	}
 
-	static func gameSection(game: Game?, errors: KeyedErrors, actionable: RecordPlayActionable) -> TableSection {
+	static func gameSection(game: GameListItem?, errors: KeyedErrors, actionable: RecordPlayActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			sectionHeader(key: Keys.Game.header, title: "Game"),
 			GameListItemCell(
@@ -70,7 +70,7 @@ struct RecordPlayBuilder {
 		return TableSection(key: Keys.gameSection, rows: rows)
 	}
 
-	static func playerSection(players: [Player], winners: Set<ID>, hasScores: Bool, scores: [ID: Int], errors: KeyedErrors, actionable: RecordPlayActionable) -> TableSection {
+	static func playerSection(players: [PlayerListItem], winners: Set<GraphID>, hasScores: Bool, scores: [GraphID: Int], errors: KeyedErrors, actionable: RecordPlayActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			sectionHeader(key: Keys.Players.header, title: "Players", action: "Edit") { [weak actionable] in
 				actionable?.openPlayerPicker()
@@ -86,11 +86,11 @@ struct RecordPlayBuilder {
 					key: "\(Keys.Players.selectedPlayer)-\(player.id)",
 					style: CellStyle(highlight: true),
 					actions: CellActions(selectionAction: { [weak actionable] _ in
-						actionable?.selectWinner(player, selected: !isWinner)
+						actionable?.selectWinner(player.graphID, selected: !isWinner)
 						return .deselected
 					}),
 					state: PlayerPlayCellState(name: player.displayName, avatar: player.avatar, score: score, isWinner: isWinner, hasScores: hasScores) { [weak actionable] updatedScore in
-						actionable?.setScore(for: player, score: updatedScore)
+						actionable?.setScore(for: player.graphID, score: updatedScore)
 					},
 					cellUpdater: PlayerPlayCellState.updateView)
 			)

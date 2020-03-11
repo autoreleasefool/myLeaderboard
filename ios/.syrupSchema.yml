@@ -3,3 +3,5 @@ customScalars:
 - graphType: DateTime
   nativeType: Date
   rawValueType: String
+- graphType: Int
+  nativeType: Int

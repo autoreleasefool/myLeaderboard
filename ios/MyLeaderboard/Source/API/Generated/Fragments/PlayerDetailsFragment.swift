@@ -2,7 +2,7 @@
 import Foundation
 
 public extension MyLeaderboardAPI {
-struct PlayerListItem: GraphApiResponse, Equatable {
+struct PlayerDetailsFragment: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
 		/// Unique ID.
 		public var id: GraphID
