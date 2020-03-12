@@ -128,6 +128,12 @@
 		CA9715DA2419908C00EA58E9 /* RecentPlayFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715D92419908C00EA58E9 /* RecentPlayFragment+Extensions.swift */; };
 		CA9715DC241993A700EA58E9 /* PlayerDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DB241993A700EA58E9 /* PlayerDetails+Extensions.swift */; };
 		CA9715DE241994D700EA58E9 /* RecordFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */; };
+		CA9715E0241A1ED800EA58E9 /* GameDetails.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA9715DF241A1ED800EA58E9 /* GameDetails.graphql */; };
+		CA9715E4241A20B700EA58E9 /* PlayerGameRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E1241A20B600EA58E9 /* PlayerGameRecordFragment.swift */; };
+		CA9715E5241A20B700EA58E9 /* GameDetailsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E2241A20B700EA58E9 /* GameDetailsFragment.swift */; };
+		CA9715E6241A20B700EA58E9 /* GameDetailsStandingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */; };
+		CA9715E8241A20CF00EA58E9 /* GameDetailsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E7241A20CF00EA58E9 /* GameDetailsQuery.swift */; };
+		CA9715EA241A20D800EA58E9 /* GameDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E9241A20D800EA58E9 /* GameDetailsResponse.swift */; };
 		CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */; };
 		CA9D412722FA5DD50027E2D0 /* RecordPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */; };
 		CA9D412922FA5DEE0027E2D0 /* RecordPlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */; };
@@ -309,6 +315,12 @@
 		CA9715D92419908C00EA58E9 /* RecentPlayFragment+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecentPlayFragment+Extensions.swift"; sourceTree = "<group>"; };
 		CA9715DB241993A700EA58E9 /* PlayerDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlayerDetails+Extensions.swift"; sourceTree = "<group>"; };
 		CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecordFragment+Extensions.swift"; sourceTree = "<group>"; };
+		CA9715DF241A1ED800EA58E9 /* GameDetails.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = GameDetails.graphql; sourceTree = "<group>"; };
+		CA9715E1241A20B600EA58E9 /* PlayerGameRecordFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerGameRecordFragment.swift; sourceTree = "<group>"; };
+		CA9715E2241A20B700EA58E9 /* GameDetailsFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsFragment.swift; sourceTree = "<group>"; };
+		CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsStandingsFragment.swift; sourceTree = "<group>"; };
+		CA9715E7241A20CF00EA58E9 /* GameDetailsQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsQuery.swift; sourceTree = "<group>"; };
+		CA9715E9241A20D800EA58E9 /* GameDetailsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsResponse.swift; sourceTree = "<group>"; };
 		CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewModel.swift; sourceTree = "<group>"; };
 		CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewController.swift; sourceTree = "<group>"; };
 		CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayBuilder.swift; sourceTree = "<group>"; };
@@ -434,6 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				CA9715BF241826CE00EA58E9 /* GameList.graphql */,
+				CA9715DF241A1ED800EA58E9 /* GameDetails.graphql */,
 				CA1D97E32406EE650011786E /* PlayerList.graphql */,
 				CA9715C92419880400EA58E9 /* PlayerDetails.graphql */,
 				CA9715CE2419885800EA58E9 /* PlayList.graphql */,
@@ -603,6 +616,7 @@
 		CA6D05D5240D147900412D54 /* Queries */ = {
 			isa = PBXGroup;
 			children = (
+				CA9715E7241A20CF00EA58E9 /* GameDetailsQuery.swift */,
 				CA9715C3241827CE00EA58E9 /* GameListQuery.swift */,
 				CA0184972415941E0080A5B8 /* PlayerDetailsQuery.swift */,
 				CA6D05D6240D147900412D54 /* PlayerListQuery.swift */,
@@ -620,6 +634,7 @@
 		CA6D05D8240D147900412D54 /* Responses */ = {
 			isa = PBXGroup;
 			children = (
+				CA9715E9241A20D800EA58E9 /* GameDetailsResponse.swift */,
 				CA9715C5241827D500EA58E9 /* GameListResponse.swift */,
 				CA01849B241594370080A5B8 /* PlayerDetailsResponse.swift */,
 				CA6D05D9240D147900412D54 /* PlayerListResponse.swift */,
@@ -630,10 +645,13 @@
 		CA6D05DA240D147900412D54 /* Fragments */ = {
 			isa = PBXGroup;
 			children = (
+				CA9715E2241A20B700EA58E9 /* GameDetailsFragment.swift */,
+				CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */,
 				CA9715C1241827C300EA58E9 /* GameListItem.swift */,
 				CA6D05DB240D147900412D54 /* PlayerListItem.swift */,
 				CA9715D524198F2E00EA58E9 /* PlayerDetailsFragment.swift */,
 				CA9715D72419901800EA58E9 /* PlayerDetailsRecordFragment.swift */,
+				CA9715E1241A20B600EA58E9 /* PlayerGameRecordFragment.swift */,
 				CA9715B8241624A900EA58E9 /* RecentPlayFragment.swift */,
 				CA9715B9241624A900EA58E9 /* RecordFragment.swift */,
 			);
@@ -1133,6 +1151,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA9715E0241A1ED800EA58E9 /* GameDetails.graphql in Resources */,
 				CAC9067722D0F70F0075B033 /* LaunchScreen.storyboard in Resources */,
 				CA9715CA2419880400EA58E9 /* PlayerDetails.graphql in Resources */,
 				CA9715CD2419884700EA58E9 /* Record.graphql in Resources */,
@@ -1257,6 +1276,7 @@
 				CAE56F9622F9AEE100FE0998 /* LabelState.swift in Sources */,
 				CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */,
 				CA834B88230A1D8900A48C9B /* StandingsListBuilder.swift in Sources */,
+				CA9715E8241A20CF00EA58E9 /* GameDetailsQuery.swift in Sources */,
 				CA9209FE22E93604008E1B96 /* Record.swift in Sources */,
 				CA6D05E4240D147900412D54 /* GraphApi.swift in Sources */,
 				CAE56F9E22F9C30C00FE0998 /* GameListItemView.swift in Sources */,
@@ -1269,7 +1289,9 @@
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
 				CAE56F9C22F9C28E00FE0998 /* PlayerListItemView.swift in Sources */,
 				CAE9CF64230F074300D4850E /* PlaysListViewModel.swift in Sources */,
+				CA9715EA241A20D800EA58E9 /* GameDetailsResponse.swift in Sources */,
 				CA01849C241594370080A5B8 /* PlayerDetailsResponse.swift in Sources */,
+				CA9715E4241A20B700EA58E9 /* PlayerGameRecordFragment.swift in Sources */,
 				CA018483240D25840080A5B8 /* Syrup+Extensions.swift in Sources */,
 				CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */,
 				CAE9CF5E230EEBAC00D4850E /* GamePlayCell.swift in Sources */,
@@ -1305,6 +1327,7 @@
 				CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */,
 				CA834B92230A1EDD00A48C9B /* SpreadsheetBorderConfig.swift in Sources */,
 				CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */,
+				CA9715E5241A20B700EA58E9 /* GameDetailsFragment.swift in Sources */,
 				CAE56F9822F9B65800FE0998 /* NSAttributedString+Extensions.swift in Sources */,
 				CAE56F9422F9ABCB00FE0998 /* GamePickerViewController.swift in Sources */,
 				CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */,
@@ -1317,6 +1340,7 @@
 				CAED76B622FC4FCE000A2281 /* KeyedErrors.swift in Sources */,
 				CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */,
 				CA362F7B230EBE4B001063B9 /* PlayerDetailsViewModel.swift in Sources */,
+				CA9715E6241A20B700EA58E9 /* GameDetailsStandingsFragment.swift in Sources */,
 				CA834B96230A282500A48C9B /* Spreadsheet.swift in Sources */,
 				CAB3871C22D1907A00349B1F /* ViewAction.swift in Sources */,
 				CA834B87230A1D8500A48C9B /* StandingsListViewController.swift in Sources */,

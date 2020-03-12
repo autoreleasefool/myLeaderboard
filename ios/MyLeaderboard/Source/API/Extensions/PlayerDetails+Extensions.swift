@@ -8,15 +8,15 @@
 
 public typealias PlayerDetails = MyLeaderboardAPI.PlayerDetailsFragment
 public typealias PlayerDetailsRecord = MyLeaderboardAPI.PlayerDetailsRecordFragment
-public typealias PlayerDetailsOpponent = MyLeaderboardAPI.PlayerDetailsRecordFragment.Records.Opponent
+public typealias PlayerRecordOpponent = MyLeaderboardAPI.PlayerGameRecordFragment.Records.Opponent
 
-extension PlayerDetailsOpponent: Hashable {
+extension PlayerRecordOpponent: Hashable {
 	public func hash(into hasher: inout Hasher) {
 		hasher.combine(self.id)
 	}
 }
 
-extension PlayerDetailsOpponent: Comparable {
+extension PlayerRecordOpponent: Comparable {
 	public static func < (lhs: Self, rhs: Self) -> Bool {
 		guard let lhsID = Int(lhs.id.rawValue), let rhsID = Int(rhs.id.rawValue) else {
 			return lhs.id < rhs.id

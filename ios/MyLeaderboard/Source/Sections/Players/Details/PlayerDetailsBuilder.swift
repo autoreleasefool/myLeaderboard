@@ -223,7 +223,7 @@ struct PlayerDetailsBuilder {
 	}
 
 	private struct SpreadsheetCells {
-		static func headerRow(players: [PlayerDetailsOpponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
+		static func headerRow(players: [PlayerRecordOpponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
 			var headerRow: [GridCellConfig] = [
 				textGridCell(key: "Header", text: ""),
 				textGridCell(key: "Total", text: "Total"),
@@ -236,7 +236,7 @@ struct PlayerDetailsBuilder {
 			return headerRow
 		}
 
-		static func gameRow(record: PlayerDetailsRecord, playerID: GraphID, allPlayers: [PlayerDetailsOpponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
+		static func gameRow(record: PlayerDetailsRecord, playerID: GraphID, allPlayers: [PlayerRecordOpponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
 				gameCell(for: record.game, actionable: actionable),
 				textGridCell(
@@ -299,7 +299,7 @@ struct PlayerDetailsBuilder {
 			)
 		}
 
-		static func playerCell(for player: PlayerDetailsOpponent, actionable: PlayerDetailsActionable) -> GridCellConfig {
+		static func playerCell(for player: PlayerRecordOpponent, actionable: PlayerDetailsActionable) -> GridCellConfig {
 			let avatarURL: URL?
 			if let avatar = player.avatar {
 				avatarURL = URL(string: avatar)
