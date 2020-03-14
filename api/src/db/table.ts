@@ -52,7 +52,6 @@ class Table<Row extends Identifiable> {
         if (first < 0) {
             return rows.slice(offset);
         }
-        this.rows.reverse
         return rows.slice(offset, offset + first);
     }
 
