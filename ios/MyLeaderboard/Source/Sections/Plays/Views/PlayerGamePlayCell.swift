@@ -53,7 +53,16 @@ class PlayerGamePlayView: UIView {
 
 		result.translatesAutoresizingMaskIntoConstraints = false
 
-		let stackView = UIStackView(arrangedSubviews: [gameImage, separator, opponent, scoreSpacer, playerScore, scoreSeparator, opponentScore, endSpacer])
+		let stackView = UIStackView(arrangedSubviews: [
+			gameImage,
+			separator,
+			opponent,
+			scoreSpacer,
+			playerScore,
+			scoreSeparator,
+			opponentScore,
+			endSpacer
+		])
 		stackView.spacing = Metrics.Spacing.standard
 		stackView.alignment = .center
 		stackView.translatesAutoresizingMaskIntoConstraints = false

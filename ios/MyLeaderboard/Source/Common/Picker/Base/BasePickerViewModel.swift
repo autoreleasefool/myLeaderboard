@@ -58,7 +58,13 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		return false
 	}
 
-	init(initiallySelected: Set<GraphID>, multiSelect: Bool, limit: Int?, queryable: Queryable, handleAction: @escaping ActionHandler) {
+	init(
+		initiallySelected: Set<GraphID>,
+		multiSelect: Bool,
+		limit: Int?,
+		queryable: Queryable,
+		handleAction: @escaping ActionHandler
+	) {
 		self.selectedItems = initiallySelected
 		self.multiSelect = multiSelect
 		self.limit = limit

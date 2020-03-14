@@ -117,15 +117,27 @@ class CreatePlayerViewModel {
 
 		if !playerIsValid {
 			if trimmedDisplayName.count == 0 {
-				errors[CreatePlayerBuilder.Keys.createPlayerSection.rawValue, CreatePlayerBuilder.Keys.Create.error.rawValue] = "Name must contain at least 1 character."
+				errors[
+					CreatePlayerBuilder.Keys.createPlayerSection.rawValue,
+					CreatePlayerBuilder.Keys.Create.error.rawValue
+				] = "Name must contain at least 1 character."
 			} else if trimmedUsername.count == 0 {
-				errors[CreatePlayerBuilder.Keys.createPlayerSection.rawValue, CreatePlayerBuilder.Keys.Create.error.rawValue] = "Username must contain at least 1 character."
+				errors[
+					CreatePlayerBuilder.Keys.createPlayerSection.rawValue,
+					CreatePlayerBuilder.Keys.Create.error.rawValue
+				] = "Username must contain at least 1 character."
 			}
 
 			if validatingUsername {
-				errors[CreatePlayerBuilder.Keys.previewSection.rawValue, CreatePlayerBuilder.Keys.Preview.error.rawValue] = "Finding '\(trimmedUsername)'..."
+				errors[
+					CreatePlayerBuilder.Keys.previewSection.rawValue,
+					CreatePlayerBuilder.Keys.Preview.error.rawValue
+				] = "Finding '\(trimmedUsername)'..."
 			} else if !usernameValid {
-				errors[CreatePlayerBuilder.Keys.previewSection.rawValue, CreatePlayerBuilder.Keys.Preview.error.rawValue] = "The account '\(trimmedUsername)' could not be found."
+				errors[
+					CreatePlayerBuilder.Keys.previewSection.rawValue,
+					CreatePlayerBuilder.Keys.Preview.error.rawValue
+				] = "The account '\(trimmedUsername)' could not be found."
 			}
 		}
 
@@ -145,7 +157,10 @@ class CreatePlayerViewModel {
 					}
 				case .failure(let error):
 					switch error {
-					case .invalidData(let url), .invalidHTTPResponse(let url, _), .invalidResponse(let url), .networkingError(let url, _):
+					case .invalidData(let url),
+						.invalidHTTPResponse(let url, _),
+						.invalidResponse(let url),
+						.networkingError(let url, _):
 						if url == self?.avatarURL {
 							self?.usernameValid = false
 						}
@@ -160,7 +175,11 @@ class CreatePlayerViewModel {
 	}
 
 	private func submit(with controller: UIViewController) {
-		let alert = UIAlertController(title: "Add player?", message: "Are you sure you want to add '\(trimmedDisplayName)' as a new player?", preferredStyle: .alert)
+		let alert = UIAlertController(
+			title: "Add player?",
+			message: "Are you sure you want to add '\(trimmedDisplayName)' as a new player?",
+			preferredStyle: .alert
+		)
 		alert.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in
 			self?.createPlayer()
 		})

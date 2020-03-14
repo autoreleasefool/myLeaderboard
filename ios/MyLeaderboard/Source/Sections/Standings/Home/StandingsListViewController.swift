@@ -50,8 +50,17 @@ class StandingsListViewController: FTDViewController {
 		}
 
 		self.title = "Standings"
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(recordPlay))
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings"), style: .plain, target: self, action: #selector(openSettings))
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .add,
+			target: self,
+			action: #selector(recordPlay)
+		)
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			image: UIImage(named: "Settings"),
+			style: .plain,
+			target: self,
+			action: #selector(openSettings)
+		)
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 
 		viewModel.postViewAction(.initialize)
@@ -69,7 +78,12 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = StandingsListBuilder.sections(standings: viewModel.standings, players: viewModel.players, builder: spreadsheetBuilder, actionable: self)
+		let sections = StandingsListBuilder.sections(
+			standings: viewModel.standings,
+			players: viewModel.players,
+			builder: spreadsheetBuilder,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -98,7 +112,9 @@ class StandingsListViewController: FTDViewController {
 	private func openPreferredPlayerSelection() {
 		let alert = UIAlertController(
 			title: "Select a preferred player?",
-			message: "You haven't selected a preferred player yet. Choosing a preferred player makes it easier to record games by automatically adding them (yourself) to games you record! Pick a preferred player now?",
+			message: "You haven't selected a preferred player yet. " +
+				"Choosing a preferred player makes it easier to record " +
+				"games by automatically adding them (yourself) to games you record! Pick a preferred player now?",
 			preferredStyle: .alert
 		)
 
@@ -117,7 +133,10 @@ class StandingsListViewController: FTDViewController {
 			initiallySelected.insert(player.graphID)
 		}
 
-		presentModal(PlayerPickerViewController(multiSelect: false, initiallySelected: initiallySelected) { [weak self] selected in
+		presentModal(PlayerPickerViewController(
+			multiSelect: false,
+			initiallySelected: initiallySelected
+		) { [weak self] selected in
 			self?.viewModel.postViewAction(.selectPreferredPlayer(selected.first))
 		})
 	}
@@ -125,7 +144,11 @@ class StandingsListViewController: FTDViewController {
 	private func openPreferredOpponentsModal() {
 		let initiallySelected = Set(Player.preferredOpponents.map { $0.graphID })
 
-		presentModal(PlayerPickerViewController(multiSelect: true, limit: Player.preferredOpponentsLimit, initiallySelected: initiallySelected) { [weak self] selected in
+		presentModal(PlayerPickerViewController(
+			multiSelect: true,
+			limit: Player.preferredOpponentsLimit,
+			initiallySelected: initiallySelected
+		) { [weak self] selected in
 			self?.viewModel.postViewAction(.selectPreferredOpponents(selected))
 		})
 	}

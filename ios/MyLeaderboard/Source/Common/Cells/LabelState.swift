@@ -17,7 +17,12 @@ struct LabelState: ViewState {
 	let alignment: NSTextAlignment
 	let size: CGFloat
 
-	init(text: ControlText, truncationStyle: TruncationStyle = .truncate, alignment: NSTextAlignment = .natural, size: CGFloat = Metrics.Text.body) {
+	init(
+		text: ControlText,
+		truncationStyle: TruncationStyle = .truncate,
+		alignment: NSTextAlignment = .natural,
+		size: CGFloat = Metrics.Text.body
+	) {
 		self.text = text
 		self.truncationStyle = truncationStyle
 		self.alignment = alignment

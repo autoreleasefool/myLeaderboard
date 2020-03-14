@@ -30,7 +30,10 @@ struct TextInputCellState: ViewState {
 		}
 
 		view.text = state.text
-		let placeholder = NSAttributedString(string: state.placeholder, attributes: [NSAttributedString.Key.foregroundColor: UIColor.textSecondary])
+		let placeholder = NSAttributedString(
+			string: state.placeholder,
+			attributes: [NSAttributedString.Key.foregroundColor: UIColor.textSecondary]
+		)
 		view.attributedPlaceholder = placeholder
 		view.setActions([
 			ControlAction(events: .editingChanged) { sender in

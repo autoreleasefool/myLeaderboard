@@ -104,7 +104,8 @@ class PlaysListViewModel: ViewModel {
 						return false
 					}
 
-					if self.specifiedPlayerIDs.count > 0, self.specifiedPlayerIDs.intersection($0.players).count != self.specifiedPlayerIDs.count {
+					if self.specifiedPlayerIDs.count > 0,
+						self.specifiedPlayerIDs.intersection($0.players).count != self.specifiedPlayerIDs.count {
 						return false
 					}
 

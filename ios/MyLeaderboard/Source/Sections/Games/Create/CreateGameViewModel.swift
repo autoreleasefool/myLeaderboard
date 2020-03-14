@@ -96,7 +96,10 @@ class CreateGameViewModel {
 
 		if gameIsValid == false {
 			if trimmedGameName.count == 0 {
-				errors[CreateGameBuilder.Keys.createGameSection.rawValue, CreateGameBuilder.Keys.Create.error.rawValue] = "Name must contain at least 1 character."
+				errors[
+					CreateGameBuilder.Keys.createGameSection.rawValue,
+					CreateGameBuilder.Keys.Create.error.rawValue
+				] = "Name must contain at least 1 character."
 			}
 		}
 
@@ -104,7 +107,11 @@ class CreateGameViewModel {
 	}
 
 	private func submit(with controller: UIViewController) {
-		let alert = UIAlertController(title: "Create game?", message: "Are you sure you want to create a game with the name '\(trimmedGameName)'", preferredStyle: .alert)
+		let alert = UIAlertController(
+			title: "Create game?",
+			message: "Are you sure you want to create a game with the name '\(trimmedGameName)'",
+			preferredStyle: .alert
+		)
 		alert.addAction(UIAlertAction(title: "Create", style: .default) { [weak self] _ in
 			self?.createGame()
 		})

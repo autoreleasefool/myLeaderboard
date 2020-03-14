@@ -1,7 +1,9 @@
 disabled_rules:
+  - file_length
+  - function_body_length
+
   - type_name
   - identifier_name
-  - line_length
   - trailing_comma
   - function_parameter_count
   - nesting

@@ -40,14 +40,28 @@ class CreatePlayerViewController: FTDViewController {
 		}
 
 		self.title = "Create Player"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .cancel,
+			target: self,
+			action: #selector(cancel)
+		)
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(submit)
+		)
 
 		render()
 	}
 
 	private func render() {
-		let sections = CreatePlayerBuilder.sections(displayName: viewModel.displayName, username: viewModel.username, avatarURL: viewModel.avatarURL, errors: viewModel.errors, actionable: self)
+		let sections = CreatePlayerBuilder.sections(
+			displayName: viewModel.displayName,
+			username: viewModel.username,
+			avatarURL: viewModel.avatarURL,
+			errors: viewModel.errors,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 		updateDoneButton()
 	}

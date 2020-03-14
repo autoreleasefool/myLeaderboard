@@ -11,14 +11,28 @@ import FunctionalTableData
 
 class ContributorsListViewController: FTDViewController {
 	private static let contributors: [Player] = [
-		Player(id: 0, avatar: "https://github.com/josephroquedev.png", displayName: "Joseph Roque", username: "josephroquedev"),
-		Player(id: 1, avatar: "https://github.com/mori-ahk.png", displayName: "Mori Ahmadi", username: "mori-ahk"),
+		Player(
+			id: 0,
+			avatar: "https://github.com/josephroquedev.png",
+			displayName: "Joseph Roque",
+			username: "josephroquedev"
+		),
+		Player(
+			id: 1,
+			avatar: "https://github.com/mori-ahk.png",
+			displayName: "Mori Ahmadi",
+			username: "mori-ahk"
+		),
 	]
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.title = "Contributors"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(finish))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(finish)
+		)
 
 		let rows: [CellConfigType] = ContributorsListViewController.contributors.map { contributor in
 			return PlayerListItemCell(
@@ -28,7 +42,11 @@ class ContributorsListViewController: FTDViewController {
 					self?.openURL(URL(string: "https://github.com/\(contributor.username)"))
 					return .deselected
 				}),
-				state: PlayerListItemState(displayName: contributor.displayName, username: contributor.username, avatar: contributor.qualifiedAvatar),
+				state: PlayerListItemState(
+					displayName: contributor.displayName,
+					username: contributor.username,
+					avatar: contributor.qualifiedAvatar
+				),
 				cellUpdater: PlayerListItemState.updateView
 			)
 		}

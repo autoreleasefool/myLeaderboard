@@ -46,7 +46,9 @@ struct PlayerRecord: Codable {
 		} else {
 			// Otherwise, freshness is 0-1, based on number of days
 			let maxFreshnessRange = PlayerRecord.staleLimit - PlayerRecord.veryFreshLimit
-			return max(0, min(1, (maxFreshnessRange - (daysSinceLastPlayed - PlayerRecord.veryFreshLimit)) / maxFreshnessRange))
+			let freshness = (maxFreshnessRange - (daysSinceLastPlayed - PlayerRecord.veryFreshLimit)) /
+				maxFreshnessRange
+			return max(0, min(1, freshness))
 		}
 	}
 }

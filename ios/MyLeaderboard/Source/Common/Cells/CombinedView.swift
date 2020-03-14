@@ -9,7 +9,8 @@
 import UIKit
 import FunctionalTableData
 
-typealias CombinedCell<View1: UIView, State1: Equatable, View2: UIView, State2: Equatable, Layout: TableItemLayout> = HostCell<CombinedView<View1, View2>, CombinedState<State1, State2>, Layout>
+typealias CombinedCell<View1: UIView, State1: Equatable, View2: UIView, State2: Equatable, Layout: TableItemLayout> =
+	HostCell<CombinedView<View1, View2>, CombinedState<State1, State2>, Layout>
 
 class CombinedView<View1: UIView, View2: UIView>: UIView {
 	let view1 = View1()

@@ -12,7 +12,12 @@ import FunctionalTableData
 typealias PlayerPlayCell = HostCell<PlayerPlayCellView, PlayerPlayCellState, LayoutMarginsTableItemLayout>
 
 class PaddedUITextField: UITextField {
-	let padding = UIEdgeInsets(top: Metrics.Spacing.tiny, left: Metrics.Spacing.tiny, bottom: Metrics.Spacing.tiny, right: Metrics.Spacing.tiny)
+	let padding = UIEdgeInsets(
+		top: Metrics.Spacing.tiny,
+		left: Metrics.Spacing.tiny,
+		bottom: Metrics.Spacing.tiny,
+		right: Metrics.Spacing.tiny
+	)
 
 	override func textRect(forBounds bounds: CGRect) -> CGRect {
 		return bounds.inset(by: padding)

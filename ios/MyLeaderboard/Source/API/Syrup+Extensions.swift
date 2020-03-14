@@ -50,7 +50,10 @@ public extension MyLeaderboardAPI {
 
 	static var customScalarResolver: MyLeaderboardAPI.CustomScalarResolver {
 		let dateResolver = DateResolver()
-		return MyLeaderboardAPI.CustomScalarResolver(decoderForDateTime: dateResolver.decoder, encoderForDateTime: dateResolver.encoder)
+		return MyLeaderboardAPI.CustomScalarResolver(
+			decoderForDateTime: dateResolver.decoder,
+			encoderForDateTime: dateResolver.encoder
+		)
 	}
 }
 
@@ -71,7 +74,13 @@ public struct DateResolver {
 }
 
 private struct Logger: GraphApiLogger {
-	func logError(_ message: StaticString, fileName file: StaticString, functionName function: StaticString, lineNumber line: Int, _ args: CVarArg...) {
+	func logError(
+		_ message: StaticString,
+		fileName file: StaticString,
+		functionName function: StaticString,
+		lineNumber line: Int,
+		_ args: CVarArg...
+	) {
 		let formattedMessage = String(format: message.description, args)
 		print("ERROR: \(file):\(function):\(line) - \(formattedMessage)")
 	}

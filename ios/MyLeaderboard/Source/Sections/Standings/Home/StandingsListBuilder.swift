@@ -18,7 +18,12 @@ protocol StandingsListActionable: AnyObject {
 struct StandingsListBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
-	static func sections(standings: [Game: Standings?], players: [Player], builder: SpreadsheetBuilder, actionable: StandingsListActionable) -> [TableSection] {
+	static func sections(
+		standings: [Game: Standings?],
+		players: [Player],
+		builder: SpreadsheetBuilder,
+		actionable: StandingsListActionable
+	) -> [TableSection] {
 		var sections: [TableSection] = []
 
 		standings.keys.sorted().forEach { game in
@@ -28,34 +33,62 @@ struct StandingsListBuilder {
 
 			var spreadsheetCells: [[GridCellConfig]] = []
 			if let optionalGameStandings = standings[game], let gameStandings = optionalGameStandings {
-				spreadsheetCells = standingsRows(game: game, standings: gameStandings, players: players, actionable: actionable)
+				spreadsheetCells = standingsRows(
+					game: game,
+					standings: gameStandings,
+					players: players,
+					actionable: actionable
+				)
 			}
 
 			var hasRecentPlays: Bool = false
 			if spreadsheetCells.count > 1 {
 				let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
 				let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
-				let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil)
+				let config = Spreadsheet.Config(
+					rows: rowConfigs,
+					columns: columnConfigs,
+					cells: spreadsheetCells,
+					border: nil
+				)
 
-				if let spreadsheet = Spreadsheet.section(key: "StandingsList-\(game.id)", builder: builder, config: config) {
+				if let spreadsheet = Spreadsheet.section(
+					key: "StandingsList-\(game.id)",
+					builder: builder,
+					config: config
+				) {
 					rows.append(contentsOf: spreadsheet.rows)
 				}
 				hasRecentPlays = true
 			} else {
 				rows.append(LabelCell(
 					key: "no-recent-plays",
-					state: LabelState(text: .attributed(NSAttributedString(string: "No recent plays", textColor: .text)), size: Metrics.Text.title),
+					state: LabelState(
+						text: .attributed(NSAttributedString(string: "No recent plays", textColor: .text)),
+						size: Metrics.Text.title
+					),
 					cellUpdater: LabelState.updateView
 				))
 			}
 
 			sections.append(TableSection(key: "game-\(game.id)", rows: rows))
 
-			if hasRecentPlays, let optionalGameStandings = standings[game], let gameStandings = optionalGameStandings {
-				if let limbo = limboSection(forGame: game, players: Players.limboing(from: players, standings: gameStandings), actionable: actionable) {
+			if hasRecentPlays,
+				let optionalGameStandings = standings[game],
+				let gameStandings = optionalGameStandings {
+				if let limbo = limboSection(
+					forGame: game,
+					players: Players.limboing(from: players, standings: gameStandings),
+					actionable: actionable
+				) {
 					sections.append(limbo)
 				}
-				if let banished = banishedSection(forGame: game, players: Players.banished(from: players, standings: gameStandings), actionable: actionable) {
+
+				if let banished = banishedSection(
+					forGame: game,
+					players: Players.banished(from: players, standings: gameStandings),
+					actionable: actionable
+				) {
 					sections.append(banished)
 				}
 			}
@@ -64,7 +97,12 @@ struct StandingsListBuilder {
 		return sections
 	}
 
-	private static func standingsRows(game: Game, standings: Standings, players: [Player], actionable: StandingsListActionable) -> [[GridCellConfig]] {
+	private static func standingsRows(
+		game: Game,
+		standings: Standings,
+		players: [Player],
+		actionable: StandingsListActionable
+	) -> [[GridCellConfig]] {
 		var spreadsheetCells: [[GridCellConfig]] = []
 		let visiblePlayers = Players.visible(from: players, standings: standings)
 
@@ -73,15 +111,27 @@ struct StandingsListBuilder {
 			SpreadsheetCells.textGridCell(key: "Total", text: "Total"),
 		]
 		visiblePlayers.forEach {
-			headerRow.append(SpreadsheetCells.playerCell(for: $0, record: standings.records[$0.id], actionable: actionable))
+			headerRow.append(SpreadsheetCells.playerCell(
+				for: $0,
+				record: standings.records[$0.id],
+				actionable: actionable
+			))
 		}
 		spreadsheetCells.append(headerRow)
 
 		visiblePlayers.forEach { player in
 			if let playerRecord = standings.records[player.id] {
 				var cells: [GridCellConfig] = [
-					SpreadsheetCells.playerCell(for: player, record: standings.records[player.id], actionable: actionable),
-					SpreadsheetCells.textGridCell(key: "Total", text: playerRecord.overallRecord.formatted, backgroundColor: playerRecord.overallRecord.backgroundColor) { [weak actionable] in
+					SpreadsheetCells.playerCell(
+						for: player,
+						record: standings.records[player.id],
+						actionable: actionable
+					),
+					SpreadsheetCells.textGridCell(
+						key: "Total",
+						text: playerRecord.overallRecord.formatted,
+						backgroundColor: playerRecord.overallRecord.backgroundColor
+					) { [weak actionable] in
 						actionable?.showPlays(game: game, players: [player])
 					}
 				]
@@ -93,11 +143,18 @@ struct StandingsListBuilder {
 					}
 
 					if let recordAgainstOpponent = playerRecord.records[opponent.id] {
-						cells.append(SpreadsheetCells.textGridCell(key: "\(player.id)-\(opponent.id)", text: recordAgainstOpponent.formatted, backgroundColor: recordAgainstOpponent.backgroundColor) { [weak actionable] in
+						cells.append(SpreadsheetCells.textGridCell(
+							key: "\(player.id)-\(opponent.id)",
+							text: recordAgainstOpponent.formatted,
+							backgroundColor: recordAgainstOpponent.backgroundColor
+						) { [weak actionable] in
 							actionable?.showPlays(game: game, players: [player, opponent])
 						})
 					} else {
-						cells.append(SpreadsheetCells.textGridCell(key: "\(player.id)-\(opponent.id)", text: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil).formatted))
+						cells.append(SpreadsheetCells.textGridCell(
+							key: "\(player.id)-\(opponent.id)",
+							text: Record.empty.formatted
+						))
 					}
 				}
 
@@ -108,7 +165,11 @@ struct StandingsListBuilder {
 		return spreadsheetCells
 	}
 
-	private static func limboSection(forGame game: Game, players: [Player], actionable: StandingsListActionable) -> TableSection? {
+	private static func limboSection(
+		forGame game: Game,
+		players: [Player],
+		actionable: StandingsListActionable
+	) -> TableSection? {
 		guard players.count > 0 else { return nil }
 
 		var rows: [CellConfigType] = [
@@ -121,7 +182,10 @@ struct StandingsListBuilder {
 			key: "Limbo",
 			state: CollectionViewCellState(
 				sections: [TableSection(key: "Limbo", rows: limboingPlayerRows)],
-				itemSize: CGSize(width: StandingsListBuilder.avatarImageSize + Metrics.Spacing.standard, height: StandingsListBuilder.avatarImageSize + Metrics.Spacing.standard)
+				itemSize: CGSize(
+					width: StandingsListBuilder.avatarImageSize + Metrics.Spacing.standard,
+					height: StandingsListBuilder.avatarImageSize + Metrics.Spacing.standard
+				)
 			),
 			cellUpdater: CollectionViewCellState.updateView
 		))
@@ -129,7 +193,11 @@ struct StandingsListBuilder {
 		return TableSection(key: "Limbo-\(game.id)", rows: rows)
 	}
 
-	private static func banishedSection(forGame game: Game, players: [Player], actionable: StandingsListActionable) -> TableSection? {
+	private static func banishedSection(
+		forGame game: Game,
+		players: [Player],
+		actionable: StandingsListActionable
+	) -> TableSection? {
 		guard players.count > 0 else { return nil }
 
 		var rows: [CellConfigType] = [
@@ -142,7 +210,10 @@ struct StandingsListBuilder {
 			key: "Banished",
 			state: CollectionViewCellState(
 				sections: [TableSection(key: "Banished", rows: banishedPlayerRows)],
-				itemSize: CGSize(width: StandingsListBuilder.avatarImageSize + Metrics.Spacing.standard, height: StandingsListBuilder.avatarImageSize + Metrics.Spacing.standard)
+				itemSize: CGSize(
+					width: StandingsListBuilder.avatarImageSize + Metrics.Spacing.standard,
+					height: StandingsListBuilder.avatarImageSize + Metrics.Spacing.standard
+				)
 			),
 			cellUpdater: CollectionViewCellState.updateView
 		))
@@ -171,11 +242,12 @@ struct StandingsListBuilder {
 		static func rows(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.RowConfig] {
 			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
 			cells.enumerated().forEach { index, _ in
-				if index == 0 {
-					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: Spreadsheet.BorderConfig(color: .standingsBorder), bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
-				} else {
-					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
-				}
+				let topBorder = index == 0 ? Spreadsheet.BorderConfig(color: .standingsBorder) : nil
+				rowConfigs[index] = Spreadsheet.CommonRowConfig(
+					rowHeight: 48,
+					topBorder: topBorder,
+					bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder)
+				)
 			}
 			return rowConfigs
 		}
@@ -183,11 +255,12 @@ struct StandingsListBuilder {
 		static func columns(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.ColumnConfig] {
 			var columnConfigs: [Int: Spreadsheet.ColumnConfig] = [:]
 			cells.first?.enumerated().forEach { index, _ in
-				if index == 0 {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: Spreadsheet.BorderConfig(color: .standingsBorder), rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
-				} else {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
-				}
+				let leftBorder = index == 0 ? Spreadsheet.BorderConfig(color: .standingsBorder) : nil
+				columnConfigs[index] = Spreadsheet.ColumnConfig(
+					columnWidth: 96,
+					leftBorder: leftBorder,
+					rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder)
+				)
 			}
 			return columnConfigs
 		}
@@ -197,7 +270,10 @@ struct StandingsListBuilder {
 		static func subHeader(key: String, text: String) -> CellConfigType {
 			return LabelCell(
 				key: key,
-				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .textSecondary)), size: Metrics.Text.title),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: text, textColor: .textSecondary)),
+					size: Metrics.Text.title
+				),
 				cellUpdater: LabelState.updateView
 			)
 		}
@@ -236,12 +312,23 @@ struct StandingsListBuilder {
 				avatarURL = nil
 			}
 
-			return ImageState(url: avatarURL, width: StandingsListBuilder.avatarImageSize, height: StandingsListBuilder.avatarImageSize, rounded: true, opacity: opacity)
+			return ImageState(
+				url: avatarURL,
+				width: StandingsListBuilder.avatarImageSize,
+				height: StandingsListBuilder.avatarImageSize,
+				rounded: true,
+				opacity: opacity
+			)
 		}
 	}
 
 	private struct SpreadsheetCells {
-		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil, onAction: (() -> Void)? = nil) -> GridCellConfig {
+		static func textGridCell(
+			key: String,
+			text: String,
+			backgroundColor: UIColor? = nil,
+			onAction: (() -> Void)? = nil
+		) -> GridCellConfig {
 			return Spreadsheet.TextGridCellConfig(
 				key: key,
 				style: CellStyle(selectionColor: .primaryExtraLight),
@@ -254,12 +341,19 @@ struct StandingsListBuilder {
 						return .deselected
 					}
 				),
-				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: text, textColor: .text)),
+					alignment: .center
+				),
 				backgroundColor: backgroundColor
 			)
 		}
 
-		static func playerCell(for player: Player, record: PlayerRecord?, actionable: StandingsListActionable) -> GridCellConfig {
+		static func playerCell(
+			for player: Player,
+			record: PlayerRecord?,
+			actionable: StandingsListActionable
+		) -> GridCellConfig {
 			let opacity = CGFloat(record?.freshness ?? 1)
 
 			return Spreadsheet.ImageGridCellConfig(

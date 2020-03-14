@@ -6,6 +6,9 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+// swiftlint:disable all
+// This entire file will be removed when GraphQL migration is complete
+
 import Foundation
 
 enum LeaderboardAPIError: LocalizedError {

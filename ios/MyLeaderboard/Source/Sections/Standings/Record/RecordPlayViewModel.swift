@@ -140,13 +140,22 @@ class RecordPlayViewModel: ViewModel {
 
 		if playIsValid == false {
 			if selectedGame == nil {
-				errors[RecordPlayBuilder.Keys.gameSection.rawValue, RecordPlayBuilder.Keys.Game.error.rawValue] = "You must choose a game."
+				errors[
+					RecordPlayBuilder.Keys.gameSection.rawValue,
+					RecordPlayBuilder.Keys.Game.error.rawValue
+				] = "You must choose a game."
 			}
 
 			if selectedPlayers.count < 2 {
-				errors[RecordPlayBuilder.Keys.playerSection.rawValue, RecordPlayBuilder.Keys.Players.error.rawValue] = "You must select at least 2 players."
+				errors[
+					RecordPlayBuilder.Keys.playerSection.rawValue,
+					RecordPlayBuilder.Keys.Players.error.rawValue
+				] = "You must select at least 2 players."
 			} else if winners.isEmpty || selectedPlayerIDs.isDisjoint(with: winnerIDs) {
-				errors[RecordPlayBuilder.Keys.playerSection.rawValue, RecordPlayBuilder.Keys.Players.error.rawValue] = "You must select a winner."
+				errors[
+					RecordPlayBuilder.Keys.playerSection.rawValue,
+					RecordPlayBuilder.Keys.Players.error.rawValue
+				] = "You must select a winner."
 			}
 		}
 

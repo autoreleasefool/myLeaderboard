@@ -24,9 +24,20 @@ struct PlayerListQueryable: PickerItemQueryable {
 typealias PlayerPicker = BasePickerViewController<PlayerListItem, PlayerListItemState, PlayerListQueryable>
 
 class PlayerPickerViewController: PlayerPicker {
-	init(multiSelect: Bool = true, limit: Int? = nil, initiallySelected: Set<GraphID>, completion: @escaping PlayerPicker.FinishedSelection) {
+	init(
+		multiSelect: Bool = true,
+		limit: Int? = nil,
+		initiallySelected: Set<GraphID>,
+		completion: @escaping PlayerPicker.FinishedSelection
+	) {
 		let queryable = PlayerListQueryable()
-		super.init(initiallySelected: initiallySelected, multiSelect: multiSelect, limit: limit, queryable: queryable, completion: completion)
+		super.init(
+			initiallySelected: initiallySelected,
+			multiSelect: multiSelect,
+			limit: limit,
+			queryable: queryable,
+			completion: completion
+		)
 
 		self.title = "Players"
 	}
@@ -39,7 +50,11 @@ class PlayerPickerViewController: PlayerPicker {
 		return items.map {
 			return PickerItem(
 				graphID: $0.graphID,
-				state: PlayerListItemState(displayName: $0.displayName, username: $0.username, avatar: $0.qualifiedAvatar)
+				state: PlayerListItemState(
+					displayName: $0.displayName,
+					username: $0.username,
+					avatar: $0.qualifiedAvatar
+				)
 			)
 		}
 	}

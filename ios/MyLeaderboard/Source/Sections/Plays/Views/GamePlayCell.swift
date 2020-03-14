@@ -42,7 +42,15 @@ class GamePlayView: UIView {
 		separator.text = "—"
 		separator.setContentHuggingPriority(.required, for: .horizontal)
 
-		let stackView = UIStackView(arrangedSubviews: [firstPlayerScore, firstPlayerResult, firstPlayer, separator, secondPlayer, secondPlayerResult, secondPlayerScore])
+		let stackView = UIStackView(arrangedSubviews: [
+			firstPlayerScore,
+			firstPlayerResult,
+			firstPlayer,
+			separator,
+			secondPlayer,
+			secondPlayerResult,
+			secondPlayerScore
+		])
 		stackView.spacing = Metrics.Spacing.standard
 		stackView.alignment = .center
 		stackView.translatesAutoresizingMaskIntoConstraints = false

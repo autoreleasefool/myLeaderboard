@@ -98,7 +98,11 @@ class TodayViewModel: ViewModel {
 		}
 	}
 
-	private func fetchPlayerRecord(for game: Game, dispatchGroup: DispatchGroup, completionHandler: @escaping TodayCompletionHandler) {
+	private func fetchPlayerRecord(
+		for game: Game,
+		dispatchGroup: DispatchGroup,
+		completionHandler: @escaping TodayCompletionHandler
+	) {
 		api.playerRecord(playerID: preferredPlayer!.id, gameID: game.id) { [weak self] result in
 			switch result {
 			case .success(let standings):

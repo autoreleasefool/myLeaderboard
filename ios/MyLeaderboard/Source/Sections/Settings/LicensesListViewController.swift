@@ -13,7 +13,11 @@ class LicensesListViewController: FTDViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.title = "Licenses"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(finish))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(finish)
+		)
 
 		var rows: [CellConfigType] = []
 		LicensesListViewController.licenses.forEach { license in
@@ -23,13 +27,20 @@ class LicensesListViewController: FTDViewController {
 			rows.append(LabelCell(
 				key: "License-\(licenseName)",
 				style: CellStyle(backgroundColor: .primaryLight),
-				state: LabelState(text: .attributed(NSAttributedString(string: licenseName, textColor: .text)), size: Metrics.Text.title),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: licenseName, textColor: .text)),
+					size: Metrics.Text.title
+				),
 				cellUpdater: LabelState.updateView
 			))
 
 			rows.append(LabelCell(
 				key: "LicenseContents-\(licenseName)",
-				state: LabelState(text: .attributed(NSAttributedString(string: license, textColor: .text)), truncationStyle: .multiline, size: Metrics.Text.body),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: license, textColor: .text)),
+					truncationStyle: .multiline,
+					size: Metrics.Text.body
+				),
 				cellUpdater: LabelState.updateView
 			))
 		}

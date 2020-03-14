@@ -42,14 +42,27 @@ class CreateGameViewController: FTDViewController {
 		}
 
 		self.title = "Create Game"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .cancel,
+			target: self,
+			action: #selector(cancel)
+		)
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(submit)
+		)
 
 		render()
 	}
 
 	private func render() {
-		let sections = CreateGameBuilder.sections(gameName: viewModel.gameName, hasScores: viewModel.hasScores, errors: viewModel.errors, actionable: self)
+		let sections = CreateGameBuilder.sections(
+			gameName: viewModel.gameName,
+			hasScores: viewModel.hasScores,
+			errors: viewModel.errors,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 		updateDoneButton()
 	}

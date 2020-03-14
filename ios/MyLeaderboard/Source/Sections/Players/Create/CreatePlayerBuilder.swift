@@ -31,22 +31,39 @@ struct CreatePlayerBuilder {
 		}
 	}
 
-	static func sections(displayName: String, username: String, avatarURL: URL?, errors: KeyedErrors, actionable: CreatePlayerActionable) -> [TableSection] {
+	static func sections(
+		displayName: String,
+		username: String,
+		avatarURL: URL?,
+		errors: KeyedErrors,
+		actionable: CreatePlayerActionable
+	) -> [TableSection] {
 		return [
 			inputSection(displayName: displayName, username: username, errors: errors, actionable: actionable),
 			previewSection(url: avatarURL, errors: errors),
 		]
 	}
 
-	static func inputSection(displayName: String, username: String, errors: KeyedErrors, actionable: CreatePlayerActionable) -> TableSection {
+	static func inputSection(
+		displayName: String,
+		username: String,
+		errors: KeyedErrors,
+		actionable: CreatePlayerActionable
+	) -> TableSection {
 		let displayNameLabel = LabelState(text: .attributed(NSAttributedString(string: "Name", textColor: .text)))
-		let displayNameInput = TextInputCellState(text: displayName, placeholder: "Joseph Roque") { [weak actionable] text in
+		let displayNameInput = TextInputCellState(
+			text: displayName,
+			placeholder: "Joseph Roque"
+		) { [weak actionable] text in
 			guard let text = text else { return }
 			actionable?.updatedPlayerName(name: text)
 		}
 
 		let usernameLabel = LabelState(text: .attributed(NSAttributedString(string: "Username", textColor: .text)))
-		let usernameInput = TextInputCellState(text: username, placeholder: "josephroquedev") { [weak actionable] text in
+		let usernameInput = TextInputCellState(
+			text: username,
+			placeholder: "josephroquedev"
+		) { [weak actionable] text in
 			guard let text = text else { return }
 			actionable?.updatedPlayerUsername(username: text)
 		}
@@ -89,7 +106,10 @@ struct CreatePlayerBuilder {
 			rows.append(LabelCell(
 				key: Keys.Create.error,
 				style: CellStyle(backgroundColor: .primaryDark),
-				state: LabelState(text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)), size: Metrics.Text.caption),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)),
+					size: Metrics.Text.caption
+				),
 				cellUpdater: LabelState.updateView
 			))
 		}
@@ -111,7 +131,10 @@ struct CreatePlayerBuilder {
 			rows.append(LabelCell(
 				key: Keys.Create.error,
 				style: CellStyle(backgroundColor: .primaryDark),
-				state: LabelState(text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)), size: Metrics.Text.caption),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)),
+					size: Metrics.Text.caption
+				),
 				cellUpdater: LabelState.updateView
 			))
 		}
@@ -119,11 +142,17 @@ struct CreatePlayerBuilder {
 		return TableSection(key: Keys.previewSection, rows: rows)
 	}
 
-	static func sectionHeader<Key: RawRepresentable>(key: Key, title: String) -> CellConfigType where Key.RawValue == String {
+	static func sectionHeader<Key: RawRepresentable>(
+		key: Key,
+		title: String
+	) -> CellConfigType where Key.RawValue == String {
 		return LabelCell(
 			key: key,
 			style: CellStyle(backgroundColor: .primaryLight),
-			state: LabelState(text: .attributed(NSAttributedString(string: title, textColor: .text)), size: Metrics.Text.title),
+			state: LabelState(
+				text: .attributed(NSAttributedString(string: title, textColor: .text)),
+				size: Metrics.Text.title
+			),
 			cellUpdater: LabelState.updateView
 		)
 	}

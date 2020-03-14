@@ -9,7 +9,11 @@
 import UIKit
 import FunctionalTableData
 
-typealias SwitchCell = HostCell<CombinedView<UILabel, UISwitch>, CombinedState<LabelState, SwitchState>, LayoutMarginsTableItemLayout>
+typealias SwitchCell = HostCell<
+	CombinedView<UILabel, UISwitch>,
+	CombinedState<LabelState, SwitchState>,
+	LayoutMarginsTableItemLayout
+>
 
 struct SwitchState: ViewState {
 	let isEnabled: Bool

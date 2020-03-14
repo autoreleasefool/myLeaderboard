@@ -19,7 +19,11 @@ protocol BasePickerActionable: AnyObject {
 }
 
 struct BasePickerBuilder {
-	static func sections<State: ViewState>(items: [PickerItem<State>], selectedItems: Set<GraphID>, actionable: BasePickerActionable) -> [TableSection] {
+	static func sections<State: ViewState>(
+		items: [PickerItem<State>],
+		selectedItems: Set<GraphID>,
+		actionable: BasePickerActionable
+	) -> [TableSection] {
 		let rows = items.map {
 			cell(for: $0, selected: selectedItems.contains($0.graphID), actionable: actionable)
 		}
@@ -27,7 +31,11 @@ struct BasePickerBuilder {
 		return [TableSection(key: "Picker", rows: rows)]
 	}
 
-	static func cell<State: ViewState>(for item: PickerItem<State>, selected: Bool, actionable: BasePickerActionable) -> CellConfigType {
+	static func cell<State: ViewState>(
+		for item: PickerItem<State>,
+		selected: Bool,
+		actionable: BasePickerActionable
+	) -> CellConfigType {
 		let checkedState = ImageState(
 			image: selected ? UIImage(named: "Check") : UIImage(named: "Unchecked"),
 			tintColor: selected ? .success : .error,

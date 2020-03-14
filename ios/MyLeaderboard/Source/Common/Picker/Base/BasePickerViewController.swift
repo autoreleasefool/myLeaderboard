@@ -10,17 +10,29 @@ import UIKit
 import FunctionalTableData
 import Loaf
 
-class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQueryable>: FTDViewController where Queryable.Item == Item {
+class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQueryable>: FTDViewController where
+	Queryable.Item == Item {
 	typealias FinishedSelection = ([Item]) -> Void
 
 	private var viewModel: BasePickerViewModel<Item, Queryable>!
 	private var finishedSelection: FinishedSelection
 
-	init(initiallySelected: Set<GraphID>, multiSelect: Bool, limit: Int?, queryable: Queryable, completion: @escaping FinishedSelection) {
+	init(
+		initiallySelected: Set<GraphID>,
+		multiSelect: Bool,
+		limit: Int?,
+		queryable: Queryable,
+		completion: @escaping FinishedSelection
+	) {
 		self.finishedSelection = completion
 		super.init()
 
-		self.viewModel = BasePickerViewModel(initiallySelected: initiallySelected, multiSelect: multiSelect, limit: limit, queryable: queryable) { [weak self] action in
+		self.viewModel = BasePickerViewModel(
+			initiallySelected: initiallySelected,
+			multiSelect: multiSelect,
+			limit: limit,
+			queryable: queryable
+		) { [weak self] action in
 			switch action {
 			case .itemsUpdated:
 				self?.render()
@@ -33,7 +45,11 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 			}
 		}
 
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(submit)
+		)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -48,7 +64,12 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 
 	private func render() {
 		let renderedItems = renderItems(viewModel.items)
-		let sections = BasePickerBuilder.sections(items: renderedItems, selectedItems: viewModel.selectedItems, actionable: self)
+		let sections = BasePickerBuilder.sections(
+			items: renderedItems,
+			selectedItems:
+			viewModel.selectedItems,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 	}
 

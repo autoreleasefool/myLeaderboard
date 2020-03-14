@@ -21,7 +21,15 @@ protocol TodayActionable: AnyObject {
 enum TodayBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
-	static func sections(player: Player, standings: [Game: PlayerStandings?], opponents: [Player], builder: SpreadsheetBuilder, maxRows: Int, error: LeaderboardAPIError?, actionable: TodayActionable) -> [TableSection] {
+	static func sections(
+		player: Player,
+		standings: [Game: PlayerStandings?],
+		opponents: [Player],
+		builder: SpreadsheetBuilder,
+		maxRows: Int,
+		error: LeaderboardAPIError?,
+		actionable: TodayActionable
+	) -> [TableSection] {
 		if let error = error {
 			return [Sections.error(error, actionable: actionable)]
 		}
@@ -33,7 +41,13 @@ enum TodayBuilder {
 
 		standings.keys.sorted().forEach {
 			guard let optionalStandings = standings[$0], let gameStandings = optionalStandings else { return }
-			spreadsheetCells.append(SpreadsheetCells.gameRow(game: $0, player: player, opponents: opponents, record: gameStandings, actionable: actionable))
+			spreadsheetCells.append(SpreadsheetCells.gameRow(
+				game: $0,
+				player: player,
+				opponents: opponents,
+				record: gameStandings,
+				actionable: actionable
+			))
 		}
 
 		spreadsheetCells = Array(spreadsheetCells.prefix(maxRows))
@@ -61,7 +75,10 @@ enum TodayBuilder {
 						return .deselected
 					}),
 					state: LabelState(
-						text: .attributed(NSAttributedString(string: "No preferred player selected.", textColor: .text)),
+						text: .attributed(NSAttributedString(
+							string: "No preferred player selected.",
+							textColor: .text
+						)),
 						truncationStyle: .multiline,
 						alignment: .center,
 						size: Metrics.Text.body
@@ -114,7 +131,13 @@ enum TodayBuilder {
 			return headerRow
 		}
 
-		static func gameRow(game: Game, player: Player, opponents: [Player], record: PlayerStandings, actionable: TodayActionable) -> [GridCellConfig] {
+		static func gameRow(
+			game: Game,
+			player: Player,
+			opponents: [Player],
+			record: PlayerStandings,
+			actionable: TodayActionable
+		) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
 				gameCell(for: game, actionable: actionable),
 				textGridCell(key: "Total", text: record.overallRecord.formatted),
@@ -122,11 +145,17 @@ enum TodayBuilder {
 
 			opponents.forEach { opponent in
 				if let recordAgainstOpponent = record.records[opponent.id] {
-					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: recordAgainstOpponent.formatted) { [weak actionable] in
+					row.append(textGridCell(
+						key: "Opponent-\(opponent.id)",
+						text: recordAgainstOpponent.formatted
+					) { [weak actionable] in
 						actionable?.openPlayerDetails(player: player)
 					})
 				} else {
-					row.append(textGridCell(key: "Opponent-\(opponent.id)", text: Record(wins: 0, losses: 0, ties: 0, isBest: nil, isWorst: nil).formatted))
+					row.append(textGridCell(
+						key: "Opponent-\(opponent.id)",
+						text: Record.empty.formatted
+					))
 				}
 			}
 
@@ -145,7 +174,10 @@ enum TodayBuilder {
 						return .deselected
 				}
 				),
-				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center)
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: text, textColor: .text)),
+					alignment: .center
+				)
 			)
 		}
 
@@ -163,7 +195,12 @@ enum TodayBuilder {
 					actionable?.openPlayerDetails(player: player)
 					return .deselected
 				}),
-				state: ImageState(url: avatarURL, width: TodayBuilder.avatarImageSize, height: TodayBuilder.avatarImageSize, rounded: true)
+				state: ImageState(
+					url: avatarURL,
+					width: TodayBuilder.avatarImageSize,
+					height: TodayBuilder.avatarImageSize,
+					rounded: true
+				)
 			)
 		}
 
@@ -181,7 +218,12 @@ enum TodayBuilder {
 					actionable?.openGameDetails(game: game)
 					return .deselected
 				}),
-				state: ImageState(url: imageURL, width: TodayBuilder.avatarImageSize, height: TodayBuilder.avatarImageSize, rounded: false)
+				state: ImageState(
+					url: imageURL,
+					width: TodayBuilder.avatarImageSize,
+					height: TodayBuilder.avatarImageSize,
+					rounded: false
+				)
 			)
 		}
 	}
@@ -190,11 +232,12 @@ enum TodayBuilder {
 		static func rows(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.RowConfig] {
 			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
 			cells.enumerated().forEach { index, _ in
-				if index == 0 {
-					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: Spreadsheet.BorderConfig(color: .todayBorder), bottomBorder: Spreadsheet.BorderConfig(color: .todayBorder))
-				} else {
-					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .todayBorder))
-				}
+				let topBorder = index == 0 ? Spreadsheet.BorderConfig(color: .todayBorder) : nil
+				rowConfigs[index] = Spreadsheet.CommonRowConfig(
+					rowHeight: 48,
+					topBorder: topBorder,
+					bottomBorder: Spreadsheet.BorderConfig(color: .todayBorder)
+				)
 			}
 			return rowConfigs
 		}
@@ -202,11 +245,12 @@ enum TodayBuilder {
 		static func columns(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.ColumnConfig] {
 			var columnConfigs: [Int: Spreadsheet.ColumnConfig] = [:]
 			cells.first?.enumerated().forEach { index, _ in
-				if index == 0 {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: Spreadsheet.BorderConfig(color: .todayBorder), rightBorder: Spreadsheet.BorderConfig(color: .todayBorder))
-				} else {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: Spreadsheet.BorderConfig(color: .todayBorder))
-				}
+				let leftBorder = index == 0 ? Spreadsheet.BorderConfig(color: .todayBorder) : nil
+				columnConfigs[index] = Spreadsheet.ColumnConfig(
+					columnWidth: 96,
+					leftBorder: leftBorder,
+					rightBorder: Spreadsheet.BorderConfig(color: .todayBorder)
+				)
 			}
 			return columnConfigs
 		}

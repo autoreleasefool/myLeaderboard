@@ -21,7 +21,13 @@ struct PlaysListBuilder {
 		return formatter
 	}()
 
-	static func sections(forPlayer playerID: ID, plays: [GamePlay], games: [Game], players: [Player], actionable: PlaysListActionable) -> [TableSection] {
+	static func sections(
+		forPlayer playerID: ID,
+		plays: [GamePlay],
+		games: [Game],
+		players: [Player],
+		actionable: PlaysListActionable
+	) -> [TableSection] {
 		var lastDatePlayed: Date?
 		var rows: [CellConfigType] = []
 		plays.forEach { play in
@@ -53,7 +59,14 @@ struct PlaysListBuilder {
 
 			rows.append(PlayerGamePlayCell(
 				key: "Play-\(play.id)",
-				state: PlayerGamePlayState(gameImage: game.image, playerID: GraphID(rawValue: String(playerID))!, opponentAvatar: opponent.avatar, winners: play.winners.map { GraphID(rawValue: String($0))! }, playerScore: playerScore, opponentScore: opponentScore),
+				state: PlayerGamePlayState(
+					gameImage: game.image,
+					playerID: GraphID(rawValue: String(playerID))!,
+					opponentAvatar: opponent.avatar,
+					winners: play.winners.map { GraphID(rawValue: String($0))! },
+					playerScore: playerScore,
+					opponentScore: opponentScore
+				),
 				cellUpdater: PlayerGamePlayState.updateView
 			))
 		}
@@ -93,7 +106,10 @@ struct PlaysListBuilder {
 		let dateString = PlaysListBuilder.dateFormatter.string(from: date)
 		return LabelCell(
 			key: "Date-\(dateString)",
-			state: LabelState(text: .attributed(NSAttributedString(string: dateString, textColor: .textSecondary)), size: Metrics.Text.caption),
+			state: LabelState(
+				text: .attributed(NSAttributedString(string: dateString, textColor: .textSecondary)),
+				size: Metrics.Text.caption
+			),
 			cellUpdater: LabelState.updateView
 		)
 	}

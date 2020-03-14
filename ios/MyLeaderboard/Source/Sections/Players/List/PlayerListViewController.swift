@@ -41,7 +41,11 @@ class PlayerListViewController: FTDViewController {
 		}
 
 		self.title = "Players"
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPlayer))
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .add,
+			target: self,
+			action: #selector(addNewPlayer)
+		)
 
 		viewModel.postViewAction(.initialize)
 		render()

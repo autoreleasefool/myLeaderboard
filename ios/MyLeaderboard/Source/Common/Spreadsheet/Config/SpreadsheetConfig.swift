@@ -13,7 +13,12 @@ extension Spreadsheet {
 		let cells: [[GridCellConfig]]
 		let border: BorderConfig?
 
-		init(rows: [Int: RowConfig], columns: [Int: ColumnConfig], cells: [[GridCellConfig]], border: BorderConfig? = BorderConfig()) {
+		init(
+			rows: [Int: RowConfig],
+			columns: [Int: ColumnConfig],
+			cells: [[GridCellConfig]],
+			border: BorderConfig? = BorderConfig()
+		) {
 			self.rows = rows
 			self.columns = columns
 			self.cells = cells

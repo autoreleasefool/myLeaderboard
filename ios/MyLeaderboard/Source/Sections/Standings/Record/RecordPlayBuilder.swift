@@ -34,16 +34,34 @@ struct RecordPlayBuilder {
 		}
 	}
 
-	static func sections(game: GameListItem?, players: [PlayerListItem], winners: Set<GraphID>, scores: [GraphID: Int], errors: KeyedErrors, actionable: RecordPlayActionable) -> [TableSection] {
+	static func sections(
+		game: GameListItem?,
+		players: [PlayerListItem],
+		winners: Set<GraphID>,
+		scores: [GraphID: Int],
+		errors: KeyedErrors,
+		actionable: RecordPlayActionable
+	) -> [TableSection] {
 		let sections: [TableSection] = [
 			gameSection(game: game, errors: errors, actionable: actionable),
-			playerSection(players: players, winners: winners, hasScores: game?.hasScores ?? true, scores: scores, errors: errors, actionable: actionable),
+			playerSection(
+				players: players,
+				winners: winners,
+				hasScores: game?.hasScores ?? true,
+				scores: scores,
+				errors: errors,
+				actionable: actionable
+			),
 		]
 
 		return sections
 	}
 
-	static func gameSection(game: GameListItem?, errors: KeyedErrors, actionable: RecordPlayActionable) -> TableSection {
+	static func gameSection(
+		game: GameListItem?,
+		errors: KeyedErrors,
+		actionable: RecordPlayActionable
+	) -> TableSection {
 		var rows: [CellConfigType] = [
 			sectionHeader(key: Keys.Game.header, title: "Game"),
 			GameListItemCell(
@@ -62,7 +80,10 @@ struct RecordPlayBuilder {
 			rows.append(LabelCell(
 				key: Keys.Game.error,
 				style: CellStyle(backgroundColor: .primaryDark),
-				state: LabelState(text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)), size: Metrics.Text.caption),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)),
+					size: Metrics.Text.caption
+				),
 				cellUpdater: LabelState.updateView
 			))
 		}
@@ -70,7 +91,14 @@ struct RecordPlayBuilder {
 		return TableSection(key: Keys.gameSection, rows: rows)
 	}
 
-	static func playerSection(players: [PlayerListItem], winners: Set<GraphID>, hasScores: Bool, scores: [GraphID: Int], errors: KeyedErrors, actionable: RecordPlayActionable) -> TableSection {
+	static func playerSection(
+		players: [PlayerListItem],
+		winners: Set<GraphID>,
+		hasScores: Bool,
+		scores: [GraphID: Int],
+		errors: KeyedErrors,
+		actionable: RecordPlayActionable
+	) -> TableSection {
 		var rows: [CellConfigType] = [
 			sectionHeader(key: Keys.Players.header, title: "Players", action: "Edit") { [weak actionable] in
 				actionable?.openPlayerPicker()
@@ -89,7 +117,13 @@ struct RecordPlayBuilder {
 						actionable?.selectWinner(player.graphID, selected: !isWinner)
 						return .deselected
 					}),
-					state: PlayerPlayCellState(name: player.displayName, avatar: player.avatar, score: score, isWinner: isWinner, hasScores: hasScores) { [weak actionable] updatedScore in
+					state: PlayerPlayCellState(
+						name: player.displayName,
+						avatar: player.avatar,
+						score: score,
+						isWinner: isWinner,
+						hasScores: hasScores
+					) { [weak actionable] updatedScore in
 						actionable?.setScore(for: player.graphID, score: updatedScore)
 					},
 					cellUpdater: PlayerPlayCellState.updateView)
@@ -100,7 +134,10 @@ struct RecordPlayBuilder {
 			rows.append(LabelCell(
 				key: Keys.Players.error,
 				style: CellStyle(backgroundColor: .primaryDark),
-				state: LabelState(text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)), size: Metrics.Text.caption),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)),
+					size: Metrics.Text.caption
+				),
 				cellUpdater: LabelState.updateView
 			))
 		}
@@ -110,7 +147,10 @@ struct RecordPlayBuilder {
 				key: Keys.Players.hint,
 				style: CellStyle(backgroundColor: .primaryDark),
 				state: LabelState(
-					text: .attributed(NSAttributedString(string: "Tap a player to mark them as a winner. Choose all players to indicate a tie.", textColor: .textSecondary)),
+					text: .attributed(NSAttributedString(
+						string: "Tap a player to mark them as a winner. Choose all players to indicate a tie.",
+						textColor: .textSecondary
+					)),
 					truncationStyle: .multiline,
 					size: Metrics.Text.caption
 				),
@@ -121,11 +161,22 @@ struct RecordPlayBuilder {
 		return TableSection(key: Keys.playerSection, rows: rows)
 	}
 
-	static func sectionHeader<Key: RawRepresentable>(key: Key, title: String, action: String? = nil, onAction: (() -> Void)? = nil) -> CellConfigType where Key.RawValue == String {
-		let titleState = LabelState(text: .attributed(NSAttributedString(string: title, textColor: .text)), size: Metrics.Text.title)
+	static func sectionHeader<Key: RawRepresentable>(
+		key: Key,
+		title: String,
+		action: String? = nil,
+		onAction: (() -> Void)? = nil
+	) -> CellConfigType where Key.RawValue == String {
+		let titleState = LabelState(
+			text: .attributed(NSAttributedString(string: title, textColor: .text)),
+			size: Metrics.Text.title
+		)
 
 		if let action = action, let onAction = onAction {
-			let actionState = LabelState(text: .attributed(NSAttributedString(string: action, textColor: .textSecondary)), size: Metrics.Text.caption)
+			let actionState = LabelState(
+				text: .attributed(NSAttributedString(string: action, textColor: .textSecondary)),
+				size: Metrics.Text.caption
+			)
 
 			return CombinedCell<UILabel, LabelState, UILabel, LabelState, LayoutMarginsTableItemLayout>(
 				key: key,

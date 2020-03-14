@@ -11,7 +11,11 @@ import FunctionalTableData
 
 extension Spreadsheet {
 	typealias RowCell = HostCell<RowCellView, RowCellState, EdgeBasedTableItemLayout>
-	typealias RowCellPadded = HostCell<RowCellView, RowCellState, Layout<EdgeLayout.Top, MarginsLayout.Leading, EdgeLayout.Bottom, MarginsLayout.Trailing>>
+	typealias RowCellPadded = HostCell<
+		RowCellView,
+		RowCellState,
+		Layout<EdgeLayout.Top, MarginsLayout.Leading, EdgeLayout.Bottom, MarginsLayout.Trailing>
+	>
 
 	class RowCellView: UIView {
 		var spreadsheetKey: String?
@@ -148,7 +152,14 @@ extension Spreadsheet {
 		let cells: [GridCellConfig]
 		let didScroll: (CGPoint) -> Void
 
-		init(spreadsheetKey: String, config: RowConfig, columns: [Int: ColumnConfig], cells: [GridCellConfig], border: RowCellBorderConfig, didScroll: @escaping (CGPoint) -> Void) {
+		init(
+			spreadsheetKey: String,
+			config: RowConfig,
+			columns: [Int: ColumnConfig],
+			cells: [GridCellConfig],
+			border: RowCellBorderConfig,
+			didScroll: @escaping (CGPoint) -> Void
+		) {
 			self.spreadsheetKey = spreadsheetKey
 			self.config = config
 			self.columns = columns
@@ -164,7 +175,7 @@ extension Spreadsheet {
 			}
 
 			if let layout = view.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-				let maxWidth = state.columns.max { left, right -> Bool in left.value.columnWidth < right.value.columnWidth }?.value.columnWidth ?? 48
+				let maxWidth = state.columns.max { $0 < $1 }?.value.columnWidth ?? 48
 				layout.itemSize = CGSize(width: maxWidth, height: state.config.rowHeight)
 				view.heightConstraint.constant = state.config.rowHeight
 			}
@@ -222,5 +233,14 @@ extension Spreadsheet {
 		let bottomBorder: BorderConfig?
 		let leftBorder: BorderConfig?
 		let rightBorder: BorderConfig?
+	}
+}
+
+extension Spreadsheet.RowCellBorderConfig {
+	init(equalTo: Spreadsheet.BorderConfig?) {
+		self.topBorder = equalTo
+		self.bottomBorder = equalTo
+		self.leftBorder = equalTo
+		self.rightBorder = equalTo
 	}
 }

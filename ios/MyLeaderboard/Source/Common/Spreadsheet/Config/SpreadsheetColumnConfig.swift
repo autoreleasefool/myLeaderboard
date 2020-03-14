@@ -24,3 +24,9 @@ extension Spreadsheet {
 		}
 	}
 }
+
+extension Spreadsheet.ColumnConfig: Comparable {
+	static func < (lhs: Self, rhs: Self) -> Bool {
+		return lhs.columnWidth < rhs.columnWidth
+	}
+}

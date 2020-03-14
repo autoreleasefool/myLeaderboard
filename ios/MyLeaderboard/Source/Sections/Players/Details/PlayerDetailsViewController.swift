@@ -67,7 +67,14 @@ class PlayerDetailsViewController: FTDViewController {
 			return
 		}
 
-		let sections = PlayerDetailsBuilder.sections(player: player, players: viewModel.players, records: viewModel.records, recentPlays: viewModel.plays, builder: spreadsheetBuilder, actionable: self)
+		let sections = PlayerDetailsBuilder.sections(
+			player: player,
+			players: viewModel.players,
+			records: viewModel.records,
+			recentPlays: viewModel.plays,
+			builder: spreadsheetBuilder,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 	}
 

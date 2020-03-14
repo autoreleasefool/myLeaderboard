@@ -47,7 +47,8 @@ public extension UIControlClosureAction where Self: UIControl {
 	/// Adds a series of actions to be executed when a corresponding control event is triggered.
 	///
 	/// - Parameter actions: The set of different actions to add to the control.
-	/// - Note: Calling this will remove all existing actions. Passing an empty array will remove all and not add any new ones.
+	/// - Note: Calling this will remove all existing actions.
+	///         Passing an empty array will remove all and not add any new ones.
 	func setActions(_ actions: [ControlAction<Self>]) {
 		if let oldActions = self.actions as? [ControlAction<Self>] {
 			oldActions.forEach {
@@ -78,7 +79,12 @@ private extension UIControl {
 			return actions as? [AnyObject] ?? []
 		}
 		set {
-			objc_setAssociatedObject(self, &UIControl.controlActionAssociatedHandle, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+			objc_setAssociatedObject(
+				self,
+				&UIControl.controlActionAssociatedHandle,
+				newValue,
+				.OBJC_ASSOCIATION_RETAIN_NONATOMIC
+			)
 		}
 	}
 }

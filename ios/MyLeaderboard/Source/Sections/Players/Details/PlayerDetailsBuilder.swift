@@ -24,13 +24,26 @@ struct PlayerDetailsBuilder {
 		return formatter
 	}()
 
-	static func sections(player: PlayerDetails, players: [Opponent], records: [PlayerDetailsRecord], recentPlays: [RecentPlay], builder: SpreadsheetBuilder, actionable: PlayerDetailsActionable) -> [TableSection] {
+	static func sections(
+		player: PlayerDetails,
+		players: [Opponent],
+		records: [PlayerDetailsRecord],
+		recentPlays: [RecentPlay],
+		builder: SpreadsheetBuilder,
+		actionable: PlayerDetailsActionable
+	) -> [TableSection] {
 		var sections: [TableSection] = [
 			profileSection(player: player),
 		]
 
 		sections.append(contentsOf: scoreSections(records: records, actionable: actionable))
-		sections.append(recordsSection(player: player, players: players, records: records, builder: builder, actionable: actionable))
+		sections.append(recordsSection(
+			player: player,
+			players: players,
+			records: records,
+			builder: builder,
+			actionable: actionable
+		))
 		sections.append(recentPlaysSection(player: player, plays: recentPlays, actionable: actionable))
 
 		return sections
@@ -47,7 +60,12 @@ struct PlayerDetailsBuilder {
 		let rows: [CellConfigType] = [
 			ImageCell(
 				key: "Avatar",
-				state: ImageState(url: avatarURL, width: Metrics.Image.large, height: Metrics.Image.large, rounded: true),
+				state: ImageState(
+					url: avatarURL,
+					width: Metrics.Image.large,
+					height: Metrics.Image.large,
+					rounded: true
+				),
 				cellUpdater: ImageState.updateImageView
 			),
 		]
@@ -55,7 +73,10 @@ struct PlayerDetailsBuilder {
 		return TableSection(key: "Profile", rows: rows)
 	}
 
-	private static func scoreSections(records: [PlayerDetailsRecord], actionable: PlayerDetailsActionable) -> [TableSection] {
+	private static func scoreSections(
+		records: [PlayerDetailsRecord],
+		actionable: PlayerDetailsActionable
+	) -> [TableSection] {
 		var sections: [TableSection] = []
 		for record in records {
 			guard let stats = record.scoreStats else { continue }
@@ -83,7 +104,13 @@ struct PlayerDetailsBuilder {
 		return sections
 	}
 
-	private static func recordsSection(player: PlayerDetails, players: [Opponent], records: [PlayerDetailsRecord], builder: SpreadsheetBuilder, actionable: PlayerDetailsActionable) -> TableSection {
+	private static func recordsSection(
+		player: PlayerDetails,
+		players: [Opponent],
+		records: [PlayerDetailsRecord],
+		builder: SpreadsheetBuilder,
+		actionable: PlayerDetailsActionable
+	) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.sectionHeader(key: "Header", title: "Records"),
 		]
@@ -92,14 +119,20 @@ struct PlayerDetailsBuilder {
 		spreadsheetCells.append(SpreadsheetCells.headerRow(players: players, actionable: actionable))
 
 		for record in records {
-			spreadsheetCells.append(SpreadsheetCells.gameRow(record: record, playerID: player.id, allPlayers: players, actionable: actionable))
+			spreadsheetCells.append(SpreadsheetCells.gameRow(
+				record: record,
+				playerID: player.id,
+				allPlayers: players,
+				actionable: actionable
+			))
 		}
 
 		let rowConfigs = SpreadsheetConfigs.rows(cells: spreadsheetCells)
 		let columnConfigs = SpreadsheetConfigs.columns(cells: spreadsheetCells)
 		let config = Spreadsheet.Config(rows: rowConfigs, columns: columnConfigs, cells: spreadsheetCells, border: nil)
 
-		if spreadsheetCells.count > 1, let spreadsheet = Spreadsheet.section(key: "PlayerRecord-\(player.id)", builder: builder, config: config) {
+		if spreadsheetCells.count > 1,
+			let spreadsheet = Spreadsheet.section(key: "PlayerRecord-\(player.id)", builder: builder, config: config) {
 			rows.append(contentsOf: spreadsheet.rows)
 		} else {
 			rows.append(Cells.loadingCell())
@@ -108,9 +141,17 @@ struct PlayerDetailsBuilder {
 		return TableSection(key: "Records", rows: rows)
 	}
 
-	private static func recentPlaysSection(player: PlayerDetails, plays: [RecentPlay], actionable: PlayerDetailsActionable) -> TableSection {
+	private static func recentPlaysSection(
+		player: PlayerDetails,
+		plays: [RecentPlay],
+		actionable: PlayerDetailsActionable
+	) -> TableSection {
 		var rows: [CellConfigType] = [
-			Cells.sectionHeader(key: "MostRecentPlays", title: "Most Recent Plays", action: "View All") { [weak actionable] in
+			Cells.sectionHeader(
+				key: "MostRecentPlays",
+				title: "Most Recent Plays",
+				action: "View All"
+			) { [weak actionable] in
 				actionable?.showPlays(games: [], players: [player.id])
 			}
 		]
@@ -134,11 +175,22 @@ struct PlayerDetailsBuilder {
 	}
 
 	private struct Cells {
-		static func sectionHeader(key: String, title: String, action: String? = nil, onAction: (() -> Void)? = nil) -> CellConfigType {
-			let titleState = LabelState(text: .attributed(NSAttributedString(string: title, textColor: .text)), size: Metrics.Text.title)
+		static func sectionHeader(
+			key: String,
+			title: String,
+			action: String? = nil,
+			onAction: (() -> Void)? = nil
+		) -> CellConfigType {
+			let titleState = LabelState(
+				text: .attributed(NSAttributedString(string: title, textColor: .text)),
+				size: Metrics.Text.title
+			)
 
 			if let action = action, let onAction = onAction {
-				let actionState = LabelState(text: .attributed(NSAttributedString(string: action, textColor: .textSecondary)), size: Metrics.Text.caption)
+				let actionState = LabelState(
+					text: .attributed(NSAttributedString(string: action, textColor: .textSecondary)),
+					size: Metrics.Text.caption
+				)
 
 				return CombinedCell<UILabel, LabelState, UILabel, LabelState, LayoutMarginsTableItemLayout>(
 					key: key,
@@ -169,7 +221,11 @@ struct PlayerDetailsBuilder {
 			}
 		}
 
-		static func playCell(playerID: GraphID, for play: RecentPlay, actionable: PlayerDetailsActionable) -> CellConfigType? {
+		static func playCell(
+			playerID: GraphID,
+			for play: RecentPlay,
+			actionable: PlayerDetailsActionable
+		) -> CellConfigType? {
 			guard let firstPlayer = play.players.first,
 				let secondPlayer = play.players.last,
 				firstPlayer != secondPlayer else { return nil }
@@ -206,7 +262,10 @@ struct PlayerDetailsBuilder {
 			let dateString = PlayerDetailsBuilder.dateFormatter.string(from: date)
 			return LabelCell(
 				key: "Date-\(dateString)",
-				state: LabelState(text: .attributed(NSAttributedString(string: dateString, textColor: .textSecondary)), size: Metrics.Text.caption),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: dateString, textColor: .textSecondary)),
+					size: Metrics.Text.caption
+				),
 				cellUpdater: LabelState.updateView
 			)
 		}
@@ -214,7 +273,10 @@ struct PlayerDetailsBuilder {
 		static func loadingCell() -> CellConfigType {
 			return LabelCell(
 				key: "NoData",
-				state: LabelState(text: .attributed(NSAttributedString(string: "Waiting for data", textColor: .textSecondary)), size: Metrics.Text.body),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: "Waiting for data", textColor: .textSecondary)),
+					size: Metrics.Text.body
+				),
 				cellUpdater: LabelState.updateView
 			)
 		}
@@ -234,7 +296,12 @@ struct PlayerDetailsBuilder {
 			return headerRow
 		}
 
-		static func gameRow(record: PlayerDetailsRecord, playerID: GraphID, allPlayers: [Opponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
+		static func gameRow(
+			record: PlayerDetailsRecord,
+			playerID: GraphID,
+			allPlayers: [Opponent],
+			actionable: PlayerDetailsActionable
+		) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
 				gameCell(for: record.game, actionable: actionable),
 				textGridCell(
@@ -279,7 +346,12 @@ struct PlayerDetailsBuilder {
 			return row
 		}
 
-		static func textGridCell(key: String, text: String, backgroundColor: UIColor? = nil, onAction: (() -> Void)? = nil) -> GridCellConfig {
+		static func textGridCell(
+			key: String,
+			text: String,
+			backgroundColor: UIColor? = nil,
+			onAction: (() -> Void)? = nil
+		) -> GridCellConfig {
 			return Spreadsheet.TextGridCellConfig(
 				key: key,
 				style: CellStyle(selectionColor: .primaryExtraLight),
@@ -292,7 +364,10 @@ struct PlayerDetailsBuilder {
 						return .deselected
 					}
 				),
-				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), alignment: .center),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: text, textColor: .text)),
+					alignment: .center
+				),
 				backgroundColor: backgroundColor
 			)
 		}
@@ -311,11 +386,18 @@ struct PlayerDetailsBuilder {
 					actionable?.selectedPlayer(playerID: player.id)
 					return .deselected
 				}),
-				state: ImageState(url: avatarURL, width: PlayerDetailsBuilder.avatarImageSize, height: PlayerDetailsBuilder.avatarImageSize, rounded: true)
+				state: ImageState(
+					url: avatarURL,
+					width: PlayerDetailsBuilder.avatarImageSize,
+					height: PlayerDetailsBuilder.avatarImageSize, rounded: true
+				)
 			)
 		}
 
-		static func gameCell(for game: PlayerDetailsRecord.Game, actionable: PlayerDetailsActionable) -> GridCellConfig {
+		static func gameCell(
+			for game: PlayerDetailsRecord.Game,
+			actionable: PlayerDetailsActionable
+		) -> GridCellConfig {
 			let imageURL: URL?
 			if let image = game.image {
 				imageURL = URL(string: image)
@@ -329,7 +411,12 @@ struct PlayerDetailsBuilder {
 					actionable?.selectedGame(gameID: game.id)
 					return .deselected
 				}),
-				state: ImageState(url: imageURL, width: PlayerDetailsBuilder.avatarImageSize, height: PlayerDetailsBuilder.avatarImageSize, rounded: false)
+				state: ImageState(
+					url: imageURL,
+					width: PlayerDetailsBuilder.avatarImageSize,
+					height: PlayerDetailsBuilder.avatarImageSize,
+					rounded: false
+				)
 			)
 		}
 	}
@@ -338,11 +425,12 @@ struct PlayerDetailsBuilder {
 		static func rows(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.RowConfig] {
 			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
 			cells.enumerated().forEach { index, _ in
-				if index == 0 {
-					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: Spreadsheet.BorderConfig(color: .standingsBorder), bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
-				} else {
-					rowConfigs[index] = Spreadsheet.CommonRowConfig(rowHeight: 48, topBorder: nil, bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
-				}
+				let topBorder = index == 0 ? Spreadsheet.BorderConfig(color: .standingsBorder) : nil
+				rowConfigs[index] = Spreadsheet.CommonRowConfig(
+					rowHeight: 48,
+					topBorder: topBorder,
+					bottomBorder: Spreadsheet.BorderConfig(color: .standingsBorder)
+				)
 			}
 			return rowConfigs
 		}
@@ -350,11 +438,11 @@ struct PlayerDetailsBuilder {
 		static func columns(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.ColumnConfig] {
 			var columnConfigs: [Int: Spreadsheet.ColumnConfig] = [:]
 			cells.first?.enumerated().forEach { index, _ in
-				if index == 0 {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: Spreadsheet.BorderConfig(color: .standingsBorder), rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
-				} else {
-					columnConfigs[index] = Spreadsheet.ColumnConfig(columnWidth: 96, leftBorder: nil, rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder))
-				}
+				let leftBorder = index == 0 ? Spreadsheet.BorderConfig(color: .standingsBorder) : nil
+				columnConfigs[index] = Spreadsheet.ColumnConfig(
+					columnWidth: 96, leftBorder: leftBorder,
+					rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder)
+				)
 			}
 			return columnConfigs
 		}

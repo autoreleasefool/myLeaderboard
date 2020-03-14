@@ -17,7 +17,12 @@ public struct ButtonState: ViewState {
 	public let alignment: UIControl.ContentHorizontalAlignment
 	public let action: (UIButton) -> Void
 
-	public init(title: String, isEnabled: Bool = true, alignment: UIControl.ContentHorizontalAlignment = .center, action: @escaping (UIButton) -> Void) {
+	public init(
+		title: String,
+		isEnabled: Bool = true,
+		alignment: UIControl.ContentHorizontalAlignment = .center,
+		action: @escaping (UIButton) -> Void
+	) {
 		self.title = title
 		self.isEnabled = isEnabled
 		self.alignment = alignment

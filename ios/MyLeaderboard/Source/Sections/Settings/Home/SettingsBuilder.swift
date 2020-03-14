@@ -19,7 +19,12 @@ protocol SettingsActionable: AnyObject {
 }
 
 struct SettingsBuilder {
-	static func sections(preferredPlayer: Player?, preferredOpponents: [Player], interfaceStyle: UIUserInterfaceStyle, actionable: SettingsActionable) -> [TableSection] {
+	static func sections(
+		preferredPlayer: Player?,
+		preferredOpponents: [Player],
+		interfaceStyle: UIUserInterfaceStyle,
+		actionable: SettingsActionable
+	) -> [TableSection] {
 		return [
 			playerSection(preferredPlayer: preferredPlayer, actionable: actionable),
 			opponentsSection(preferredOpponents: preferredOpponents, actionable: actionable),
@@ -28,7 +33,10 @@ struct SettingsBuilder {
 		]
 	}
 
-	private static func playerSection(preferredPlayer: Player?, actionable: SettingsActionable) -> TableSection {
+	private static func playerSection(
+		preferredPlayer: Player?,
+		actionable: SettingsActionable
+	) -> TableSection {
 		let rows: [CellConfigType] = [
 			Cells.header(key: "Header", title: "Preferred Player"),
 			PlayerListItemCell(
@@ -78,10 +86,17 @@ struct SettingsBuilder {
 		return TableSection(key: "PreferredOpponents", rows: rows)
 	}
 
-	private static func settingsSection(interfaceStyle: UIUserInterfaceStyle, actionable: SettingsActionable) -> TableSection {
+	private static func settingsSection(
+		interfaceStyle: UIUserInterfaceStyle,
+		actionable: SettingsActionable
+	) -> TableSection {
 		let rows: [CellConfigType] = [
 			Cells.header(key: "Header", title: "Settings"),
-			Cells.toggle(key: "InterfaceStyle", text: "Override interface style", option: interfaceStyle.stringValue) { [weak actionable] in
+			Cells.toggle(
+				key: "InterfaceStyle",
+				text: "Override interface style",
+				option: interfaceStyle.stringValue
+			) { [weak actionable] in
 				actionable?.nextInterfaceStyle()
 			},
 		]
@@ -103,12 +118,20 @@ struct SettingsBuilder {
 			},
 			LabelCell(
 				key: "AppInfo-Name",
-				state: LabelState(text: .attributed(NSAttributedString(string: "MyLeaderboard", textColor: .textSecondary)), alignment: .right, size: Metrics.Text.caption),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: "MyLeaderboard", textColor: .textSecondary)),
+					alignment: .right,
+					size: Metrics.Text.caption
+				),
 				cellUpdater: LabelState.updateView
 			),
 			LabelCell(
 				key: "AppInfo-Version",
-				state: LabelState(text: .attributed(NSAttributedString(string: "iOS v\(appVersion())", textColor: .textSecondary)), alignment: .right, size: Metrics.Text.caption),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: "iOS v\(appVersion())", textColor: .textSecondary)),
+					alignment: .right,
+					size: Metrics.Text.caption
+				),
 				cellUpdater: LabelState.updateView
 			),
 		]
@@ -127,7 +150,10 @@ struct SettingsBuilder {
 			return LabelCell(
 				key: key,
 				style: CellStyle(backgroundColor: .primaryLight),
-				state: LabelState(text: .attributed(NSAttributedString(string: title, textColor: .text)), size: Metrics.Text.title),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: title, textColor: .text)),
+					size: Metrics.Text.title
+				),
 				cellUpdater: LabelState.updateView
 			)
 		}
@@ -140,12 +166,20 @@ struct SettingsBuilder {
 					onAction()
 					return .deselected
 				}),
-				state: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), size: Metrics.Text.body),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: text, textColor: .text)),
+					size: Metrics.Text.body
+				),
 				cellUpdater: LabelState.updateView
 			)
 		}
 
-		static func toggle(key: String, text: String, option: String, onAction: @escaping () -> Void) -> CellConfigType {
+		static func toggle(
+			key: String,
+			text: String,
+			option: String,
+			onAction: @escaping () -> Void
+		) -> CellConfigType {
 			return CombinedCell<UILabel, LabelState, UILabel, LabelState, LayoutMarginsTableItemLayout>(
 				key: key,
 				style: CellStyle(highlight: true),
@@ -154,8 +188,14 @@ struct SettingsBuilder {
 					return .deselected
 				}),
 				state: CombinedState(
-					state1: LabelState(text: .attributed(NSAttributedString(string: text, textColor: .text)), size: Metrics.Text.body),
-					state2: LabelState(text: .attributed(NSAttributedString(string: option, textColor: .text)), size: Metrics.Text.body)
+					state1: LabelState(
+						text: .attributed(NSAttributedString(string: text, textColor: .text)),
+						size: Metrics.Text.body
+					),
+					state2: LabelState(
+						text: .attributed(NSAttributedString(string: option, textColor: .text)),
+						size: Metrics.Text.body
+					)
 				),
 				cellUpdater: CombinedState<LabelState, LabelState>.updateView
 			)

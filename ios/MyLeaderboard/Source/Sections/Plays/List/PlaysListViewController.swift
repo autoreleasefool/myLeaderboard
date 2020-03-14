@@ -60,7 +60,13 @@ class PlaysListViewController: FTDViewController {
 	private func render() {
 		let sections: [TableSection]
 		if viewModel.specifiedPlayerIDs.count == 1, let player = viewModel.specifiedPlayerIDs.first {
-			sections = PlaysListBuilder.sections(forPlayer: player, plays: viewModel.plays, games: viewModel.games, players: viewModel.players, actionable: self)
+			sections = PlaysListBuilder.sections(
+				forPlayer: player,
+				plays: viewModel.plays,
+				games: viewModel.games,
+				players: viewModel.players,
+				actionable: self
+			)
 		} else {
 			sections = PlaysListBuilder.sections(plays: viewModel.plays, players: viewModel.players, actionable: self)
 		}

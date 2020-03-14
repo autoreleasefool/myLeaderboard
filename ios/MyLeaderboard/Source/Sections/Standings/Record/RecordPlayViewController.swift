@@ -43,15 +43,30 @@ class RecordPlayViewController: FTDViewController {
 		}
 
 		self.title = "Record"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .cancel,
+			target: self,
+			action: #selector(cancel)
+		)
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(submit)
+		)
 
 		render()
 		viewModel.postViewAction(.initialize)
 	}
 
 	private func render() {
-		let sections = RecordPlayBuilder.sections(game: viewModel.selectedGame, players: viewModel.selectedPlayers, winners: viewModel.winnerGraphIDs, scores: viewModel.scores, errors: viewModel.errors, actionable: self)
+		let sections = RecordPlayBuilder.sections(
+			game: viewModel.selectedGame,
+			players: viewModel.selectedPlayers,
+			winners: viewModel.winnerGraphIDs,
+			scores: viewModel.scores,
+			errors: viewModel.errors,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -71,14 +86,19 @@ class RecordPlayViewController: FTDViewController {
 			initiallySelected = []
 		}
 
-		let gamePicker = GamePickerViewController(multiSelect: false, initiallySelected: initiallySelected) { [weak self] selectedGames in
+		let gamePicker = GamePickerViewController(
+			multiSelect: false,
+			initiallySelected: initiallySelected
+		) { [weak self] selectedGames in
 			self?.viewModel.postViewAction(.selectGame(selectedGames.first))
 		}
 		presentModal(gamePicker)
 	}
 
 	private func presentPlayerPicker() {
-		let playerPicker = PlayerPickerViewController(initiallySelected: viewModel.selectedPlayerGraphIDs) { [weak self] selectedPlayers in
+		let playerPicker = PlayerPickerViewController(
+			initiallySelected: viewModel.selectedPlayerGraphIDs
+		) { [weak self] selectedPlayers in
 			self?.viewModel.postViewAction(.selectPlayers(selectedPlayers))
 		}
 		presentModal(playerPicker)
