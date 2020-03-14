@@ -45,6 +45,7 @@ export interface ListQueryArguments {
 interface PlayFilterArguments extends ListQueryArguments {
     game?: string;
     players?: string[];
+    reverse?: boolean
 }
 
 const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
@@ -153,9 +154,12 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 players: {
                     type: GraphQLList(GraphQLNonNull(GraphQLID)),
                 },
+                reverse: {
+                    type: GraphQLBoolean,
+                },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {first, offset, game, players}: PlayFilterArguments, {loader}) => {
+            resolve: async (_, {first, offset, game, players, reverse}: PlayFilterArguments, {loader}) => {
                 const gameID = game ? parseID(game) : undefined;
                 const playerIDs = players ? players.map(id => parseID(id)) : undefined;
                 const plays = await Plays.getInstance().all({
@@ -163,6 +167,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                     offset: offset ? offset : 0,
                     filter: play => (!gameID || play.game === gameID) &&
                         (!playerIDs || playHasPlayers(play, playerIDs)),
+                    reverse,
                 });
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);
