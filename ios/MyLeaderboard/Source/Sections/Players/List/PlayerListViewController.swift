@@ -34,6 +34,7 @@ class PlayerListViewController: FTDViewController {
 			case .playerSelected(let player):
 				self.showPlayerDetails(for: player)
 			case .graphQLError(let error):
+				self.finishRefresh()
 				self.presentError(error)
 			case .addPlayer:
 				self.showCreatePlayer()

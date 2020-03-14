@@ -37,6 +37,7 @@ class PlayerDetailsViewController: FTDViewController {
 				self?.finishRefresh()
 				self?.render()
 			case .graphQLError(let error):
+				self?.finishRefresh()
 				self?.presentError(error)
 			case .gameSelected(let game):
 				self?.showGameDetails(for: game)

@@ -37,6 +37,7 @@ class GameListViewController: FTDViewController {
 			case .addGame:
 				self.showCreateGame()
 			case .graphQLError(let error):
+				self.finishRefresh()
 				self.presentError(error)
 			}
 		}

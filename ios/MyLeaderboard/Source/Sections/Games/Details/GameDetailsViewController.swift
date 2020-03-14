@@ -34,10 +34,12 @@ class GameDetailsViewController: FTDViewController {
 			case .gameLoaded(let game):
 				self?.title = game.name
 			case .dataChanged:
+				self?.finishRefresh()
 				self?.render()
 			case .playerSelected(let player):
 				self?.showPlayerDetails(for: player)
 			case .graphQLError(let error):
+				self?.finishRefresh()
 				self?.presentError(error)
 			case .openPlayerPlays(let players):
 				self?.openPlayerPlays(playerIDs: players)

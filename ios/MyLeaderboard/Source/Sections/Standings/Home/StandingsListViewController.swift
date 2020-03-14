@@ -35,6 +35,7 @@ class StandingsListViewController: FTDViewController {
 			case .playersUpdated:
 				self.render()
 			case .apiError(let error):
+				self.finishRefresh()
 				self.presentError(error)
 			case .openRecordPlay:
 				self.showRecordPlay()
