@@ -66,7 +66,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
         },
 
         players: {
-            type: GraphQLNonNull(GraphQLList(player)),
+            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(player))),
             description: `Get a list of players, ordered by ID ascending. Default page size is ${DEFAULT_PAGE_SIZE}.`,
             args: {
                 first: {
@@ -102,7 +102,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
         },
 
         games: {
-            type: GraphQLNonNull(GraphQLList(game)),
+            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(game))),
             description: `Get a list of games, ordered by ID ascending. Default page size is ${DEFAULT_PAGE_SIZE}.`,
             args: {
                 first: {
@@ -138,7 +138,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
         },
 
         plays: {
-            type: GraphQLList(GraphQLNonNull(play)),
+            type: GraphQLNonNull(GraphQLList(GraphQLNonNull(play))),
             description: `Get a list of plays, ordered by ID ascending. Default page size is ${DEFAULT_PAGE_SIZE}. Filter by game or player`,
             args: {
                 first: {
