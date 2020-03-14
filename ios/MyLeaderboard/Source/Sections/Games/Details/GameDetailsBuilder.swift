@@ -252,7 +252,13 @@ struct GameDetailsBuilder {
 
 				guard gamePlayersIndex < record.records.count &&
 					record.records[gamePlayersIndex].opponent.id == columnPlayer.id else {
-					row.append(textGridCell(key: "\(player.id)-\(columnPlayer.id)", text: Record.empty.formatted))
+					let recordText: String
+					if player.id == columnPlayer.id {
+						recordText = "—"
+					} else {
+						recordText = Record.empty.formatted
+					}
+					row.append(textGridCell(key: "\(player.id)-\(columnPlayer.id)", text: recordText))
 					opponentsIndex += 1
 					continue
 				}

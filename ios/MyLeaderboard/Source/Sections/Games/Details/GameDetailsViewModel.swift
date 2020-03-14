@@ -24,6 +24,7 @@ enum GameDetailsViewAction: BaseViewAction {
 }
 
 class GameDetailsViewModel: ViewModel {
+	typealias GameDetailsQuery = MyLeaderboardAPI.GameDetailsQuery
 	typealias ActionHandler = (_ action: GameDetailsAction) -> Void
 
 	var handleAction: ActionHandler
@@ -72,7 +73,7 @@ class GameDetailsViewModel: ViewModel {
 	}
 
 	private func loadData(retry: Bool = true) {
-		MyLeaderboardAPI.GameDetailsQuery(id: gameID).perform { [weak self] result in
+		GameDetailsQuery(id: gameID, ignoreBanished: true).perform { [weak self] result in
 			switch result {
 			case .success(let response):
 				self?.handle(response: response)

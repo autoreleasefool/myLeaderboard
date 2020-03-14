@@ -1,7 +1,7 @@
-query GameDetails($id: ID!) {
+query GameDetails($id: ID!, $ignoreBanished: Boolean!) {
 	game(id: $id) {
 		... GameDetailsFragment
-		standings {
+		standings(ignoreBanished: $ignoreBanished) {
 			... GameDetailsStandingsFragment
 		}
 		recentPlays(first: 3) {

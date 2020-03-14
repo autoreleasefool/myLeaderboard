@@ -26,6 +26,7 @@ enum PlayerDetailsViewAction: BaseViewAction {
 }
 
 class PlayerDetailsViewModel: ViewModel {
+	typealias PlayerDetailsQuery = MyLeaderboardAPI.PlayerDetailsQuery
 	typealias ActionHandler = (_ action: PlayerDetailsAction) -> Void
 
 	var handleAction: ActionHandler
@@ -77,7 +78,7 @@ class PlayerDetailsViewModel: ViewModel {
 	}
 
 	private func loadData(retry: Bool = true) {
-		MyLeaderboardAPI.PlayerDetailsQuery(id: self.playerID).perform { [weak self] in
+		PlayerDetailsQuery(id: self.playerID).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
