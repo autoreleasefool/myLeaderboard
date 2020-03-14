@@ -99,7 +99,7 @@ struct CreatePlayerBuilder {
 
 					CombinedState<LabelState, TextInputCellState>.updateView(view, state: state)
 				}
-			)
+			),
 		]
 
 		if let errorMessage = errors[Keys.createPlayerSection.rawValue, Keys.Create.error.rawValue] {

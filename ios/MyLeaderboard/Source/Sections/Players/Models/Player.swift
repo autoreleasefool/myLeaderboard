@@ -9,6 +9,7 @@
 import UIKit
 
 struct Player: Identifiable, GraphQLIdentifiable, Equatable, Codable, Hashable {
+	// swiftlint:disable:next identifier_name
 	let id: ID
 	let avatar: String?
 	let displayName: String

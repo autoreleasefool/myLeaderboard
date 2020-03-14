@@ -11,6 +11,7 @@ import Foundation
 struct GamePlay: Identifiable, Codable {
 	private static let dateFormatter = ISO8601DateFormatter()
 
+	// swiftlint:disable:next identifier_name
 	let id: ID
 	let game: ID
 	let players: [ID]

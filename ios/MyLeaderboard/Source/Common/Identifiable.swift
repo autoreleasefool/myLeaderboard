@@ -7,10 +7,12 @@
 //
 import Foundation
 
+// swiftlint:disable:next type_name
 typealias ID = Int
 
 protocol Identifiable {
 	@available(*, deprecated, message: "Use graphID instead")
+	// swiftlint:disable:next identifier_name
 	var id: ID { get }
 }
 

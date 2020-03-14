@@ -73,7 +73,7 @@ struct RecordPlayBuilder {
 				}),
 				state: GameListItemState(name: game?.name ?? "No game chosen", image: game?.image),
 				cellUpdater: GameListItemState.updateView
-			)
+			),
 		]
 
 		if let errorMessage = errors[Keys.gameSection.rawValue, Keys.Game.error.rawValue] {
@@ -102,7 +102,7 @@ struct RecordPlayBuilder {
 		var rows: [CellConfigType] = [
 			sectionHeader(key: Keys.Players.header, title: "Players", action: "Edit") { [weak actionable] in
 				actionable?.openPlayerPicker()
-			}
+			},
 		]
 
 		players.forEach { player in

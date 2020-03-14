@@ -133,7 +133,7 @@ struct StandingsListBuilder {
 						backgroundColor: playerRecord.overallRecord.backgroundColor
 					) { [weak actionable] in
 						actionable?.showPlays(game: game, players: [player])
-					}
+					},
 				]
 
 				visiblePlayers.forEach { opponent in
@@ -173,7 +173,7 @@ struct StandingsListBuilder {
 		guard players.count > 0 else { return nil }
 
 		var rows: [CellConfigType] = [
-			Cells.subHeader(key: "LimboHeader-\(game.id)", text: "Limbo")
+			Cells.subHeader(key: "LimboHeader-\(game.id)", text: "Limbo"),
 		]
 
 		let limboingPlayerRows: [CellConfigType] = players.map { Cells.playerAvatar(for: $0, actionable: actionable) }
@@ -201,7 +201,7 @@ struct StandingsListBuilder {
 		guard players.count > 0 else { return nil }
 
 		var rows: [CellConfigType] = [
-			Cells.subHeader(key: "BanishedHeader-\(game.id)", text: "Shadow Realm")
+			Cells.subHeader(key: "BanishedHeader-\(game.id)", text: "Shadow Realm"),
 		]
 
 		let banishedPlayerRows: [CellConfigType] = players.map { Cells.playerAvatar(for: $0, actionable: actionable) }

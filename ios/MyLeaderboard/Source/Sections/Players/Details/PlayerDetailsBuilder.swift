@@ -153,7 +153,7 @@ struct PlayerDetailsBuilder {
 				action: "View All"
 			) { [weak actionable] in
 				actionable?.showPlays(games: [], players: [player.id])
-			}
+			},
 		]
 
 		var lastDatePlayed: Date?

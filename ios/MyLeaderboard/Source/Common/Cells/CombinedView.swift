@@ -30,7 +30,7 @@ class CombinedView<View1: UIView, View2: UIView>: UIView {
 			stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
 			stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
 			stackView.topAnchor.constraint(equalTo: topAnchor),
-			stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+			stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
 			])
 	}
 

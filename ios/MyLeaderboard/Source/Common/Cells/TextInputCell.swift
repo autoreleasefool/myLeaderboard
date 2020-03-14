@@ -39,7 +39,8 @@ struct TextInputCellState: ViewState {
 			ControlAction(events: .editingChanged) { sender in
 				guard let text = sender.text else { return }
 				state.onUpdate(text)
-			}])
+			},
+		])
 	}
 
 	static func == (lhs: TextInputCellState, rhs: TextInputCellState) -> Bool {

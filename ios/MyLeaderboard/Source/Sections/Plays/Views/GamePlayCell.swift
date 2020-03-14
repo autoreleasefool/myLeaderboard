@@ -49,7 +49,7 @@ class GamePlayView: UIView {
 			separator,
 			secondPlayer,
 			secondPlayerResult,
-			secondPlayerScore
+			secondPlayerScore,
 		])
 		stackView.spacing = Metrics.Spacing.standard
 		stackView.alignment = .center

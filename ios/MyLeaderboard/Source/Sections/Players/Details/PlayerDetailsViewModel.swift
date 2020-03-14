@@ -57,8 +57,8 @@ class PlayerDetailsViewModel: ViewModel {
 		}
 	}
 
-	init(id: GraphID, handleAction: @escaping ActionHandler) {
-		self.playerID = id
+	init(playerID: GraphID, handleAction: @escaping ActionHandler) {
+		self.playerID = playerID
 		self.player = nil
 		self.handleAction = handleAction
 	}

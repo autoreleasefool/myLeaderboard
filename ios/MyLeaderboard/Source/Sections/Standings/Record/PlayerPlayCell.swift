@@ -141,7 +141,8 @@ struct PlayerPlayCellState: ViewState {
 				let score = (Int(text) ?? 0) * multiplier
 				sender.text = "\(score)"
 				state.onUpdateScore(score)
-			}])
+			},
+		])
 	}
 
 	static func == (lhs: PlayerPlayCellState, rhs: PlayerPlayCellState) -> Bool {

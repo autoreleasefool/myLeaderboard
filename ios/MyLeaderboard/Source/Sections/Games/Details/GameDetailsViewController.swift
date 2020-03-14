@@ -25,7 +25,7 @@ class GameDetailsViewController: FTDViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup(withID id: GraphID) {
+	private func setup(withID gameID: GraphID) {
 		refreshable = true
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 
@@ -44,7 +44,7 @@ class GameDetailsViewController: FTDViewController {
 			}
 		}
 
-		viewModel = GameDetailsViewModel(id: id, handleAction: handleAction)
+		viewModel = GameDetailsViewModel(gameID: gameID, handleAction: handleAction)
 	}
 
 	override func viewDidLoad() {

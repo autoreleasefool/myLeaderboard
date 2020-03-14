@@ -76,8 +76,8 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		switch viewAction {
 		case .initialize, .refresh:
 			loadItems()
-		case .itemSelected(let id, let selected):
-			selectItem(id, selected: selected)
+		case .itemSelected(let itemID, let selected):
+			selectItem(itemID, selected: selected)
 		case .finish:
 			submit()
 		}
@@ -94,7 +94,7 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		}
 	}
 
-	private func selectItem(_ id: GraphID, selected: Bool) {
+	private func selectItem(_ itemID: GraphID, selected: Bool) {
 		var selectedItems = Set(self.selectedItems)
 		if selected {
 			if limitReached {
@@ -105,9 +105,9 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 			if !multiSelect {
 				selectedItems.removeAll()
 			}
-			selectedItems.insert(id)
+			selectedItems.insert(itemID)
 		} else {
-			selectedItems.remove(id)
+			selectedItems.remove(itemID)
 		}
 
 		self.selectedItems = selectedItems

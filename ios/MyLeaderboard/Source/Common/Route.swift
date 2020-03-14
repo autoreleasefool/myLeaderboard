@@ -22,11 +22,11 @@ enum Route {
 	init?(from url: URL) {
 		switch url.host {
 		case "game":
-			guard let id = Int(url.path.dropFirst()) else { return nil }
-			self = .gameDetails(id)
+			guard let gameID = Int(url.path.dropFirst()) else { return nil }
+			self = .gameDetails(gameID)
 		case "player":
-			guard let id = Int(url.path.dropFirst()) else { return nil }
-			self = .playerDetails(id)
+			guard let playerID = Int(url.path.dropFirst()) else { return nil }
+			self = .playerDetails(playerID)
 		case "standings":
 			self = .standings
 		case "preferredPlayer":

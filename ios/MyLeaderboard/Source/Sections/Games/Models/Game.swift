@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 struct Game: Identifiable, GraphQLIdentifiable, Equatable, Codable, Hashable {
+	// swiftlint:disable:next identifier_name
 	let id: ID
 	let name: String
 	let hasScores: Bool

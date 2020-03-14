@@ -52,7 +52,7 @@ struct SettingsBuilder {
 					avatar: preferredPlayer.qualifiedAvatar
 				),
 				cellUpdater: PlayerListItemState.updateView
-			)
+			),
 		]
 
 		return TableSection(key: "PreferredPlayer", rows: rows)
@@ -60,7 +60,7 @@ struct SettingsBuilder {
 
 	private static func opponentsSection(preferredOpponents: [Player], actionable: SettingsActionable) -> TableSection {
 		var rows: [CellConfigType] = [
-			Cells.header(key: "Header", title: "Opponents in Widget")
+			Cells.header(key: "Header", title: "Opponents in Widget"),
 		]
 
 		rows.append(contentsOf: preferredOpponents.map {

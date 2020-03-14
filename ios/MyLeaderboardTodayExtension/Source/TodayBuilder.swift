@@ -64,52 +64,56 @@ enum TodayBuilder {
 	}
 
 	static func noPreferredPlayerSection(actionable: TodayActionable) -> [TableSection] {
-		return [TableSection(
-			key: "NoPreferredPlayer",
-			rows: [
-				LabelCell(
-					key: "NoPreferredPlayer",
-					style: CellStyle(highlight: true),
-					actions: CellActions(selectionAction: { [weak actionable] _ in
-						actionable?.openPreferredPlayerSelection()
-						return .deselected
-					}),
-					state: LabelState(
-						text: .attributed(NSAttributedString(
-							string: "No preferred player selected.",
-							textColor: .text
-						)),
-						truncationStyle: .multiline,
-						alignment: .center,
-						size: Metrics.Text.body
+		return [
+			TableSection(
+				key: "NoPreferredPlayer",
+				rows: [
+					LabelCell(
+						key: "NoPreferredPlayer",
+						style: CellStyle(highlight: true),
+						actions: CellActions(selectionAction: { [weak actionable] _ in
+							actionable?.openPreferredPlayerSelection()
+							return .deselected
+						}),
+						state: LabelState(
+							text: .attributed(NSAttributedString(
+								string: "No preferred player selected.",
+								textColor: .text
+							)),
+							truncationStyle: .multiline,
+							alignment: .center,
+							size: Metrics.Text.body
+						),
+						cellUpdater: LabelState.updateView
 					),
-					cellUpdater: LabelState.updateView
-				)
-			]
-		)]
+				]
+			),
+		]
 	}
 
 	static func noPreferredOpponentsSection(actionable: TodayActionable) -> [TableSection] {
-		return [TableSection(
-			key: "NoPreferredOpponents",
-			rows: [
-				LabelCell(
-					key: "NoPreferredOpponents",
-					style: CellStyle(highlight: true),
-					actions: CellActions(selectionAction: { [weak actionable] _ in
-						actionable?.openPreferredOpponentsSelection()
-						return .deselected
-					}),
-					state: LabelState(
-						text: .attributed(NSAttributedString(string: "No opponents selected.", textColor: .text)),
-						truncationStyle: .multiline,
-						alignment: .center,
-						size: Metrics.Text.body
+		return [
+			TableSection(
+				key: "NoPreferredOpponents",
+				rows: [
+					LabelCell(
+						key: "NoPreferredOpponents",
+						style: CellStyle(highlight: true),
+						actions: CellActions(selectionAction: { [weak actionable] _ in
+							actionable?.openPreferredOpponentsSelection()
+							return .deselected
+						}),
+						state: LabelState(
+							text: .attributed(NSAttributedString(string: "No opponents selected.", textColor: .text)),
+							truncationStyle: .multiline,
+							alignment: .center,
+							size: Metrics.Text.body
+						),
+						cellUpdater: LabelState.updateView
 					),
-					cellUpdater: LabelState.updateView
-				)
-			]
-		)]
+				]
+			),
+		]
 	}
 
 	enum Sections {
