@@ -26,6 +26,24 @@ export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Pr
     };
 }
 
+export function playHasPlayers(play: Play, playerIDs: number[]): boolean {
+    for (const playerID of playerIDs) {
+        let found = false;
+        for (const playPlayerID of play.players) {
+            if (playerID === playPlayerID) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 export default new GraphQLObjectType<Play, SchemaContext, {}>({
     name: 'Play',
     description: 'Play from the MyLeaderboard API.',

@@ -13,7 +13,7 @@ import player from './schema/player';
 import game from './schema/game';
 import Players from '../db/players';
 import Games from '../db/games';
-import play from './schema/play';
+import play, { playHasPlayers } from './schema/play';
 import Plays from '../db/plays';
 import { parseID } from '../common/utils';
 import { anyUpdatesSince } from '../misc/hasUpdates';
@@ -44,7 +44,7 @@ export interface ListQueryArguments {
 
 interface PlayFilterArguments extends ListQueryArguments {
     game?: string;
-    player?: string;
+    players?: string[];
 }
 
 const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
@@ -150,19 +150,19 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 game: {
                     type: GraphQLID,
                 },
-                player: {
-                    type: GraphQLID,
+                players: {
+                    type: GraphQLList(GraphQLNonNull(GraphQLID)),
                 },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {first, offset, game, player}: PlayFilterArguments, {loader}) => {
-                const gameId = game ? parseID(game) : undefined;
-                const playerId = player ? parseID(player) : undefined;
+            resolve: async (_, {first, offset, game, players}: PlayFilterArguments, {loader}) => {
+                const gameID = game ? parseID(game) : undefined;
+                const playerIDs = players ? players.map(id => parseID(id)) : undefined;
                 const plays = await Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
-                    filter: play => (!gameId || play.game === gameId) &&
-                        (!playerId || play.players.includes(playerId)),
+                    filter: play => (!gameID || play.game === gameID) &&
+                        (!playerIDs || playHasPlayers(play, playerIDs)),
                 });
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);
