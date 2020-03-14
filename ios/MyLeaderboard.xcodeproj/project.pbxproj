@@ -135,6 +135,10 @@
 		CA9715EA241A20D800EA58E9 /* GameDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E9241A20D800EA58E9 /* GameDetailsResponse.swift */; };
 		CA9715EC241C166300EA58E9 /* GameDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715EB241C166300EA58E9 /* GameDetails+Extensions.swift */; };
 		CA9715EE241C268F00EA58E9 /* OpponentFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715ED241C268F00EA58E9 /* OpponentFragment.swift */; };
+		CA9715F0241D7C0000EA58E9 /* PlayListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715EF241D7C0000EA58E9 /* PlayListItem.swift */; };
+		CA9715F2241D7C1100EA58E9 /* PlayListQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715F1241D7C1000EA58E9 /* PlayListQuery.swift */; };
+		CA9715F4241D7C1A00EA58E9 /* PlayListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715F3241D7C1A00EA58E9 /* PlayListResponse.swift */; };
+		CA9715F5241D7D5200EA58E9 /* OpponentFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715ED241C268F00EA58E9 /* OpponentFragment.swift */; };
 		CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */; };
 		CA9D412722FA5DD50027E2D0 /* RecordPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */; };
 		CA9D412922FA5DEE0027E2D0 /* RecordPlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */; };
@@ -323,6 +327,9 @@
 		CA9715E9241A20D800EA58E9 /* GameDetailsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsResponse.swift; sourceTree = "<group>"; };
 		CA9715EB241C166300EA58E9 /* GameDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameDetails+Extensions.swift"; sourceTree = "<group>"; };
 		CA9715ED241C268F00EA58E9 /* OpponentFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpponentFragment.swift; sourceTree = "<group>"; };
+		CA9715EF241D7C0000EA58E9 /* PlayListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayListItem.swift; sourceTree = "<group>"; };
+		CA9715F1241D7C1000EA58E9 /* PlayListQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayListQuery.swift; sourceTree = "<group>"; };
+		CA9715F3241D7C1A00EA58E9 /* PlayListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayListResponse.swift; sourceTree = "<group>"; };
 		CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewModel.swift; sourceTree = "<group>"; };
 		CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewController.swift; sourceTree = "<group>"; };
 		CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayBuilder.swift; sourceTree = "<group>"; };
@@ -622,6 +629,7 @@
 				CA9715C3241827CE00EA58E9 /* GameListQuery.swift */,
 				CA0184972415941E0080A5B8 /* PlayerDetailsQuery.swift */,
 				CA6D05D6240D147900412D54 /* PlayerListQuery.swift */,
+				CA9715F1241D7C1000EA58E9 /* PlayListQuery.swift */,
 			);
 			path = Queries;
 			sourceTree = "<group>";
@@ -640,6 +648,7 @@
 				CA9715C5241827D500EA58E9 /* GameListResponse.swift */,
 				CA01849B241594370080A5B8 /* PlayerDetailsResponse.swift */,
 				CA6D05D9240D147900412D54 /* PlayerListResponse.swift */,
+				CA9715F3241D7C1A00EA58E9 /* PlayListResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -655,6 +664,7 @@
 				CA9715D524198F2E00EA58E9 /* PlayerDetailsFragment.swift */,
 				CA9715D72419901800EA58E9 /* PlayerDetailsRecordFragment.swift */,
 				CA9715E1241A20B600EA58E9 /* PlayerGameRecordFragment.swift */,
+				CA9715EF241D7C0000EA58E9 /* PlayListItem.swift */,
 				CA9715B8241624A900EA58E9 /* RecentPlayFragment.swift */,
 				CA9715B9241624A900EA58E9 /* RecordFragment.swift */,
 			);
@@ -1230,6 +1240,7 @@
 				CA27F9CD232EE5520023924A /* SpreadsheetColumnConfig.swift in Sources */,
 				CA27F9C5232EC73D0023924A /* Game.swift in Sources */,
 				CA27F9C8232EE5460023924A /* SpreadsheetBuilder.swift in Sources */,
+				CA9715F5241D7D5200EA58E9 /* OpponentFragment.swift in Sources */,
 				CA27F9DE232EEE970023924A /* UserDefaults+Extensions.swift in Sources */,
 				CA27F9CF232EE5570023924A /* SpreadsheetConfig.swift in Sources */,
 				CA27F9D0232EE7510023924A /* LabelState.swift in Sources */,
@@ -1280,6 +1291,7 @@
 				CA920A0022E9360F008E1B96 /* PlayerRecord.swift in Sources */,
 				CA834B88230A1D8900A48C9B /* StandingsListBuilder.swift in Sources */,
 				CA9715E8241A20CF00EA58E9 /* GameDetailsQuery.swift in Sources */,
+				CA9715F4241D7C1A00EA58E9 /* PlayListResponse.swift in Sources */,
 				CA9209FE22E93604008E1B96 /* Record.swift in Sources */,
 				CA6D05E4240D147900412D54 /* GraphApi.swift in Sources */,
 				CAE56F9E22F9C30C00FE0998 /* GameListItemView.swift in Sources */,
@@ -1329,6 +1341,7 @@
 				CA51946D230FA9F80041105B /* LicensesListViewController.swift in Sources */,
 				CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */,
 				CA834B92230A1EDD00A48C9B /* SpreadsheetBorderConfig.swift in Sources */,
+				CA9715F0241D7C0000EA58E9 /* PlayListItem.swift in Sources */,
 				CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */,
 				CA9715E5241A20B700EA58E9 /* GameDetailsFragment.swift in Sources */,
 				CAE56F9822F9B65800FE0998 /* NSAttributedString+Extensions.swift in Sources */,
@@ -1361,6 +1374,7 @@
 				CA9715DA2419908C00EA58E9 /* RecentPlayFragment+Extensions.swift in Sources */,
 				CA6D05E3240D147900412D54 /* MyLeaderboardAPI.swift in Sources */,
 				CA9715BB241624A900EA58E9 /* RecordFragment.swift in Sources */,
+				CA9715F2241D7C1100EA58E9 /* PlayListQuery.swift in Sources */,
 				CA9715C2241827C400EA58E9 /* GameListItem.swift in Sources */,
 				CA0184982415941E0080A5B8 /* PlayerDetailsQuery.swift in Sources */,
 				CA5FC5F423CA0F890029DD61 /* Avatar.swift in Sources */,

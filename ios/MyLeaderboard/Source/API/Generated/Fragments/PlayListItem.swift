@@ -2,7 +2,7 @@
 import Foundation
 
 public extension MyLeaderboardAPI {
-struct RecentPlayFragment: GraphApiResponse, Equatable {
+struct PlayListItem: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
 		/// Unique ID.
 		public var id: GraphID
