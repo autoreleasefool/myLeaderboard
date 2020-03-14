@@ -10,14 +10,11 @@ import UIKit
 import Loaf
 
 class GameDetailsViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: GameDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(api: LeaderboardAPI, gameID: GraphID) {
-		self.api = api
+	init(gameID: GraphID) {
 		super.init()
-
 		setup(withID: gameID)
 	}
 
@@ -80,7 +77,7 @@ class GameDetailsViewController: FTDViewController {
 	}
 
 	private func showPlayerDetails(for playerID: GraphID) {
-		show(PlayerDetailsViewController(api: api, playerID: playerID), sender: self)
+		show(PlayerDetailsViewController(playerID: playerID), sender: self)
 	}
 
 	private func openPlayerPlays(playerIDs: [GraphID]) {
