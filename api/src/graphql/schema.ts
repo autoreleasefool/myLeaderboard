@@ -165,7 +165,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 const plays = await Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
-                    filter: play => (!gameID || play.game === gameID) &&
+                    filter: play => (gameID === undefined || play.game === gameID) &&
                         (!playerIDs || playHasPlayers(play, playerIDs)),
                     reverse,
                 });
