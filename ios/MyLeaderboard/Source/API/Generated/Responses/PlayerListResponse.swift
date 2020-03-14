@@ -5,7 +5,7 @@ public extension MyLeaderboardAPI {
 struct PlayerListResponse: GraphApiResponse, Equatable {
 	// MARK: - Response Fields
 		/// Get a list of players, ordered by ID ascending. Default page size is 25.
-		public var players: [Players?]
+		public var players: [Players]
 
 	// MARK: - Helpers
 	public let __typename: String
@@ -13,7 +13,7 @@ struct PlayerListResponse: GraphApiResponse, Equatable {
 	public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
 	public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
 
-	public init(players: [Players?]) {
+	public init(players: [Players]) {
 			self.players = players
 			self.__typename = "Query"
 	}

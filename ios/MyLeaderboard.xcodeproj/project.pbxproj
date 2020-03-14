@@ -139,6 +139,7 @@
 		CA9715F2241D7C1100EA58E9 /* PlayListQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715F1241D7C1000EA58E9 /* PlayListQuery.swift */; };
 		CA9715F4241D7C1A00EA58E9 /* PlayListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715F3241D7C1A00EA58E9 /* PlayListResponse.swift */; };
 		CA9715F5241D7D5200EA58E9 /* OpponentFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715ED241C268F00EA58E9 /* OpponentFragment.swift */; };
+		CA9715F7241D7DA700EA58E9 /* PlayListItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */; };
 		CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */; };
 		CA9D412722FA5DD50027E2D0 /* RecordPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */; };
 		CA9D412922FA5DEE0027E2D0 /* RecordPlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */; };
@@ -330,6 +331,7 @@
 		CA9715EF241D7C0000EA58E9 /* PlayListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayListItem.swift; sourceTree = "<group>"; };
 		CA9715F1241D7C1000EA58E9 /* PlayListQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayListQuery.swift; sourceTree = "<group>"; };
 		CA9715F3241D7C1A00EA58E9 /* PlayListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayListResponse.swift; sourceTree = "<group>"; };
+		CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlayListItem+Extensions.swift"; sourceTree = "<group>"; };
 		CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewModel.swift; sourceTree = "<group>"; };
 		CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewController.swift; sourceTree = "<group>"; };
 		CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayBuilder.swift; sourceTree = "<group>"; };
@@ -747,6 +749,7 @@
 				CA9715D324198C4B00EA58E9 /* PlayerListItem+Extensions.swift */,
 				CA9715D92419908C00EA58E9 /* RecentPlayFragment+Extensions.swift */,
 				CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */,
+				CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1315,6 +1318,7 @@
 				CA362F79230EBE41001063B9 /* PlayerDetailsViewController.swift in Sources */,
 				CAC47BC722E887DC000DF790 /* Standings.swift in Sources */,
 				CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */,
+				CA9715F7241D7DA700EA58E9 /* PlayListItem+Extensions.swift in Sources */,
 				CAAE778E2302DB0A001A37DC /* CreatePlayerBuilder.swift in Sources */,
 				CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */,
 				CA834B9A230A298300A48C9B /* SpreadsheetConfig.swift in Sources */,

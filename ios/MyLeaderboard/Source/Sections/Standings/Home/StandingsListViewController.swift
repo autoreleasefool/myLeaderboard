@@ -107,7 +107,7 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func openPlays(game: Game, players: [Player]) {
-		show(PlaysListViewController(api: api, games: [game], players: players), sender: self)
+		show(PlaysListViewController(gameID: game.graphID, playerIDs: players.map { $0.graphID }), sender: self)
 	}
 
 	private func openPreferredPlayerSelection() {

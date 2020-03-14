@@ -55,9 +55,7 @@ class PlayerListViewModel: ViewModel {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			case .success(let response):
-				self?.players = response.players.compactMap {
-					Player(from: $0?.asPlayerListItemFragment)
-				}.sorted()
+				self?.players = response.players.compactMap { Player(from: $0.asPlayerListItemFragment) }.sorted()
 			}
 		}
 	}

@@ -55,9 +55,7 @@ class GameListViewModel: ViewModel {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			case .success(let response):
-				self?.games = response.games.compactMap {
-					$0?.asGameListItemFragment
-				}
+				self?.games = response.games.compactMap { $0.asGameListItemFragment }
 			}
 		}
 	}

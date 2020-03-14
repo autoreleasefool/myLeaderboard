@@ -14,7 +14,7 @@ class PlayerDetailsViewController: FTDViewController {
 	private var viewModel: PlayerDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(api: LeaderboardAPI, playerID: GraphID) {
+	init(api: LeaderboardplayerID: GraphID) {
 		self.api = api
 		super.init()
 

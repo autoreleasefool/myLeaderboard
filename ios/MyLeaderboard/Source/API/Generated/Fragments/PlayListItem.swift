@@ -82,17 +82,22 @@ return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 		// MARK: - Response Fields
 			/// Image for the game.
 			public var image: String?
+			/// Name of the game.
+			public var name: String
 		// MARK: - Helpers
 		public let __typename: String
 		public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
 		public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-		public init(image: String?) {
+		public init(image: String?, name: String) {
 				self.image = image
+				self.name = name
 				self.__typename = "BasicGame"
 		}
 	}
 			public struct Players: GraphApiResponse, Equatable {
 		// MARK: - Response Fields
+			/// Display name of the player.
+			public var displayName: String
 			/// Unique ID.
 			public var id: GraphID {
 				get {
@@ -118,11 +123,13 @@ return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 		public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
 			private enum CodingKeys: String, CodingKey {
 				case __typename
+					case displayName
 					case asOpponentFragmentFragment = "fragment:asOpponentFragmentFragment"
 			}
 			public init(from decoder: Decoder) throws {
 				let container = try decoder.container(keyedBy: CodingKeys.self)
 				self.__typename = try container.decode(String.self, forKey: .__typename)
+					self.displayName = try container.decode(String.self, forKey: .displayName)
 					do {
 						self.asOpponentFragmentFragment = try MyLeaderboardAPI.OpponentFragment(from: decoder)
 					} catch let originalError {
@@ -133,7 +140,8 @@ return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 						}
 					}
 			}
-		public init(opponentFragmentFragment: MyLeaderboardAPI.OpponentFragment) {
+		public init(displayName: String, opponentFragmentFragment: MyLeaderboardAPI.OpponentFragment) {
+				self.displayName = displayName
 				self.asOpponentFragmentFragment = opponentFragmentFragment
 				self.__typename = "BasicPlayer"
 		}

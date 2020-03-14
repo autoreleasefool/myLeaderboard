@@ -17,7 +17,7 @@ struct PlayerListQueryable: PickerItemQueryable {
 	}
 
 	func pickerItems(from: Response) -> [PlayerListItem] {
-		from.players.compactMap { $0?.asPlayerListItemFragment }
+		from.players.compactMap { $0.asPlayerListItemFragment }
 	}
 }
 

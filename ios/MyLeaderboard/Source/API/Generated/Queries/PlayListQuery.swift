@@ -31,7 +31,7 @@ public extension MyLeaderboardAPI {
 		public typealias Response = PlayListResponse
 
 		public let queryString: String = """
-		fragment PlayListItem on Play { __typename id playedOn scores game { __typename image } players { __typename ... OpponentFragment } winners { __typename id } } fragment OpponentFragment on BasicPlayer { __typename id avatar } query PlayList($first: Int!, $offset: Int!, $game: ID, $players: [ID!]) { __typename plays(first: $first, offset: $offset, game: $game, players: $players) { __typename ... PlayListItem } }
+		fragment PlayListItem on Play { __typename id playedOn scores game { __typename image name } players { __typename displayName ... OpponentFragment } winners { __typename id } } fragment OpponentFragment on BasicPlayer { __typename id avatar } query PlayList($first: Int!, $offset: Int!, $game: ID, $players: [ID!]) { __typename plays(first: $first, offset: $offset, game: $game, players: $players) { __typename ... PlayListItem } }
 		"""
 	}
 }

@@ -10,8 +10,10 @@ fragment PlayListItem on Play {
 	scores
 	game {
 		image
+		name
 	}
 	players {
+		displayName
 		... OpponentFragment
 	}
 	winners {
