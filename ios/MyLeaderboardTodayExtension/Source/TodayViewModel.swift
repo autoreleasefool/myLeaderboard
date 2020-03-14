@@ -64,9 +64,9 @@ class TodayViewModel: ViewModel {
 			preferredOpponents = Player.preferredOpponents
 			fetchPlayerData(completionHandler: completionHandler)
 		case .openGameDetails(let game):
-			handleAction(.presentRoute(.gameDetails(game.id)))
+			handleAction(.presentRoute(.gameDetails(game.graphID)))
 		case .openPlayerDetails(let player):
-			handleAction(.presentRoute(.playerDetails(player.id)))
+			handleAction(.presentRoute(.playerDetails(player.graphID)))
 		case .openStandings:
 			handleAction(.presentRoute(.standings))
 		case .openPreferredPlayerSelection:

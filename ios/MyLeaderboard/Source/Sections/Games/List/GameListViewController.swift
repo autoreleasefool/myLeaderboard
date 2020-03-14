@@ -93,6 +93,6 @@ extension GameListViewController: RouteHandler {
 			return
 		}
 
-		show(GameDetailsViewController(gameID: GraphID(rawValue: String(gameID))), sender: self)
+		show(GameDetailsViewController(gameID: gameID), sender: self)
 	}
 }

@@ -13,8 +13,8 @@ protocol RouteHandler {
 }
 
 enum Route {
-	case gameDetails(ID)
-	case playerDetails(ID)
+	case gameDetails(GraphID)
+	case playerDetails(GraphID)
 	case standings
 	case preferredPlayer
 	case preferredOpponents
@@ -22,11 +22,9 @@ enum Route {
 	init?(from url: URL) {
 		switch url.host {
 		case "game":
-			guard let gameID = Int(url.path.dropFirst()) else { return nil }
-			self = .gameDetails(gameID)
+			self = .gameDetails(GraphID(rawValue: String(url.path.dropFirst())))
 		case "player":
-			guard let playerID = Int(url.path.dropFirst()) else { return nil }
-			self = .playerDetails(playerID)
+			self = .playerDetails(GraphID(rawValue: String(url.path.dropFirst())))
 		case "standings":
 			self = .standings
 		case "preferredPlayer":
@@ -45,10 +43,10 @@ enum Route {
 		switch self {
 		case .gameDetails(let gameID):
 			components.host = "game"
-			components.path = "/\(gameID)"
+			components.path = "/\(gameID.rawValue)"
 		case .playerDetails(let playerID):
 			components.host = "player"
-			components.path = "/\(playerID)"
+			components.path = "/\(playerID.rawValue)"
 		case .standings:
 			components.host = "standings"
 		case .preferredPlayer:

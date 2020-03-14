@@ -92,6 +92,6 @@ extension PlayerListViewController: RouteHandler {
 			return
 		}
 
-		show(PlayerDetailsViewController(playerID: GraphID(rawValue: String(playerID))!), sender: self)
+		show(PlayerDetailsViewController(playerID: playerID), sender: self)
 	}
 }
