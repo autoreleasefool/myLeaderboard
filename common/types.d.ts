@@ -52,7 +52,7 @@ export interface PlayerRecord {
     lastPlayed?: string;
     overallRecord: Record;
     records: {
-        [key: number]: Record;
+        [key: string]: Record;
     };
 }
 

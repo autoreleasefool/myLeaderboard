@@ -22,17 +22,17 @@ interface RecordHighlight {
 export default async function generateGameStandings(req: Request): Promise<GameRecord> {
     const gameId = parseID(req.params.id);
     const loader = DataLoader();
-    return gameStandings(gameId, loader);
+    return gameStandings(gameId, false, loader);
 }
 
-export async function gameStandings(gameId: number, loader: MyLeaderboardLoader): Promise<GameRecord> {
+export async function gameStandings(gameId: number, ignoreBanished: boolean, loader: MyLeaderboardLoader): Promise<GameRecord> {
     const game = await loader.gameLoader.load(gameId);
 
     const gameStandings = await buildStandings(game);
     const allPlayers = Players.getInstance().allIds({first: -1, offset: 0});
     const players = allPlayers.filter(id => {
         const playerRecord = gameStandings.records[id];
-        return playerRecord == null ? false : isBanished(playerRecord) === false;
+        return playerRecord == null ? false : ignoreBanished || isBanished(playerRecord) === false;
     });
     await highlightRecords(gameStandings, players, loader);
 
@@ -177,7 +177,7 @@ async function highlightRecords(standings: GameRecord, playerIds: Array<number>,
         const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
         const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
         for (const opponentId of playerIds) {
-            const vsRecord = playerDetails.records[playerId];
+            const vsRecord = playerDetails.records[opponentId.toString()];
             if (opponentId === player.id || vsRecord == null) {
                 continue;
             }

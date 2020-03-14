@@ -14,6 +14,10 @@ import { SchemaContext, ListQueryArguments, DEFAULT_PAGE_SIZE} from '../schema';
 import play from './play';
 import Plays from '../../db/plays';
 
+interface StandingsArguments {
+    ignoreBanished: boolean;
+}
+
 export default new GraphQLObjectType<Game, SchemaContext, any>({
     name: 'Game',
     description: 'Game from the MyLeaderboard API with complex information.',
@@ -38,11 +42,16 @@ export default new GraphQLObjectType<Game, SchemaContext, any>({
         standings: {
             type: GraphQLNonNull(gameRecord),
             description: 'Player vs player records, and score statistics for the game.',
+            args: {
+                ignoreBanished: {
+                    type: GraphQLBoolean,
+                },
+            },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (game, _, {loader}) =>
+            resolve: async (game, {ignoreBanished}: StandingsArguments, {loader}) =>
                 gameRecordToGraphQL(
                     game.id,
-                    await generateGameStandings(game.id, loader),
+                    await generateGameStandings(game.id, ignoreBanished, loader),
                     loader
                 ),
         },
