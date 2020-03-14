@@ -747,9 +747,9 @@
 				CA9715D124198BE300EA58E9 /* GameListItem+Extensions.swift */,
 				CA9715DB241993A700EA58E9 /* PlayerDetails+Extensions.swift */,
 				CA9715D324198C4B00EA58E9 /* PlayerListItem+Extensions.swift */,
+				CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */,
 				CA9715D92419908C00EA58E9 /* RecentPlayFragment+Extensions.swift */,
 				CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */,
-				CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

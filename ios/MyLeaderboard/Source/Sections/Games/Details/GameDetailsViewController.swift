@@ -81,14 +81,7 @@ class GameDetailsViewController: FTDViewController {
 	}
 
 	private func openPlayerPlays(playerIDs: [GraphID]) {
-//		let games: [Game]
-//		if let game = viewModel.game {
-//			games = [game]
-//		} else {
-//			games = []
-//		}
-//		show(PlaysListViewController(api: api, games: games, players: players), sender: self)
-		#warning("TODO: show plays")
+		show(PlaysListViewController(gameID: viewModel.gameID, playerIDs: playerIDs), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {

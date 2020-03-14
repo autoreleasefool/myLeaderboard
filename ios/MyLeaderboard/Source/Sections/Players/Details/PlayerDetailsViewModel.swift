@@ -14,7 +14,7 @@ enum PlayerDetailsAction: BaseAction {
 	case graphQLError(GraphAPIError)
 	case gameSelected(GraphID)
 	case playerSelected(GraphID)
-	case showPlays([GraphID], [GraphID])
+	case showPlays(GraphID?, [GraphID])
 }
 
 enum PlayerDetailsViewAction: BaseViewAction {
@@ -22,7 +22,7 @@ enum PlayerDetailsViewAction: BaseViewAction {
 	case reload
 	case selectGame(GraphID)
 	case selectPlayer(GraphID)
-	case showPlays([GraphID], [GraphID])
+	case showPlays(GraphID?, [GraphID])
 }
 
 class PlayerDetailsViewModel: ViewModel {
@@ -72,8 +72,8 @@ class PlayerDetailsViewModel: ViewModel {
 			handleAction(.gameSelected(game))
 		case .selectPlayer(let player):
 			handleAction(.playerSelected(player))
-		case .showPlays(let games, let players):
-			handleAction(.showPlays(games, players))
+		case .showPlays(let gameID, let playerIDs):
+			handleAction(.showPlays(gameID, playerIDs))
 		}
 	}
 

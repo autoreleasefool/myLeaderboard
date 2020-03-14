@@ -29,7 +29,7 @@ class GameDetailsViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
-	private var gameID: GraphID
+	private(set) var gameID: GraphID
 	private(set) var game: GameDetails? {
 		didSet {
 			if let game = self.game {

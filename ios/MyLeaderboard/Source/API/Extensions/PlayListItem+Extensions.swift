@@ -16,3 +16,9 @@ extension PlayListItem {
 		return Calendar.current.date(from: components)
 	}
 }
+
+extension PlayListItem: Comparable {
+	public static func < (lhs: PlayListItem, rhs: PlayListItem) -> Bool {
+		return lhs.playedOn < rhs.playedOn
+	}
+}

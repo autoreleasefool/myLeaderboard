@@ -40,8 +40,8 @@ class PlayerDetailsViewController: FTDViewController {
 				self?.showGameDetails(for: game)
 			case .playerSelected(let player):
 				self?.showPlayerDetails(for: player)
-			case .showPlays(let games, let players):
-				self?.openPlays(games: games, players: players)
+			case .showPlays(let gameID, let playerIDs):
+				self?.openPlays(gameID: gameID, playerIDs: playerIDs)
 			}
 		}
 
@@ -84,9 +84,8 @@ class PlayerDetailsViewController: FTDViewController {
 		show(PlayerDetailsViewController(playerID: player), sender: self)
 	}
 
-	private func openPlays(games: [GraphID], players: [GraphID]) {
-//		show(PlaysListViewController(api: api, games: games, players: players), sender: self)
-		#warning("TODO: PlaysListViewController")
+	private func openPlays(gameID: GraphID?, playerIDs: [GraphID]) {
+		show(PlaysListViewController(gameID: gameID, playerIDs: playerIDs), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {
@@ -107,7 +106,7 @@ extension PlayerDetailsViewController: PlayerDetailsActionable {
 		viewModel.postViewAction(.selectPlayer(playerID))
 	}
 
-	func showPlays(games: [GraphID], players: [GraphID]) {
-		viewModel.postViewAction(.showPlays(games, players))
+	func showPlays(gameID: GraphID?, playerIDs: [GraphID]) {
+		viewModel.postViewAction(.showPlays(gameID, playerIDs))
 	}
 }

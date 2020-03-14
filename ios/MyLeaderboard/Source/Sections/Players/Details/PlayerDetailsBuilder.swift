@@ -12,7 +12,7 @@ import FunctionalTableData
 protocol PlayerDetailsActionable: AnyObject {
 	func selectedGame(gameID: GraphID)
 	func selectedPlayer(playerID: GraphID)
-	func showPlays(games: [GraphID], players: [GraphID])
+	func showPlays(gameID: GraphID?, playerIDs: [GraphID])
 }
 
 struct PlayerDetailsBuilder {
@@ -152,7 +152,7 @@ struct PlayerDetailsBuilder {
 				title: "Most Recent Plays",
 				action: "View All"
 			) { [weak actionable] in
-				actionable?.showPlays(games: [], players: [player.id])
+				actionable?.showPlays(gameID: nil, playerIDs: [player.id])
 			},
 		]
 
@@ -309,7 +309,7 @@ struct PlayerDetailsBuilder {
 					text: record.overallRecord.asRecordFragmentFragment.formatted,
 					backgroundColor: record.overallRecord.asRecordFragmentFragment.backgroundColor,
 					onAction: { [weak actionable] in
-						actionable?.showPlays(games: [record.game.id], players: [])
+						actionable?.showPlays(gameID: record.game.id, playerIDs: [])
 					}
 				),
 			]
@@ -335,7 +335,7 @@ struct PlayerDetailsBuilder {
 					text: vsRecord.asRecordFragmentFragment.formatted,
 					backgroundColor: vsRecord.asRecordFragmentFragment.backgroundColor,
 					onAction: { [weak actionable] in
-						actionable?.showPlays(games: [record.game.id], players: [playerID, opponent.id])
+						actionable?.showPlays(gameID: record.game.id, playerIDs: [playerID, opponent.id])
 					}
 				))
 

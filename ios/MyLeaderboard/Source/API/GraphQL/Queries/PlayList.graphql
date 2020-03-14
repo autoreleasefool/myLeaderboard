@@ -1,5 +1,5 @@
-query PlayList($first: Int!, $offset: Int!, $game: ID, $players: [ID!]) {
-	plays(first: $first, offset: $offset, game: $game, players: $players) {
+query PlayList($first: Int!, $offset: Int!, $game: ID, $players: [ID!], $reverse: Boolean!) {
+	plays(first: $first, offset: $offset, game: $game, players: $players, reverse: $reverse) {
 		... PlayListItem
 	}
 }

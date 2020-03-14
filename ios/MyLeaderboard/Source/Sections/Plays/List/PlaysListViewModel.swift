@@ -55,7 +55,13 @@ class PlaysListViewModel: ViewModel {
 	}
 
 	private func loadData() {
-		PlayListQuery(first: 25, offset: 0, game: filterGameID, players: filterPlayerIDs).perform { [weak self] in
+		PlayListQuery(
+			first: 25,
+			offset: 0,
+			game: filterGameID,
+			players: filterPlayerIDs,
+			reverse: true
+		).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
