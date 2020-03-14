@@ -93,9 +93,10 @@ class GamePlayView: UIView {
 }
 
 struct GamePlayState: ViewState {
-	let firstPlayer: Player
-	let secondPlayer: Player
-	let winners: [ID]
+	let firstPlayerID: GraphID
+	let firstPlayerAvatar: Avatar?
+	let secondPlayerAvatar: Avatar?
+	let winners: [GraphID]
 	let scores: [Int]?
 
 	static func updateView(_ view: GamePlayView, state: GamePlayState?) {
@@ -104,28 +105,15 @@ struct GamePlayState: ViewState {
 			return
 		}
 
-		if let avatar = state.firstPlayer.avatar {
-			view.firstPlayer.image = ImageLoader.shared.fetch(string: avatar) { result in
-				if case .success(let url, let image) = result, url.absoluteString == avatar {
-					view.firstPlayer.image = image
-				}
-			}
-		}
-
-		if let avatar = state.secondPlayer.avatar {
-			view.secondPlayer.image = ImageLoader.shared.fetch(string: avatar) { result in
-				if case .success(let url, let image) = result, url.absoluteString == avatar {
-					view.secondPlayer.image = image
-				}
-			}
-		}
+		state.firstPlayerAvatar.applyImage(to: view.firstPlayer)
+		state.secondPlayerAvatar.applyImage(to: view.secondPlayer)
 
 		if state.winners.count == 2 {
 			view.firstPlayerResult.text = "T"
 			view.firstPlayerResult.textColor = .warning
 			view.secondPlayerResult.text = "T"
 			view.secondPlayerResult.textColor = .warning
-		} else if state.winners.contains(state.firstPlayer.id) {
+		} else if state.winners.contains(state.firstPlayerID) {
 			view.firstPlayerResult.text = "W"
 			view.firstPlayerResult.textColor = .success
 			view.secondPlayerResult.text = "L"

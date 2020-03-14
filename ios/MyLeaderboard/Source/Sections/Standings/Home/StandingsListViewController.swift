@@ -84,11 +84,11 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func showGameDetails(for game: Game) {
-		show(GameDetailsViewController(api: api, game: game), sender: self)
+		show(GameDetailsViewController(api: api, gameID: game.graphID), sender: self)
 	}
 
 	private func showPlayerDetails(for player: Player) {
-		show(PlayerDetailsViewController(api: api, player: player), sender: self)
+		show(PlayerDetailsViewController(api: api, playerID: player.graphID), sender: self)
 	}
 
 	private func openPlays(game: Game, players: [Player]) {

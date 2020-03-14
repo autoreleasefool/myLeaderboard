@@ -39,6 +39,12 @@ class PlayerDetailsViewModel: ViewModel {
 		}
 	}
 
+	private(set) var players: [Opponent] = [] {
+		didSet {
+			handleAction(.dataChanged)
+		}
+	}
+
 	private(set) var records: [PlayerDetailsRecord] = [] {
 		didSet {
 			handleAction(.dataChanged)
@@ -51,15 +57,9 @@ class PlayerDetailsViewModel: ViewModel {
 		}
 	}
 
-	init(api: LeaderboardAPI, id: GraphID, handleAction: @escaping ActionHandler) {
+	init(id: GraphID, handleAction: @escaping ActionHandler) {
 		self.playerID = id
 		self.player = nil
-		self.handleAction = handleAction
-	}
-
-	init(api: LeaderboardAPI, player: Player, handleAction: @escaping ActionHandler) {
-		self.playerID = player.graphID
-		self.player = PlayerDetails(id: player.graphID, displayName: player.displayName, username: player.username, avatar: player.avatar)
 		self.handleAction = handleAction
 	}
 
@@ -93,6 +93,9 @@ class PlayerDetailsViewModel: ViewModel {
 		}
 
 		self.player = player
+		players = Array(Set(response.player?.records.flatMap {
+			$0.asPlayerDetailsRecordFragmentFragment.records.map { $0.opponent.asOpponentFragmentFragment }
+		} ?? [])).sorted()
 		records = response.player?.records.map { $0.asPlayerDetailsRecordFragmentFragment } ?? []
 		plays = response.player?.recentPlays.map { $0.asRecentPlayFragmentFragment } ?? []
 	}

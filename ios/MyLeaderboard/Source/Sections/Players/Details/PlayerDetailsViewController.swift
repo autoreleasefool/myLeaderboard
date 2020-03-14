@@ -21,21 +21,13 @@ class PlayerDetailsViewController: FTDViewController {
 		setup(withID: playerID)
 	}
 
-	init(api: LeaderboardAPI, player: Player) {
-		self.api = api
-		super.init()
-
-		setup(withPlayer: player)
-	}
-
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup(withID id: GraphID? = nil, withPlayer player: Player? = nil) {
+	private func setup(withID id: GraphID) {
 		refreshable = true
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
-		self.title = player?.displayName
 
 		let handleAction = { [weak self] (action: PlayerDetailsAction) in
 			switch action {
@@ -55,13 +47,7 @@ class PlayerDetailsViewController: FTDViewController {
 			}
 		}
 
-		if let player = player {
-			viewModel = PlayerDetailsViewModel(api: api, player: player, handleAction: handleAction)
-		} else if let id = id {
-			viewModel = PlayerDetailsViewModel(api: api, id: id, handleAction: handleAction)
-		} else {
-			fatalError("ID or Game must be provided")
-		}
+		viewModel = PlayerDetailsViewModel(id: id, handleAction: handleAction)
 	}
 
 	override func viewDidLoad() {
@@ -81,12 +67,12 @@ class PlayerDetailsViewController: FTDViewController {
 			return
 		}
 
-		let sections = PlayerDetailsBuilder.sections(player: player, records: viewModel.records, recentPlays: viewModel.plays, builder: spreadsheetBuilder, actionable: self)
+		let sections = PlayerDetailsBuilder.sections(player: player, players: viewModel.players, records: viewModel.records, recentPlays: viewModel.plays, builder: spreadsheetBuilder, actionable: self)
 		tableData.renderAndDiff(sections)
 	}
 
-	private func showGameDetails(for game: GraphID) {
-		show(GameDetailsViewController(api: api, gameID: Int(game.rawValue)!), sender: self)
+	private func showGameDetails(for gameID: GraphID) {
+		show(GameDetailsViewController(api: api, gameID: gameID), sender: self)
 	}
 
 	private func showPlayerDetails(for player: GraphID) {

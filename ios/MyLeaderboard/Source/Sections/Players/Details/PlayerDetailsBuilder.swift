@@ -24,13 +24,13 @@ struct PlayerDetailsBuilder {
 		return formatter
 	}()
 
-	static func sections(player: PlayerDetails, records: [PlayerDetailsRecord], recentPlays: [RecentPlay], builder: SpreadsheetBuilder, actionable: PlayerDetailsActionable) -> [TableSection] {
+	static func sections(player: PlayerDetails, players: [Opponent], records: [PlayerDetailsRecord], recentPlays: [RecentPlay], builder: SpreadsheetBuilder, actionable: PlayerDetailsActionable) -> [TableSection] {
 		var sections: [TableSection] = [
 			profileSection(player: player),
 		]
 
 		sections.append(contentsOf: scoreSections(records: records, actionable: actionable))
-		sections.append(recordsSection(player: player, records: records, builder: builder, actionable: actionable))
+		sections.append(recordsSection(player: player, players: players, records: records, builder: builder, actionable: actionable))
 		sections.append(recentPlaysSection(player: player, plays: recentPlays, actionable: actionable))
 
 		return sections
@@ -83,13 +83,11 @@ struct PlayerDetailsBuilder {
 		return sections
 	}
 
-	private static func recordsSection(player: PlayerDetails, records: [PlayerDetailsRecord], builder: SpreadsheetBuilder, actionable: PlayerDetailsActionable) -> TableSection {
+	private static func recordsSection(player: PlayerDetails, players: [Opponent], records: [PlayerDetailsRecord], builder: SpreadsheetBuilder, actionable: PlayerDetailsActionable) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.sectionHeader(key: "Header", title: "Records"),
 		]
 		var spreadsheetCells: [[GridCellConfig]] = []
-
-		let players = Array(Set(records.flatMap { $0.records.map { $0.opponent } })).sorted()
 
 		spreadsheetCells.append(SpreadsheetCells.headerRow(players: players, actionable: actionable))
 
@@ -223,7 +221,7 @@ struct PlayerDetailsBuilder {
 	}
 
 	private struct SpreadsheetCells {
-		static func headerRow(players: [PlayerRecordOpponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
+		static func headerRow(players: [Opponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
 			var headerRow: [GridCellConfig] = [
 				textGridCell(key: "Header", text: ""),
 				textGridCell(key: "Total", text: "Total"),
@@ -236,7 +234,7 @@ struct PlayerDetailsBuilder {
 			return headerRow
 		}
 
-		static func gameRow(record: PlayerDetailsRecord, playerID: GraphID, allPlayers: [PlayerRecordOpponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
+		static func gameRow(record: PlayerDetailsRecord, playerID: GraphID, allPlayers: [Opponent], actionable: PlayerDetailsActionable) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
 				gameCell(for: record.game, actionable: actionable),
 				textGridCell(
@@ -299,7 +297,7 @@ struct PlayerDetailsBuilder {
 			)
 		}
 
-		static func playerCell(for player: PlayerRecordOpponent, actionable: PlayerDetailsActionable) -> GridCellConfig {
+		static func playerCell(for player: Opponent, actionable: PlayerDetailsActionable) -> GridCellConfig {
 			let avatarURL: URL?
 			if let avatar = player.avatar {
 				avatarURL = URL(string: avatar)

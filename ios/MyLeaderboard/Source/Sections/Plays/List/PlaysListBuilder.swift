@@ -75,7 +75,13 @@ struct PlaysListBuilder {
 
 			rows.append(GamePlayCell(
 				key: "Play-\(play.id)",
-				state: GamePlayState(firstPlayer: firstPlayer, secondPlayer: secondPlayer, winners: play.winners, scores: play.scores),
+				state: GamePlayState(
+					firstPlayerID: firstPlayer.graphID,
+					firstPlayerAvatar: firstPlayer.qualifiedAvatar,
+					secondPlayerAvatar: secondPlayer.qualifiedAvatar,
+					winners: play.winners.map { GraphID(rawValue: String($0)) },
+					scores: play.scores
+				),
 				cellUpdater: GamePlayState.updateView
 			))
 		}

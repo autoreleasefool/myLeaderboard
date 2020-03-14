@@ -63,8 +63,8 @@ class GameListViewController: FTDViewController {
 		})
 	}
 
-	private func showGameDetails(for game: GraphID) {
-		show(GameDetailsViewController(api: api, gameID: Int(game.rawValue)!), sender: self)
+	private func showGameDetails(for gameID: GraphID) {
+		show(GameDetailsViewController(api: api, gameID: gameID), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {
@@ -88,6 +88,6 @@ extension GameListViewController: RouteHandler {
 			return
 		}
 
-		show(GameDetailsViewController(api: api, gameID: gameID), sender: self)
+		show(GameDetailsViewController(api: api, gameID: GraphID(rawValue: String(gameID))), sender: self)
 	}
 }

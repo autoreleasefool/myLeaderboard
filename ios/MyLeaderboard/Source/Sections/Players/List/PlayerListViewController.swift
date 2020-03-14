@@ -63,7 +63,7 @@ class PlayerListViewController: FTDViewController {
 	}
 
 	private func showPlayerDetails(for player: Player) {
-		show(PlayerDetailsViewController(api: api, player: player), sender: self)
+		show(PlayerDetailsViewController(api: api, playerID: player.graphID), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {

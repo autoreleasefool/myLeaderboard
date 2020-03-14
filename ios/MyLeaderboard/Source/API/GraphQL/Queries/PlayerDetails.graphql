@@ -17,6 +17,11 @@ fragment PlayerDetailsFragment on Player {
 	avatar
 }
 
+fragment OpponentFragment on BasicPlayer {
+	id
+	avatar
+}
+
 fragment PlayerDetailsRecordFragment on PlayerGameRecord {
 	game {
 		id
@@ -37,8 +42,7 @@ fragment PlayerGameRecordFragment on PlayerGameRecord {
 	}
 	records {
 		opponent {
-			id
-			avatar
+			... OpponentFragment
 		}
 		record {
 			... RecordFragment

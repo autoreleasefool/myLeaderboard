@@ -60,16 +60,47 @@ struct GameDetailsStandingsFragment: GraphApiResponse, Equatable {
 				public struct Player: GraphApiResponse, Equatable {
 			// MARK: - Response Fields
 				/// Unique ID.
-				public var id: GraphID
+				public var id: GraphID {
+					get {
+						return asOpponentFragmentFragment.id
+					}
+					set {
+						asOpponentFragmentFragment.id = newValue
+					}
+				}
 				/// Avatar of the player.
-				public var avatar: String?
+				public var avatar: String? {
+					get {
+						return asOpponentFragmentFragment.avatar
+					}
+					set {
+						asOpponentFragmentFragment.avatar = newValue
+					}
+				}
+				public var asOpponentFragmentFragment: MyLeaderboardAPI.OpponentFragment
 			// MARK: - Helpers
 			public let __typename: String
 			public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
 			public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
-			public init(id: GraphID, avatar: String?) {
-					self.id = id
-					self.avatar = avatar
+				private enum CodingKeys: String, CodingKey {
+					case __typename
+						case asOpponentFragmentFragment = "fragment:asOpponentFragmentFragment"
+				}
+				public init(from decoder: Decoder) throws {
+					let container = try decoder.container(keyedBy: CodingKeys.self)
+					self.__typename = try container.decode(String.self, forKey: .__typename)
+						do {
+							self.asOpponentFragmentFragment = try MyLeaderboardAPI.OpponentFragment(from: decoder)
+						} catch let originalError {
+							do {
+								self.asOpponentFragmentFragment = try container.decode(MyLeaderboardAPI.OpponentFragment.self, forKey: .asOpponentFragmentFragment)
+							} catch {
+									throw originalError
+							}
+						}
+				}
+			public init(opponentFragmentFragment: MyLeaderboardAPI.OpponentFragment) {
+					self.asOpponentFragmentFragment = opponentFragmentFragment
 					self.__typename = "BasicPlayer"
 			}
 		}
