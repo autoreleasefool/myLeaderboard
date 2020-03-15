@@ -1,0 +1,21 @@
+query Standings($first: Int!, $offset: Int!) {
+	games(first: $first, offset: $offset) {
+		... StandingsFragment
+	}
+}
+
+fragment StandingsFragment on Game {
+	id
+	name
+	image
+	standings {
+		records {
+			player {
+				... OpponentFragment
+			}
+			record {
+				... PlayerGameRecordFragment
+			}
+		}
+	}
+}
