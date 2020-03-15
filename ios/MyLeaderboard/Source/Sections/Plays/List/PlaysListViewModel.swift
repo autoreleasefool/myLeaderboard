@@ -9,7 +9,6 @@
 import Foundation
 
 enum PlaysListAction: BaseAction {
-	case titleChanged
 	case dataChanged
 	case graphQLError(GraphAPIError)
 }
@@ -28,17 +27,14 @@ class PlaysListViewModel: ViewModel {
 
 	let filter: PlayListFilter
 
-	private(set) var plays: [PlayListItem] = [] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
 			handleAction(.dataChanged)
 		}
 	}
 
-	private(set) var title: String = PlaysListViewModel.defaultTitle {
-		didSet {
-			handleAction(.titleChanged)
-		}
-	}
+	private(set) var plays: [PlayListItem] = []
+	private(set) var title: String = PlaysListViewModel.defaultTitle
 
 	init(filter: PlayListFilter, handleAction: @escaping ActionHandler) {
 		self.filter = filter
@@ -53,6 +49,7 @@ class PlaysListViewModel: ViewModel {
 	}
 
 	private func loadData() {
+		dataLoading = true
 		PlayListQuery(
 			first: 25,
 			offset: 0,
@@ -65,6 +62,8 @@ class PlaysListViewModel: ViewModel {
 			case .success(let response):
 				self?.handle(response: response)
 			}
+
+			self?.dataLoading = false
 		}
 	}
 

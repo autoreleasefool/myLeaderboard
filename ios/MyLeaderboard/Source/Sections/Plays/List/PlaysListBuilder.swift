@@ -95,6 +95,27 @@ enum PlaysListBuilder {
 		return [TableSection(key: "Plays", rows: rows)]
 	}
 
+	static func emptySection() -> TableSection {
+		return TableSection(
+			key: "Empty",
+			rows: [
+				LabelCell(
+					key: "NoData",
+					style: CellStyle(backgroundColor: .primaryDark),
+					state: LabelState(
+						text: .attributed(NSAttributedString(
+							string: "There doesn't seem to be anything here 😿",
+							textColor: .textSecondary
+						)),
+						alignment: .center,
+						size: Metrics.Text.body
+					),
+					cellUpdater: LabelState.updateView
+				),
+			]
+		)
+	}
+
 	static func dateCell(for date: Date) -> CellConfigType {
 		let dateString = PlaysListBuilder.dateFormatter.string(from: date)
 		return LabelCell(

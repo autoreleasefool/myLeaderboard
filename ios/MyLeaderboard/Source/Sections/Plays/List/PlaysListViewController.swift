@@ -24,8 +24,6 @@ class PlaysListViewController: FTDViewController {
 				self.updateTitle()
 				self.finishRefresh()
 				self.render()
-			case .titleChanged:
-				self.updateTitle()
 			case .graphQLError(let error):
 				self.finishRefresh()
 				self.presentError(error)
@@ -50,7 +48,14 @@ class PlaysListViewController: FTDViewController {
 
 	private func render() {
 		let sections: [TableSection]
-		if viewModel.filter.playerIDs.count == 1, let player = viewModel.filter.playerIDs.first {
+
+		if viewModel.plays.count == 0 {
+			if viewModel.dataLoading {
+				sections = [LoadingCell.section()]
+			} else {
+				sections = [PlaysListBuilder.emptySection()]
+			}
+		} else if viewModel.filter.playerIDs.count == 1, let player = viewModel.filter.playerIDs.first {
 			sections = PlaysListBuilder.sections(
 				forPlayer: player,
 				plays: viewModel.plays,
