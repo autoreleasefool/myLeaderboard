@@ -116,8 +116,16 @@ enum TodayBuilder {
 
 	enum Sections {
 		static func error(_ error: GraphAPIError, actionable: TodayActionable) -> TableSection {
-			let rows: [CellConfigType] = []
-			#warning("TODO: fill out error section")
+			let rows: [CellConfigType] = [
+				LabelCell(
+					key: "Error",
+					state: LabelState(
+						text: .attributed(NSAttributedString(string: error.shortDescription, textColor: .text)),
+						size: Metrics.Text.body
+					),
+					cellUpdater: LabelState.updateView
+				),
+			]
 			return TableSection(key: "Error", rows: rows)
 		}
 	}
