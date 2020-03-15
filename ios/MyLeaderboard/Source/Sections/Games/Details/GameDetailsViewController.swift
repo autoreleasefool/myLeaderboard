@@ -13,9 +13,10 @@ class GameDetailsViewController: FTDViewController {
 	private var viewModel: GameDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(gameID: GraphID) {
+	init(gameID: GraphID, withGameName gameName: String? = nil) {
 		super.init()
 		setup(withID: gameID)
+		self.title = gameName
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -28,9 +29,8 @@ class GameDetailsViewController: FTDViewController {
 
 		let handleAction = { [weak self] (action: GameDetailsAction) in
 			switch action {
-			case .gameLoaded(let game):
-				self?.title = game.name
 			case .dataChanged:
+				self?.title = self?.viewModel.game?.name ?? self?.title
 				self?.finishRefresh()
 				self?.render()
 			case .playerSelected(let player):
@@ -60,7 +60,8 @@ class GameDetailsViewController: FTDViewController {
 
 	private func render() {
 		guard let game = viewModel.game, let standings = viewModel.standings else {
-			tableData.renderAndDiff([])
+			let sections = viewModel.dataLoading ? [LoadingCell.section()] : []
+			tableData.renderAndDiff(sections)
 			return
 		}
 

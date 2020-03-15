@@ -30,7 +30,7 @@ class LoadingCellView: UIView {
 		NSLayoutConstraint.activate([
 			spinner.leadingAnchor.constraint(equalTo: leadingAnchor),
 			spinner.trailingAnchor.constraint(equalTo: trailingAnchor),
-			spinner.topAnchor.constraint(equalTo: topAnchor),
+			spinner.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.Spacing.standard),
 			spinner.bottomAnchor.constraint(equalTo: bottomAnchor),
 		])
 	}

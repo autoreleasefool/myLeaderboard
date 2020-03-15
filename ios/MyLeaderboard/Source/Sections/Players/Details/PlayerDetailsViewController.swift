@@ -77,7 +77,8 @@ class PlayerDetailsViewController: FTDViewController {
 	}
 
 	private func showGameDetails(for gameID: GraphID) {
-		show(GameDetailsViewController(gameID: gameID), sender: self)
+		let gameName = viewModel.records.first(where: { $0.game.id == gameID })?.game.name
+		show(GameDetailsViewController(gameID: gameID, withGameName: gameName), sender: self)
 	}
 
 	private func showPlayerDetails(for player: GraphID) {

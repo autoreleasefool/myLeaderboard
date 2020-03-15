@@ -69,7 +69,8 @@ class GameListViewController: FTDViewController {
 	}
 
 	private func showGameDetails(for gameID: GraphID) {
-		show(GameDetailsViewController(gameID: gameID), sender: self)
+		let gameName = viewModel.games.first(where: { $0.id == gameID })?.name
+		show(GameDetailsViewController(gameID: gameID, withGameName: gameName), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {
