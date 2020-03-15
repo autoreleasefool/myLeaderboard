@@ -161,7 +161,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
             resolve: async (_, {first, offset, game, players, reverse}: PlayFilterArguments, {loader}) => {
                 const gameID = game ? parseID(game) : undefined;
-                const playerIDs = players ? players.map(id => parseID(id)) : undefined;
+                const playerIDs = players && players.length > 0 ? players.map(id => parseID(id)) : undefined;
                 const plays = await Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
