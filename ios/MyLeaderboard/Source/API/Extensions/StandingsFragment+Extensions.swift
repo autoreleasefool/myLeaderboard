@@ -20,6 +20,10 @@ extension StandingsGame: Hashable {
 }
 
 extension StandingsPlayerGameRecord {
+	static let staleLimit: Double = 21
+	static let veryFreshLimit: Double = 7
+	static let dateFormatter = ISO8601DateFormatter()
+
 	var lastPlayedDay: Date? {
 		guard let lastPlayed = self.lastPlayed else { return nil }
 		let components = Calendar.current.dateComponents([.year, .month, .day], from: lastPlayed)
@@ -35,16 +39,16 @@ extension StandingsPlayerGameRecord {
 		let seconds = Date().timeIntervalSince(lastPlayed)
 		let daysSinceLastPlayed = floor(seconds / 86400)
 
-		if daysSinceLastPlayed < PlayerRecord.veryFreshLimit {
+		if daysSinceLastPlayed < StandingsPlayerGameRecord.veryFreshLimit {
 			// Played in last X days? Very fresh.
 			return 1
-		} else if daysSinceLastPlayed >= PlayerRecord.staleLimit {
+		} else if daysSinceLastPlayed >= StandingsPlayerGameRecord.staleLimit {
 			// Haven't played in Y days? Stale.
 			return 0
 		} else {
 			// Otherwise, freshness is 0-1, based on number of days
-			let maxFreshnessRange = PlayerRecord.staleLimit - PlayerRecord.veryFreshLimit
-			let freshness = (maxFreshnessRange - (daysSinceLastPlayed - PlayerRecord.veryFreshLimit)) /
+			let maxFreshnessRange = StandingsPlayerGameRecord.staleLimit - StandingsPlayerGameRecord.veryFreshLimit
+			let freshness = (maxFreshnessRange - (daysSinceLastPlayed - StandingsPlayerGameRecord.veryFreshLimit)) /
 				maxFreshnessRange
 			return max(0, min(1, freshness))
 		}

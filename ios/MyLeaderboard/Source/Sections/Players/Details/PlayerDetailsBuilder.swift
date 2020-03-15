@@ -325,7 +325,7 @@ enum PlayerDetailsBuilder {
 
 				guard gamePlayersIndex < record.records.count &&
 					record.records[gamePlayersIndex].opponent.id == columnPlayer.id else {
-					row.append(textGridCell(key: "Opponent-\(columnPlayer.id)", text: Record.empty.formatted))
+					row.append(textGridCell(key: "Opponent-\(columnPlayer.id)", text: RecordFragment.empty.formatted))
 					allPlayersIndex += 1
 					continue
 				}

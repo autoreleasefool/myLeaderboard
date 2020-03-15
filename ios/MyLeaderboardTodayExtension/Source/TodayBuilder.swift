@@ -156,7 +156,7 @@ enum TodayBuilder {
 				} else {
 					row.append(textGridCell(
 						key: "Opponent-\(opponent.id)",
-						text: Record.empty.formatted
+						text: RecordFragment.empty.formatted
 					))
 				}
 			}

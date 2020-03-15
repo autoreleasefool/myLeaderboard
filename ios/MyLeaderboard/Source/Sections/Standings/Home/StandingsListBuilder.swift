@@ -130,7 +130,7 @@ enum StandingsListBuilder {
 				if player.id == opponent.id {
 					recordText = "—"
 				} else {
-					recordText = Record.empty.formatted
+					recordText = RecordFragment.empty.formatted
 				}
 				cells.append(SpreadsheetCells.textGridCell(
 					key: "\(player.id)-\(opponent.id)",

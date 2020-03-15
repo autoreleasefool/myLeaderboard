@@ -11,6 +11,10 @@ import UIKit
 public typealias RecordFragment = MyLeaderboardAPI.RecordFragment
 
 extension RecordFragment {
+	static var empty: RecordFragment {
+		return RecordFragment(wins: 0, losses: 0, ties: 0, isBest: false, isWorst: false)
+	}
+
 	var formatted: String {
 		return "\(wins) - \(losses)\(ties > 0 ? " - \(ties)" : "")"
 	}

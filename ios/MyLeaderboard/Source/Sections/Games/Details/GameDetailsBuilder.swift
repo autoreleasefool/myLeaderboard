@@ -259,7 +259,7 @@ enum GameDetailsBuilder {
 					if player.id == columnPlayer.id {
 						recordText = "—"
 					} else {
-						recordText = Record.empty.formatted
+						recordText = RecordFragment.empty.formatted
 					}
 					row.append(textGridCell(key: "\(player.id)-\(columnPlayer.id)", text: recordText))
 					opponentsIndex += 1
