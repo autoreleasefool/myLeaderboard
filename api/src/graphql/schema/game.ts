@@ -15,7 +15,7 @@ import play from './play';
 import Plays from '../../db/plays';
 
 interface StandingsArguments {
-    ignoreBanished: boolean;
+    ignoreBanished?: boolean;
 }
 
 export default new GraphQLObjectType<Game, SchemaContext, any>({
@@ -51,7 +51,7 @@ export default new GraphQLObjectType<Game, SchemaContext, any>({
             resolve: async (game, {ignoreBanished}: StandingsArguments, {loader}) =>
                 gameRecordToGraphQL(
                     game.id,
-                    await generateGameStandings(game.id, ignoreBanished, loader),
+                    await generateGameStandings(game.id, ignoreBanished ?? false, loader),
                     loader
                 ),
         },
