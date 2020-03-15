@@ -42,7 +42,7 @@ class RootTabBarController: UITabBarController {
 			),
 			TabItem(
 				type: .games,
-				controller: UINavigationController(rootViewController: GameListViewController(api: api))
+				controller: UINavigationController(rootViewController: GameListViewController())
 			),
 			TabItem(
 				type: .players,

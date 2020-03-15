@@ -10,13 +10,11 @@ import UIKit
 import Loaf
 
 class CreateGameViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: CreateGameViewModel!
 
-	private var gameCreated: ((Game) -> Void)?
+	private var gameCreated: ((NewGame) -> Void)?
 
-	init(api: LeaderboardAPI, onSuccess: ((Game) -> Void)? = nil) {
-		self.api = api
+	init(onSuccess: ((NewGame) -> Void)? = nil) {
 		self.gameCreated = onSuccess
 		super.init()
 	}
@@ -27,14 +25,14 @@ class CreateGameViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = CreateGameViewModel(api: api) { [weak self] action in
+		viewModel = CreateGameViewModel { [weak self] action in
 			switch action {
 			case .nameUpdated, .hasScoresUpdated:
 				self?.updateDoneButton()
 			case .gameCreated(let game):
 				self?.gameCreated?(game)
 				self?.dismiss(animated: true)
-			case .apiError(let error):
+			case .graphQLError(let error):
 				self?.presentError(error)
 			case .userErrors:
 				self?.render()
@@ -79,15 +77,8 @@ class CreateGameViewController: FTDViewController {
 		viewModel.postViewAction(.submit(self))
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 }
 

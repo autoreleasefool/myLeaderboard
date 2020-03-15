@@ -10,13 +10,10 @@ import UIKit
 import Loaf
 
 class GameListViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: GameListViewModel!
 
-	init(api: LeaderboardAPI) {
-		self.api = api
+	override init() {
 		super.init()
-
 		refreshable = true
 	}
 
@@ -65,8 +62,10 @@ class GameListViewController: FTDViewController {
 	}
 
 	private func showCreateGame() {
-		presentModal(CreateGameViewController(api: api) { game in
+		presentModal(CreateGameViewController { [weak self] game in
+			guard let self = self else { return }
 			Loaf("\(game.name) created!", state: .success, sender: self).show()
+			self.viewModel.postViewAction(.reload)
 		})
 	}
 

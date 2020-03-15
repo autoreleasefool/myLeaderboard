@@ -1,0 +1,10 @@
+mutation CreateGame($name: String!, $hasScores: Boolean!) {
+	createGame(name: $name, hasScores: $hasScores) {
+		... NewGameFragment
+	}
+}
+
+fragment NewGameFragment on Game {
+	id
+	name
+}

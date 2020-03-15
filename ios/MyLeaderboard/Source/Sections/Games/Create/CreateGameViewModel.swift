@@ -11,8 +11,8 @@ import UIKit
 enum CreateGameAction {
 	case nameUpdated(String)
 	case hasScoresUpdated(Bool)
-	case gameCreated(Game)
-	case apiError(LeaderboardAPIError)
+	case gameCreated(NewGame)
+	case graphQLError(GraphAPIError)
 	case userErrors
 }
 
@@ -24,9 +24,9 @@ enum CreateGameViewAction {
 }
 
 class CreateGameViewModel {
+	typealias CreateGameMutation = MyLeaderboardAPI.CreateGameMutation
 	typealias ActionHandler = (_ action: CreateGameAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
 	private(set) var gameName: String = "" {
@@ -65,8 +65,7 @@ class CreateGameViewModel {
 		return trimmedGameName.count > 0
 	}
 
-	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
-		self.api = api
+	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
 
@@ -128,14 +127,17 @@ class CreateGameViewModel {
 
 		isLoading = true
 
-		api.createGame(withName: trimmedGameName, hasScores: hasScores) { [weak self] result in
+		CreateGameMutation(name: trimmedGameName, hasScores: hasScores).perform { [weak self] in
 			self?.isLoading = false
-
-			switch result {
-			case .success(let game):
-				self?.handleAction(.gameCreated(game))
+			switch $0 {
+			case .success(let response):
+				if let newGame = response.createGame?.asNewGameFragmentFragment {
+					self?.handleAction(.gameCreated(newGame))
+				} else {
+					self?.handleAction(.graphQLError(.invalidResponse))
+				}
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
+				self?.handleAction(.graphQLError(error))
 			}
 		}
 	}
