@@ -6,4 +6,12 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import Foundation
+struct PlayListFilter {
+	let gameID: GraphID?
+	let playerIDs: [GraphID]
+
+	init(gameID: GraphID? = nil, playerIDs: [GraphID] = []) {
+		self.gameID = gameID
+		self.playerIDs = playerIDs
+	}
+}

@@ -38,8 +38,8 @@ class GameDetailsViewController: FTDViewController {
 			case .graphQLError(let error):
 				self?.finishRefresh()
 				self?.presentError(error)
-			case .openPlayerPlays(let players):
-				self?.openPlayerPlays(playerIDs: players)
+			case .openPlays(let filter):
+				self?.openPlayerPlays(filter: filter)
 			}
 		}
 
@@ -80,8 +80,8 @@ class GameDetailsViewController: FTDViewController {
 		show(PlayerDetailsViewController(playerID: playerID), sender: self)
 	}
 
-	private func openPlayerPlays(playerIDs: [GraphID]) {
-		show(PlaysListViewController(gameID: viewModel.gameID, playerIDs: playerIDs), sender: self)
+	private func openPlayerPlays(filter: PlayListFilter) {
+		show(PlaysListViewController(filter: filter), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {
@@ -99,6 +99,7 @@ extension GameDetailsViewController: GameDetailsActionable {
 	}
 
 	func showPlayerPlays(playerIDs: [GraphID]) {
-		viewModel.postViewAction(.showPlayerPlays(playerIDs))
+		let filter = PlayListFilter(gameID: viewModel.gameID, playerIDs: playerIDs)
+		viewModel.postViewAction(.showPlays(filter))
 	}
 }

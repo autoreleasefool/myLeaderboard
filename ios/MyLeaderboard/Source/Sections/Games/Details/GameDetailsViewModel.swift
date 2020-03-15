@@ -13,14 +13,14 @@ enum GameDetailsAction: BaseAction {
 	case dataChanged
 	case playerSelected(GraphID)
 	case graphQLError(GraphAPIError)
-	case openPlayerPlays([GraphID])
+	case openPlays(PlayListFilter)
 }
 
 enum GameDetailsViewAction: BaseViewAction {
 	case initialize
 	case reload
 	case selectPlayer(GraphID)
-	case showPlayerPlays([GraphID])
+	case showPlays(PlayListFilter)
 }
 
 class GameDetailsViewModel: ViewModel {
@@ -67,8 +67,8 @@ class GameDetailsViewModel: ViewModel {
 			loadData()
 		case .selectPlayer(let player):
 			handleAction(.playerSelected(player))
-		case .showPlayerPlays(let players):
-			handleAction(.openPlayerPlays(players))
+		case .showPlays(let filter):
+			handleAction(.openPlays(filter))
 		}
 	}
 

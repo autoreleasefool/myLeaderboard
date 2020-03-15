@@ -13,11 +13,11 @@ import Loaf
 class PlaysListViewController: FTDViewController {
 	private var viewModel: PlaysListViewModel!
 
-	init(gameID: GraphID? = nil, playerIDs: [GraphID] = []) {
+	init(filter: PlayListFilter) {
 		super.init()
 		refreshable = true
 
-		viewModel = PlaysListViewModel(gameID: gameID, playerIDs: playerIDs) { [weak self] action in
+		viewModel = PlaysListViewModel(filter: filter) { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .dataChanged:
@@ -50,7 +50,7 @@ class PlaysListViewController: FTDViewController {
 
 	private func render() {
 		let sections: [TableSection]
-		if (viewModel.filterPlayerIDs?.count ?? 0) == 1, let player = viewModel.filterPlayerIDs?.first {
+		if viewModel.filter.playerIDs.count == 1, let player = viewModel.filter.playerIDs.first {
 			sections = PlaysListBuilder.sections(
 				forPlayer: player,
 				plays: viewModel.plays,

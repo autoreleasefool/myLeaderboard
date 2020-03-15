@@ -26,8 +26,7 @@ class PlaysListViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
-	let filterGameID: GraphID?
-	let filterPlayerIDs: [GraphID]?
+	let filter: PlayListFilter
 
 	private(set) var plays: [PlayListItem] = [] {
 		didSet {
@@ -41,9 +40,8 @@ class PlaysListViewModel: ViewModel {
 		}
 	}
 
-	init(gameID: GraphID? = nil, playerIDs: [GraphID] = [], handleAction: @escaping ActionHandler) {
-		self.filterGameID = gameID
-		self.filterPlayerIDs = playerIDs.count > 0 ? playerIDs : nil
+	init(filter: PlayListFilter, handleAction: @escaping ActionHandler) {
+		self.filter = filter
 		self.handleAction = handleAction
 	}
 
@@ -58,8 +56,8 @@ class PlaysListViewModel: ViewModel {
 		PlayListQuery(
 			first: 25,
 			offset: 0,
-			game: filterGameID,
-			players: filterPlayerIDs
+			game: filter.gameID,
+			players: filter.playerIDs
 		).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
@@ -82,13 +80,13 @@ class PlaysListViewModel: ViewModel {
 			return
 		}
 
-		let playerCount = filterPlayerIDs?.count ?? 0
+		let playerCount = filter.playerIDs.count
 
-		if filterGameID != nil {
+		if filter.gameID != nil {
 			if playerCount > 1 {
 				self.title = "Filtered \(firstPlay.game.name) plays"
 			} else if playerCount == 1 {
-				let playerName = self.playerName(for: filterPlayerIDs!.first!, from: firstPlay)!
+				let playerName = self.playerName(for: filter.playerIDs.first!, from: firstPlay)!
 				self.title = "\(playerName)'s \(firstPlay.game.name) plays"
 			} else {
 				self.title = "\(firstPlay.game.name) plays"
@@ -97,7 +95,7 @@ class PlaysListViewModel: ViewModel {
 			if playerCount > 1 {
 				self.title = "Filtered plays"
 			} else if playerCount == 1 {
-				let playerName = self.playerName(for: filterPlayerIDs!.first!, from: firstPlay)!
+				let playerName = self.playerName(for: filter.playerIDs.first!, from: firstPlay)!
 				self.title = "\(playerName)'s plays"
 			} else {
 				self.title = "All plays"
