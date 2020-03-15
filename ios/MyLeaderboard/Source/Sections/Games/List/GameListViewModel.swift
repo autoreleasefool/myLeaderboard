@@ -9,7 +9,7 @@
 import Foundation
 
 enum GameListAction: BaseAction {
-	case gamesUpdated([GameListItem])
+	case dataChanged
 	case gameSelected(GraphID)
 	case addGame
 	case graphQLError(GraphAPIError)
@@ -28,11 +28,13 @@ class GameListViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
-	private(set) var games: [GameListItem] = [] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
-			handleAction(.gamesUpdated(games))
+			handleAction(.dataChanged)
 		}
 	}
+
+	private(set) var games: [GameListItem] = []
 
 	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
@@ -50,6 +52,7 @@ class GameListViewModel: ViewModel {
 	}
 
 	private func loadGameList() {
+		dataLoading = true
 		GameListQuery(first: 25, offset: 0).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
@@ -57,6 +60,8 @@ class GameListViewModel: ViewModel {
 			case .success(let response):
 				self?.games = response.games.compactMap { $0.asGameListItemFragment }
 			}
+
+			self?.dataLoading = false
 		}
 	}
 }

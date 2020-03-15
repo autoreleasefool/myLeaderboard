@@ -29,7 +29,7 @@ class GameListViewController: FTDViewController {
 		viewModel = GameListViewModel { [weak self] action in
 			guard let self = self else { return }
 			switch action {
-			case .gamesUpdated:
+			case .dataChanged:
 				self.finishRefresh()
 				self.render()
 			case .gameSelected(let game):
@@ -54,7 +54,9 @@ class GameListViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = GameListBuilder.sections(games: viewModel.games, actionable: self)
+		let sections = viewModel.games.count > 0 || !viewModel.dataLoading
+			? GameListBuilder.sections(games: viewModel.games, actionable: self)
+			: [LoadingCell.section()]
 		tableData.renderAndDiff(sections)
 	}
 
