@@ -29,10 +29,8 @@ class StandingsListViewController: FTDViewController {
 		viewModel = StandingsListViewModel { [weak self] action in
 			guard let self = self else { return }
 			switch action {
-			case .standingsUpdated:
+			case .dataChanged:
 				self.finishRefresh()
-				self.render()
-			case .gamesUpdated:
 				self.render()
 			case .graphQLError(let error):
 				self.finishRefresh()
@@ -79,6 +77,11 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func render() {
+		if viewModel.standings.count == 0 && viewModel.dataLoading {
+			tableData.renderAndDiff([LoadingCell.section()])
+			return
+		}
+
 		let sections = StandingsListBuilder.sections(
 			games: viewModel.games,
 			standings: viewModel.standings,

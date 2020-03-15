@@ -9,8 +9,7 @@
 import Foundation
 
 enum StandingsListAction: BaseAction {
-	case standingsUpdated
-	case gamesUpdated
+	case dataChanged
 	case graphQLError(GraphAPIError)
 	case openRecordPlay
 	case openGameDetails(GraphID)
@@ -37,17 +36,14 @@ class StandingsListViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
-	private(set) var games: [StandingsGame] = [] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
-			handleAction(.gamesUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
-	private(set) var standings: [StandingsGame: StandingsFragment] = [:] {
-		didSet {
-			handleAction(.standingsUpdated)
-		}
-	}
+	private(set) var games: [StandingsGame] = []
+	private(set) var standings: [StandingsGame: StandingsFragment] = [:]
 
 	private var hasCheckedForPreferredPlayer: Bool = false
 
@@ -84,6 +80,7 @@ class StandingsListViewModel: ViewModel {
 	}
 
 	private func loadData() {
+		dataLoading = true
 		StandingsQuery(first: 25, offset: 0).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
@@ -91,6 +88,8 @@ class StandingsListViewModel: ViewModel {
 			case .success(let response):
 				self?.handle(response: response)
 			}
+
+			self?.dataLoading = false
 		}
 	}
 
