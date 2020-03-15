@@ -135,7 +135,7 @@ enum PlayerDetailsBuilder {
 			let spreadsheet = Spreadsheet.section(key: "PlayerRecord-\(player.id)", builder: builder, config: config) {
 			rows.append(contentsOf: spreadsheet.rows)
 		} else {
-			rows.append(Cells.loadingCell())
+			rows.append(Cells.emptyCell())
 		}
 
 		return TableSection(key: "Records", rows: rows)
@@ -168,7 +168,7 @@ enum PlayerDetailsBuilder {
 		}
 
 		if rows.count == 1 {
-			rows.append(Cells.loadingCell())
+			rows.append(Cells.emptyCell())
 		}
 
 		return TableSection(key: "Plays", rows: rows)
@@ -270,11 +270,14 @@ enum PlayerDetailsBuilder {
 			)
 		}
 
-		static func loadingCell() -> CellConfigType {
+		static func emptyCell() -> CellConfigType {
 			return LabelCell(
 				key: "NoData",
 				state: LabelState(
-					text: .attributed(NSAttributedString(string: "Waiting for data", textColor: .textSecondary)),
+					text: .attributed(NSAttributedString(
+						string: "There doesn't seem to be anything here 😿",
+						textColor: .textSecondary
+					)),
 					size: Metrics.Text.body
 				),
 				cellUpdater: LabelState.updateView

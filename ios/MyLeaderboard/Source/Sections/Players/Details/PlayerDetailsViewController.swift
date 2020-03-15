@@ -28,9 +28,8 @@ class PlayerDetailsViewController: FTDViewController {
 
 		let handleAction = { [weak self] (action: PlayerDetailsAction) in
 			switch action {
-			case .playerLoaded(let player):
-				self?.title = player.displayName
 			case .dataChanged:
+				self?.title = self?.viewModel.player?.displayName
 				self?.finishRefresh()
 				self?.render()
 			case .graphQLError(let error):
@@ -61,7 +60,8 @@ class PlayerDetailsViewController: FTDViewController {
 
 	private func render() {
 		guard let player = viewModel.player else {
-			tableData.renderAndDiff([])
+			let sections = viewModel.dataLoading ? [LoadingCell.section()] : []
+			tableData.renderAndDiff(sections)
 			return
 		}
 

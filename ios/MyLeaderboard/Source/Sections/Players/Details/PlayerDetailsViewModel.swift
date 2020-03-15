@@ -9,7 +9,6 @@
 import Foundation
 
 enum PlayerDetailsAction: BaseAction {
-	case playerLoaded(PlayerDetails)
 	case dataChanged
 	case graphQLError(GraphAPIError)
 	case gameSelected(GraphID)
@@ -31,32 +30,18 @@ class PlayerDetailsViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
+	private(set) var dataLoading: Bool = false {
+		didSet {
+			handleAction(.dataChanged)
+		}
+	}
+
 	private var playerID: GraphID
-	private(set) var player: PlayerDetails? {
-		didSet {
-			if let player = self.player {
-				handleAction(.playerLoaded(player))
-			}
-		}
-	}
 
-	private(set) var players: [Opponent] = [] {
-		didSet {
-			handleAction(.dataChanged)
-		}
-	}
-
-	private(set) var records: [PlayerDetailsRecord] = [] {
-		didSet {
-			handleAction(.dataChanged)
-		}
-	}
-
-	private(set) var plays: [RecentPlay] = [] {
-		didSet {
-			handleAction(.dataChanged)
-		}
-	}
+	private(set) var player: PlayerDetails?
+	private(set) var players: [Opponent] = []
+	private(set) var records: [PlayerDetailsRecord] = []
+	private(set) var plays: [RecentPlay] = []
 
 	init(playerID: GraphID, handleAction: @escaping ActionHandler) {
 		self.playerID = playerID
@@ -78,6 +63,7 @@ class PlayerDetailsViewModel: ViewModel {
 	}
 
 	private func loadData(retry: Bool = true) {
+		dataLoading = true
 		PlayerDetailsQuery(id: self.playerID).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
@@ -85,6 +71,8 @@ class PlayerDetailsViewModel: ViewModel {
 			case .success(let response):
 				self?.handle(response: response)
 			}
+
+			self?.dataLoading = false
 		}
 	}
 
