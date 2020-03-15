@@ -17,7 +17,7 @@ protocol PickerItemQueryable {
 }
 
 enum PickerAction<Item: GraphQLIdentifiable>: BaseAction {
-	case itemsUpdated
+	case dataChanged
 	case limitExceeded(Int)
 	case donePicking([Item])
 	case graphQLError(GraphAPIError)
@@ -38,15 +38,16 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 	private var queryable: Queryable
 	var handleAction: ActionHandler
 
-	private(set) var items: [Item] = [] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
-			handleAction(.itemsUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
+	private(set) var items: [Item] = []
 	private(set) var selectedItems: Set<GraphID> {
 		didSet {
-			handleAction(.itemsUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
@@ -84,6 +85,7 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 	}
 
 	private func loadItems() {
+		dataLoading = true
 		queryable.query { [weak self] result in
 			switch result {
 			case .success(let response):
@@ -91,6 +93,8 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			}
+
+			self?.dataLoading = false
 		}
 	}
 

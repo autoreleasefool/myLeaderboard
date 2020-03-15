@@ -34,7 +34,7 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 			queryable: queryable
 		) { [weak self] action in
 			switch action {
-			case .itemsUpdated:
+			case .dataChanged:
 				self?.render()
 			case .limitExceeded(let limit):
 				self?.notifyLimitExceeded(limit)
@@ -63,6 +63,11 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 	}
 
 	private func render() {
+		if viewModel.items.count == 0 && viewModel.dataLoading {
+			tableData.renderAndDiff([LoadingCell.section()])
+			return
+		}
+
 		let renderedItems = renderItems(viewModel.items)
 		let sections = BasePickerBuilder.sections(
 			items: renderedItems,
