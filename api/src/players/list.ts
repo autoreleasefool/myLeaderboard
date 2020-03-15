@@ -11,5 +11,5 @@ export default async function list(req: Request): Promise<Array<Player>> {
     const players = await loader.playerLoader.loadMany(
         Players.getInstance().allIds({first, offset})
     );
-    return players.filter(player => isPlayer(player)).map(player => player as Player);
+    return players.filter(player => isPlayer(player)) as Player[];
 }

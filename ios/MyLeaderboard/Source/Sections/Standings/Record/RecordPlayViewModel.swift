@@ -9,10 +9,10 @@
 import Foundation
 
 enum RecordPlayAction: BaseAction {
-	case playUpdated
-	case apiError(LeaderboardAPIError)
+	case dataChanged
+	case graphQLError(GraphAPIError)
 	case userErrors
-	case playCreated(GamePlay)
+	case playCreated(NewPlay)
 	case openPlayerPicker
 	case openGamePicker
 }
@@ -20,45 +20,43 @@ enum RecordPlayAction: BaseAction {
 enum RecordPlayViewAction: BaseViewAction {
 	case initialize
 	case editPlayers
-	case selectPlayers([Player])
+	case selectPlayers([PlayerListItem])
 	case editGame
-	case selectGame(Game?)
-	case selectWinner(Player, Bool)
-	case setPlayerScore(Player, Int)
+	case selectGame(GameListItem?)
+	case selectWinner(GraphID, Bool)
+	case setPlayerScore(GraphID, Int)
 	case submit
 }
 
 class RecordPlayViewModel: ViewModel {
+	typealias RecordPlayMutation = MyLeaderboardAPI.RecordPlayMutation
 	typealias ActionHandler = (_ action: RecordPlayAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	private(set) var selectedGame: Game? = nil {
+	private(set) var selectedGame: GameListItem? = nil {
 		didSet {
-			handleAction(.playUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
-	private(set) var selectedPlayers: [Player] = [] {
+	var selectedPlayerGraphIDs: Set<GraphID> { return Set(selectedPlayers.map { $0.id })}
+	private(set) var selectedPlayers: [PlayerListItem] = [] {
 		didSet {
-			winners = winners.filter { selectedPlayers.contains($0) }
+			winners = winners.filter { selectedPlayerGraphIDs.contains($0) }
 		}
 	}
 
-	var selectedPlayerIDs: Set<ID> { return Set(selectedPlayers.map { $0.id }) }
-
-	private(set) var winners: [Player] = [] {
+	var winnerGraphIDs: Set<GraphID> { return Set(winners.map { $0 })}
+	private(set) var winners: [GraphID] = [] {
 		didSet {
-			handleAction(.playUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
-	var winnerIDs: Set<ID> { return Set(winners.map { $0.id }) }
-
-	private(set) var scores: [ID: Int] = [:] {
+	private(set) var scores: [GraphID: Int] = [:] {
 		didSet {
-			handleAction(.playUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
@@ -82,11 +80,10 @@ class RecordPlayViewModel: ViewModel {
 		return selectedGame != nil &&
 			selectedPlayers.count > 1 &&
 			winners.isEmpty == false &&
-			selectedPlayerIDs.isDisjoint(with: winnerIDs) == false
+			selectedPlayerGraphIDs.isDisjoint(with: winnerGraphIDs) == false
 	}
 
-	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
-		self.api = api
+	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 
 		if let preferredPlayer = Player.preferred {
@@ -106,16 +103,16 @@ class RecordPlayViewModel: ViewModel {
 		case .selectPlayers(let players):
 			selectedPlayers = players
 			updateErrors(for: RecordPlayBuilder.Keys.playerSection.rawValue)
-		case .selectWinner(let player, let selected):
+		case .selectWinner(let playerID, let selected):
 			if selected {
-				winners.append(player)
+				winners.append(playerID)
 			} else {
-				winners.removeAll { $0.id == player.id }
+				winners.removeAll { $0 == playerID }
 			}
 
 			updateErrors(for: RecordPlayBuilder.Keys.playerSection.rawValue)
-		case .setPlayerScore(let player, let score):
-			scores[player.id] = score
+		case .setPlayerScore(let playerID, let score):
+			scores[playerID] = score
 		case .editGame:
 			handleAction(.openGamePicker)
 		case .editPlayers:
@@ -136,13 +133,22 @@ class RecordPlayViewModel: ViewModel {
 
 		if playIsValid == false {
 			if selectedGame == nil {
-				errors[RecordPlayBuilder.Keys.gameSection.rawValue, RecordPlayBuilder.Keys.Game.error.rawValue] = "You must choose a game."
+				errors[
+					RecordPlayBuilder.Keys.gameSection.rawValue,
+					RecordPlayBuilder.Keys.Game.error.rawValue
+				] = "You must choose a game."
 			}
 
 			if selectedPlayers.count < 2 {
-				errors[RecordPlayBuilder.Keys.playerSection.rawValue, RecordPlayBuilder.Keys.Players.error.rawValue] = "You must select at least 2 players."
-			} else if winners.isEmpty || selectedPlayerIDs.isDisjoint(with: winnerIDs) {
-				errors[RecordPlayBuilder.Keys.playerSection.rawValue, RecordPlayBuilder.Keys.Players.error.rawValue] = "You must select a winner."
+				errors[
+					RecordPlayBuilder.Keys.playerSection.rawValue,
+					RecordPlayBuilder.Keys.Players.error.rawValue
+				] = "You must select at least 2 players."
+			} else if winners.isEmpty || selectedPlayerGraphIDs.isDisjoint(with: winnerGraphIDs) {
+				errors[
+					RecordPlayBuilder.Keys.playerSection.rawValue,
+					RecordPlayBuilder.Keys.Players.error.rawValue
+				] = "You must select a winner."
 			}
 		}
 
@@ -158,31 +164,32 @@ class RecordPlayViewModel: ViewModel {
 
 		isLoading = true
 
-		let selectedPlayers = self.selectedPlayers.map { $0.id }
-		let winners = self.winners.map { $0.id }
 		var finalScores: [Int] = []
 
-		for player in selectedPlayers {
-			if let playerScore = scores[player] {
+		for player in self.selectedPlayers {
+			if let playerScore = scores[player.id] {
 				finalScores.append(playerScore)
 			} else {
 				break
 			}
 		}
 
-		api.record(
-			gameID: game.id,
-			playerIDs: selectedPlayers,
-			winnerIDs: winners,
+		RecordPlayMutation(
+			players: self.selectedPlayers.map { $0.id },
+			winners: self.winners,
+			game: game.id,
 			scores: finalScores.isEmpty ? nil : finalScores
-		) { [weak self] result in
+		).perform { [weak self] in
 			self?.isLoading = false
-
-			switch result {
-			case .success(let play):
-				self?.handleAction(.playCreated(play))
+			switch $0 {
+			case .success(let response):
+				if let newPlay = response.recordPlay?.asNewPlayFragmentFragment {
+					self?.handleAction(.playCreated(newPlay))
+				} else {
+					self?.handleAction(.graphQLError(.invalidResponse))
+				}
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
+				self?.handleAction(.graphQLError(error))
 			}
 		}
 	}

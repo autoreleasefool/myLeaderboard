@@ -48,7 +48,14 @@ struct ImageState: ViewState {
 	let rounded: Bool
 	let opacity: CGFloat
 
-	init(image: UIImage?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil, rounded: Bool = false, opacity: CGFloat = 1.0) {
+	init(
+		image: UIImage?,
+		tintColor: UIColor? = nil,
+		width: CGFloat? = nil,
+		height: CGFloat? = nil,
+		rounded: Bool = false,
+		opacity: CGFloat = 1.0
+	) {
 		self.url = nil
 		self.image = image
 		self.tintColor = tintColor
@@ -58,7 +65,14 @@ struct ImageState: ViewState {
 		self.opacity = opacity
 	}
 
-	init(url: URL?, tintColor: UIColor? = nil, width: CGFloat? = nil, height: CGFloat? = nil, rounded: Bool = false, opacity: CGFloat = 1.0) {
+	init(
+		url: URL?,
+		tintColor: UIColor? = nil,
+		width: CGFloat? = nil,
+		height: CGFloat? = nil,
+		rounded: Bool = false,
+		opacity: CGFloat = 1.0
+	) {
 		self.image = nil
 		self.url = url
 		self.tintColor = tintColor
@@ -78,7 +92,9 @@ struct ImageState: ViewState {
 			return
 		}
 
-		let constraints = view.constraints.filter { $0.identifier == ImageState.widthAnchorIdentifier || $0.identifier == ImageState.heightAnchorIdentifier }
+		let constraints = view.constraints.filter {
+			$0.identifier == ImageState.widthAnchorIdentifier || $0.identifier == ImageState.heightAnchorIdentifier
+		}
 		constraints.forEach { $0.isActive = false }
 
 		view.contentMode = .scaleAspectFit

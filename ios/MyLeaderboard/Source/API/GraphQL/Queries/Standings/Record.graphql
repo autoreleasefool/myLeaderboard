@@ -1,0 +1,7 @@
+fragment RecordFragment on Record {
+	wins
+	losses
+	ties
+	isBest
+	isWorst
+}

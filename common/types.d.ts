@@ -6,6 +6,11 @@ export interface Identifiable {
     id: number;
 }
 
+export interface GitHubUser {
+    login: string;
+    avatarUrl: string;
+}
+
 // Games
 
 export interface Game extends Identifiable {
@@ -22,27 +27,14 @@ export interface Player extends Identifiable {
     username: string;
 }
 
-export interface GitHubUser {
-    login: string;
-    avatarUrl: string;
-}
-
 // Plays
 
 export interface Play extends Identifiable {
     game: number;
     playedOn: string;
-    players: Array<number>;
-    winners: Array<number>;
-    scores?: Array<number>;
-}
-
-export interface PlayGraphQL extends Identifiable {
-    game: Game;
-    playedOn: string;
-    players: Array<Player>;
-    winners: Array<Player>;
-    scores?: Array<number>;
+    players: number[];
+    winners: number[];
+    scores?: number[];
 }
 
 // Standings
@@ -57,23 +49,11 @@ export interface Record {
 
 export interface PlayerRecord {
     scoreStats?: ScoreStats;
-    lastPlayed: string;
+    lastPlayed?: string;
     overallRecord: Record;
     records: {
-        [key: number]: Record;
+        [key: string]: Record;
     };
-}
-
-export interface PlayerRecordGraphQL {
-    scoreStats?: ScoreStats;
-    lastPlayed: string;
-    overallRecord: Record;
-    records: Array<PlayerVSRecord>;
-}
-
-export interface PlayerVSRecord {
-    player: Player;
-    record: Record;
 }
 
 export interface ScoreStats {
@@ -83,33 +63,52 @@ export interface ScoreStats {
     gamesPlayed: number;
 }
 
-export interface GameStandings {
+export interface GameRecord {
     scoreStats?: ScoreStats;
     records: {
         [key: number]: PlayerRecord;
     };
 }
 
-export interface GameStandingsGraphQL {
-    scoreStats?: ScoreStats;
-    records: Array<GamePlayerRecord>;
+// GraphQL
+
+export interface GameGQL extends Game {
+    standings: GameRecordGQL;
+    recentPlays: PlayGQL[];
 }
 
-export interface GamePlayerRecord {
+export interface PlayerGQL extends Player {
+    records: PlayerGameRecordGQL[];
+    recentPlays: PlayGQL[];
+}
+
+export interface PlayGQL extends Identifiable {
+    game: Game;
+    playedOn: string;
+    players: Player[];
+    winners: Player[];
+    scores?: number[];
+}
+
+export interface PlayerRecordGQL {
     player: Player;
-    record: PlayerRecordGraphQL;
+    record: PlayerGameRecordGQL;
 }
 
-export interface PlayerStandings {
+export interface GameRecordGQL {
     scoreStats?: ScoreStats;
-    overallRecord: Record;
-    records: {
-        [key: number]: Record;
-    };
+    records: PlayerRecordGQL[];
 }
 
-export interface PlayerStandingsGraphQL {
+export interface PlayerGameRecordGQL {
+    game: Game;
     scoreStats?: ScoreStats;
+    lastPlayed?: string;
     overallRecord: Record;
-    records: Array<PlayerVSRecord>;
+    records: PlayerRecordVSGQL[];
+}
+
+export interface PlayerRecordVSGQL {
+    opponent: Player;
+    record: Record;
 }

@@ -11,39 +11,23 @@ import FunctionalTableData
 import Loaf
 
 class PlaysListViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: PlaysListViewModel!
 
-	init(api: LeaderboardAPI, games: [Game] = [], players: [Player] = []) {
-		self.api = api
+	init(filter: PlayListFilter) {
 		super.init()
 		refreshable = true
 
-		viewModel = PlaysListViewModel(api: api, games: games, players: players) { [weak self] action in
+		viewModel = PlaysListViewModel(filter: filter) { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .dataChanged:
+				self.updateTitle()
 				self.finishRefresh()
 				self.render()
-			case .apiError(let error):
+			case .graphQLError(let error):
+				self.finishRefresh()
 				self.presentError(error)
 			}
-		}
-
-		if games.count > 1, players.count > 1 {
-			self.title = "Filtered plays"
-		} else if games.count == 1 && players.count > 1, let game = games.first {
-			self.title = "Filtered \(game.name) Plays"
-		} else if players.count == 1 && games.count > 1, let player = players.first {
-			self.title = "Filtered \(player.displayName)'s Plays"
-		} else if let game = games.first, let player = players.first {
-			self.title = "\(player.displayName)'s \(game.name) Plays"
-		} else if games.count == 1, let game = games.first {
-			self.title = "\(game.name) Plays"
-		} else if players.count == 1, let player = players.first {
-			self.title = "\(player.displayName)'s Plays"
-		} else {
-			self.title = "All Plays"
 		}
 	}
 
@@ -54,29 +38,38 @@ class PlaysListViewController: FTDViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		viewModel.postViewAction(.initialize)
+		updateTitle()
 		render()
+	}
+
+	private func updateTitle() {
+		self.title = viewModel.title
 	}
 
 	private func render() {
 		let sections: [TableSection]
-		if viewModel.specifiedPlayerIDs.count == 1, let player = viewModel.specifiedPlayerIDs.first {
-			sections = PlaysListBuilder.sections(forPlayer: player, plays: viewModel.plays, games: viewModel.games, players: viewModel.players, actionable: self)
+
+		if viewModel.plays.count == 0 {
+			if viewModel.dataLoading {
+				sections = [LoadingCell.section()]
+			} else {
+				sections = [PlaysListBuilder.emptySection()]
+			}
+		} else if viewModel.filter.playerIDs.count == 1, let player = viewModel.filter.playerIDs.first {
+			sections = PlaysListBuilder.sections(
+				forPlayer: player,
+				plays: viewModel.plays,
+				actionable: self
+			)
 		} else {
-			sections = PlaysListBuilder.sections(plays: viewModel.plays, players: viewModel.players, actionable: self)
+			sections = PlaysListBuilder.sections(plays: viewModel.plays, actionable: self)
 		}
 
 		tableData.renderAndDiff(sections)
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 
 	override func refresh() {

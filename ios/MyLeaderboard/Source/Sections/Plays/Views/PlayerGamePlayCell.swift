@@ -53,7 +53,16 @@ class PlayerGamePlayView: UIView {
 
 		result.translatesAutoresizingMaskIntoConstraints = false
 
-		let stackView = UIStackView(arrangedSubviews: [gameImage, separator, opponent, scoreSpacer, playerScore, scoreSeparator, opponentScore, endSpacer])
+		let stackView = UIStackView(arrangedSubviews: [
+			gameImage,
+			separator,
+			opponent,
+			scoreSpacer,
+			playerScore,
+			scoreSeparator,
+			opponentScore,
+			endSpacer,
+		])
 		stackView.spacing = Metrics.Spacing.standard
 		stackView.alignment = .center
 		stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -105,10 +114,10 @@ class PlayerGamePlayView: UIView {
 }
 
 struct PlayerGamePlayState: ViewState {
-	let game: Game
-	let playerID: ID
-	let opponent: Player
-	let winners: [ID]
+	let gameImage: String?
+	let playerID: GraphID
+	let opponentAvatar: String?
+	let winners: [GraphID]
 	let playerScore: Int?
 	let opponentScore: Int?
 
@@ -118,15 +127,15 @@ struct PlayerGamePlayState: ViewState {
 			return
 		}
 
-		if let avatar = state.game.image {
-			view.gameImage.image = ImageLoader.shared.fetch(string: avatar) { result in
-				if case .success(let url, let image) = result, url.absoluteString == avatar {
+		if let gameImage = state.gameImage {
+			view.gameImage.image = ImageLoader.shared.fetch(string: gameImage) { result in
+				if case .success(let url, let image) = result, url.absoluteString == gameImage {
 					view.gameImage.image = image
 				}
 			}
 		}
 
-		if let avatar = state.opponent.avatar {
+		if let avatar = state.opponentAvatar {
 			view.opponent.image = ImageLoader.shared.fetch(string: avatar) { result in
 				if case .success(let url, let image) = result, url.absoluteString == avatar {
 					view.opponent.image = image

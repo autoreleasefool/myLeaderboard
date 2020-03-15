@@ -1,0 +1,7 @@
+moduleName: MyLeaderboardAPI
+header: |
+        // Syrup auto-generated file
+        import Foundation
+supportFilesHeader: |
+        // Syrup auto-generated support file
+        import Foundation

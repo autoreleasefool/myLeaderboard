@@ -10,7 +10,7 @@ import Foundation
 
 enum PlaysListAction: BaseAction {
 	case dataChanged
-	case apiError(LeaderboardAPIError)
+	case graphQLError(GraphAPIError)
 }
 
 enum PlaysListViewAction: BaseViewAction {
@@ -19,97 +19,85 @@ enum PlaysListViewAction: BaseViewAction {
 }
 
 class PlaysListViewModel: ViewModel {
+	typealias PlayListQuery = MyLeaderboardAPI.PlayListQuery
 	typealias ActionHandler = (_ action: PlaysListAction) -> Void
+	static let defaultTitle = "Filtered plays"
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	let specifiedGameIDs: Set<ID>
-	let specifiedPlayerIDs: Set<ID>
+	let filter: PlayListFilter
 
-	private(set) var games: [Game] = [] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
 			handleAction(.dataChanged)
 		}
 	}
 
-	private(set) var plays: [GamePlay] = [] {
-		didSet {
-			handleAction(.dataChanged)
-		}
-	}
+	private(set) var plays: [PlayListItem] = []
+	private(set) var title: String = PlaysListViewModel.defaultTitle
 
-	private(set) var players: [Player] = [] {
-		didSet {
-			handleAction(.dataChanged)
-		}
-	}
-
-	init(api: LeaderboardAPI, games: [Game] = [], players: [Player] = [], handleAction: @escaping ActionHandler) {
-		self.api = api
-		self.specifiedGameIDs = Set(games.map { $0.id })
-		self.specifiedPlayerIDs = Set(players.map { $0.id })
+	init(filter: PlayListFilter, handleAction: @escaping ActionHandler) {
+		self.filter = filter
 		self.handleAction = handleAction
 	}
 
 	func postViewAction(_ viewAction: PlaysListViewAction) {
 		switch viewAction {
-		case .initialize:
+		case .initialize, .reload:
 			loadData()
-		case .reload:
-			reloadData()
-		}
-	}
-
-	private func reloadData() {
-		api.refresh { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success:
-				self?.loadData()
-			}
 		}
 	}
 
 	private func loadData() {
-		api.players { [weak self] in
+		dataLoading = true
+		PlayListQuery(
+			first: 25,
+			offset: 0,
+			game: filter.gameID,
+			players: filter.playerIDs
+		).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let players):
-				self?.players = players
+				self?.handleAction(.graphQLError(error))
+			case .success(let response):
+				self?.handle(response: response)
 			}
+
+			self?.dataLoading = false
+		}
+	}
+
+	private func playerName(for playerID: GraphID, from play: PlayListItem) -> String? {
+		return play.players.first(where: { $0.id == playerID })?.displayName
+	}
+
+	private func handle(response: PlayListQuery.Response) {
+		self.plays = response.plays.map { $0.asPlayListItemFragment }
+
+		guard let firstPlay = plays.first else {
+			self.title = PlaysListViewModel.defaultTitle
+			return
 		}
 
-		if specifiedPlayerIDs.count == 1 {
-			api.games { [weak self] in
-				switch $0 {
-				case .failure(let error):
-					self?.handleAction(.apiError(error))
-				case .success(let games):
-					self?.games = games
-				}
+		let playerCount = filter.playerIDs.count
+
+		if filter.gameID != nil {
+			if playerCount > 1 {
+				self.title = "Filtered \(firstPlay.game.name) plays"
+			} else if playerCount == 1 {
+				let playerName = self.playerName(for: filter.playerIDs.first!, from: firstPlay)!
+				self.title = "\(playerName)'s \(firstPlay.game.name) plays"
+			} else {
+				self.title = "\(firstPlay.game.name) plays"
 			}
-		}
-
-		api.plays { [weak self] in
-			guard let self = self else { return }
-			switch $0 {
-			case .failure(let error):
-				self.handleAction(.apiError(error))
-			case .success(let plays):
-				self.plays = plays.filter {
-					if self.specifiedGameIDs.count > 0, self.specifiedGameIDs.contains($0.game) == false {
-						return false
-					}
-
-					if self.specifiedPlayerIDs.count > 0, self.specifiedPlayerIDs.intersection($0.players).count != self.specifiedPlayerIDs.count {
-						return false
-					}
-
-					return true
-				}.sorted().reversed()
+		} else {
+			if playerCount > 1 {
+				self.title = "Filtered plays"
+			} else if playerCount == 1 {
+				let playerName = self.playerName(for: filter.playerIDs.first!, from: firstPlay)!
+				self.title = "\(playerName)'s plays"
+			} else {
+				self.title = "All plays"
 			}
 		}
 	}

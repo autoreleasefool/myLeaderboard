@@ -8,15 +8,15 @@
 
 import UIKit
 
-struct Metrics {
-	struct Image {
+enum Metrics {
+	enum Image {
 		static let large: CGFloat = 128
 		static let listIcon: CGFloat = 48
 		static let medium: CGFloat = 36
 		static let small: CGFloat = 24
 	}
 
-	struct Spacing {
+	enum Spacing {
 		static let massive: CGFloat = 64
 		static let large: CGFloat = 32
 		static let standard: CGFloat = 16
@@ -24,7 +24,7 @@ struct Metrics {
 		static let tiny: CGFloat = 4
 	}
 
-	struct Text {
+	enum Text {
 		static let header: CGFloat = 44
 		static let title: CGFloat = 20
 		static let body: CGFloat = 14

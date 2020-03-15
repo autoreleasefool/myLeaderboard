@@ -1,0 +1,37 @@
+query PlayList($first: Int!, $offset: Int!, $game: ID, $players: [ID!]) {
+	plays(first: $first, offset: $offset, game: $game, players: $players, reverse: true) {
+		... PlayListItem
+	}
+}
+
+fragment PlayListItem on Play {
+	id
+	playedOn
+	scores
+	game {
+		image
+		name
+	}
+	players {
+		displayName
+		... OpponentFragment
+	}
+	winners {
+		id
+	}
+}
+
+fragment RecentPlayFragment on Play {
+	id
+	playedOn
+	scores
+	game {
+		image
+	}
+	players {
+		... OpponentFragment
+	}
+	winners {
+		id
+	}
+}

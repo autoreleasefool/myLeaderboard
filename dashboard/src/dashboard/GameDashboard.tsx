@@ -1,7 +1,7 @@
 import React from 'react';
 import { Page } from '@shopify/polaris';
 import LeaderboardAPI from '../api/LeaderboardAPI';
-import { Game, GameStandings, Player } from '../lib/types';
+import { Game, GameRecord, Player } from '../lib/types';
 import './GameDashboard.css';
 import Limbo from './limbo/Limbo';
 import ShadowRealm from './shadowRealm/ShadowRealm';
@@ -10,14 +10,14 @@ import { isBanished } from '../lib/Freshness';
 
 interface Props {
     game: Game;
-    players: Array<Player>;
+    players: Player[];
 }
 
 interface State {
     banishedPlayers: Set<number>;
-    playersWithGames: Array<Player>;
+    playersWithGames: Player[];
     refresh: boolean;
-    standings: GameStandings | undefined;
+    standings: GameRecord | undefined;
 }
 
 const softRefreshTime = 60 * 60 * 1000;
@@ -35,12 +35,12 @@ class Dashboard extends React.Component<Props, State> {
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         this._fetchStandings();
         this._startRefreshLoop();
     }
 
-    public render() {
+    public render(): React.ReactNode {
         const { refresh, standings, playersWithGames } = this.state;
         const { game } = this.props;
 
@@ -67,7 +67,7 @@ class Dashboard extends React.Component<Props, State> {
         );
     }
 
-    private async _fetchStandings() {
+    private async _fetchStandings(): Promise<void> {
         const { players } = this.props;
         const standings = await LeaderboardAPI.getInstance().gameStandings(this.props.game.id);
 
@@ -90,11 +90,11 @@ class Dashboard extends React.Component<Props, State> {
         });
     }
 
-    private _identifyBanishedPlayers(standings: GameStandings, players: Array<Player>): Set<number> {
+    private _identifyBanishedPlayers(standings: GameRecord, players: Player[]): Set<number> {
         return new Set(players.filter(player => isBanished(standings.records[player.id])).map(player => player.id));
     }
 
-    private _startRefreshLoop() {
+    private _startRefreshLoop(): void {
         if (this.refreshInterval != null) {
             window.clearInterval(this.refreshInterval);
         }
@@ -102,7 +102,7 @@ class Dashboard extends React.Component<Props, State> {
         this.refreshInterval = window.setInterval(() => this._refreshLoop(), softRefreshTime);
     }
 
-    private async _refreshLoop() {
+    private async _refreshLoop(): Promise<void> {
         this.setState({ refresh: !this.state.refresh });
     }
 }

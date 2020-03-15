@@ -9,43 +9,45 @@
 import Foundation
 
 protocol PickerItemQueryable {
+	associatedtype Query: GraphApiQuery & ResponseAssociable
 	associatedtype Item: Identifiable
 
-	func query(api: LeaderboardAPI, completion: @escaping (LeaderboardAPIResult<[Item]>) -> Void)
+	func query(completion: @escaping (Query.ResponseResult) -> Void)
+	func pickerItems(from: Query.Response) -> [Item]
 }
 
 enum PickerAction<Item: Identifiable>: BaseAction {
-	case itemsUpdated
+	case dataChanged
 	case limitExceeded(Int)
 	case donePicking([Item])
-	case apiError(LeaderboardAPIError)
+	case graphQLError(GraphAPIError)
 }
 
 enum PickerViewAction<Item: Identifiable>: BaseViewAction {
 	case initialize
 	case refresh
 	case finish
-	case itemSelected(ID, Bool)
+	case itemSelected(GraphID, Bool)
 }
 
 class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where Queryable.Item == Item {
 	typealias ActionHandler = (_ action: PickerAction<Item>) -> Void
 
-	private var api: LeaderboardAPI
 	private let multiSelect: Bool
 	private let limit: Int?
 	private var queryable: Queryable
 	var handleAction: ActionHandler
 
-	private(set) var items: [Item] = [] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
-			handleAction(.itemsUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
-	private(set) var selectedItems: Set<ID> {
+	private(set) var items: [Item] = []
+	private(set) var selectedItems: Set<GraphID> {
 		didSet {
-			handleAction(.itemsUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
@@ -57,8 +59,13 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		return false
 	}
 
-	init(api: LeaderboardAPI, initiallySelected: Set<ID>, multiSelect: Bool, limit: Int?, queryable: Queryable, handleAction: @escaping ActionHandler) {
-		self.api = api
+	init(
+		initiallySelected: Set<GraphID>,
+		multiSelect: Bool,
+		limit: Int?,
+		queryable: Queryable,
+		handleAction: @escaping ActionHandler
+	) {
 		self.selectedItems = initiallySelected
 		self.multiSelect = multiSelect
 		self.limit = limit
@@ -68,40 +75,30 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 
 	func postViewAction(_ viewAction: PickerViewAction<Item>) {
 		switch viewAction {
-		case .initialize:
+		case .initialize, .refresh:
 			loadItems()
-		case .refresh:
-			reloadItems()
-		case .itemSelected(let id, let selected):
-			selectItem(id, selected: selected)
+		case .itemSelected(let itemID, let selected):
+			selectItem(itemID, selected: selected)
 		case .finish:
 			submit()
 		}
 	}
 
 	private func loadItems() {
-		queryable.query(api: api) { [weak self] result in
+		dataLoading = true
+		queryable.query { [weak self] result in
 			switch result {
-			case .success(let items):
-				self?.items = items
+			case .success(let response):
+				self?.items = self?.queryable.pickerItems(from: response) ?? []
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
+				self?.handleAction(.graphQLError(error))
 			}
+
+			self?.dataLoading = false
 		}
 	}
 
-	private func reloadItems() {
-		api.refresh { [weak self] result in
-			switch result {
-			case .success:
-				self?.loadItems()
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			}
-		}
-	}
-
-	private func selectItem(_ id: ID, selected: Bool) {
+	private func selectItem(_ itemID: GraphID, selected: Bool) {
 		var selectedItems = Set(self.selectedItems)
 		if selected {
 			if limitReached {
@@ -112,16 +109,16 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 			if !multiSelect {
 				selectedItems.removeAll()
 			}
-			selectedItems.insert(id)
+			selectedItems.insert(itemID)
 		} else {
-			selectedItems.remove(id)
+			selectedItems.remove(itemID)
 		}
 
 		self.selectedItems = selectedItems
 	}
 
 	private func submit() {
-		let selected = items.filter { selectedItems.contains($0.id) }
+		let selected = items.filter { selectedItems.contains($0.graphID) }
 		handleAction(.donePicking(selected))
 	}
 }

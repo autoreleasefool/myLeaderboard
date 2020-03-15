@@ -3,13 +3,13 @@ import React, { ReactNode } from 'react';
 import PlayerView from '../components/PlayerView';
 import Version from '../components/Version';
 import { isBanished } from '../lib/Freshness';
-import { Game, GameStandings, Player, Record } from '../lib/types';
+import { Game, GameRecord, Player, Record } from '../lib/types';
 import './Standings.css';
 
 interface Props {
     game: Game;
-    standings: GameStandings;
-    players: Array<Player>;
+    standings: GameRecord;
+    players: Player[];
     forceRefresh: boolean;
 }
 
@@ -25,17 +25,17 @@ class Standings extends React.Component<Props, State> {
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         this._parseStandings();
     }
 
-    public componentDidUpdate(prevProps: Props) {
+    public componentDidUpdate(prevProps: Props): void {
         if (this.props.standings !== prevProps.standings) {
             this._parseStandings();
         }
     }
 
-    public render() {
+    public render(): React.ReactNode {
         const { game, players, standings } = this.props;
 
         const visiblePlayers = players.filter(player => this.state.banishedPlayers.has(player.id) === false);
@@ -47,7 +47,7 @@ class Standings extends React.Component<Props, State> {
                         columnContentTypes={visiblePlayers.map(_ => 'text' as ColumnContentType)}
                         headings={[]}
                         rows={[
-                            [<Version />, 'Total', ...visiblePlayers.map(player => <PlayerView player={player} record={standings.records[player.id]} />)],
+                            [<Version key="version" />, 'Total', ...visiblePlayers.map(player => <PlayerView key={`header-${player.id}`} player={player} record={standings.records[player.id]} />)],
                             ...visiblePlayers.map(player => {
                                 const recordCells: Array<ReactNode> = [];
                                 for (const opponent of visiblePlayers) {
@@ -78,13 +78,13 @@ class Standings extends React.Component<Props, State> {
         );
     }
 
-    private _parseStandings() {
+    private _parseStandings(): void {
         const { players, standings } = this.props;
         const banishedPlayers = this._identifyBanishedPlayers(standings, players);
         this.setState({ banishedPlayers });
     }
 
-    private _identifyBanishedPlayers(standings: GameStandings, players: Array<Player>): Set<number> {
+    private _identifyBanishedPlayers(standings: GameRecord, players: Player[]): Set<number> {
         return new Set(players.filter(player => isBanished(standings.records[player.id])).map(player => player.id));
     }
 

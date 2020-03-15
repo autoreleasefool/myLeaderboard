@@ -32,7 +32,7 @@ class Games extends Table<Game> {
         return game ? this.addImage(game) : undefined;
     }
 
-    public allWithImages(args: ListArguments): Array<Game> {
+    public allWithImages(args: ListArguments<Game>): Array<Game> {
         return this.all(args).map(game => this.addImage(game));
     }
 

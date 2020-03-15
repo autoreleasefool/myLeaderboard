@@ -26,22 +26,18 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
     validateWinnersExist(winnerIds, playerIds);
 
     const players = (await loader.playerLoader.loadMany(playerIds))
-        .filter(player => isPlayer(player))
-        .map(player => player as Player);
+        .filter(player => isPlayer(player)) as Player[];
 
     const id = Plays.getInstance().getNextId();
 
-    const newPlay: Play = {
+    const newPlay = {
         game,
         id,
         playedOn: new Date().toISOString(),
         players: playerIds,
         winners: winnerIds,
+        scores,
     };
-
-    if (scores != null) {
-        newPlay.scores = scores;
-    }
 
     const playerList = players
             .map(player => player.username)

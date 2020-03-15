@@ -10,32 +10,46 @@ import UIKit
 import FunctionalTableData
 import Loaf
 
-class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQueryable>: FTDViewController where Queryable.Item == Item {
+class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQueryable>: FTDViewController where
+	Queryable.Item == Item {
 	typealias FinishedSelection = ([Item]) -> Void
 
-	private let api: LeaderboardAPI
 	private var viewModel: BasePickerViewModel<Item, Queryable>!
 	private var finishedSelection: FinishedSelection
 
-	init(api: LeaderboardAPI, initiallySelected: Set<ID>, multiSelect: Bool, limit: Int?, queryable: Queryable, completion: @escaping FinishedSelection) {
-		self.api = api
+	init(
+		initiallySelected: Set<GraphID>,
+		multiSelect: Bool,
+		limit: Int?,
+		queryable: Queryable,
+		completion: @escaping FinishedSelection
+	) {
 		self.finishedSelection = completion
 		super.init()
 
-		self.viewModel = BasePickerViewModel(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, limit: limit, queryable: queryable) { [weak self] action in
+		self.viewModel = BasePickerViewModel(
+			initiallySelected: initiallySelected,
+			multiSelect: multiSelect,
+			limit: limit,
+			queryable: queryable
+		) { [weak self] action in
 			switch action {
-			case .itemsUpdated:
+			case .dataChanged:
 				self?.render()
 			case .limitExceeded(let limit):
 				self?.notifyLimitExceeded(limit)
 			case .donePicking(let selectedItems):
 				self?.finish(with: selectedItems)
-			case .apiError(let error):
+			case .graphQLError(let error):
 				self?.presentError(error)
 			}
 		}
 
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(submit)
+		)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -49,8 +63,18 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 	}
 
 	private func render() {
+		if viewModel.items.count == 0 && viewModel.dataLoading {
+			tableData.renderAndDiff([LoadingCell.section()])
+			return
+		}
+
 		let renderedItems = renderItems(viewModel.items)
-		let sections = BasePickerBuilder.sections(items: renderedItems, selectedItems: viewModel.selectedItems, actionable: self)
+		let sections = BasePickerBuilder.sections(
+			items: renderedItems,
+			selectedItems:
+			viewModel.selectedItems,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -58,15 +82,8 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 		fatalError("Pickers must implement renderItems")
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 
 	private func notifyLimitExceeded(_ limit: Int) {
@@ -90,7 +107,7 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 }
 
 extension BasePickerViewController: BasePickerActionable {
-	func didSelectItem(_ item: ID, selected: Bool) {
+	func didSelectItem(_ item: GraphID, selected: Bool) {
 		viewModel.postViewAction(.itemSelected(item, selected))
 	}
 }

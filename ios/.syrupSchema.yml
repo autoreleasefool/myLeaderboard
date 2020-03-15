@@ -1,0 +1,7 @@
+location: https://myleaderboard.josephroque.dev/graphql/introspection
+customScalars:
+- graphType: DateTime
+  nativeType: Date
+  rawValueType: String
+- graphType: Int
+  nativeType: Int

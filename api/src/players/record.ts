@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import Plays from '../db/plays';
-import { PlayerStandings, Record } from '../lib/types';
+import { PlayerRecord, Record } from '../lib/types';
 import { parseID } from '../common/utils';
 import DataLoader, { MyLeaderboardLoader } from '../graphql/DataLoader';
 
@@ -17,21 +17,25 @@ interface RecordHighlight {
     wins: number;
 }
 
-export default async function record(req: Request): Promise<PlayerStandings> {
+export default async function record(req: Request): Promise<PlayerRecord> {
     const playerId = parseID(req.params.playerId);
     const gameId = parseID(req.params.gameId);
     const loader = DataLoader();
     return playerRecord(playerId, gameId, loader);
 }
 
-export async function playerRecord(playerId: number, gameId: number, loader: MyLeaderboardLoader): Promise<PlayerStandings> {
-    const playerRecord: PlayerStandings = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
+export async function playerRecord(playerId: number, gameId: number, loader: MyLeaderboardLoader): Promise<PlayerRecord> {
+    const playerRecord: PlayerRecord = { overallRecord: { wins: 0, losses: 0, ties: 0 }, records: {}};
 
     // Ensure that the player exists
     await loader.playerLoader.load(playerId);
 
     const game = await loader.gameLoader.load(gameId);
-    const plays = await Plays.getInstance().all({first: -1, offset: 0});
+    const plays = await Plays.getInstance().all({
+        first: -1,
+        offset: 0,
+        filter: play => play.game === gameId && play.players.includes(playerId),
+    });
 
     let gamesPlayed = 0;
     let gamesWithScores = 0;
@@ -39,8 +43,7 @@ export async function playerRecord(playerId: number, gameId: number, loader: MyL
     let bestScore = -Infinity;
     let worstScore = Infinity;
 
-    plays.filter(play => play.game === gameId && play.players.includes(playerId))
-        .forEach(play => {
+    plays.forEach(play => {
             gamesPlayed += 1;
             const playerIndex = play.players.indexOf(playerId);
             if (playerIndex >= 0 && game.hasScores && play.scores != null && play.scores.length > playerIndex) {
@@ -94,12 +97,17 @@ export async function playerRecord(playerId: number, gameId: number, loader: MyL
         };
     }
 
+    const lastPlay = plays[plays.length - 1];
+    if (lastPlay) {
+        playerRecord.lastPlayed = lastPlay.playedOn;
+    }
+
     highlightRecords(playerRecord);
 
     return playerRecord;
 }
 
-function highlightRecords(standings: PlayerStandings): void {
+function highlightRecords(standings: PlayerRecord): void {
     const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
     const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
     const opponentIds: Array<number> = [];

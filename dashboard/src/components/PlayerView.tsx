@@ -10,7 +10,7 @@ interface Props {
     limbo?: boolean;
 }
 
-function PlayerView(props: Props) {
+function PlayerView(props: Props): React.ReactElement {
     const { player, record, banished, limbo } = props;
     let fresh: number;
     if (banished || limbo) {
@@ -26,7 +26,7 @@ function PlayerView(props: Props) {
         alt={player.displayName}
         className='avatar'
         style={{ opacity: fresh }}
-        />;
+    />;
 }
 
 export default PlayerView;

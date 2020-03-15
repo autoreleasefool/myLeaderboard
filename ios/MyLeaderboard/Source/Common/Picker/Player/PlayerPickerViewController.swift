@@ -9,17 +9,35 @@
 import Foundation
 
 struct PlayerListQueryable: PickerItemQueryable {
-	func query(api: LeaderboardAPI, completion: @escaping (LeaderboardAPIResult<[Player]>) -> Void) {
-		api.players(completion: completion)
+	typealias Query = MyLeaderboardAPI.PlayerListQuery
+	typealias Response = MyLeaderboardAPI.PlayerListResponse
+
+	func query(completion: @escaping (Query.ResponseResult) -> Void) {
+		Query(first: 25, offset: 0).perform(callback: completion)
+	}
+
+	func pickerItems(from: Response) -> [PlayerListItem] {
+		from.players.compactMap { $0.asPlayerListItemFragment }
 	}
 }
 
-typealias PlayerPicker = BasePickerViewController<Player, PlayerListItemState, PlayerListQueryable>
+typealias PlayerPicker = BasePickerViewController<PlayerListItem, PlayerListItemState, PlayerListQueryable>
 
 class PlayerPickerViewController: PlayerPicker {
-	init(api: LeaderboardAPI, multiSelect: Bool = true, limit: Int? = nil, initiallySelected: Set<ID>, completion: @escaping PlayerPicker.FinishedSelection) {
+	init(
+		multiSelect: Bool = true,
+		limit: Int? = nil,
+		initiallySelected: Set<GraphID>,
+		completion: @escaping PlayerPicker.FinishedSelection
+	) {
 		let queryable = PlayerListQueryable()
-		super.init(api: api, initiallySelected: initiallySelected, multiSelect: multiSelect, limit: limit, queryable: queryable, completion: completion)
+		super.init(
+			initiallySelected: initiallySelected,
+			multiSelect: multiSelect,
+			limit: limit,
+			queryable: queryable,
+			completion: completion
+		)
 
 		self.title = "Players"
 	}
@@ -28,11 +46,15 @@ class PlayerPickerViewController: PlayerPicker {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	override func renderItems(_ items: [Player]) -> [PickerItem<PlayerListItemState>] {
+	override func renderItems(_ items: [PlayerListItem]) -> [PickerItem<PlayerListItemState>] {
 		return items.map {
 			return PickerItem(
-				id: $0.id,
-				state: PlayerListItemState(displayName: $0.displayName, username: $0.username, avatar: $0.qualifiedAvatar)
+				graphID: $0.graphID,
+				state: PlayerListItemState(
+					displayName: $0.displayName,
+					username: $0.username,
+					avatar: $0.qualifiedAvatar
+				)
 			)
 		}
 	}

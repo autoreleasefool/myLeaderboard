@@ -72,18 +72,36 @@ class SpreadsheetBuilder {
 		return TableSection(key: key, rows: rows)
 	}
 
-	private func rowCellBorderConfig(for index: Int, totalRows: Int, from config: Spreadsheet.BorderConfig?) -> Spreadsheet.RowCellBorderConfig {
+	private func rowCellBorderConfig(
+		for index: Int,
+		totalRows: Int,
+		from config: Spreadsheet.BorderConfig?
+	) -> Spreadsheet.RowCellBorderConfig {
 		guard let config = config else {
-			return Spreadsheet.RowCellBorderConfig(topBorder: nil, bottomBorder: nil, leftBorder: nil, rightBorder: nil)
+			return Spreadsheet.RowCellBorderConfig(equalTo: nil)
 		}
 
+		let topBorder: Spreadsheet.BorderConfig?
+		let bottomBorder: Spreadsheet.BorderConfig?
+		let horizontalBorder = config
+
 		if index == 0 {
-			return Spreadsheet.RowCellBorderConfig(topBorder: config, bottomBorder: nil, leftBorder: config, rightBorder: config)
+			topBorder = config
+			bottomBorder = nil
 		} else if index == totalRows - 1 {
-			return Spreadsheet.RowCellBorderConfig(topBorder: nil, bottomBorder: config, leftBorder: config, rightBorder: config)
+			topBorder = nil
+			bottomBorder = config
 		} else {
-			return Spreadsheet.RowCellBorderConfig(topBorder: nil, bottomBorder: nil, leftBorder: config, rightBorder: config)
+			topBorder = nil
+			bottomBorder = nil
 		}
+
+		return Spreadsheet.RowCellBorderConfig(
+			topBorder: topBorder,
+			bottomBorder: bottomBorder,
+			leftBorder: horizontalBorder,
+			rightBorder: horizontalBorder
+		)
 	}
 
 	private func didUpdateVisibility(key: String, cell: UIView, isVisible: Bool) {

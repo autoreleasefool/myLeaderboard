@@ -10,12 +10,10 @@ import UIKit
 import Loaf
 
 class StandingsListViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: StandingsListViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(api: LeaderboardAPI) {
-		self.api = api
+	override init() {
 		super.init()
 		refreshable = true
 	}
@@ -26,32 +24,40 @@ class StandingsListViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = StandingsListViewModel(api: api) { [weak self] action in
+		viewModel = StandingsListViewModel { [weak self] action in
 			guard let self = self else { return }
 			switch action {
-			case .standingsUpdated:
+			case .dataChanged:
 				self.finishRefresh()
 				self.render()
-			case .playersUpdated:
-				self.render()
-			case .apiError(let error):
+			case .graphQLError(let error):
+				self.finishRefresh()
 				self.presentError(error)
 			case .openRecordPlay:
 				self.showRecordPlay()
-			case .openGameDetails(let game):
-				self.showGameDetails(for: game)
-			case .openPlayerDetails(let player):
-				self.showPlayerDetails(for: player)
-			case .openPlays(let game, let players):
-				self.openPlays(game: game, players: players)
+			case .openGameDetails(let gameID):
+				self.showGameDetails(for: gameID)
+			case .openPlayerDetails(let playerID):
+				self.showPlayerDetails(for: playerID)
+			case .openPlays(let filter):
+				self.openPlays(filter: filter)
 			case .showPreferredPlayerSelection:
 				self.openPreferredPlayerSelection()
 			}
 		}
 
 		self.title = "Standings"
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(recordPlay))
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings"), style: .plain, target: self, action: #selector(openSettings))
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .add,
+			target: self,
+			action: #selector(recordPlay)
+		)
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			image: UIImage(named: "Settings"),
+			style: .plain,
+			target: self,
+			action: #selector(openSettings)
+		)
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 
 		viewModel.postViewAction(.initialize)
@@ -69,7 +75,17 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = StandingsListBuilder.sections(standings: viewModel.standings, players: viewModel.players, builder: spreadsheetBuilder, actionable: self)
+		if viewModel.standings.count == 0 && viewModel.dataLoading {
+			tableData.renderAndDiff([LoadingCell.section()])
+			return
+		}
+
+		let sections = StandingsListBuilder.sections(
+			games: viewModel.games,
+			standings: viewModel.standings,
+			builder: spreadsheetBuilder,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -78,27 +94,35 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func showRecordPlay() {
-		presentModal(RecordPlayViewController(api: api) { _ in
+		presentModal(RecordPlayViewController { [weak self] _ in
+			guard let self = self else { return }
 			Loaf("Play recorded!", state: .success, sender: self).show()
+			self.viewModel.postViewAction(.reload)
 		})
 	}
 
-	private func showGameDetails(for game: Game) {
-		show(GameDetailsViewController(api: api, game: game), sender: self)
+	private func showGameDetails(for gameID: GraphID) {
+		let gameName = viewModel.games.first(where: { $0.id == gameID })?.name
+		show(GameDetailsViewController(gameID: gameID, withGameName: gameName), sender: self)
 	}
 
-	private func showPlayerDetails(for player: Player) {
-		show(PlayerDetailsViewController(api: api, player: player), sender: self)
+	private func showPlayerDetails(for playerID: GraphID) {
+		let playerName = viewModel.standings.values.compactMap {
+			$0.standings.records.filter { $0.player.id == playerID }.first
+		}.first?.player.displayName
+		show(PlayerDetailsViewController(playerID: playerID, withPlayerName: playerName), sender: self)
 	}
 
-	private func openPlays(game: Game, players: [Player]) {
-		show(PlaysListViewController(api: api, games: [game], players: players), sender: self)
+	private func openPlays(filter: PlayListFilter) {
+		show(PlaysListViewController(filter: filter), sender: self)
 	}
 
 	private func openPreferredPlayerSelection() {
 		let alert = UIAlertController(
 			title: "Select a preferred player?",
-			message: "You haven't selected a preferred player yet. Choosing a preferred player makes it easier to record games by automatically adding them (yourself) to games you record! Pick a preferred player now?",
+			message: "You haven't selected a preferred player yet. " +
+				"Choosing a preferred player makes it easier to record " +
+				"games by automatically adding them (yourself) to games you record! Pick a preferred player now?",
 			preferredStyle: .alert
 		)
 
@@ -112,37 +136,37 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func openPreferredPlayerModal() {
-		var initiallySelected: Set<ID> = []
+		var initiallySelected: Set<GraphID> = []
 		if let player = Player.preferred {
-			initiallySelected.insert(player.id)
+			initiallySelected.insert(player.graphID)
 		}
 
-		presentModal(PlayerPickerViewController(api: self.api, multiSelect: false, initiallySelected: initiallySelected) { [weak self] selected in
+		presentModal(PlayerPickerViewController(
+			multiSelect: false,
+			initiallySelected: initiallySelected
+		) { [weak self] selected in
 			self?.viewModel.postViewAction(.selectPreferredPlayer(selected.first))
 		})
 	}
 
 	private func openPreferredOpponentsModal() {
-		let initiallySelected = Set(Player.preferredOpponents.map { $0.id })
+		let initiallySelected = Set(Player.preferredOpponents.map { $0.graphID })
 
-		presentModal(PlayerPickerViewController(api: self.api, multiSelect: true, limit: Player.preferredOpponentsLimit, initiallySelected: initiallySelected) { [weak self] selected in
+		presentModal(PlayerPickerViewController(
+			multiSelect: true,
+			limit: Player.preferredOpponentsLimit,
+			initiallySelected: initiallySelected
+		) { [weak self] selected in
 			self?.viewModel.postViewAction(.selectPreferredOpponents(selected))
 		})
 	}
 
 	@objc private func openSettings() {
-		presentModal(SettingsViewController(api: api))
+		presentModal(SettingsViewController())
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 
 	override func refresh() {
@@ -151,16 +175,17 @@ class StandingsListViewController: FTDViewController {
 }
 
 extension StandingsListViewController: StandingsListActionable {
-	func selectedGame(game: Game) {
-		viewModel.postViewAction(.selectGame(game))
+	func selectedGame(gameID: GraphID) {
+		viewModel.postViewAction(.selectGame(gameID))
 	}
 
-	func selectedPlayer(player: Player) {
-		viewModel.postViewAction(.selectPlayer(player))
+	func selectedPlayer(playerID: GraphID) {
+		viewModel.postViewAction(.selectPlayer(playerID))
 	}
 
-	func showPlays(game: Game, players: [Player]) {
-		viewModel.postViewAction(.showPlays(game, players))
+	func showPlays(gameID: GraphID, playerIDs: [GraphID]) {
+		let filter = PlayListFilter(gameID: gameID, playerIDs: playerIDs)
+		viewModel.postViewAction(.showPlays(filter))
 	}
 }
 

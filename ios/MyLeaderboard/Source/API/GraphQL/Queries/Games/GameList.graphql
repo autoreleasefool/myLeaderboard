@@ -1,0 +1,12 @@
+query GameList($first: Int!, $offset: Int!) {
+	games(first: $first, offset: $offset) {
+		... GameListItem
+	}
+}
+
+fragment GameListItem on Game {
+	id
+	name
+	image
+	hasScores
+}

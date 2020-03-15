@@ -1,6 +1,6 @@
 import './env';
 
-import express, { NextFunction, Request, Response } from 'express';
+import express, { ErrorRequestHandler, RequestHandler } from 'express';
 import Octo from './common/Octo';
 
 // Print out startup time to default logs
@@ -37,19 +37,19 @@ app.use((req, _, next) => {
     next();
 });
 
-function errorHandler(err: any, _: Request, res: Response, __: NextFunction): void {
+const errorHandler: ErrorRequestHandler = (err, _, res, __): void => {
     console.log(err);
     res.json(err);
-}
+};
 
-function tokenExtraction(req: Request, _: Response, next: NextFunction): void {
+const tokenExtraction: RequestHandler = (req, _, next): void => {
     const token = req.body.token;
     if (token != null && token.length > 0) {
         Octo.setToken(req.body.token);
     }
 
     next();
-}
+};
 
 import applyGamesRouter from './games/router';
 import applyMiscRouter from './misc/router';

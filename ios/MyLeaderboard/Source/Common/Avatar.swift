@@ -12,6 +12,11 @@ enum Avatar: Equatable {
 	case url(String)
 	case image(UIImage)
 
+	init?(from: String?) {
+		guard let from = from else { return nil }
+		self = .url(from)
+	}
+
 	func applyImage(to imageView: UIImageView) {
 		switch self {
 		case .image(let image):

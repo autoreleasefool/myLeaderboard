@@ -8,7 +8,7 @@
 
 import FunctionalTableData
 
-struct Spreadsheet {
+enum Spreadsheet {
 	static func section(key: String, builder: SpreadsheetBuilder, config: Config) -> TableSection? {
 		return builder.spreadsheet(forKey: key, config: config)
 	}

@@ -38,24 +38,21 @@ class RootTabBarController: UITabBarController {
 		return [
 			TabItem(
 				type: .standings,
-				controller: UINavigationController(rootViewController: StandingsListViewController(api: api))
+				controller: UINavigationController(rootViewController: StandingsListViewController())
 			),
 			TabItem(
 				type: .games,
-				controller: UINavigationController(rootViewController: GameListViewController(api: api))
+				controller: UINavigationController(rootViewController: GameListViewController())
 			),
 			TabItem(
 				type: .players,
-				controller: UINavigationController(rootViewController: PlayerListViewController(api: api))
+				controller: UINavigationController(rootViewController: PlayerListViewController())
 			),
 		]
 	}()
 
-	private var api: LeaderboardAPI!
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.api = LeaderboardAPI()
 		self.viewControllers = createTabBarItems()
 		self.tabBar.tintColor = .tab
 	}

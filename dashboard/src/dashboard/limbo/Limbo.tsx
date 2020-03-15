@@ -2,17 +2,17 @@ import { Page } from '@shopify/polaris';
 import React from 'react';
 import PlayerView from '../../components/PlayerView';
 import { freshness } from '../../lib/Freshness';
-import { GameStandings, Player } from '../../lib/types';
+import { GameRecord, Player } from '../../lib/types';
 import './Limbo.css';
 
 interface Props {
-    players: Array<Player>;
-    standings: GameStandings;
+    players: Player[];
+    standings: GameRecord;
     forceRefresh: boolean;
 }
 
 interface State {
-    limboing: Array<Player>;
+    limboing: Player[];
 }
 
 class Limbo extends React.Component<Props, State> {
@@ -23,7 +23,7 @@ class Limbo extends React.Component<Props, State> {
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         const { players, standings } = this.props;
 
         const limboing = players.filter(player => {
@@ -39,7 +39,7 @@ class Limbo extends React.Component<Props, State> {
         this.setState({ limboing });
     }
 
-    public render() {
+    public render(): React.ReactNode {
         const { limboing } = this.state;
         if (limboing.length === 0) {
             return null;

@@ -9,159 +9,83 @@
 import Foundation
 
 enum PlayerDetailsAction: BaseAction {
-	case playerLoaded(Player)
 	case dataChanged
-	case apiError(LeaderboardAPIError)
-	case gameSelected(Game)
-	case playerSelected(Player)
-	case showPlays([Game], [Player])
+	case graphQLError(GraphAPIError)
+	case gameSelected(GraphID)
+	case playerSelected(GraphID)
+	case showPlays(PlayListFilter)
 }
 
 enum PlayerDetailsViewAction: BaseViewAction {
 	case initialize
 	case reload
-	case selectGame(Game)
-	case selectPlayer(Player)
-	case showPlays([Game], [Player])
+	case selectGame(GraphID)
+	case selectPlayer(GraphID)
+	case showPlays(PlayListFilter)
 }
 
 class PlayerDetailsViewModel: ViewModel {
+	typealias PlayerDetailsQuery = MyLeaderboardAPI.PlayerDetailsQuery
 	typealias ActionHandler = (_ action: PlayerDetailsAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	private var playerID: ID?
-	private(set) var player: Player? {
-		didSet {
-			if let player = self.player {
-				handleAction(.playerLoaded(player))
-			}
-		}
-	}
-
-	private(set) var records: [Game: PlayerStandings?] = [:] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
 			handleAction(.dataChanged)
 		}
 	}
 
-	private(set) var players: [Player] = [] {
-		didSet {
-			handleAction(.dataChanged)
-		}
-	}
+	private var playerID: GraphID
 
-	private(set) var plays: [GamePlay] = [] {
-		didSet {
-			handleAction(.dataChanged)
-		}
-	}
+	private(set) var player: PlayerDetails?
+	private(set) var players: [Opponent] = []
+	private(set) var records: [PlayerDetailsRecord] = []
+	private(set) var plays: [RecentPlay] = []
 
-	init(api: LeaderboardAPI, id: ID, handleAction: @escaping ActionHandler) {
-		self.api = api
-		self.playerID = id
+	init(playerID: GraphID, handleAction: @escaping ActionHandler) {
+		self.playerID = playerID
 		self.player = nil
-		self.handleAction = handleAction
-	}
-
-	init(api: LeaderboardAPI, player: Player, handleAction: @escaping ActionHandler) {
-		self.api = api
-		self.playerID = player.id
-		self.player = player
 		self.handleAction = handleAction
 	}
 
 	func postViewAction(_ viewAction: PlayerDetailsViewAction) {
 		switch viewAction {
-		case .initialize:
+		case .initialize, .reload:
 			loadData()
-		case .reload:
-			reloadData()
 		case .selectGame(let game):
 			handleAction(.gameSelected(game))
 		case .selectPlayer(let player):
 			handleAction(.playerSelected(player))
-		case .showPlays(let games, let players):
-			handleAction(.showPlays(games, players))
-		}
-	}
-
-	private func reloadData() {
-		api.refresh { [weak self] result in
-			switch result {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success:
-				self?.loadData()
-			}
+		case .showPlays(let filter):
+			handleAction(.showPlays(filter))
 		}
 	}
 
 	private func loadData(retry: Bool = true) {
-		guard let player = player else {
-			if retry {
-				loadPlayer()
-			} else {
-				self.handleAction(.apiError(.missingData))
-			}
-			return
-		}
-
-		api.games { [weak self] result in
-			switch result {
+		dataLoading = true
+		PlayerDetailsQuery(id: self.playerID).perform { [weak self] in
+			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let games):
-				games.forEach {
-					self?.records[$0] = nil
-					self?.fetchPlayerStandings(for: $0, player: player)
-				}
+				self?.handleAction(.graphQLError(error))
+			case .success(let response):
+				self?.handle(response: response)
 			}
-		}
 
-		api.players { [weak self] result in
-			switch result {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let players):
-				self?.players = players.sorted()
-			}
-		}
-
-		api.plays { [weak self] result in
-			guard let self = self else { return }
-			switch result {
-			case .failure(let error):
-				self.handleAction(.apiError(error))
-			case .success(let plays):
-				self.plays = plays.filter {
-					$0.players.contains(player.id)
-				}.sorted().reversed()
-			}
+			self?.dataLoading = false
 		}
 	}
 
-	private func fetchPlayerStandings(for game: Game, player: Player) {
-		api.playerRecord(playerID: player.id, gameID: game.id) { [weak self] result in
-			switch result {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let playerRecord):
-				self?.records[game] = playerRecord
-			}
+	private func handle(response: MyLeaderboardAPI.PlayerDetailsResponse) {
+		guard let player = response.player?.asPlayerDetailsFragmentFragment else {
+			return handleAction(.graphQLError(.missingData))
 		}
-	}
 
-	private func loadPlayer() {
-		api.players { [weak self] result in
-			switch result {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let players):
-				self?.player = players.first { $0.id == self?.playerID }
-				self?.loadData(retry: false)
-			}
-		}
+		self.player = player
+		players = Array(Set(response.player?.records.flatMap {
+			$0.asPlayerDetailsRecordFragmentFragment.records.map { $0.opponent.asOpponentFragmentFragment }
+		} ?? [])).sorted()
+		records = response.player?.records.map { $0.asPlayerDetailsRecordFragmentFragment } ?? []
+		plays = response.player?.recentPlays.map { $0.asRecentPlayFragmentFragment } ?? []
 	}
 }

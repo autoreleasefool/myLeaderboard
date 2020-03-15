@@ -9,68 +9,59 @@
 import Foundation
 
 enum PlayerListAction: BaseAction {
-	case playersUpdated([Player])
-	case playerSelected(Player)
+	case dataChanged
+	case playerSelected(GraphID)
 	case addPlayer
-	case apiError(LeaderboardAPIError)
+	case graphQLError(GraphAPIError)
 }
 
 enum PlayerListViewAction: BaseViewAction {
 	case initialize
 	case reload
-	case selectPlayer(Player)
+	case selectPlayer(GraphID)
 	case addPlayer
 }
 
 class PlayerListViewModel: ViewModel {
+	typealias PlayerListQuery = MyLeaderboardAPI.PlayerListQuery
 	typealias ActionHandler = (_ action: PlayerListAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	private(set) var players: [Player] = [] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
-			handleAction(.playersUpdated(players))
+			handleAction(.dataChanged)
 		}
 	}
 
-	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
-		self.api = api
+	private(set) var players: [PlayerListItem] = []
+
+	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
 
 	func postViewAction(_ viewAction: PlayerListViewAction) {
 		switch viewAction {
-		case .initialize:
+		case .initialize, .reload:
 			loadPlayerList()
-		case .reload:
-			reloadPlayerList()
-		case .selectPlayer(let player):
-			handleAction(.playerSelected(player))
+		case .selectPlayer(let playerID):
+			handleAction(.playerSelected(playerID))
 		case .addPlayer:
 			handleAction(.addPlayer)
 		}
 	}
 
 	private func loadPlayerList() {
-		api.players { [weak self] in
+		dataLoading = true
+		PlayerListQuery(first: 25, offset: 0).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let players):
-				self?.players = players
+				self?.handleAction(.graphQLError(error))
+			case .success(let response):
+				self?.players = response.players.map { $0.asPlayerListItemFragment }
 			}
-		}
-	}
 
-	private func reloadPlayerList() {
-		api.refresh { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success:
-				self?.loadPlayerList()
-			}
+			self?.dataLoading = false
 		}
 	}
 }

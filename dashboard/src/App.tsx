@@ -5,8 +5,8 @@ import GameDashboard from './dashboard/GameDashboard';
 import { Game, Player } from './lib/types';
 
 interface State {
-    games: Array<Game>;
-    players: Array<Player>;
+    games: Game[];
+    players: Player[];
 }
 
 class App extends React.Component<{}, State> {
@@ -18,11 +18,11 @@ class App extends React.Component<{}, State> {
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         this._fetchData();
     }
 
-    public render() {
+    public render(): React.ReactNode {
         const { games, players } = this.state;
 
         return (
@@ -35,7 +35,7 @@ class App extends React.Component<{}, State> {
         );
     }
 
-    private async _fetchData() {
+    private async _fetchData(): Promise<void> {
         const games = await LeaderboardAPI.getInstance().games();
         const players = await LeaderboardAPI.getInstance().players();
         players.sort((first, second) => first.username.toLowerCase().localeCompare(second.username.toLowerCase()));

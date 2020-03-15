@@ -1,0 +1,52 @@
+query PlayerDetails($id: ID!) {
+	player(id: $id) {
+		... PlayerDetailsFragment
+		records(first: -1) {
+			... PlayerDetailsRecordFragment
+		}
+		recentPlays(first: 3) {
+			... RecentPlayFragment
+		}
+	}
+}
+
+fragment PlayerDetailsFragment on Player {
+	id
+	displayName
+	username
+	avatar
+}
+
+fragment OpponentFragment on BasicPlayer {
+	id
+	avatar
+	displayName
+}
+
+fragment PlayerDetailsRecordFragment on PlayerGameRecord {
+	game {
+		id
+		image
+		name
+	}
+	scoreStats {
+		best
+		worst
+		average
+	}
+	... PlayerGameRecordFragment
+}
+
+fragment PlayerGameRecordFragment on PlayerGameRecord {
+	overallRecord {
+		... RecordFragment
+	}
+	records {
+		opponent {
+			... OpponentFragment
+		}
+		record {
+			... RecordFragment
+		}
+	}
+}

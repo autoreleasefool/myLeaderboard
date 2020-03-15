@@ -9,7 +9,7 @@
 import UIKit
 import FunctionalTableData
 
-struct Theme {
+enum Theme {
 	static func apply() {
 		CellStyle.defaultBackgroundColor = .primary
 		CellStyle.defaultSelectionColor = .selection

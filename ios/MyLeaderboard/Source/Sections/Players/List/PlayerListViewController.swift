@@ -10,11 +10,9 @@ import UIKit
 import Loaf
 
 class PlayerListViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: PlayerListViewModel!
 
-	init(api: LeaderboardAPI) {
-		self.api = api
+	override init() {
 		super.init()
 		refreshable = true
 	}
@@ -25,15 +23,16 @@ class PlayerListViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = PlayerListViewModel(api: api) { [weak self] action in
+		viewModel = PlayerListViewModel { [weak self] action in
 			guard let self = self else { return }
 			switch action {
-			case .playersUpdated:
+			case .dataChanged:
 				self.finishRefresh()
 				self.render()
 			case .playerSelected(let player):
 				self.showPlayerDetails(for: player)
-			case .apiError(let error):
+			case .graphQLError(let error):
+				self.finishRefresh()
 				self.presentError(error)
 			case .addPlayer:
 				self.showCreatePlayer()
@@ -41,14 +40,20 @@ class PlayerListViewController: FTDViewController {
 		}
 
 		self.title = "Players"
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPlayer))
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .add,
+			target: self,
+			action: #selector(addNewPlayer)
+		)
 
 		viewModel.postViewAction(.initialize)
 		render()
 	}
 
 	private func render() {
-		let sections = PlayerListBuilder.sections(players: viewModel.players, actionable: self)
+		let sections = viewModel.players.count > 0 || !viewModel.dataLoading
+			? PlayerListBuilder.sections(players: viewModel.players, actionable: self)
+			: [LoadingCell.section()]
 		tableData.renderAndDiff(sections)
 	}
 
@@ -57,24 +62,20 @@ class PlayerListViewController: FTDViewController {
 	}
 
 	private func showCreatePlayer() {
-		presentModal(CreatePlayerViewController(api: api) { player in
+		presentModal(CreatePlayerViewController { [weak self] player in
+			guard let self = self else { return }
 			Loaf("\(player.displayName) added!", state: .success, sender: self).show()
+			self.viewModel.postViewAction(.reload)
 		})
 	}
 
-	private func showPlayerDetails(for player: Player) {
-		show(PlayerDetailsViewController(api: api, player: player), sender: self)
+	private func showPlayerDetails(for playerID: GraphID) {
+		let playerName = viewModel.players.first { $0.id == playerID }?.displayName
+		show(PlayerDetailsViewController(playerID: playerID, withPlayerName: playerName), sender: self)
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 
 	override func refresh() {
@@ -83,8 +84,8 @@ class PlayerListViewController: FTDViewController {
 }
 
 extension PlayerListViewController: PlayerListActionable {
-	func selectedPlayer(player: Player) {
-		viewModel.postViewAction(.selectPlayer(player))
+	func selectedPlayer(playerID: GraphID) {
+		viewModel.postViewAction(.selectPlayer(playerID))
 	}
 }
 
@@ -94,6 +95,6 @@ extension PlayerListViewController: RouteHandler {
 			return
 		}
 
-		show(PlayerDetailsViewController(api: api, playerID: playerID), sender: self)
+		show(PlayerDetailsViewController(playerID: playerID), sender: self)
 	}
 }

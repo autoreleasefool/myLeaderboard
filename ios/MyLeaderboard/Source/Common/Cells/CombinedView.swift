@@ -9,7 +9,8 @@
 import UIKit
 import FunctionalTableData
 
-typealias CombinedCell<View1: UIView, State1: Equatable, View2: UIView, State2: Equatable, Layout: TableItemLayout> = HostCell<CombinedView<View1, View2>, CombinedState<State1, State2>, Layout>
+typealias CombinedCell<View1: UIView, State1: Equatable, View2: UIView, State2: Equatable, Layout: TableItemLayout> =
+	HostCell<CombinedView<View1, View2>, CombinedState<State1, State2>, Layout>
 
 class CombinedView<View1: UIView, View2: UIView>: UIView {
 	let view1 = View1()
@@ -29,7 +30,7 @@ class CombinedView<View1: UIView, View2: UIView>: UIView {
 			stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
 			stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
 			stackView.topAnchor.constraint(equalTo: topAnchor),
-			stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+			stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
 			])
 	}
 

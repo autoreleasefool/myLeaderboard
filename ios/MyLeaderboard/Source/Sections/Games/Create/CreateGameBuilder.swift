@@ -14,7 +14,7 @@ protocol CreateGameActionable: AnyObject {
 	func updatedHasScores(hasScores: Bool)
 }
 
-struct CreateGameBuilder {
+enum CreateGameBuilder {
 	enum Keys: String {
 		case createGameSection
 		enum Create: String {
@@ -24,7 +24,12 @@ struct CreateGameBuilder {
 		}
 	}
 
-	static func sections(gameName: String, hasScores: Bool, errors: KeyedErrors, actionable: CreateGameActionable) -> [TableSection] {
+	static func sections(
+		gameName: String,
+		hasScores: Bool,
+		errors: KeyedErrors,
+		actionable: CreateGameActionable
+	) -> [TableSection] {
 		let nameLabel = LabelState(text: .attributed(NSAttributedString(string: "Name", textColor: .text)))
 		let nameInput = TextInputCellState(text: gameName, placeholder: "Patchwork") { [weak actionable] text in
 			guard let text = text else { return }
@@ -65,7 +70,10 @@ struct CreateGameBuilder {
 			rows.append(LabelCell(
 				key: Keys.Create.error,
 				style: CellStyle(backgroundColor: .primaryDark),
-				state: LabelState(text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)), size: Metrics.Text.caption),
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: errorMessage, textColor: .error)),
+					size: Metrics.Text.caption
+				),
 				cellUpdater: LabelState.updateView
 			))
 		}

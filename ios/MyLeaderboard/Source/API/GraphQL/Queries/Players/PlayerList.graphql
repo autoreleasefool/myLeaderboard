@@ -1,0 +1,12 @@
+query PlayerList($first: Int!, $offset: Int!) {
+	players(first: $first, offset: $offset) {
+		... PlayerListItem
+	}
+}
+
+fragment PlayerListItem on Player {
+	id
+	displayName
+	username
+	avatar
+}

@@ -1,0 +1,48 @@
+query GameDetails($id: ID!, $ignoreBanished: Boolean!) {
+	game(id: $id) {
+		... GameDetailsFragment
+		standings(ignoreBanished: $ignoreBanished) {
+			... GameDetailsStandingsFragment
+		}
+		recentPlays(first: 3) {
+			... RecentPlayFragment
+		}
+	}
+}
+
+fragment GameDetailsFragment on Game {
+	id
+	name
+	hasScores
+	image
+}
+
+fragment GameDetailsStandingsFragment on GameStandings {
+	scoreStats {
+		best
+		worst
+		average
+	}
+	records {
+		player {
+			... OpponentFragment
+		}
+		record {
+			... GameDetailsPlayerRecordFragment
+		}
+	}
+}
+
+fragment GameDetailsPlayerRecordFragment on PlayerGameRecord {
+	overallRecord {
+		... RecordFragment
+	}
+	records {
+		opponent {
+			... OpponentFragment
+		}
+		record {
+			... RecordFragment
+		}
+	}
+}

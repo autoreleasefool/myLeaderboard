@@ -22,11 +22,11 @@ class RefreshView extends React.Component<Props, State> {
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         this._startRefreshLoop();
     }
 
-    public render() {
+    public render(): React.ReactNode {
         const { errorMessage } = this.state;
         if (errorMessage == null) {
             return null;
@@ -35,7 +35,7 @@ class RefreshView extends React.Component<Props, State> {
         return (
             <Page title=''>
                 <Card>
-                    <Banner title={'Failed to refresh'} onDismiss={() => this._startRefreshLoop()} status={'critical'}>
+                    <Banner title={'Failed to refresh'} onDismiss={(): void => this._startRefreshLoop()} status={'critical'}>
                         <p>{errorMessage}</p>
                     </Banner>
                 </Card>
@@ -43,7 +43,7 @@ class RefreshView extends React.Component<Props, State> {
         );
     }
 
-    private _startRefreshLoop() {
+    private _startRefreshLoop(): void {
         if (this.state.errorMessage != null) {
             this.setState({ errorMessage: undefined });
         }
@@ -55,7 +55,7 @@ class RefreshView extends React.Component<Props, State> {
         this.refreshInterval = window.setInterval(() => this._refreshLoop(), this.props.refreshTime);
     }
 
-    private async _refreshLoop() {
+    private async _refreshLoop(): Promise<void> {
         try {
             const anyUpdates = await LeaderboardAPI.getInstance().hasUpdates(this.startTime);
             if (anyUpdates) {

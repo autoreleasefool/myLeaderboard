@@ -2,7 +2,7 @@ import { PlayerRecord } from './types';
 
 export function freshness(record: PlayerRecord): number {
     const today = new Date();
-    const seconds = (today.getTime() - new Date(record.lastPlayed).getTime()) / 1000;
+    const seconds = (today.getTime() - new Date(record.lastPlayed ? record.lastPlayed : "").getTime()) / 1000;
     const daysSinceLastPlayed = Math.floor(seconds / 86400);
     const veryFreshLimit = 7;
     const staleLimit = 21;

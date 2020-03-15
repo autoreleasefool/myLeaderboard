@@ -10,13 +10,11 @@ import UIKit
 import Loaf
 
 class CreatePlayerViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: CreatePlayerViewModel!
 
-	private var playerCreated: ((Player) -> Void)?
+	private var playerCreated: ((NewPlayer) -> Void)?
 
-	init(api: LeaderboardAPI, onSuccess: ((Player) -> Void)? = nil) {
-		self.api = api
+	init(onSuccess: ((NewPlayer) -> Void)? = nil) {
 		self.playerCreated = onSuccess
 		super.init()
 	}
@@ -27,27 +25,41 @@ class CreatePlayerViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = CreatePlayerViewModel(api: api) { [weak self] action in
+		viewModel = CreatePlayerViewModel { [weak self] action in
 			switch action {
 			case .playerUpdated, .userErrors:
 				self?.render()
 			case .playerCreated(let player):
 				self?.playerCreated?(player)
 				self?.dismiss(animated: true)
-			case .apiError(let error):
+			case .graphQLError(let error):
 				self?.presentError(error)
 			}
 		}
 
 		self.title = "Create Player"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .cancel,
+			target: self,
+			action: #selector(cancel)
+		)
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(submit)
+		)
 
 		render()
 	}
 
 	private func render() {
-		let sections = CreatePlayerBuilder.sections(displayName: viewModel.displayName, username: viewModel.username, avatarURL: viewModel.avatarURL, errors: viewModel.errors, actionable: self)
+		let sections = CreatePlayerBuilder.sections(
+			displayName: viewModel.displayName,
+			username: viewModel.username,
+			avatarURL: viewModel.avatarURL,
+			errors: viewModel.errors,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 		updateDoneButton()
 	}
@@ -64,15 +76,8 @@ class CreatePlayerViewController: FTDViewController {
 		viewModel.postViewAction(.submit(self))
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 }
 

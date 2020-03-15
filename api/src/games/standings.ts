@@ -2,7 +2,7 @@ import { Request } from 'express';
 import Players from '../db/players';
 import Plays from '../db/plays';
 import { isBanished } from '../lib/Freshness';
-import { Game, GameStandings, Record } from '../lib/types';
+import { Game, GameRecord, Record } from '../lib/types';
 import { parseID } from '../common/utils';
 import DataLoader, { MyLeaderboardLoader } from '../graphql/DataLoader';
 
@@ -19,28 +19,28 @@ interface RecordHighlight {
     wins: number;
 }
 
-export default async function generateGameStandings(req: Request): Promise<GameStandings> {
+export default async function generateGameStandings(req: Request): Promise<GameRecord> {
     const gameId = parseID(req.params.id);
     const loader = DataLoader();
-    return gameStandings(gameId, loader);
+    return gameStandings(gameId, false, loader);
 }
 
-export async function gameStandings(gameId: number, loader: MyLeaderboardLoader): Promise<GameStandings> {
+export async function gameStandings(gameId: number, ignoreBanished: boolean, loader: MyLeaderboardLoader): Promise<GameRecord> {
     const game = await loader.gameLoader.load(gameId);
 
     const gameStandings = await buildStandings(game);
     const allPlayers = Players.getInstance().allIds({first: -1, offset: 0});
     const players = allPlayers.filter(id => {
         const playerRecord = gameStandings.records[id];
-        return playerRecord == null ? false : isBanished(playerRecord) === false;
+        return playerRecord == null ? false : ignoreBanished || isBanished(playerRecord) === false;
     });
     await highlightRecords(gameStandings, players, loader);
 
     return gameStandings;
 }
 
-async function buildStandings(game: Game): Promise<GameStandings> {
-    const gameStandings: GameStandings = { records: {}};
+async function buildStandings(game: Game): Promise<GameRecord> {
+    const gameStandings: GameRecord = { records: {}};
 
     let totalGames = 0;
     let gamesWithScores = 0;
@@ -48,9 +48,12 @@ async function buildStandings(game: Game): Promise<GameStandings> {
     let bestScore = -Infinity;
     let worstScore = Infinity;
 
-    const plays = Plays.getInstance().all({first: -1, offset: 0});
-    plays.filter(play => play.game === game.id)
-        .forEach(play => {
+    const plays = Plays.getInstance().all({
+        first: -1,
+        offset: 0,
+        filter: play => play.game === game.id,
+    });
+    plays.forEach(play => {
             totalGames += 1;
             if (game.hasScores && play.scores != null && play.scores.length > 1) {
                 gamesWithScores += 1;
@@ -97,7 +100,8 @@ async function buildStandings(game: Game): Promise<GameStandings> {
                     }
                 }
 
-                if (play.playedOn > gameStandings.records[playerId].lastPlayed) {
+                const lastPlayed = gameStandings.records[playerId].lastPlayed;
+                if (!lastPlayed || play.playedOn > lastPlayed) {
                     gameStandings.records[playerId].lastPlayed = play.playedOn;
                 }
 
@@ -153,7 +157,7 @@ async function buildStandings(game: Game): Promise<GameStandings> {
     return gameStandings;
 }
 
-async function highlightRecords(standings: GameStandings, playerIds: Array<number>, loader: MyLeaderboardLoader): Promise<void> {
+async function highlightRecords(standings: GameRecord, playerIds: Array<number>, loader: MyLeaderboardLoader): Promise<void> {
     const worstRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
     const bestRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
 
@@ -173,7 +177,7 @@ async function highlightRecords(standings: GameStandings, playerIds: Array<numbe
         const worstVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: Infinity, losses: 0, wins: 0 }];
         const bestVsRecords: Array<RecordHighlight> = [{ player: undefined, winRate: -Infinity, losses: 0, wins: 0 }];
         for (const opponentId of playerIds) {
-            const vsRecord = playerDetails.records[playerId];
+            const vsRecord = playerDetails.records[opponentId.toString()];
             if (opponentId === player.id || vsRecord == null) {
                 continue;
             }

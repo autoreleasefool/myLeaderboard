@@ -9,13 +9,12 @@
 import Foundation
 
 enum StandingsListAction: BaseAction {
-	case standingsUpdated
-	case playersUpdated
-	case apiError(LeaderboardAPIError)
+	case dataChanged
+	case graphQLError(GraphAPIError)
 	case openRecordPlay
-	case openGameDetails(Game)
-	case openPlayerDetails(Player)
-	case openPlays(Game, [Player])
+	case openGameDetails(GraphID)
+	case openPlayerDetails(GraphID)
+	case openPlays(PlayListFilter)
 	case showPreferredPlayerSelection
 }
 
@@ -24,30 +23,27 @@ enum StandingsListViewAction: BaseViewAction {
 	case willAppear
 	case reload
 	case recordPlay
-	case selectGame(Game)
-	case selectPlayer(Player)
-	case showPlays(Game, [Player])
-	case selectPreferredPlayer(Player?)
-	case selectPreferredOpponents([Player])
+	case selectGame(GraphID)
+	case selectPlayer(GraphID)
+	case showPlays(PlayListFilter)
+	case selectPreferredPlayer(PlayerListItem?)
+	case selectPreferredOpponents([PlayerListItem])
 }
 
 class StandingsListViewModel: ViewModel {
+	typealias StandingsQuery = MyLeaderboardAPI.StandingsQuery
 	typealias ActionHandler = (_ action: StandingsListAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
-	private(set) var standings: [Game: Standings?] = [:] {
+	private(set) var dataLoading: Bool = false {
 		didSet {
-			handleAction(.standingsUpdated)
+			handleAction(.dataChanged)
 		}
 	}
 
-	private(set) var players: [Player] = [] {
-		didSet {
-			handleAction(.playersUpdated)
-		}
-	}
+	private(set) var games: [StandingsGame] = []
+	private(set) var standings: [StandingsGame: StandingsFragment] = [:]
 
 	private var hasCheckedForPreferredPlayer: Bool = false
 
@@ -55,80 +51,52 @@ class StandingsListViewModel: ViewModel {
 		return !hasCheckedForPreferredPlayer && Player.preferred == nil
 	}
 
-	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
-		self.api = api
+	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
 
 	func postViewAction(_ viewAction: StandingsListViewAction) {
 		switch viewAction {
-		case .initialize:
+		case .initialize, .reload:
 			loadData()
 		case .willAppear:
 			if shouldCheckForPreferredPlayer {
 				hasCheckedForPreferredPlayer = true
 				handleAction(.showPreferredPlayerSelection)
 			}
-		case .reload:
-			reloadData()
 		case .recordPlay:
 			handleAction(.openRecordPlay)
 		case .selectGame(let game):
 			handleAction(.openGameDetails(game))
 		case .selectPlayer(let player):
 			handleAction(.openPlayerDetails(player))
-		case .showPlays(let game, let players):
-			handleAction(.openPlays(game, players))
+		case .showPlays(let filter):
+			handleAction(.openPlays(filter))
 		case .selectPreferredPlayer(let player):
 			Player.preferred = player
 		case .selectPreferredOpponents(let opponents):
-			Player.preferredOpponents = opponents.sorted()
-		}
-	}
-
-	private func reloadData() {
-		api.refresh { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success:
-				self?.loadData()
-			}
+			Player.preferredOpponents = opponents.sorted(by: { left, right in left.id < right.id })
 		}
 	}
 
 	private func loadData() {
-		api.games { [weak self] in
+		dataLoading = true
+		StandingsQuery(first: 25, offset: 0).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let games):
-				self?.loadStandings(for: games)
+				self?.handleAction(.graphQLError(error))
+			case .success(let response):
+				self?.handle(response: response)
 			}
-		}
 
-		api.players { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.apiError(error))
-			case .success(let players):
-				self?.players = players.sorted()
-			}
+			self?.dataLoading = false
 		}
 	}
 
-	private func loadStandings(for games: [Game]) {
-		games.forEach {
-			standings[$0] = nil
-
-			api.standings(for: $0) { [weak self] result in
-				switch result {
-				case .failure(let error):
-					self?.handleAction(.apiError(error))
-				case .success((let game, let standings)):
-					self?.standings[game] = standings
-				}
-			}
+	private func handle(response: StandingsQuery.Response) {
+		self.games = response.games.map { $0.asStandingsGameFragmentFragment }
+		self.games.enumerated().forEach { (index, game) in
+			self.standings[game] = response.games[index].asStandingsFragmentFragment
 		}
 	}
 }

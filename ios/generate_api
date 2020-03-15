@@ -1,0 +1,9 @@
+#!/bin/sh
+
+~/Documents/Workspace/Syrup/.build/debug/Syrup generate \
+    ./MyLeaderboard/Source/API/GraphQL \
+    ./MyLeaderboard/Source/API/Generated \
+    ./MyLeaderboard/Source/API/Generated \
+    ../../Syrup/Templates/Swift \
+    --project ./.syrupProject.yml \
+    --schema ./.syrupSchema.yml

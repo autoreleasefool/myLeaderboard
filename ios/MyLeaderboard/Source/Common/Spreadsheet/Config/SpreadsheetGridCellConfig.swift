@@ -38,7 +38,17 @@ extension Spreadsheet {
 		let leftBorder: Spreadsheet.BorderConfig?
 		let rightBorder: Spreadsheet.BorderConfig?
 
-		init(key: String, style: CellStyle? = nil, actions: CellActions = CellActions(), state: LabelState, backgroundColor: UIColor? = nil, topBorder: Spreadsheet.BorderConfig? = nil, bottomBorder: Spreadsheet.BorderConfig? = nil, leftBorder: Spreadsheet.BorderConfig? = nil, rightBorder: Spreadsheet.BorderConfig? = nil) {
+		init(
+			key: String,
+			style: CellStyle? = nil,
+			actions: CellActions = CellActions(),
+			state: LabelState,
+			backgroundColor: UIColor? = nil,
+			topBorder: Spreadsheet.BorderConfig? = nil,
+			bottomBorder: Spreadsheet.BorderConfig? = nil,
+			leftBorder: Spreadsheet.BorderConfig? = nil,
+			rightBorder: Spreadsheet.BorderConfig? = nil
+		) {
 			self.key = key
 			self.style = style
 			self.actions = actions
@@ -87,7 +97,17 @@ extension Spreadsheet {
 		let leftBorder: Spreadsheet.BorderConfig?
 		let rightBorder: Spreadsheet.BorderConfig?
 
-		init(key: String, style: CellStyle? = nil, actions: CellActions = CellActions(), state: ImageState, backgroundColor: UIColor? = nil, topBorder: Spreadsheet.BorderConfig? = nil, bottomBorder: Spreadsheet.BorderConfig? = nil, leftBorder: Spreadsheet.BorderConfig? = nil, rightBorder: Spreadsheet.BorderConfig? = nil) {
+		init(
+			key: String,
+			style: CellStyle? = nil,
+			actions: CellActions = CellActions(),
+			state: ImageState,
+			backgroundColor: UIColor? = nil,
+			topBorder: Spreadsheet.BorderConfig? = nil,
+			bottomBorder: Spreadsheet.BorderConfig? = nil,
+			leftBorder: Spreadsheet.BorderConfig? = nil,
+			rightBorder: Spreadsheet.BorderConfig? = nil
+		) {
 			self.key = key
 			self.style = style
 			self.actions = actions

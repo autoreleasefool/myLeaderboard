@@ -7,15 +7,14 @@
 //
 
 import UIKit
+import Loaf
 
 class RecordPlayViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: RecordPlayViewModel!
 
-	private var playCreated: ((GamePlay) -> Void)?
+	private var playCreated: ((NewPlay) -> Void)?
 
-	init(api: LeaderboardAPI, onSuccess: ((GamePlay) -> Void)? = nil) {
-		self.api = api
+	init(onSuccess: ((NewPlay) -> Void)? = nil) {
 		self.playCreated = onSuccess
 		super.init()
 	}
@@ -26,11 +25,11 @@ class RecordPlayViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = RecordPlayViewModel(api: api) { [weak self] action in
+		viewModel = RecordPlayViewModel { [weak self] action in
 			switch action {
-			case .playUpdated, .userErrors:
+			case .dataChanged, .userErrors:
 				self?.render()
-			case .apiError(let error):
+			case .graphQLError(let error):
 				self?.presentError(error)
 			case .playCreated(let play):
 				self?.playCreated?(play)
@@ -43,15 +42,30 @@ class RecordPlayViewController: FTDViewController {
 		}
 
 		self.title = "Record"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(submit))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .cancel,
+			target: self,
+			action: #selector(cancel)
+		)
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(submit)
+		)
 
 		render()
 		viewModel.postViewAction(.initialize)
 	}
 
 	private func render() {
-		let sections = RecordPlayBuilder.sections(game: viewModel.selectedGame, players: viewModel.selectedPlayers, winners: viewModel.winnerIDs, scores: viewModel.scores, errors: viewModel.errors, actionable: self)
+		let sections = RecordPlayBuilder.sections(
+			game: viewModel.selectedGame,
+			players: viewModel.selectedPlayers,
+			winners: viewModel.winnerGraphIDs,
+			scores: viewModel.scores,
+			errors: viewModel.errors,
+			actionable: self
+		)
 		tableData.renderAndDiff(sections)
 	}
 
@@ -64,28 +78,33 @@ class RecordPlayViewController: FTDViewController {
 	}
 
 	private func presentGamePicker() {
-		let initiallySelected: Set<ID>
+		let initiallySelected: Set<GraphID>
 		if let currentGame = viewModel.selectedGame {
-			initiallySelected = [currentGame.id]
+			initiallySelected = [currentGame.graphID]
 		} else {
 			initiallySelected = []
 		}
 
-		let gamePicker = GamePickerViewController(api: api, multiSelect: false, initiallySelected: initiallySelected) { [weak self] selectedGames in
+		let gamePicker = GamePickerViewController(
+			multiSelect: false,
+			initiallySelected: initiallySelected
+		) { [weak self] selectedGames in
 			self?.viewModel.postViewAction(.selectGame(selectedGames.first))
 		}
 		presentModal(gamePicker)
 	}
 
 	private func presentPlayerPicker() {
-		let playerPicker = PlayerPickerViewController(api: api, initiallySelected: viewModel.selectedPlayerIDs) { [weak self] selectedPlayers in
+		let playerPicker = PlayerPickerViewController(
+			initiallySelected: viewModel.selectedPlayerGraphIDs
+		) { [weak self] selectedPlayers in
 			self?.viewModel.postViewAction(.selectPlayers(selectedPlayers))
 		}
 		presentModal(playerPicker)
 	}
 
-	private func presentError(_ error: Error) {
-		print("Error recording play: \(error)")
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 }
 
@@ -98,15 +117,15 @@ extension RecordPlayViewController: RecordPlayActionable {
 		viewModel.postViewAction(.editGame)
 	}
 
-	func selectWinner(_ player: Player, selected: Bool) {
-		viewModel.postViewAction(.selectWinner(player, selected))
+	func selectWinner(_ playerID: GraphID, selected: Bool) {
+		viewModel.postViewAction(.selectWinner(playerID, selected))
 	}
 
-	func selectGame(_ game: Game) {
+	func selectGame(_ game: GameListItem) {
 		viewModel.postViewAction(.selectGame(game))
 	}
 
-	func setScore(for player: Player, score: Int) {
-		viewModel.postViewAction(.setPlayerScore(player, score))
+	func setScore(for playerID: GraphID, score: Int) {
+		viewModel.postViewAction(.setPlayerScore(playerID, score))
 	}
 }
