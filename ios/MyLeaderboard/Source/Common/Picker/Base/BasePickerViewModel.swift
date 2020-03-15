@@ -10,20 +10,20 @@ import Foundation
 
 protocol PickerItemQueryable {
 	associatedtype Query: GraphApiQuery & ResponseAssociable
-	associatedtype Item: GraphQLIdentifiable
+	associatedtype Item: Identifiable
 
 	func query(completion: @escaping (Query.ResponseResult) -> Void)
 	func pickerItems(from: Query.Response) -> [Item]
 }
 
-enum PickerAction<Item: GraphQLIdentifiable>: BaseAction {
+enum PickerAction<Item: Identifiable>: BaseAction {
 	case dataChanged
 	case limitExceeded(Int)
 	case donePicking([Item])
 	case graphQLError(GraphAPIError)
 }
 
-enum PickerViewAction<Item: GraphQLIdentifiable>: BaseViewAction {
+enum PickerViewAction<Item: Identifiable>: BaseViewAction {
 	case initialize
 	case refresh
 	case finish

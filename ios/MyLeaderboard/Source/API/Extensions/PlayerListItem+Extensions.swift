@@ -10,7 +10,7 @@ import UIKit
 
 typealias PlayerListItem = MyLeaderboardAPI.PlayerListItem
 
-extension PlayerListItem: GraphQLIdentifiable {
+extension PlayerListItem: Identifiable {
 	var graphID: GraphID {
 		return id
 	}

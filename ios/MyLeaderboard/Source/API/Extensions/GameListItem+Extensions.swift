@@ -18,7 +18,7 @@ extension GameListItem: Comparable {
 	}
 }
 
-extension GameListItem: GraphQLIdentifiable {
+extension GameListItem: Identifiable {
 	var graphID: GraphID {
 		return id
 	}

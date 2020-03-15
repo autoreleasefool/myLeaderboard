@@ -54,7 +54,7 @@ enum Player {
 
 private struct LegacyPlayer: Identifiable, Equatable, Codable, Hashable {
 	// swiftlint:disable:next identifier_name
-	let id: ID
+	let id: Int
 	let avatar: String?
 	let displayName: String
 	let username: String
