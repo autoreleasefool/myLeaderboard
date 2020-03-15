@@ -10,8 +10,8 @@ import UIKit
 
 enum CreatePlayerAction {
 	case playerUpdated
-	case playerCreated(Player)
-	case apiError(LeaderboardAPIError)
+	case playerCreated(NewPlayer)
+	case graphQLError(GraphAPIError)
 	case userErrors
 }
 
@@ -23,9 +23,9 @@ enum CreatePlayerViewAction {
 }
 
 class CreatePlayerViewModel {
+	typealias CreatePlayerMutation = MyLeaderboardAPI.CreatePlayerMutation
 	typealias ActionHandler = (_ action: CreatePlayerAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 	var imageLoader = ImageLoader(queryIfCached: true)
 
@@ -86,8 +86,7 @@ class CreatePlayerViewModel {
 		return trimmedDisplayName.count > 0 && trimmedUsername.count > 0 && usernameValid
 	}
 
-	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
-		self.api = api
+	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
 
@@ -196,14 +195,17 @@ class CreatePlayerViewModel {
 
 		isLoading = true
 
-		api.createPlayer(name: trimmedDisplayName, username: trimmedUsername) { [weak self] result in
+		CreatePlayerMutation(displayName: trimmedDisplayName, username: trimmedUsername).perform { [weak self] in
 			self?.isLoading = false
-
-			switch result {
-			case .success(let player):
-				self?.handleAction(.playerCreated(player))
+			switch $0 {
+			case .success(let response):
+				if let newPlayer = response.createPlayer?.asNewPlayerFragmentFragment {
+					self?.handleAction(.playerCreated(newPlayer))
+				} else {
+					self?.handleAction(.graphQLError(.invalidResponse))
+				}
 			case .failure(let error):
-				self?.handleAction(.apiError(error))
+				self?.handleAction(.graphQLError(error))
 			}
 		}
 	}

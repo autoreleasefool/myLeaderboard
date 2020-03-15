@@ -180,6 +180,11 @@
 		CAC66815241EC6270020D9B4 /* NewGameFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66814241EC6270020D9B4 /* NewGameFragment.swift */; };
 		CAC66817241EC6510020D9B4 /* NewGame+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66816241EC6510020D9B4 /* NewGame+Extensions.swift */; };
 		CAC66819241EC7AF0020D9B4 /* CreateGameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66818241EC7AF0020D9B4 /* CreateGameResponse.swift */; };
+		CAC6681B241EC8CE0020D9B4 /* CreatePlayer.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CAC6681A241EC8CE0020D9B4 /* CreatePlayer.graphql */; };
+		CAC6681D241EC9280020D9B4 /* CreatePlayerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6681C241EC9270020D9B4 /* CreatePlayerResponse.swift */; };
+		CAC6681F241EC9300020D9B4 /* CreatePlayerMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6681E241EC9300020D9B4 /* CreatePlayerMutation.swift */; };
+		CAC66821241EC93A0020D9B4 /* NewPlayerFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66820241EC93A0020D9B4 /* NewPlayerFragment.swift */; };
+		CAC66823241EC95A0020D9B4 /* NewPlayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66822241EC95A0020D9B4 /* NewPlayer+Extensions.swift */; };
 		CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066C22D0F70B0075B033 /* AppDelegate.swift */; };
 		CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */; };
 		CAC9067422D0F70F0075B033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
@@ -388,6 +393,11 @@
 		CAC66814241EC6270020D9B4 /* NewGameFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameFragment.swift; sourceTree = "<group>"; };
 		CAC66816241EC6510020D9B4 /* NewGame+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewGame+Extensions.swift"; sourceTree = "<group>"; };
 		CAC66818241EC7AF0020D9B4 /* CreateGameResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGameResponse.swift; sourceTree = "<group>"; };
+		CAC6681A241EC8CE0020D9B4 /* CreatePlayer.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreatePlayer.graphql; sourceTree = "<group>"; };
+		CAC6681C241EC9270020D9B4 /* CreatePlayerResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePlayerResponse.swift; sourceTree = "<group>"; };
+		CAC6681E241EC9300020D9B4 /* CreatePlayerMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePlayerMutation.swift; sourceTree = "<group>"; };
+		CAC66820241EC93A0020D9B4 /* NewPlayerFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlayerFragment.swift; sourceTree = "<group>"; };
+		CAC66822241EC95A0020D9B4 /* NewPlayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewPlayer+Extensions.swift"; sourceTree = "<group>"; };
 		CAC9066922D0F70B0075B033 /* MyLeaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLeaderboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066C22D0F70B0075B033 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
@@ -500,6 +510,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC66810241EC40E0020D9B4 /* CreateGame.graphql */,
+				CAC6681A241EC8CE0020D9B4 /* CreatePlayer.graphql */,
 			);
 			path = Mutations;
 			sourceTree = "<group>";
@@ -680,6 +691,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC66818241EC7AF0020D9B4 /* CreateGameResponse.swift */,
+				CAC6681C241EC9270020D9B4 /* CreatePlayerResponse.swift */,
 				CA9715E9241A20D800EA58E9 /* GameDetailsResponse.swift */,
 				CA9715C5241827D500EA58E9 /* GameListResponse.swift */,
 				CA01849B241594370080A5B8 /* PlayerDetailsResponse.swift */,
@@ -698,11 +710,12 @@
 				CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */,
 				CA9715C1241827C300EA58E9 /* GameListItem.swift */,
 				CAC66814241EC6270020D9B4 /* NewGameFragment.swift */,
+				CAC66820241EC93A0020D9B4 /* NewPlayerFragment.swift */,
 				CA9715ED241C268F00EA58E9 /* OpponentFragment.swift */,
-				CA6D05DB240D147900412D54 /* PlayerListItem.swift */,
 				CA9715D524198F2E00EA58E9 /* PlayerDetailsFragment.swift */,
 				CA9715D72419901800EA58E9 /* PlayerDetailsRecordFragment.swift */,
 				CA9715E1241A20B600EA58E9 /* PlayerGameRecordFragment.swift */,
+				CA6D05DB240D147900412D54 /* PlayerListItem.swift */,
 				CA9715EF241D7C0000EA58E9 /* PlayListItem.swift */,
 				CA9715B8241624A900EA58E9 /* RecentPlayFragment.swift */,
 				CA9715B9241624A900EA58E9 /* RecordFragment.swift */,
@@ -718,6 +731,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC66812241EC61D0020D9B4 /* CreateGameMutation.swift */,
+				CAC6681E241EC9300020D9B4 /* CreatePlayerMutation.swift */,
 			);
 			path = Mutations;
 			sourceTree = "<group>";
@@ -787,13 +801,14 @@
 			children = (
 				CA9715EB241C166300EA58E9 /* GameDetails+Extensions.swift */,
 				CA9715D124198BE300EA58E9 /* GameListItem+Extensions.swift */,
+				CAC66816241EC6510020D9B4 /* NewGame+Extensions.swift */,
+				CAC66822241EC95A0020D9B4 /* NewPlayer+Extensions.swift */,
 				CA9715DB241993A700EA58E9 /* PlayerDetails+Extensions.swift */,
 				CA9715D324198C4B00EA58E9 /* PlayerListItem+Extensions.swift */,
 				CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */,
 				CA9715D92419908C00EA58E9 /* RecentPlayFragment+Extensions.swift */,
 				CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */,
 				CA971603241E172900EA58E9 /* StandingsFragment+Extensions.swift */,
-				CAC66816241EC6510020D9B4 /* NewGame+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1255,6 +1270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAC6681B241EC8CE0020D9B4 /* CreatePlayer.graphql in Resources */,
 				CA9715E0241A1ED800EA58E9 /* GameDetails.graphql in Resources */,
 				CAC9067722D0F70F0075B033 /* LaunchScreen.storyboard in Resources */,
 				CA9715CA2419880400EA58E9 /* PlayerDetails.graphql in Resources */,
@@ -1451,6 +1467,7 @@
 				CAE56F9822F9B65800FE0998 /* NSAttributedString+Extensions.swift in Sources */,
 				CA971606241E1AB200EA58E9 /* StandingsGameFragment.swift in Sources */,
 				CA9715EC241C166300EA58E9 /* GameDetails+Extensions.swift in Sources */,
+				CAC66821241EC93A0020D9B4 /* NewPlayerFragment.swift in Sources */,
 				CAE56F9422F9ABCB00FE0998 /* GamePickerViewController.swift in Sources */,
 				CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */,
 				CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */,
@@ -1470,6 +1487,7 @@
 				CA9715C6241827D500EA58E9 /* GameListResponse.swift in Sources */,
 				CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */,
 				CAB88E3C230DF4620022281D /* GameDetailsBuilder.swift in Sources */,
+				CAC66823241EC95A0020D9B4 /* NewPlayer+Extensions.swift in Sources */,
 				CAB88E38230DF4500022281D /* GameDetailsViewController.swift in Sources */,
 				CA6D05E0240D147900412D54 /* PlayerListQuery.swift in Sources */,
 				F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */,
@@ -1479,11 +1497,13 @@
 				CAE56F8A22F47AAB00FE0998 /* ImageState.swift in Sources */,
 				CA9715DA2419908C00EA58E9 /* RecentPlayFragment+Extensions.swift in Sources */,
 				CA6D05E3240D147900412D54 /* MyLeaderboardAPI.swift in Sources */,
+				CAC6681F241EC9300020D9B4 /* CreatePlayerMutation.swift in Sources */,
 				CA9715BB241624A900EA58E9 /* RecordFragment.swift in Sources */,
 				CA9715F2241D7C1100EA58E9 /* PlayListQuery.swift in Sources */,
 				CA9715C2241827C400EA58E9 /* GameListItem.swift in Sources */,
 				CA0184982415941E0080A5B8 /* PlayerDetailsQuery.swift in Sources */,
 				CA5FC5F423CA0F890029DD61 /* Avatar.swift in Sources */,
+				CAC6681D241EC9280020D9B4 /* CreatePlayerResponse.swift in Sources */,
 				CAAE778A2302DAF0001A37DC /* CreatePlayerViewController.swift in Sources */,
 				CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */,
 				CA9715D424198C4B00EA58E9 /* PlayerListItem+Extensions.swift in Sources */,

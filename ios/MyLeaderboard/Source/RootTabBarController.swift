@@ -46,7 +46,7 @@ class RootTabBarController: UITabBarController {
 			),
 			TabItem(
 				type: .players,
-				controller: UINavigationController(rootViewController: PlayerListViewController(api: api))
+				controller: UINavigationController(rootViewController: PlayerListViewController())
 			),
 		]
 	}()

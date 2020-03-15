@@ -1,0 +1,10 @@
+mutation CreatePlayer($displayName: String!, $username: String!) {
+	createPlayer(displayName: $displayName, username: $username) {
+		... NewPlayerFragment
+	}
+}
+
+fragment NewPlayerFragment on Player {
+	id
+	displayName
+}
