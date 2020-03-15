@@ -19,13 +19,11 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 	private let tableView = UITableView()
 	private let tableData = FunctionalTableData()
 
-	private let api: LeaderboardAPI
 	private var viewModel: TodayViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder
 
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
-		self.api = LeaderboardAPI()
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		setupView()
 	}
@@ -40,14 +38,14 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 		Theme.applyToday()
 		spreadsheetBuilder.interfaceSize = .compact
 
-		viewModel = TodayViewModel(api: api) { [weak self] action in
+		viewModel = TodayViewModel { [weak self] action in
 			switch action {
 			case .noPreferredPlayer(let completionHandler),
 				.noPreferredOpponents(let completionHandler),
 				.dataChanged(let completionHandler):
 				completionHandler?(.newData)
 				self?.render()
-			case .apiError(let error, let completionHandler):
+			case .graphQLError(let error, let completionHandler):
 				completionHandler(.failed)
 				self?.render(error: error)
 			case .presentRoute(let route):
@@ -74,7 +72,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 		tableData.tableView = tableView
 	}
 
-	private func render(error: LeaderboardAPIError? = nil) {
+	private func render(error: GraphAPIError? = nil) {
 		guard let preferredPlayer = viewModel.preferredPlayer else {
 			extensionContext?.widgetLargestAvailableDisplayMode = .compact
 			let sections = TodayBuilder.noPreferredPlayerSection(actionable: self)
@@ -103,7 +101,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 
 		let sections = TodayBuilder.sections(
 			player: preferredPlayer,
-			standings: viewModel.gameStandings,
+			standings: viewModel.standings,
 			opponents: viewModel.visiblePlayers,
 			builder: spreadsheetBuilder,
 			maxRows: maxRows,
@@ -111,7 +109,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 			actionable: self
 		)
 
-		extensionContext?.widgetLargestAvailableDisplayMode = viewModel.gameStandings.count > 1 ? .expanded : .compact
+		extensionContext?.widgetLargestAvailableDisplayMode = viewModel.standings.count > 1 ? .expanded : .compact
 
 		tableData.renderAndDiff(sections, animated: true) { [weak self] in
 			guard let self = self else { return }
@@ -123,7 +121,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 
 	private func estimatedWidgetSize() -> CGSize {
 		if extensionContext?.widgetActiveDisplayMode == .expanded {
-			return CGSize(width: 0, height: 48 * (1 + viewModel.gameStandings.count))
+			return CGSize(width: 0, height: 48 * (1 + viewModel.standings.count))
 		} else {
 			return CGSize(width: 0, height: 96)
 		}
@@ -140,12 +138,12 @@ extension TodayViewController: TodayActionable {
 		viewModel.postViewAction(.openStandings)
 	}
 
-	func openPlayerDetails(player: Player) {
-		viewModel.postViewAction(.openPlayerDetails(player))
+	func openPlayerDetails(playerID: GraphID) {
+		viewModel.postViewAction(.openPlayerDetails(playerID))
 	}
 
-	func openGameDetails(game: Game) {
-		viewModel.postViewAction(.openGameDetails(game))
+	func openGameDetails(gameID: GraphID) {
+		viewModel.postViewAction(.openGameDetails(gameID))
 	}
 
 	func openPreferredPlayerSelection() {

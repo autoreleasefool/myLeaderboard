@@ -12,8 +12,8 @@ import FunctionalTableData
 
 protocol TodayActionable: AnyObject {
 	func openStandings()
-	func openPlayerDetails(player: Player)
-	func openGameDetails(game: Game)
+	func openPlayerDetails(playerID: GraphID)
+	func openGameDetails(gameID: GraphID)
 	func openPreferredPlayerSelection()
 	func openPreferredOpponentsSelection()
 }
@@ -23,11 +23,11 @@ enum TodayBuilder {
 
 	static func sections(
 		player: Player,
-		standings: [Game: PlayerStandings?],
-		opponents: [Player],
+		standings: [TodayViewRecord],
+		opponents: [Opponent],
 		builder: SpreadsheetBuilder,
 		maxRows: Int,
-		error: LeaderboardAPIError?,
+		error: GraphAPIError?,
 		actionable: TodayActionable
 	) -> [TableSection] {
 		if let error = error {
@@ -39,13 +39,11 @@ enum TodayBuilder {
 
 		spreadsheetCells.append(SpreadsheetCells.headerRow(opponents: opponents, actionable: actionable))
 
-		standings.keys.sorted().forEach {
-			guard let optionalStandings = standings[$0], let gameStandings = optionalStandings else { return }
+		standings.forEach {
 			spreadsheetCells.append(SpreadsheetCells.gameRow(
-				game: $0,
 				player: player,
 				opponents: opponents,
-				record: gameStandings,
+				record: $0,
 				actionable: actionable
 			))
 		}
@@ -117,14 +115,15 @@ enum TodayBuilder {
 	}
 
 	enum Sections {
-		static func error(_ error: LeaderboardAPIError, actionable: TodayActionable) -> TableSection {
+		static func error(_ error: GraphAPIError, actionable: TodayActionable) -> TableSection {
 			let rows: [CellConfigType] = []
+			#warning("TODO: fill out error section")
 			return TableSection(key: "Error", rows: rows)
 		}
 	}
 
 	enum SpreadsheetCells {
-		static func headerRow(opponents: [Player], actionable: TodayActionable) -> [GridCellConfig] {
+		static func headerRow(opponents: [Opponent], actionable: TodayActionable) -> [GridCellConfig] {
 			var headerRow: [GridCellConfig] = [
 				textGridCell(key: "Header", text: ""),
 				textGridCell(key: "Total", text: "Total"),
@@ -136,24 +135,23 @@ enum TodayBuilder {
 		}
 
 		static func gameRow(
-			game: Game,
 			player: Player,
-			opponents: [Player],
-			record: PlayerStandings,
+			opponents: [Opponent],
+			record: TodayViewRecord,
 			actionable: TodayActionable
 		) -> [GridCellConfig] {
 			var row: [GridCellConfig] = [
-				gameCell(for: game, actionable: actionable),
-				textGridCell(key: "Total", text: record.overallRecord.formatted),
+				gameCell(for: record.game.asTodayViewGameFragmentFragment, actionable: actionable),
+				textGridCell(key: "Total", text: record.overallRecord.asRecordFragmentFragment.formatted),
 			]
 
 			opponents.forEach { opponent in
-				if let recordAgainstOpponent = record.records[opponent.id] {
+				if let recordAgainstOpponent = record.records.first(where: { $0.opponent.id == opponent.id}) {
 					row.append(textGridCell(
 						key: "Opponent-\(opponent.id)",
-						text: recordAgainstOpponent.formatted
+						text: recordAgainstOpponent.record.asRecordFragmentFragment.formatted
 					) { [weak actionable] in
-						actionable?.openPlayerDetails(player: player)
+						actionable?.openPlayerDetails(playerID: player.graphID)
 					})
 				} else {
 					row.append(textGridCell(
@@ -185,7 +183,7 @@ enum TodayBuilder {
 			)
 		}
 
-		static func playerCell(for player: Player, actionable: TodayActionable) -> GridCellConfig {
+		static func playerCell(for player: Opponent, actionable: TodayActionable) -> GridCellConfig {
 			let avatarURL: URL?
 			if let avatar = player.avatar {
 				avatarURL = URL(string: avatar)
@@ -196,7 +194,7 @@ enum TodayBuilder {
 			return Spreadsheet.ImageGridCellConfig(
 				key: "Avatar-\(player.id)",
 				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.openPlayerDetails(player: player)
+					actionable?.openPlayerDetails(playerID: player.id)
 					return .deselected
 				}),
 				state: ImageState(
@@ -208,7 +206,7 @@ enum TodayBuilder {
 			)
 		}
 
-		static func gameCell(for game: Game, actionable: TodayActionable) -> GridCellConfig {
+		static func gameCell(for game: TodayViewGame, actionable: TodayActionable) -> GridCellConfig {
 			let imageURL: URL?
 			if let image = game.image {
 				imageURL = URL(string: image)
@@ -219,7 +217,7 @@ enum TodayBuilder {
 			return Spreadsheet.ImageGridCellConfig(
 				key: "Game-\(game.id)",
 				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.openGameDetails(game: game)
+					actionable?.openGameDetails(gameID: game.id)
 					return .deselected
 				}),
 				state: ImageState(

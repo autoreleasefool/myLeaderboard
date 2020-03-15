@@ -1,0 +1,29 @@
+query TodayView($player: ID!) {
+	player(id: $player) {
+		records(first: 2) {
+			... TodayViewRecordFragment
+		}
+	}
+}
+
+fragment TodayViewRecordFragment on PlayerGameRecord {
+	game {
+		... TodayViewGameFragment
+	}
+	overallRecord {
+		... RecordFragment
+	}
+	records {
+		opponent {
+			... OpponentFragment
+		}
+		record {
+			... RecordFragment
+		}
+	}
+}
+
+fragment TodayViewGameFragment on BasicGame {
+	id
+	image
+}

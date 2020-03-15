@@ -14,8 +14,6 @@
 		CA01848B240FA8790080A5B8 /* MyLeaderboardAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6D05DD240D147900412D54 /* MyLeaderboardAPI.swift */; };
 		CA01848C240FA8910080A5B8 /* GraphApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6D05DF240D147900412D54 /* GraphApi.swift */; };
 		CA01848D240FA8980080A5B8 /* CustomScalarResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018484240D292B0080A5B8 /* CustomScalarResolver.swift */; };
-		CA018490240FA8BB0080A5B8 /* PlayerListQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6D05D6240D147900412D54 /* PlayerListQuery.swift */; };
-		CA018491240FA8BE0080A5B8 /* PlayerListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6D05D9240D147900412D54 /* PlayerListResponse.swift */; };
 		CA018492240FA8D00080A5B8 /* GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018480240D25090080A5B8 /* GraphQL.swift */; };
 		CA018493240FA8D60080A5B8 /* Syrup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018482240D25840080A5B8 /* Syrup+Extensions.swift */; };
 		CA018494240FA9A20080A5B8 /* MyLeaderboardAPI+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardAPI+Networking.swift */; };
@@ -190,6 +188,34 @@
 		CAC66829241ED6510020D9B4 /* RecordPlayMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66828241ED6510020D9B4 /* RecordPlayMutation.swift */; };
 		CAC6682B241ED65B0020D9B4 /* NewPlayFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6682A241ED65B0020D9B4 /* NewPlayFragment.swift */; };
 		CAC6682D241ED6750020D9B4 /* NewPlay+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6682C241ED6750020D9B4 /* NewPlay+Extensions.swift */; };
+		CAC6682F241ED99E0020D9B4 /* TodayView.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CAC6682E241ED99D0020D9B4 /* TodayView.graphql */; };
+		CAC66831241EDACA0020D9B4 /* TodayViewResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66830241EDAC90020D9B4 /* TodayViewResponse.swift */; };
+		CAC66833241EDAD50020D9B4 /* TodayViewQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66832241EDAD40020D9B4 /* TodayViewQuery.swift */; };
+		CAC66835241EDAE10020D9B4 /* TodayViewRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66834241EDAE10020D9B4 /* TodayViewRecordFragment.swift */; };
+		CAC66837241EDB2D0020D9B4 /* TodayView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66836241EDB2D0020D9B4 /* TodayView+Extensions.swift */; };
+		CAC66838241EDBE30020D9B4 /* TodayView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66836241EDB2D0020D9B4 /* TodayView+Extensions.swift */; };
+		CAC66839241EDBED0020D9B4 /* PlayerDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DB241993A700EA58E9 /* PlayerDetails+Extensions.swift */; };
+		CAC6683A241EDC0C0020D9B4 /* GameDetailsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E2241A20B700EA58E9 /* GameDetailsFragment.swift */; };
+		CAC6683B241EDC0C0020D9B4 /* GameDetailsPlayerRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971608241E1FB400EA58E9 /* GameDetailsPlayerRecordFragment.swift */; };
+		CAC6683C241EDC0C0020D9B4 /* GameDetailsStandingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */; };
+		CAC6683D241EDC0C0020D9B4 /* GameListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715C1241827C300EA58E9 /* GameListItem.swift */; };
+		CAC6683E241EDC0C0020D9B4 /* NewGameFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66814241EC6270020D9B4 /* NewGameFragment.swift */; };
+		CAC6683F241EDC0C0020D9B4 /* NewPlayerFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66820241EC93A0020D9B4 /* NewPlayerFragment.swift */; };
+		CAC66840241EDC0C0020D9B4 /* NewPlayFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6682A241ED65B0020D9B4 /* NewPlayFragment.swift */; };
+		CAC66841241EDC0C0020D9B4 /* PlayerDetailsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715D524198F2E00EA58E9 /* PlayerDetailsFragment.swift */; };
+		CAC66842241EDC0C0020D9B4 /* PlayerDetailsRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715D72419901800EA58E9 /* PlayerDetailsRecordFragment.swift */; };
+		CAC66843241EDC0C0020D9B4 /* PlayerGameRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715E1241A20B600EA58E9 /* PlayerGameRecordFragment.swift */; };
+		CAC66844241EDC0C0020D9B4 /* PlayListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715EF241D7C0000EA58E9 /* PlayListItem.swift */; };
+		CAC66845241EDC0C0020D9B4 /* StandingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715FE241E11D800EA58E9 /* StandingsFragment.swift */; };
+		CAC66846241EDC0C0020D9B4 /* StandingsGameFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971605241E1AB100EA58E9 /* StandingsGameFragment.swift */; };
+		CAC66847241EDC0C0020D9B4 /* StandingsPlayerGameRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97160B241E589600EA58E9 /* StandingsPlayerGameRecordFragment.swift */; };
+		CAC66848241EDC0C0020D9B4 /* StandingsPlayerRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971607241E1FB400EA58E9 /* StandingsPlayerRecordFragment.swift */; };
+		CAC66849241EDC0C0020D9B4 /* TodayViewRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66834241EDAE10020D9B4 /* TodayViewRecordFragment.swift */; };
+		CAC66852241EDC1A0020D9B4 /* TodayViewQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66832241EDAD40020D9B4 /* TodayViewQuery.swift */; };
+		CAC6685C241EDC240020D9B4 /* TodayViewResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66830241EDAC90020D9B4 /* TodayViewResponse.swift */; };
+		CAC6685E241EDFD70020D9B4 /* TodayViewGameFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6685D241EDFD70020D9B4 /* TodayViewGameFragment.swift */; };
+		CAC6685F241EE0000020D9B4 /* TodayViewGameFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6685D241EDFD70020D9B4 /* TodayViewGameFragment.swift */; };
+		CAC66860241EE0600020D9B4 /* RecordFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */; };
 		CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066C22D0F70B0075B033 /* AppDelegate.swift */; };
 		CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */; };
 		CAC9067422D0F70F0075B033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
@@ -408,6 +434,12 @@
 		CAC66828241ED6510020D9B4 /* RecordPlayMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordPlayMutation.swift; sourceTree = "<group>"; };
 		CAC6682A241ED65B0020D9B4 /* NewPlayFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlayFragment.swift; sourceTree = "<group>"; };
 		CAC6682C241ED6750020D9B4 /* NewPlay+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewPlay+Extensions.swift"; sourceTree = "<group>"; };
+		CAC6682E241ED99D0020D9B4 /* TodayView.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TodayView.graphql; sourceTree = "<group>"; };
+		CAC66830241EDAC90020D9B4 /* TodayViewResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewResponse.swift; sourceTree = "<group>"; };
+		CAC66832241EDAD40020D9B4 /* TodayViewQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewQuery.swift; sourceTree = "<group>"; };
+		CAC66834241EDAE10020D9B4 /* TodayViewRecordFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewRecordFragment.swift; sourceTree = "<group>"; };
+		CAC66836241EDB2D0020D9B4 /* TodayView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+Extensions.swift"; sourceTree = "<group>"; };
+		CAC6685D241EDFD70020D9B4 /* TodayViewGameFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewGameFragment.swift; sourceTree = "<group>"; };
 		CAC9066922D0F70B0075B033 /* MyLeaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLeaderboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066C22D0F70B0075B033 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
@@ -508,6 +540,7 @@
 		CA1D97E12406EE3E0011786E /* Queries */ = {
 			isa = PBXGroup;
 			children = (
+				CAC6682E241ED99D0020D9B4 /* TodayView.graphql */,
 				CAC6680C241EC3BE0020D9B4 /* Games */,
 				CAC6680E241EC3CD0020D9B4 /* Plays */,
 				CAC6680D241EC3C70020D9B4 /* Players */,
@@ -687,6 +720,7 @@
 				CA6D05D6240D147900412D54 /* PlayerListQuery.swift */,
 				CA9715F1241D7C1000EA58E9 /* PlayListQuery.swift */,
 				CA9715FC241E11CA00EA58E9 /* StandingsQuery.swift */,
+				CAC66832241EDAD40020D9B4 /* TodayViewQuery.swift */,
 			);
 			path = Queries;
 			sourceTree = "<group>";
@@ -710,6 +744,7 @@
 				CA9715F3241D7C1A00EA58E9 /* PlayListResponse.swift */,
 				CAC66826241ED6460020D9B4 /* RecordPlayResponse.swift */,
 				CA9715FA241E11C100EA58E9 /* StandingsResponse.swift */,
+				CAC66830241EDAC90020D9B4 /* TodayViewResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -736,6 +771,8 @@
 				CA971605241E1AB100EA58E9 /* StandingsGameFragment.swift */,
 				CA97160B241E589600EA58E9 /* StandingsPlayerGameRecordFragment.swift */,
 				CA971607241E1FB400EA58E9 /* StandingsPlayerRecordFragment.swift */,
+				CAC6685D241EDFD70020D9B4 /* TodayViewGameFragment.swift */,
+				CAC66834241EDAE10020D9B4 /* TodayViewRecordFragment.swift */,
 			);
 			path = Fragments;
 			sourceTree = "<group>";
@@ -817,13 +854,14 @@
 				CA9715D124198BE300EA58E9 /* GameListItem+Extensions.swift */,
 				CAC66816241EC6510020D9B4 /* NewGame+Extensions.swift */,
 				CAC66822241EC95A0020D9B4 /* NewPlayer+Extensions.swift */,
+				CAC6682C241ED6750020D9B4 /* NewPlay+Extensions.swift */,
 				CA9715DB241993A700EA58E9 /* PlayerDetails+Extensions.swift */,
 				CA9715D324198C4B00EA58E9 /* PlayerListItem+Extensions.swift */,
 				CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */,
 				CA9715D92419908C00EA58E9 /* RecentPlayFragment+Extensions.swift */,
 				CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */,
 				CA971603241E172900EA58E9 /* StandingsFragment+Extensions.swift */,
-				CAC6682C241ED6750020D9B4 /* NewPlay+Extensions.swift */,
+				CAC66836241EDB2D0020D9B4 /* TodayView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1286,6 +1324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAC6681B241EC8CE0020D9B4 /* CreatePlayer.graphql in Resources */,
+				CAC6682F241ED99E0020D9B4 /* TodayView.graphql in Resources */,
 				CA9715E0241A1ED800EA58E9 /* GameDetails.graphql in Resources */,
 				CAC9067722D0F70F0075B033 /* LaunchScreen.storyboard in Resources */,
 				CA9715CA2419880400EA58E9 /* PlayerDetails.graphql in Resources */,
@@ -1341,51 +1380,71 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAC66860241EE0600020D9B4 /* RecordFragment+Extensions.swift in Sources */,
 				CA9715BD241624F500EA58E9 /* RecentPlayFragment.swift in Sources */,
 				CA27F9BA232E92090023924A /* LeaderboardAPI.swift in Sources */,
 				CA27F9D2232EE7690023924A /* Colors.swift in Sources */,
 				CA27F9BD232E93160023924A /* Action.swift in Sources */,
-				CA018490240FA8BB0080A5B8 /* PlayerListQuery.swift in Sources */,
 				CA27F9CB232EE54E0023924A /* SpreadsheetRowConfig.swift in Sources */,
-				CA018491240FA8BE0080A5B8 /* PlayerListResponse.swift in Sources */,
 				CA27F9C9232EE5480023924A /* Spreadsheet.swift in Sources */,
 				CA27F9D8232EE9560023924A /* GamePlay.swift in Sources */,
+				CAC66848241EDC0C0020D9B4 /* StandingsPlayerRecordFragment.swift in Sources */,
+				CAC66841241EDC0C0020D9B4 /* PlayerDetailsFragment.swift in Sources */,
 				CA27F9D1232EE7530023924A /* ImageState.swift in Sources */,
 				CA27F9CA232EE54B0023924A /* SpreadsheetRowCell.swift in Sources */,
+				CAC66849241EDC0C0020D9B4 /* TodayViewRecordFragment.swift in Sources */,
+				CAC66839241EDBED0020D9B4 /* PlayerDetails+Extensions.swift in Sources */,
 				CA27F9C3232E95E00023924A /* Record.swift in Sources */,
 				CA27F9D4232EE7800023924A /* ControlText.swift in Sources */,
+				CAC6683C241EDC0C0020D9B4 /* GameDetailsStandingsFragment.swift in Sources */,
 				CA01848B240FA8790080A5B8 /* MyLeaderboardAPI.swift in Sources */,
 				CA27F9A5232D59A40023924A /* TodayViewController.swift in Sources */,
 				CA27F9D5232EE7C20023924A /* NSAttributedString+Extensions.swift in Sources */,
+				CAC66840241EDC0C0020D9B4 /* NewPlayFragment.swift in Sources */,
 				CA27F9BE232E93190023924A /* ViewAction.swift in Sources */,
+				CAC66842241EDC0C0020D9B4 /* PlayerDetailsRecordFragment.swift in Sources */,
 				CA27F9C0232E95930023924A /* Player.swift in Sources */,
 				CA27F9C1232E95CC0023924A /* Identifiable.swift in Sources */,
 				CA27F9D7232EE9520023924A /* Standings.swift in Sources */,
+				CAC6683E241EDC0C0020D9B4 /* NewGameFragment.swift in Sources */,
+				CAC6685C241EDC240020D9B4 /* TodayViewResponse.swift in Sources */,
 				CA9715BE241624F800EA58E9 /* RecordFragment.swift in Sources */,
+				CAC66852241EDC1A0020D9B4 /* TodayViewQuery.swift in Sources */,
 				CA27F9CD232EE5520023924A /* SpreadsheetColumnConfig.swift in Sources */,
+				CAC6683D241EDC0C0020D9B4 /* GameListItem.swift in Sources */,
 				CA27F9C5232EC73D0023924A /* Game.swift in Sources */,
+				CAC66838241EDBE30020D9B4 /* TodayView+Extensions.swift in Sources */,
+				CAC66846241EDC0C0020D9B4 /* StandingsGameFragment.swift in Sources */,
 				CA27F9C8232EE5460023924A /* SpreadsheetBuilder.swift in Sources */,
 				CA9715F5241D7D5200EA58E9 /* OpponentFragment.swift in Sources */,
 				CA27F9DE232EEE970023924A /* UserDefaults+Extensions.swift in Sources */,
 				CA27F9CF232EE5570023924A /* SpreadsheetConfig.swift in Sources */,
 				CA27F9D0232EE7510023924A /* LabelState.swift in Sources */,
 				CA27F9D3232EE76D0023924A /* Metrics.swift in Sources */,
+				CAC6685F241EE0000020D9B4 /* TodayViewGameFragment.swift in Sources */,
 				CA27F9BF232E931B0023924A /* ViewModel.swift in Sources */,
+				CAC66847241EDC0C0020D9B4 /* StandingsPlayerGameRecordFragment.swift in Sources */,
 				CA27F9C2232E95DD0023924A /* PlayerStandings.swift in Sources */,
 				CA27F9D6232EE8FA0023924A /* ViewState.swift in Sources */,
 				CA27F9DA232EE9680023924A /* PlayerRecord.swift in Sources */,
+				CAC66845241EDC0C0020D9B4 /* StandingsFragment.swift in Sources */,
 				CA018492240FA8D00080A5B8 /* GraphQL.swift in Sources */,
 				CA5FC5F223C9F1290029DD61 /* Theme.swift in Sources */,
 				CA01848D240FA8980080A5B8 /* CustomScalarResolver.swift in Sources */,
+				CAC66844241EDC0C0020D9B4 /* PlayListItem.swift in Sources */,
+				CAC6683A241EDC0C0020D9B4 /* GameDetailsFragment.swift in Sources */,
 				CA01848C240FA8910080A5B8 /* GraphApi.swift in Sources */,
 				CA018494240FA9A20080A5B8 /* MyLeaderboardAPI+Networking.swift in Sources */,
 				CA27F9CC232EE5500023924A /* SpreadsheetGridCellConfig.swift in Sources */,
+				CAC6683F241EDC0C0020D9B4 /* NewPlayerFragment.swift in Sources */,
 				CA27F9CE232EE5550023924A /* SpreadsheetBorderConfig.swift in Sources */,
 				CA5FC5F523CA0FB10029DD61 /* Avatar.swift in Sources */,
+				CAC66843241EDC0C0020D9B4 /* PlayerGameRecordFragment.swift in Sources */,
 				CA27F9D9232EE95F0023924A /* ImageLoader.swift in Sources */,
 				CA9715BC241624EF00EA58E9 /* PlayerListItem.swift in Sources */,
 				CA27F9C7232EE1DE0023924A /* TodayBuilder.swift in Sources */,
 				CA018493240FA8D60080A5B8 /* Syrup+Extensions.swift in Sources */,
+				CAC6683B241EDC0C0020D9B4 /* GameDetailsPlayerRecordFragment.swift in Sources */,
 				CA27F9C4232E95E60023924A /* Score.swift in Sources */,
 				CA27F9BC232E93060023924A /* TodayViewModel.swift in Sources */,
 				CA397957233EC13B000B3322 /* Route.swift in Sources */,
@@ -1404,13 +1463,16 @@
 				CA4BAB8622D6BE69003347AF /* CreateGameBuilder.swift in Sources */,
 				CA9715FD241E11CB00EA58E9 /* StandingsQuery.swift in Sources */,
 				CA4BAB8D22D6DBD5003347AF /* ButtonState.swift in Sources */,
+				CAC6685E241EDFD70020D9B4 /* TodayViewGameFragment.swift in Sources */,
 				CAC66819241EC7AF0020D9B4 /* CreateGameResponse.swift in Sources */,
+				CAC66833241EDAD50020D9B4 /* TodayViewQuery.swift in Sources */,
 				CA6D05E1240D147900412D54 /* PlayerListResponse.swift in Sources */,
 				CA9715C4241827CE00EA58E9 /* GameListQuery.swift in Sources */,
 				CA971604241E172900EA58E9 /* StandingsFragment+Extensions.swift in Sources */,
 				CABA3EB122D58D8700960758 /* Colors.swift in Sources */,
 				CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */,
 				CA519464230F98580041105B /* SettingsViewController.swift in Sources */,
+				CAC66835241EDAE10020D9B4 /* TodayViewRecordFragment.swift in Sources */,
 				CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */,
 				CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */,
 				CAE9CF66230F074A00D4850E /* PlaysListBuilder.swift in Sources */,
@@ -1462,6 +1524,7 @@
 				CA519466230F98620041105B /* SettingsViewModel.swift in Sources */,
 				CA834B90230A1EB900A48C9B /* SpreadsheetColumnConfig.swift in Sources */,
 				CAE9CF62230F073300D4850E /* PlaysListViewController.swift in Sources */,
+				CAC66837241EDB2D0020D9B4 /* TodayView+Extensions.swift in Sources */,
 				CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */,
 				CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */,
 				CA971609241E1FB400EA58E9 /* StandingsPlayerRecordFragment.swift in Sources */,
@@ -1507,6 +1570,7 @@
 				CABA3EA822D4B2BE00960758 /* Metrics.swift in Sources */,
 				CAB88E3C230DF4620022281D /* GameDetailsBuilder.swift in Sources */,
 				CAC66823241EC95A0020D9B4 /* NewPlayer+Extensions.swift in Sources */,
+				CAC66831241EDACA0020D9B4 /* TodayViewResponse.swift in Sources */,
 				CAB88E38230DF4500022281D /* GameDetailsViewController.swift in Sources */,
 				CA6D05E0240D147900412D54 /* PlayerListQuery.swift in Sources */,
 				F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */,

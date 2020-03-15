@@ -12,37 +12,38 @@ enum TodayAction: BaseAction {
 	case noPreferredPlayer(TodayCompletionHandler?)
 	case noPreferredOpponents(TodayCompletionHandler?)
 	case dataChanged(TodayCompletionHandler?)
-	case apiError(LeaderboardAPIError, TodayCompletionHandler)
+	case graphQLError(GraphAPIError, TodayCompletionHandler)
 	case presentRoute(Route)
 }
 
 enum TodayViewAction: BaseViewAction {
 	case performUpdate(TodayCompletionHandler)
-	case openPlayerDetails(Player)
-	case openGameDetails(Game)
+	case openPlayerDetails(GraphID)
+	case openGameDetails(GraphID)
 	case openStandings
 	case openPreferredPlayerSelection
 	case openPreferredOpponentsSelection
 }
 
 class TodayViewModel: ViewModel {
+	typealias TodayViewQuery = MyLeaderboardAPI.TodayViewQuery
 	typealias ActionHandler = (_ action: TodayAction) -> Void
 
-	private var api: LeaderboardAPI
 	var handleAction: ActionHandler
 
 	private(set) var preferredPlayer: Player?
 	private(set) var preferredOpponents: [Player] = []
-	private(set) var gameStandings: [Game: PlayerStandings?] = [:]
+	private(set) var standings: [TodayViewRecord] = []
 
-	var visiblePlayers: [Player] {
+	var visiblePlayers: [Opponent] {
 		return preferredOpponents.filter { player in
-			return gameStandings.first(where: { $0.value?.records[player.id] != nil }) != nil
-		}
+			return standings.first(where: {
+				$0.records.first(where: { $0.opponent.id == player.graphID }) != nil
+			}) != nil
+		}.map { Opponent(id: $0.graphID, avatar: $0.avatar) }
 	}
 
-	init(api: LeaderboardAPI, handleAction: @escaping ActionHandler) {
-		self.api = api
+	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
 
@@ -62,11 +63,11 @@ class TodayViewModel: ViewModel {
 			}
 
 			preferredOpponents = Player.preferredOpponents
-			fetchPlayerData(completionHandler: completionHandler)
+			fetchPlayerData(for: player, completionHandler: completionHandler)
 		case .openGameDetails(let game):
-			handleAction(.presentRoute(.gameDetails(game.graphID)))
+			handleAction(.presentRoute(.gameDetails(game)))
 		case .openPlayerDetails(let player):
-			handleAction(.presentRoute(.playerDetails(player.graphID)))
+			handleAction(.presentRoute(.playerDetails(player)))
 		case .openStandings:
 			handleAction(.presentRoute(.standings))
 		case .openPreferredPlayerSelection:
@@ -76,48 +77,25 @@ class TodayViewModel: ViewModel {
 		}
 	}
 
-	private func fetchPlayerData(completionHandler: @escaping TodayCompletionHandler) {
-		// DispatchGroup to wait to fetch all players and game standings
-		let dispatchGroup = DispatchGroup()
+	private func fetchPlayerData(for player: Player, completionHandler: @escaping TodayCompletionHandler) {
 
-		api.games { [weak self] result in
-			switch result {
-			case .success(let games):
-				games.forEach {
-					dispatchGroup.enter()
-					self?.gameStandings[$0] = nil
-					self?.fetchPlayerRecord(for: $0, dispatchGroup: dispatchGroup, completionHandler: completionHandler)
+		TodayViewQuery(player: player.graphID).perform { [weak self] in
+			switch $0 {
+			case .success(let response):
+				guard let standings = response.player?.records.map({ $0.asTodayViewRecordFragmentFragment }) else {
+					self?.handleAction(.graphQLError(.invalidResponse, completionHandler))
+					return
 				}
+				self?.standings = standings
+				self?.handleAction(.dataChanged(completionHandler))
 			case .failure(let error):
-				self?.handleAction(.apiError(error, completionHandler))
+				self?.handleAction(.graphQLError(error, completionHandler))
 			}
-
-			dispatchGroup.notify(queue: .main) { [weak self] in
-				self?.processData(completionHandler: completionHandler)
-			}
-		}
-	}
-
-	private func fetchPlayerRecord(
-		for game: Game,
-		dispatchGroup: DispatchGroup,
-		completionHandler: @escaping TodayCompletionHandler
-	) {
-		api.playerRecord(playerID: preferredPlayer!.id, gameID: game.id) { [weak self] result in
-			switch result {
-			case .success(let standings):
-				self?.gameStandings[game] = standings
-			case .failure(let error):
-				self?.gameStandings = [:]
-				self?.handleAction(.apiError(error, completionHandler))
-			}
-
-			dispatchGroup.leave()
 		}
 	}
 
 	private func processData(completionHandler: @escaping TodayCompletionHandler) {
-		guard visiblePlayers.count > 0 && gameStandings.count > 0 else {
+		guard visiblePlayers.count > 0 else {
 			// Assume that an error was properly returned if there are no players or standings available
 			return
 		}
