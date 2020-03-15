@@ -26,25 +26,25 @@ class StandingsListViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = StandingsListViewModel(api: api) { [weak self] action in
+		viewModel = StandingsListViewModel { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .standingsUpdated:
 				self.finishRefresh()
 				self.render()
-			case .playersUpdated:
+			case .gamesUpdated:
 				self.render()
-			case .apiError(let error):
+			case .graphQLError(let error):
 				self.finishRefresh()
 				self.presentError(error)
 			case .openRecordPlay:
 				self.showRecordPlay()
-			case .openGameDetails(let game):
-				self.showGameDetails(for: game)
-			case .openPlayerDetails(let player):
-				self.showPlayerDetails(for: player)
-			case .openPlays(let game, let players):
-				self.openPlays(game: game, players: players)
+			case .openGameDetails(let gameID):
+				self.showGameDetails(for: gameID)
+			case .openPlayerDetails(let playerID):
+				self.showPlayerDetails(for: playerID)
+			case .openPlays(let filter):
+				self.openPlays(filter: filter)
 			case .showPreferredPlayerSelection:
 				self.openPreferredPlayerSelection()
 			}
@@ -80,8 +80,8 @@ class StandingsListViewController: FTDViewController {
 
 	private func render() {
 		let sections = StandingsListBuilder.sections(
+			games: viewModel.games,
 			standings: viewModel.standings,
-			players: viewModel.players,
 			builder: spreadsheetBuilder,
 			actionable: self
 		)
@@ -98,16 +98,16 @@ class StandingsListViewController: FTDViewController {
 		})
 	}
 
-	private func showGameDetails(for game: Game) {
-		show(GameDetailsViewController(gameID: game.graphID), sender: self)
+	private func showGameDetails(for gameID: GraphID) {
+		show(GameDetailsViewController(gameID: gameID), sender: self)
 	}
 
-	private func showPlayerDetails(for player: Player) {
-		show(PlayerDetailsViewController(playerID: player.graphID), sender: self)
+	private func showPlayerDetails(for playerID: GraphID) {
+		show(PlayerDetailsViewController(playerID: playerID), sender: self)
 	}
 
-	private func openPlays(game: Game, players: [Player]) {
-		show(PlaysListViewController(gameID: game.graphID, playerIDs: players.map { $0.graphID }), sender: self)
+	private func openPlays(filter: PlayListFilter) {
+		show(PlaysListViewController(filter: filter), sender: self)
 	}
 
 	private func openPreferredPlayerSelection() {
@@ -158,15 +158,8 @@ class StandingsListViewController: FTDViewController {
 		presentModal(SettingsViewController())
 	}
 
-	private func presentError(_ error: LeaderboardAPIError) {
-		let message: String
-		if let errorDescription = error.errorDescription {
-			message = errorDescription
-		} else {
-			message = "Unknown error."
-		}
-
-		Loaf(message, state: .error, sender: self).show()
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 
 	override func refresh() {
@@ -175,16 +168,17 @@ class StandingsListViewController: FTDViewController {
 }
 
 extension StandingsListViewController: StandingsListActionable {
-	func selectedGame(game: Game) {
-		viewModel.postViewAction(.selectGame(game))
+	func selectedGame(gameID: GraphID) {
+		viewModel.postViewAction(.selectGame(gameID))
 	}
 
-	func selectedPlayer(player: Player) {
-		viewModel.postViewAction(.selectPlayer(player))
+	func selectedPlayer(playerID: GraphID) {
+		viewModel.postViewAction(.selectPlayer(playerID))
 	}
 
-	func showPlays(game: Game, players: [Player]) {
-		viewModel.postViewAction(.showPlays(game, players))
+	func showPlays(gameID: GraphID, playerIDs: [GraphID]) {
+		let filter = PlayListFilter(gameID: gameID, playerIDs: playerIDs)
+		viewModel.postViewAction(.showPlays(filter))
 	}
 }
 

@@ -28,7 +28,21 @@ fragment GameDetailsStandingsFragment on GameStandings {
 			... OpponentFragment
 		}
 		record {
-			... PlayerGameRecordFragment
+			... GameDetailsPlayerRecordFragment
+		}
+	}
+}
+
+fragment GameDetailsPlayerRecordFragment on PlayerGameRecord {
+	overallRecord {
+		... RecordFragment
+	}
+	records {
+		opponent {
+			... OpponentFragment
+		}
+		record {
+			... RecordFragment
 		}
 	}
 }

@@ -102,7 +102,7 @@ struct GameDetailsBuilder {
 			spreadsheetCells.append(SpreadsheetCells.spreadsheetRow(
 				player: $0.player.asOpponentFragmentFragment,
 				opponents: players,
-				record: $0.record.asPlayerGameRecordFragmentFragment,
+				record: $0.record.asGameDetailsPlayerRecordFragmentFragment,
 				actionable: actionable
 			))
 		}

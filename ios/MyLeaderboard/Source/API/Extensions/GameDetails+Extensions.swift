@@ -8,4 +8,4 @@
 
 public typealias GameDetails = MyLeaderboardAPI.GameDetailsFragment
 public typealias GameDetailsStandings = MyLeaderboardAPI.GameDetailsStandingsFragment
-public typealias GameDetailsPlayerRecord = MyLeaderboardAPI.PlayerGameRecordFragment
+public typealias GameDetailsPlayerRecord = MyLeaderboardAPI.GameDetailsPlayerRecordFragment

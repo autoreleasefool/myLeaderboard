@@ -10,33 +10,32 @@ import UIKit
 import FunctionalTableData
 
 protocol StandingsListActionable: AnyObject {
-	func selectedPlayer(player: Player)
-	func selectedGame(game: Game)
-	func showPlays(game: Game, players: [Player])
+	func selectedPlayer(playerID: GraphID)
+	func selectedGame(gameID: GraphID)
+	func showPlays(gameID: GraphID, playerIDs: [GraphID])
 }
 
 struct StandingsListBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
 	static func sections(
-		standings: [Game: Standings?],
-		players: [Player],
+		games: [StandingsGame],
+		standings: [StandingsGame: StandingsFragment],
 		builder: SpreadsheetBuilder,
 		actionable: StandingsListActionable
 	) -> [TableSection] {
 		var sections: [TableSection] = []
 
-		standings.keys.sorted().forEach { game in
+		games.forEach { game in
 			var rows: [CellConfigType] = [
 				Cells.gameHeader(for: game, actionable: actionable),
 			]
 
 			var spreadsheetCells: [[GridCellConfig]] = []
-			if let optionalGameStandings = standings[game], let gameStandings = optionalGameStandings {
+			if let gameStandings = standings[game] {
 				spreadsheetCells = standingsRows(
 					game: game,
 					standings: gameStandings,
-					players: players,
 					actionable: actionable
 				)
 			}
@@ -74,11 +73,10 @@ struct StandingsListBuilder {
 			sections.append(TableSection(key: "game-\(game.id)", rows: rows))
 
 			if hasRecentPlays,
-				let optionalGameStandings = standings[game],
-				let gameStandings = optionalGameStandings {
+				let gameStandings = standings[game] {
 				if let limbo = limboSection(
 					forGame: game,
-					players: Players.limboing(from: players, standings: gameStandings),
+					players: Players.limboing(from: gameStandings),
 					actionable: actionable
 				) {
 					sections.append(limbo)
@@ -86,7 +84,7 @@ struct StandingsListBuilder {
 
 				if let banished = banishedSection(
 					forGame: game,
-					players: Players.banished(from: players, standings: gameStandings),
+					players: Players.banished(from: gameStandings),
 					actionable: actionable
 				) {
 					sections.append(banished)
@@ -98,76 +96,94 @@ struct StandingsListBuilder {
 	}
 
 	private static func standingsRows(
-		game: Game,
-		standings: Standings,
-		players: [Player],
+		game: StandingsGame,
+		standings: StandingsFragment,
 		actionable: StandingsListActionable
 	) -> [[GridCellConfig]] {
 		var spreadsheetCells: [[GridCellConfig]] = []
-		let visiblePlayers = Players.visible(from: players, standings: standings)
+		let visiblePlayerRecords = PlayerRecords.visible(from: standings)
 
 		var headerRow: [GridCellConfig] = [
 			SpreadsheetCells.textGridCell(key: "Header", text: ""),
 			SpreadsheetCells.textGridCell(key: "Total", text: "Total"),
 		]
-		visiblePlayers.forEach {
-			headerRow.append(SpreadsheetCells.playerCell(
-				for: $0,
-				record: standings.records[$0.id],
-				actionable: actionable
-			))
+		visiblePlayerRecords.forEach {
+			headerRow.append(SpreadsheetCells.playerCell(for: $0, actionable: actionable))
 		}
 		spreadsheetCells.append(headerRow)
 
-		visiblePlayers.forEach { player in
-			if let playerRecord = standings.records[player.id] {
-				var cells: [GridCellConfig] = [
-					SpreadsheetCells.playerCell(
-						for: player,
-						record: standings.records[player.id],
-						actionable: actionable
-					),
-					SpreadsheetCells.textGridCell(
-						key: "Total",
-						text: playerRecord.overallRecord.formatted,
-						backgroundColor: playerRecord.overallRecord.backgroundColor
-					) { [weak actionable] in
-						actionable?.showPlays(game: game, players: [player])
-					},
-				]
+		visiblePlayerRecords.forEach { playerRecord in
+			let player = playerRecord.player.asOpponentFragmentFragment
+			var cells: [GridCellConfig] = [
+				SpreadsheetCells.playerCell(for: playerRecord, actionable: actionable),
+				SpreadsheetCells.textGridCell(
+					key: "Total",
+					text: playerRecord.record.overallRecord.asRecordFragmentFragment.formatted,
+					backgroundColor: playerRecord.record.overallRecord.asRecordFragmentFragment.backgroundColor
+				) { [weak actionable] in
+					actionable?.showPlays(gameID: game.id, playerIDs: [player.id])
+				},
+			]
 
-				visiblePlayers.forEach { opponent in
-					guard opponent.id != player.id else {
-						cells.append(SpreadsheetCells.textGridCell(key: "\(player.id)-\(opponent.id)", text: "—"))
-						return
-					}
+			func addEmptyRecordCell(forPlayer opponent: Opponent) {
+				let recordText: String
+				if player.id == opponent.id {
+					recordText = "—"
+				} else {
+					recordText = Record.empty.formatted
+				}
+				cells.append(SpreadsheetCells.textGridCell(
+					key: "\(player.id)-\(opponent.id)",
+					text: recordText
+				))
+			}
 
-					if let recordAgainstOpponent = playerRecord.records[opponent.id] {
-						cells.append(SpreadsheetCells.textGridCell(
-							key: "\(player.id)-\(opponent.id)",
-							text: recordAgainstOpponent.formatted,
-							backgroundColor: recordAgainstOpponent.backgroundColor
-						) { [weak actionable] in
-							actionable?.showPlays(game: game, players: [player, opponent])
-						})
-					} else {
-						cells.append(SpreadsheetCells.textGridCell(
-							key: "\(player.id)-\(opponent.id)",
-							text: Record.empty.formatted
-						))
-					}
+			var visiblePlayerIndex = 0
+			var opponentIndex = 0
+
+			while visiblePlayerIndex < visiblePlayerRecords.count {
+				let columnPlayer = visiblePlayerRecords[visiblePlayerIndex].player.asOpponentFragmentFragment
+
+				guard opponentIndex < playerRecord.record.records.count else {
+					addEmptyRecordCell(forPlayer: columnPlayer)
+					visiblePlayerIndex += 1
+					continue
 				}
 
-				spreadsheetCells.append(cells)
+				let opponent = playerRecord.record.records[opponentIndex].opponent.asOpponentFragmentFragment
+				let record = playerRecord.record.records[opponentIndex].record.asRecordFragmentFragment
+
+				guard opponent.id == columnPlayer.id else {
+					if opponent.id < columnPlayer.id {
+						opponentIndex += 1
+					} else {
+						addEmptyRecordCell(forPlayer: columnPlayer)
+						visiblePlayerIndex += 1
+					}
+					continue
+				}
+
+				cells.append(SpreadsheetCells.textGridCell(
+					key: "\(player.id)-\(opponent.id)",
+					text: record.formatted,
+					backgroundColor: record.backgroundColor
+				) { [weak actionable] in
+					actionable?.showPlays(gameID: game.id, playerIDs: [player.id, opponent.id])
+				})
+
+				opponentIndex += 1
+				visiblePlayerIndex += 1
 			}
+
+			spreadsheetCells.append(cells)
 		}
 
 		return spreadsheetCells
 	}
 
 	private static func limboSection(
-		forGame game: Game,
-		players: [Player],
+		forGame game: StandingsGame,
+		players: [Opponent],
 		actionable: StandingsListActionable
 	) -> TableSection? {
 		guard players.count > 0 else { return nil }
@@ -194,8 +210,8 @@ struct StandingsListBuilder {
 	}
 
 	private static func banishedSection(
-		forGame game: Game,
-		players: [Player],
+		forGame game: StandingsGame,
+		players: [Opponent],
 		actionable: StandingsListActionable
 	) -> TableSection? {
 		guard players.count > 0 else { return nil }
@@ -222,19 +238,26 @@ struct StandingsListBuilder {
 	}
 
 	private struct Players {
-		static func visible(from players: [Player], standings: Standings) -> [Player] {
-			return players.filter { (standings.records[$0.id]?.isBanished ?? true) == false }
+		static func banished(from standings: StandingsFragment) -> [Opponent] {
+			return standings.standings.records
+				.filter { $0.record.asStandingsPlayerGameRecordFragmentFragment.isBanished }
+				.map { $0.player.asOpponentFragmentFragment }
 		}
 
-		static func banished(from players: [Player], standings: Standings) -> [Player] {
-			return players.filter { standings.records[$0.id]?.isBanished == true }
+		static func limboing(from standings: StandingsFragment) -> [Opponent] {
+			return standings.standings.records
+				.filter {
+					let freshnes = $0.record.asStandingsPlayerGameRecordFragmentFragment.freshness
+					return freshnes > 0 && freshnes < 0.2
+				}.map { $0.player.asOpponentFragmentFragment }
 		}
+	}
 
-		static func limboing(from players: [Player], standings: Standings) -> [Player] {
-			return players.filter {
-				guard let freshness = standings.records[$0.id]?.freshness else { return false }
-				return freshness > 0 && freshness < 0.2
-			}
+	private struct PlayerRecords {
+		static func visible(from standings: StandingsFragment) -> [StandingsPlayerRecordNext] {
+			return standings.standings.records
+				.filter { $0.record.asStandingsPlayerGameRecordFragmentFragment.isBanished == false }
+				.map { $0.asStandingsPlayerRecordFragmentFragment }
 		}
 	}
 
@@ -278,12 +301,12 @@ struct StandingsListBuilder {
 			)
 		}
 
-		static func gameHeader(for game: Game, actionable: StandingsListActionable) -> CellConfigType {
+		static func gameHeader(for game: StandingsGame, actionable: StandingsListActionable) -> CellConfigType {
 			return GameListItemCell(
 				key: "Header",
 				style: CellStyle(highlight: true, backgroundColor: .primaryLight),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.selectedGame(game: game)
+					actionable?.selectedGame(gameID: game.id)
 					return .deselected
 				}),
 				state: GameListItemState(name: game.name, image: game.image),
@@ -291,12 +314,12 @@ struct StandingsListBuilder {
 			)
 		}
 
-		static func playerAvatar(for player: Player, actionable: StandingsListActionable) -> CellConfigType {
+		static func playerAvatar(for player: Opponent, actionable: StandingsListActionable) -> CellConfigType {
 			return ImageCell(
 				key: "player-\(player.id)",
 				style: CellStyle(highlight: true),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.selectedPlayer(player: player)
+					actionable?.selectedPlayer(playerID: player.id)
 					return .deselected
 				}),
 				state: playerAvatarState(for: player),
@@ -304,7 +327,7 @@ struct StandingsListBuilder {
 			)
 		}
 
-		static func playerAvatarState(for player: Player, opacity: CGFloat = 1.0) -> ImageState {
+		static func playerAvatarState(for player: Opponent, opacity: CGFloat = 1.0) -> ImageState {
 			let avatarURL: URL?
 			if let avatar = player.avatar {
 				avatarURL = URL(string: avatar)
@@ -350,19 +373,19 @@ struct StandingsListBuilder {
 		}
 
 		static func playerCell(
-			for player: Player,
-			record: PlayerRecord?,
+			for playerRecord: StandingsPlayerRecordNext,
 			actionable: StandingsListActionable
 		) -> GridCellConfig {
-			let opacity = CGFloat(record?.freshness ?? 1)
-
 			return Spreadsheet.ImageGridCellConfig(
-				key: "Avatar-\(player.id)",
+				key: "Avatar-\(playerRecord.player.id)",
 				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.selectedPlayer(player: player)
+					actionable?.selectedPlayer(playerID: playerRecord.player.id)
 					return .deselected
 				}),
-				state: Cells.playerAvatarState(for: player, opacity: opacity)
+				state: Cells.playerAvatarState(
+					for: playerRecord.player.asOpponentFragmentFragment,
+					opacity: CGFloat(playerRecord.record.asStandingsPlayerGameRecordFragmentFragment.freshness)
+				)
 			)
 		}
 	}

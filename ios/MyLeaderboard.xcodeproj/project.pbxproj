@@ -145,6 +145,11 @@
 		CA9715FD241E11CB00EA58E9 /* StandingsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715FC241E11CA00EA58E9 /* StandingsQuery.swift */; };
 		CA9715FF241E11D800EA58E9 /* StandingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715FE241E11D800EA58E9 /* StandingsFragment.swift */; };
 		CA971602241E126700EA58E9 /* PlayListFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971601241E126700EA58E9 /* PlayListFilter.swift */; };
+		CA971604241E172900EA58E9 /* StandingsFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971603241E172900EA58E9 /* StandingsFragment+Extensions.swift */; };
+		CA971606241E1AB200EA58E9 /* StandingsGameFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971605241E1AB100EA58E9 /* StandingsGameFragment.swift */; };
+		CA971609241E1FB400EA58E9 /* StandingsPlayerRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971607241E1FB400EA58E9 /* StandingsPlayerRecordFragment.swift */; };
+		CA97160A241E1FB400EA58E9 /* GameDetailsPlayerRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971608241E1FB400EA58E9 /* GameDetailsPlayerRecordFragment.swift */; };
+		CA97160C241E589600EA58E9 /* StandingsPlayerGameRecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97160B241E589600EA58E9 /* StandingsPlayerGameRecordFragment.swift */; };
 		CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */; };
 		CA9D412722FA5DD50027E2D0 /* RecordPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */; };
 		CA9D412922FA5DEE0027E2D0 /* RecordPlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */; };
@@ -342,6 +347,11 @@
 		CA9715FC241E11CA00EA58E9 /* StandingsQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandingsQuery.swift; sourceTree = "<group>"; };
 		CA9715FE241E11D800EA58E9 /* StandingsFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandingsFragment.swift; sourceTree = "<group>"; };
 		CA971601241E126700EA58E9 /* PlayListFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListFilter.swift; sourceTree = "<group>"; };
+		CA971603241E172900EA58E9 /* StandingsFragment+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StandingsFragment+Extensions.swift"; sourceTree = "<group>"; };
+		CA971605241E1AB100EA58E9 /* StandingsGameFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandingsGameFragment.swift; sourceTree = "<group>"; };
+		CA971607241E1FB400EA58E9 /* StandingsPlayerRecordFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandingsPlayerRecordFragment.swift; sourceTree = "<group>"; };
+		CA971608241E1FB400EA58E9 /* GameDetailsPlayerRecordFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsPlayerRecordFragment.swift; sourceTree = "<group>"; };
+		CA97160B241E589600EA58E9 /* StandingsPlayerGameRecordFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandingsPlayerGameRecordFragment.swift; sourceTree = "<group>"; };
 		CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewModel.swift; sourceTree = "<group>"; };
 		CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewController.swift; sourceTree = "<group>"; };
 		CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayBuilder.swift; sourceTree = "<group>"; };
@@ -672,6 +682,7 @@
 			isa = PBXGroup;
 			children = (
 				CA9715E2241A20B700EA58E9 /* GameDetailsFragment.swift */,
+				CA971608241E1FB400EA58E9 /* GameDetailsPlayerRecordFragment.swift */,
 				CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */,
 				CA9715C1241827C300EA58E9 /* GameListItem.swift */,
 				CA9715ED241C268F00EA58E9 /* OpponentFragment.swift */,
@@ -683,6 +694,9 @@
 				CA9715B8241624A900EA58E9 /* RecentPlayFragment.swift */,
 				CA9715B9241624A900EA58E9 /* RecordFragment.swift */,
 				CA9715FE241E11D800EA58E9 /* StandingsFragment.swift */,
+				CA971605241E1AB100EA58E9 /* StandingsGameFragment.swift */,
+				CA97160B241E589600EA58E9 /* StandingsPlayerGameRecordFragment.swift */,
+				CA971607241E1FB400EA58E9 /* StandingsPlayerRecordFragment.swift */,
 			);
 			path = Fragments;
 			sourceTree = "<group>";
@@ -764,6 +778,7 @@
 				CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */,
 				CA9715D92419908C00EA58E9 /* RecentPlayFragment+Extensions.swift */,
 				CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */,
+				CA971603241E172900EA58E9 /* StandingsFragment+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1302,11 +1317,13 @@
 				CA834B94230A1FE400A48C9B /* SpreadsheetGridCellConfig.swift in Sources */,
 				CA9715FF241E11D800EA58E9 /* StandingsFragment.swift in Sources */,
 				CABA3EAD22D4B83D00960758 /* ImageLoader.swift in Sources */,
+				CA97160C241E589600EA58E9 /* StandingsPlayerGameRecordFragment.swift in Sources */,
 				CA4BAB8622D6BE69003347AF /* CreateGameBuilder.swift in Sources */,
 				CA9715FD241E11CB00EA58E9 /* StandingsQuery.swift in Sources */,
 				CA4BAB8D22D6DBD5003347AF /* ButtonState.swift in Sources */,
 				CA6D05E1240D147900412D54 /* PlayerListResponse.swift in Sources */,
 				CA9715C4241827CE00EA58E9 /* GameListQuery.swift in Sources */,
+				CA971604241E172900EA58E9 /* StandingsFragment+Extensions.swift in Sources */,
 				CABA3EB122D58D8700960758 /* Colors.swift in Sources */,
 				CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */,
 				CA519464230F98580041105B /* SettingsViewController.swift in Sources */,
@@ -1345,6 +1362,7 @@
 				CAC47BC722E887DC000DF790 /* Standings.swift in Sources */,
 				CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */,
 				CA9715F7241D7DA700EA58E9 /* PlayListItem+Extensions.swift in Sources */,
+				CA97160A241E1FB400EA58E9 /* GameDetailsPlayerRecordFragment.swift in Sources */,
 				CAAE778E2302DB0A001A37DC /* CreatePlayerBuilder.swift in Sources */,
 				CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */,
 				CA834B9A230A298300A48C9B /* SpreadsheetConfig.swift in Sources */,
@@ -1359,6 +1377,7 @@
 				CAE9CF62230F073300D4850E /* PlaysListViewController.swift in Sources */,
 				CA920A0622E94911008E1B96 /* PlayerStandings.swift in Sources */,
 				CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */,
+				CA971609241E1FB400EA58E9 /* StandingsPlayerRecordFragment.swift in Sources */,
 				CA519468230F986B0041105B /* SettingsBuilder.swift in Sources */,
 				CABA3EA422D42DC300960758 /* GameListBuilder.swift in Sources */,
 				CA834B9F230A346400A48C9B /* SpreadsheetRowCell.swift in Sources */,
@@ -1376,6 +1395,7 @@
 				CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */,
 				CA9715E5241A20B700EA58E9 /* GameDetailsFragment.swift in Sources */,
 				CAE56F9822F9B65800FE0998 /* NSAttributedString+Extensions.swift in Sources */,
+				CA971606241E1AB200EA58E9 /* StandingsGameFragment.swift in Sources */,
 				CA9715EC241C166300EA58E9 /* GameDetails+Extensions.swift in Sources */,
 				CAE56F9422F9ABCB00FE0998 /* GamePickerViewController.swift in Sources */,
 				CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */,

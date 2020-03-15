@@ -1,21 +1,44 @@
 query Standings($first: Int!, $offset: Int!) {
 	games(first: $first, offset: $offset) {
+		... StandingsGameFragment
 		... StandingsFragment
 	}
 }
 
-fragment StandingsFragment on Game {
+fragment StandingsGameFragment on Game {
 	id
 	name
 	image
+}
+
+fragment StandingsFragment on Game {
 	standings {
 		records {
-			player {
-				... OpponentFragment
-			}
-			record {
-				... PlayerGameRecordFragment
-			}
+			... StandingsPlayerRecordFragment
+		}
+	}
+}
+
+fragment StandingsPlayerRecordFragment on PlayerRecord {
+	player {
+		... OpponentFragment
+	}
+	record {
+		... StandingsPlayerGameRecordFragment
+	}
+}
+
+fragment StandingsPlayerGameRecordFragment on PlayerGameRecord {
+	lastPlayed
+	overallRecord {
+		... RecordFragment
+	}
+	records {
+		opponent {
+			... OpponentFragment
+		}
+		record {
+			... RecordFragment
 		}
 	}
 }

@@ -24,28 +24,28 @@ struct StandingsResponse: GraphApiResponse, Equatable {
 			/// Unique ID.
 			public var id: GraphID {
 				get {
-					return asStandingsFragmentFragment.id
+					return asStandingsGameFragmentFragment.id
 				}
 				set {
-					asStandingsFragmentFragment.id = newValue
+					asStandingsGameFragmentFragment.id = newValue
 				}
 			}
 			/// Name of the game.
 			public var name: String {
 				get {
-					return asStandingsFragmentFragment.name
+					return asStandingsGameFragmentFragment.name
 				}
 				set {
-					asStandingsFragmentFragment.name = newValue
+					asStandingsGameFragmentFragment.name = newValue
 				}
 			}
 			/// Image for the game.
 			public var image: String? {
 				get {
-					return asStandingsFragmentFragment.image
+					return asStandingsGameFragmentFragment.image
 				}
 				set {
-					asStandingsFragmentFragment.image = newValue
+					asStandingsGameFragmentFragment.image = newValue
 				}
 			}
 			/// Player vs player records, and score statistics for the game.
@@ -57,6 +57,7 @@ struct StandingsResponse: GraphApiResponse, Equatable {
 					asStandingsFragmentFragment.standings = newValue
 				}
 			}
+			public var asStandingsGameFragmentFragment: MyLeaderboardAPI.StandingsGameFragment
 			public var asStandingsFragmentFragment: MyLeaderboardAPI.StandingsFragment
 		// MARK: - Helpers
 		public let __typename: String
@@ -64,11 +65,21 @@ struct StandingsResponse: GraphApiResponse, Equatable {
 		public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
 			private enum CodingKeys: String, CodingKey {
 				case __typename
+					case asStandingsGameFragmentFragment = "fragment:asStandingsGameFragmentFragment"
 					case asStandingsFragmentFragment = "fragment:asStandingsFragmentFragment"
 			}
 			public init(from decoder: Decoder) throws {
 				let container = try decoder.container(keyedBy: CodingKeys.self)
 				self.__typename = try container.decode(String.self, forKey: .__typename)
+					do {
+						self.asStandingsGameFragmentFragment = try MyLeaderboardAPI.StandingsGameFragment(from: decoder)
+					} catch let originalError {
+						do {
+							self.asStandingsGameFragmentFragment = try container.decode(MyLeaderboardAPI.StandingsGameFragment.self, forKey: .asStandingsGameFragmentFragment)
+						} catch {
+								throw originalError
+						}
+					}
 					do {
 						self.asStandingsFragmentFragment = try MyLeaderboardAPI.StandingsFragment(from: decoder)
 					} catch let originalError {
@@ -79,7 +90,8 @@ struct StandingsResponse: GraphApiResponse, Equatable {
 						}
 					}
 			}
-		public init(standingsFragmentFragment: MyLeaderboardAPI.StandingsFragment) {
+		public init(standingsGameFragmentFragment: MyLeaderboardAPI.StandingsGameFragment, standingsFragmentFragment: MyLeaderboardAPI.StandingsFragment) {
+				self.asStandingsGameFragmentFragment = standingsGameFragmentFragment
 				self.asStandingsFragmentFragment = standingsFragmentFragment
 				self.__typename = "Game"
 		}
