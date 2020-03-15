@@ -10,7 +10,7 @@ import Foundation
 
 enum PlayerListAction: BaseAction {
 	case dataChanged
-	case playerSelected(Player)
+	case playerSelected(GraphID)
 	case addPlayer
 	case graphQLError(GraphAPIError)
 }
@@ -18,7 +18,7 @@ enum PlayerListAction: BaseAction {
 enum PlayerListViewAction: BaseViewAction {
 	case initialize
 	case reload
-	case selectPlayer(Player)
+	case selectPlayer(GraphID)
 	case addPlayer
 }
 
@@ -34,7 +34,7 @@ class PlayerListViewModel: ViewModel {
 		}
 	}
 
-	private(set) var players: [Player] = []
+	private(set) var players: [PlayerListItem] = []
 
 	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
@@ -44,8 +44,8 @@ class PlayerListViewModel: ViewModel {
 		switch viewAction {
 		case .initialize, .reload:
 			loadPlayerList()
-		case .selectPlayer(let player):
-			handleAction(.playerSelected(player))
+		case .selectPlayer(let playerID):
+			handleAction(.playerSelected(playerID))
 		case .addPlayer:
 			handleAction(.addPlayer)
 		}
@@ -58,7 +58,7 @@ class PlayerListViewModel: ViewModel {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			case .success(let response):
-				self?.players = response.players.compactMap { Player(from: $0.asPlayerListItemFragment) }.sorted()
+				self?.players = response.players.map { $0.asPlayerListItemFragment }
 			}
 
 			self?.dataLoading = false

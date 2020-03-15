@@ -9,17 +9,17 @@
 import FunctionalTableData
 
 protocol PlayerListActionable: AnyObject {
-	func selectedPlayer(player: Player)
+	func selectedPlayer(playerID: GraphID)
 }
 
 enum PlayerListBuilder {
-	static func sections(players: [Player], actionable: PlayerListActionable) -> [TableSection] {
+	static func sections(players: [PlayerListItem], actionable: PlayerListActionable) -> [TableSection] {
 		let rows = players.map { player in
 			PlayerListItemCell(
 				key: "player-\(player.id)",
 				style: CellStyle(highlight: true),
 				actions: CellActions(selectionAction: { [weak actionable] _ in
-					actionable?.selectedPlayer(player: player)
+					actionable?.selectedPlayer(playerID: player.id)
 					return .deselected
 				}),
 				state: PlayerListItemState(

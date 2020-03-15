@@ -20,6 +20,7 @@ fragment PlayerDetailsFragment on Player {
 fragment OpponentFragment on BasicPlayer {
 	id
 	avatar
+	displayName
 }
 
 fragment PlayerDetailsRecordFragment on PlayerGameRecord {

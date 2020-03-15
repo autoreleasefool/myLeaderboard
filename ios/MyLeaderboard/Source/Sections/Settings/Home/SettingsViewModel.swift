@@ -36,11 +36,11 @@ class SettingsViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
-	var preferredPlayer: Player? {
+	var preferredPlayer: PlayerListItem? {
 		return Player.preferred
 	}
 
-	var preferredOpponents: [Player] {
+	var preferredOpponents: [PlayerListItem] {
 		return Player.preferredOpponents
 	}
 
@@ -55,12 +55,12 @@ class SettingsViewModel: ViewModel {
 		case .editPlayer:
 			handleAction(.openPlayerPicker)
 		case .selectPreferredPlayer(let player):
-			Player.preferred = Player(from: player)
+			Player.preferred = player
 			handleAction(.playerUpdated)
 		case .editOpponents:
 			handleAction(.openOpponentPicker)
 		case .selectPreferredOpponents(let opponents):
-			Player.preferredOpponents = opponents.compactMap { Player(from: $0) }.sorted()
+			Player.preferredOpponents = opponents.sorted(by: { left, right in left.id < right.id })
 			handleAction(.opponentsUpdated)
 		case .viewSource:
 			viewSource()

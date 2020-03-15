@@ -87,7 +87,7 @@ class RecordPlayViewModel: ViewModel {
 		self.handleAction = handleAction
 
 		if let preferredPlayer = Player.preferred {
-			self.selectedPlayers = [PlayerListItem(from: preferredPlayer)]
+			self.selectedPlayers = [preferredPlayer]
 		}
 	}
 

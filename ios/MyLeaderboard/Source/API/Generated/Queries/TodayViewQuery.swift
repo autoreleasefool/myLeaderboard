@@ -22,7 +22,7 @@ public extension MyLeaderboardAPI {
 		public typealias Response = TodayViewResponse
 
 		public let queryString: String = """
-		fragment TodayViewRecordFragment on PlayerGameRecord { __typename game { __typename ... TodayViewGameFragment } overallRecord { __typename ... RecordFragment } records { __typename opponent { __typename ... OpponentFragment } record { __typename ... RecordFragment } } } fragment TodayViewGameFragment on BasicGame { __typename id image } fragment RecordFragment on Record { __typename wins losses ties isBest isWorst } fragment OpponentFragment on BasicPlayer { __typename id avatar } query TodayView($player: ID!) { __typename player(id: $player) { __typename records(first: 2) { __typename ... TodayViewRecordFragment } } }
+		fragment TodayViewRecordFragment on PlayerGameRecord { __typename game { __typename ... TodayViewGameFragment } overallRecord { __typename ... RecordFragment } records { __typename opponent { __typename ... OpponentFragment } record { __typename ... RecordFragment } } } fragment TodayViewGameFragment on BasicGame { __typename id image } fragment RecordFragment on Record { __typename wins losses ties isBest isWorst } fragment OpponentFragment on BasicPlayer { __typename id avatar displayName } query TodayView($player: ID!) { __typename player(id: $player) { __typename records(first: 2) { __typename ... TodayViewRecordFragment } } }
 		"""
 	}
 }

@@ -73,9 +73,9 @@ class StandingsListViewModel: ViewModel {
 		case .showPlays(let filter):
 			handleAction(.openPlays(filter))
 		case .selectPreferredPlayer(let player):
-			Player.preferred = Player(from: player)
+			Player.preferred = player
 		case .selectPreferredOpponents(let opponents):
-			Player.preferredOpponents = opponents.compactMap { Player(from: $0) }.sorted()
+			Player.preferredOpponents = opponents.sorted(by: { left, right in left.id < right.id })
 		}
 	}
 

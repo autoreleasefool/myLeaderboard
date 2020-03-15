@@ -6,11 +6,17 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import UIKit
+
 typealias PlayerListItem = MyLeaderboardAPI.PlayerListItem
 
 extension PlayerListItem: GraphQLIdentifiable {
 	var graphID: GraphID {
 		return id
+	}
+
+	static var missingPlayerAvatar: UIImage {
+		return UIImage(named: "MissingPlayer")!
 	}
 
 	var qualifiedAvatar: Avatar? {
@@ -22,23 +28,13 @@ extension PlayerListItem: GraphQLIdentifiable {
 	}
 }
 
-extension Player {
-	init?(from: PlayerListItem?) {
-		guard let from = from else { return nil }
-		self.id = Int(from.id.rawValue)!
-		self.displayName = from.displayName
-		self.username = from.username
-		self.avatar = from.avatar
-	}
-}
-
-extension PlayerListItem {
-	init(from: Player) {
-		self.init(
-			id: from.graphID,
-			displayName: from.displayName,
-			username: from.username,
-			avatar: from.avatar
-		)
+extension Optional where Wrapped == PlayerListItem {
+	var qualifiedAvatar: Avatar? {
+		switch self {
+		case .some(let player):
+			return player.qualifiedAvatar
+		case .none:
+			return .image(PlayerListItem.missingPlayerAvatar.withTintColor(.textSecondary))
+		}
 	}
 }

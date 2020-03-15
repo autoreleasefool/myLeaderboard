@@ -22,7 +22,7 @@ enum TodayBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
 	static func sections(
-		player: Player,
+		player: PlayerListItem,
 		standings: [TodayViewRecord],
 		opponents: [Opponent],
 		builder: SpreadsheetBuilder,
@@ -135,7 +135,7 @@ enum TodayBuilder {
 		}
 
 		static func gameRow(
-			player: Player,
+			player: PlayerListItem,
 			opponents: [Opponent],
 			record: TodayViewRecord,
 			actionable: TodayActionable
@@ -151,7 +151,7 @@ enum TodayBuilder {
 						key: "Opponent-\(opponent.id)",
 						text: recordAgainstOpponent.record.asRecordFragmentFragment.formatted
 					) { [weak actionable] in
-						actionable?.openPlayerDetails(playerID: player.graphID)
+						actionable?.openPlayerDetails(playerID: player.id)
 					})
 				} else {
 					row.append(textGridCell(

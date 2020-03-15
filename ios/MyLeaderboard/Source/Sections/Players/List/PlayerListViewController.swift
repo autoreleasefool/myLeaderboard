@@ -69,8 +69,9 @@ class PlayerListViewController: FTDViewController {
 		})
 	}
 
-	private func showPlayerDetails(for player: Player) {
-		show(PlayerDetailsViewController(playerID: player.graphID), sender: self)
+	private func showPlayerDetails(for playerID: GraphID) {
+		let playerName = viewModel.players.first { $0.id == playerID }?.displayName
+		show(PlayerDetailsViewController(playerID: playerID, withPlayerName: playerName), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {
@@ -83,8 +84,8 @@ class PlayerListViewController: FTDViewController {
 }
 
 extension PlayerListViewController: PlayerListActionable {
-	func selectedPlayer(player: Player) {
-		viewModel.postViewAction(.selectPlayer(player))
+	func selectedPlayer(playerID: GraphID) {
+		viewModel.postViewAction(.selectPlayer(playerID))
 	}
 }
 

@@ -200,6 +200,7 @@
 		CAC6685E241EDFD70020D9B4 /* TodayViewGameFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6685D241EDFD70020D9B4 /* TodayViewGameFragment.swift */; };
 		CAC6685F241EE0000020D9B4 /* TodayViewGameFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6685D241EDFD70020D9B4 /* TodayViewGameFragment.swift */; };
 		CAC66860241EE0600020D9B4 /* RecordFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */; };
+		CAC66861241EE4370020D9B4 /* PlayerListItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715D324198C4B00EA58E9 /* PlayerListItem+Extensions.swift */; };
 		CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066C22D0F70B0075B033 /* AppDelegate.swift */; };
 		CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */; };
 		CAC9067422D0F70F0075B033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
@@ -1361,6 +1362,7 @@
 				CA27F9CD232EE5520023924A /* SpreadsheetColumnConfig.swift in Sources */,
 				CAC6683D241EDC0C0020D9B4 /* GameListItem.swift in Sources */,
 				CAC66838241EDBE30020D9B4 /* TodayView+Extensions.swift in Sources */,
+				CAC66861241EE4370020D9B4 /* PlayerListItem+Extensions.swift in Sources */,
 				CAC66846241EDC0C0020D9B4 /* StandingsGameFragment.swift in Sources */,
 				CA27F9C8232EE5460023924A /* SpreadsheetBuilder.swift in Sources */,
 				CA9715F5241D7D5200EA58E9 /* OpponentFragment.swift in Sources */,

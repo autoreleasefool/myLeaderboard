@@ -31,16 +31,16 @@ class TodayViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
-	private(set) var preferredPlayer: Player?
-	private(set) var preferredOpponents: [Player] = []
+	private(set) var preferredPlayer: PlayerListItem?
+	private(set) var preferredOpponents: [PlayerListItem] = []
 	private(set) var standings: [TodayViewRecord] = []
 
 	var visiblePlayers: [Opponent] {
 		return preferredOpponents.filter { player in
 			return standings.first(where: {
-				$0.records.first(where: { $0.opponent.id == player.graphID }) != nil
+				$0.records.first(where: { $0.opponent.id == player.id }) != nil
 			}) != nil
-		}.map { Opponent(id: $0.graphID, avatar: $0.avatar) }
+		}.map { Opponent(id: $0.id, avatar: $0.avatar, displayName: $0.displayName) }
 	}
 
 	init(handleAction: @escaping ActionHandler) {
@@ -77,9 +77,9 @@ class TodayViewModel: ViewModel {
 		}
 	}
 
-	private func fetchPlayerData(for player: Player, completionHandler: @escaping TodayCompletionHandler) {
+	private func fetchPlayerData(for player: PlayerListItem, completionHandler: @escaping TodayCompletionHandler) {
 
-		TodayViewQuery(player: player.graphID).perform { [weak self] in
+		TodayViewQuery(player: player.id).perform { [weak self] in
 			switch $0 {
 			case .success(let response):
 				guard let standings = response.player?.records.map({ $0.asTodayViewRecordFragmentFragment }) else {

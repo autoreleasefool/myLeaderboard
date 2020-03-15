@@ -107,7 +107,10 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func showPlayerDetails(for playerID: GraphID) {
-		show(PlayerDetailsViewController(playerID: playerID), sender: self)
+		let playerName = viewModel.standings.values.compactMap {
+			$0.standings.records.filter { $0.player.id == playerID }.first
+		}.first?.player.displayName
+		show(PlayerDetailsViewController(playerID: playerID, withPlayerName: playerName), sender: self)
 	}
 
 	private func openPlays(filter: PlayListFilter) {

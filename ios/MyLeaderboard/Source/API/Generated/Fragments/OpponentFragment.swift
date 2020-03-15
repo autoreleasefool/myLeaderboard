@@ -8,6 +8,8 @@ struct OpponentFragment: GraphApiResponse, Equatable {
 		public var id: GraphID
 		/// Avatar of the player.
 		public var avatar: String?
+		/// Display name of the player.
+		public var displayName: String
 
 	// MARK: - Helpers
 	public let __typename: String
@@ -15,9 +17,10 @@ struct OpponentFragment: GraphApiResponse, Equatable {
 	public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
 	public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
 
-	public init(id: GraphID, avatar: String?) {
+	public init(id: GraphID, avatar: String?, displayName: String) {
 			self.id = id
 			self.avatar = avatar
+			self.displayName = displayName
 			self.__typename = "BasicPlayer"
 	}
 

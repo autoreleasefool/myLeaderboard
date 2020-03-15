@@ -10,18 +10,18 @@ import UIKit
 import FunctionalTableData
 
 class ContributorsListViewController: FTDViewController {
-	private static let contributors: [Player] = [
-		Player(
-			id: 0,
-			avatar: "https://github.com/josephroquedev.png",
+	private static let contributors: [PlayerListItem] = [
+		PlayerListItem(
+			id: GraphID(rawValue: "0"),
 			displayName: "Joseph Roque",
-			username: "josephroquedev"
+			username: "josephroquedev",
+			avatar: "https://github.com/josephroquedev.png"
 		),
-		Player(
-			id: 1,
-			avatar: "https://github.com/mori-ahk.png",
+		PlayerListItem(
+			id: GraphID(rawValue: "1"),
 			displayName: "Mori Ahmadi",
-			username: "mori-ahk"
+			username: "mori-ahk",
+			avatar: "https://github.com/mori-ahk.png"
 		),
 	]
 

@@ -13,9 +13,10 @@ class PlayerDetailsViewController: FTDViewController {
 	private var viewModel: PlayerDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(playerID: GraphID) {
+	init(playerID: GraphID, withPlayerName playerName: String? = nil) {
 		super.init()
 		setup(withID: playerID)
+		self.title = playerName
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -29,7 +30,7 @@ class PlayerDetailsViewController: FTDViewController {
 		let handleAction = { [weak self] (action: PlayerDetailsAction) in
 			switch action {
 			case .dataChanged:
-				self?.title = self?.viewModel.player?.displayName
+				self?.title = self?.viewModel.player?.displayName ?? self?.title
 				self?.finishRefresh()
 				self?.render()
 			case .graphQLError(let error):
@@ -81,8 +82,9 @@ class PlayerDetailsViewController: FTDViewController {
 		show(GameDetailsViewController(gameID: gameID, withGameName: gameName), sender: self)
 	}
 
-	private func showPlayerDetails(for player: GraphID) {
-		show(PlayerDetailsViewController(playerID: player), sender: self)
+	private func showPlayerDetails(for playerID: GraphID) {
+		let playerName = viewModel.players.first { $0.id == playerID }?.displayName
+		show(PlayerDetailsViewController(playerID: playerID, withPlayerName: playerName), sender: self)
 	}
 
 	private func openPlays(filter: PlayListFilter) {

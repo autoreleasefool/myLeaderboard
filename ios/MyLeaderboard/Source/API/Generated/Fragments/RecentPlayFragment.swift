@@ -111,6 +111,15 @@ return try customScalarResolver.decoderForDateTime(value, container.codingPath)
 					asOpponentFragmentFragment.avatar = newValue
 				}
 			}
+			/// Display name of the player.
+			public var displayName: String {
+				get {
+					return asOpponentFragmentFragment.displayName
+				}
+				set {
+					asOpponentFragmentFragment.displayName = newValue
+				}
+			}
 			public var asOpponentFragmentFragment: MyLeaderboardAPI.OpponentFragment
 		// MARK: - Helpers
 		public let __typename: String

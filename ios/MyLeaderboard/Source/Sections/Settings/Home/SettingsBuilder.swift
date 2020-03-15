@@ -20,8 +20,8 @@ protocol SettingsActionable: AnyObject {
 
 enum SettingsBuilder {
 	static func sections(
-		preferredPlayer: Player?,
-		preferredOpponents: [Player],
+		preferredPlayer: PlayerListItem?,
+		preferredOpponents: [PlayerListItem],
 		interfaceStyle: UIUserInterfaceStyle,
 		actionable: SettingsActionable
 	) -> [TableSection] {
@@ -34,7 +34,7 @@ enum SettingsBuilder {
 	}
 
 	private static func playerSection(
-		preferredPlayer: Player?,
+		preferredPlayer: PlayerListItem?,
 		actionable: SettingsActionable
 	) -> TableSection {
 		let rows: [CellConfigType] = [
@@ -58,7 +58,10 @@ enum SettingsBuilder {
 		return TableSection(key: "PreferredPlayer", rows: rows)
 	}
 
-	private static func opponentsSection(preferredOpponents: [Player], actionable: SettingsActionable) -> TableSection {
+	private static func opponentsSection(
+		preferredOpponents: [PlayerListItem],
+		actionable: SettingsActionable
+	) -> TableSection {
 		var rows: [CellConfigType] = [
 			Cells.header(key: "Header", title: "Opponents in Widget"),
 		]
