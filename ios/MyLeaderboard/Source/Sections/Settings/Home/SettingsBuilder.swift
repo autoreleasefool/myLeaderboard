@@ -18,7 +18,7 @@ protocol SettingsActionable: AnyObject {
 	func nextInterfaceStyle()
 }
 
-struct SettingsBuilder {
+enum SettingsBuilder {
 	static func sections(
 		preferredPlayer: Player?,
 		preferredOpponents: [Player],
@@ -145,7 +145,7 @@ struct SettingsBuilder {
 		return version ?? ""
 	}
 
-	private struct Cells {
+	private enum Cells {
 		static func header(key: String, title: String) -> CellConfigType {
 			return LabelCell(
 				key: key,

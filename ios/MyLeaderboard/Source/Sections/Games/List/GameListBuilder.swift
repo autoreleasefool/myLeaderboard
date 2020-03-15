@@ -13,7 +13,7 @@ protocol GameListActionable: AnyObject {
 	func selectedGame(gameID: GraphID)
 }
 
-struct GameListBuilder {
+enum GameListBuilder {
 	static func sections(games: [GameListItem], actionable: GameListActionable) -> [TableSection] {
 		let rows: [CellConfigType] = games.map { game in
 			return GameListItemCell(

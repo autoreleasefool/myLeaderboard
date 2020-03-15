@@ -12,7 +12,7 @@ protocol PlayerListActionable: AnyObject {
 	func selectedPlayer(player: Player)
 }
 
-struct PlayerListBuilder {
+enum PlayerListBuilder {
 	static func sections(players: [Player], actionable: PlayerListActionable) -> [TableSection] {
 		let rows = players.map { player in
 			PlayerListItemCell(

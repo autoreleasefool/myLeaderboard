@@ -18,7 +18,7 @@ protocol BasePickerActionable: AnyObject {
 	func didSelectItem(_ item: GraphID, selected: Bool)
 }
 
-struct BasePickerBuilder {
+enum BasePickerBuilder {
 	static func sections<State: ViewState>(
 		items: [PickerItem<State>],
 		selectedItems: Set<GraphID>,

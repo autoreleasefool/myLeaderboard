@@ -15,7 +15,7 @@ protocol StandingsListActionable: AnyObject {
 	func showPlays(gameID: GraphID, playerIDs: [GraphID])
 }
 
-struct StandingsListBuilder {
+enum StandingsListBuilder {
 	private static let avatarImageSize: CGFloat = 32
 
 	static func sections(
@@ -237,7 +237,7 @@ struct StandingsListBuilder {
 		return TableSection(key: "Banished-\(game.id)", rows: rows)
 	}
 
-	private struct Players {
+	private enum Players {
 		static func banished(from standings: StandingsFragment) -> [Opponent] {
 			return standings.standings.records
 				.filter { $0.record.asStandingsPlayerGameRecordFragmentFragment.isBanished }
@@ -253,7 +253,7 @@ struct StandingsListBuilder {
 		}
 	}
 
-	private struct PlayerRecords {
+	private enum PlayerRecords {
 		static func visible(from standings: StandingsFragment) -> [StandingsPlayerRecordNext] {
 			return standings.standings.records
 				.filter { $0.record.asStandingsPlayerGameRecordFragmentFragment.isBanished == false }
@@ -261,7 +261,7 @@ struct StandingsListBuilder {
 		}
 	}
 
-	private struct SpreadsheetConfigs {
+	private enum SpreadsheetConfigs {
 		static func rows(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.RowConfig] {
 			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
 			cells.enumerated().forEach { index, _ in
@@ -289,7 +289,7 @@ struct StandingsListBuilder {
 		}
 	}
 
-	private struct Cells {
+	private enum Cells {
 		static func subHeader(key: String, text: String) -> CellConfigType {
 			return LabelCell(
 				key: key,
@@ -345,7 +345,7 @@ struct StandingsListBuilder {
 		}
 	}
 
-	private struct SpreadsheetCells {
+	private enum SpreadsheetCells {
 		static func textGridCell(
 			key: String,
 			text: String,

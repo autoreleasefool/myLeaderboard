@@ -14,7 +14,7 @@ protocol CreatePlayerActionable: AnyObject {
 	func updatedPlayerUsername(username: String)
 }
 
-struct CreatePlayerBuilder {
+enum CreatePlayerBuilder {
 	enum Keys: String {
 		case createPlayerSection
 		enum Create: String {

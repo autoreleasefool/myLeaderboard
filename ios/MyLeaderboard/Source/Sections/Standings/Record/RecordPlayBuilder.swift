@@ -16,7 +16,7 @@ protocol RecordPlayActionable: AnyObject {
 	func setScore(for player: GraphID, score: Int)
 }
 
-struct RecordPlayBuilder {
+enum RecordPlayBuilder {
 	enum Keys: String {
 		case gameSection
 		enum Game: String {

@@ -14,7 +14,7 @@ protocol CreateGameActionable: AnyObject {
 	func updatedHasScores(hasScores: Bool)
 }
 
-struct CreateGameBuilder {
+enum CreateGameBuilder {
 	enum Keys: String {
 		case createGameSection
 		enum Create: String {

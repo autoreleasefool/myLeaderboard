@@ -13,7 +13,7 @@ protocol PlaysListActionable: AnyObject {
 
 }
 
-struct PlaysListBuilder {
+enum PlaysListBuilder {
 	private static let dateFormatter: DateFormatter = {
 		let formatter = DateFormatter()
 		formatter.timeStyle = .none

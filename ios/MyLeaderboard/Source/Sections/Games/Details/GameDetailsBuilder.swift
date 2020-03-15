@@ -14,7 +14,7 @@ protocol GameDetailsActionable: AnyObject {
 	func showPlayerPlays(playerIDs: [GraphID])
 }
 
-struct GameDetailsBuilder {
+enum GameDetailsBuilder {
 	private static let avatarImageSize: CGFloat = 32
 	private static let dateFormatter: DateFormatter = {
 		let formatter = DateFormatter()
@@ -121,7 +121,7 @@ struct GameDetailsBuilder {
 		return TableSection(key: "Standings", rows: rows)
 	}
 
-	private struct Cells {
+	private enum Cells {
 		static func sectionHeader(
 			key: String,
 			title: String,
@@ -213,7 +213,7 @@ struct GameDetailsBuilder {
 		}
 	}
 
-	private struct SpreadsheetCells {
+	private enum SpreadsheetCells {
 		static func headerRow(players: [Opponent], actionable: GameDetailsActionable) -> [GridCellConfig] {
 			var headerRow: [GridCellConfig] = [
 				textGridCell(key: "Header", text: ""),
@@ -332,7 +332,7 @@ struct GameDetailsBuilder {
 		}
 	}
 
-	private struct SpreadsheetConfigs {
+	private enum SpreadsheetConfigs {
 		static func rows(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.RowConfig] {
 			var rowConfigs: [Int: Spreadsheet.RowConfig] = [:]
 			cells.enumerated().forEach { index, _ in
