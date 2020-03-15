@@ -38,7 +38,7 @@ class RootTabBarController: UITabBarController {
 		return [
 			TabItem(
 				type: .standings,
-				controller: UINavigationController(rootViewController: StandingsListViewController(api: api))
+				controller: UINavigationController(rootViewController: StandingsListViewController())
 			),
 			TabItem(
 				type: .games,

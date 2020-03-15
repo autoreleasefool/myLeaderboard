@@ -1,0 +1,9 @@
+mutation RecordPlay($players: [ID!]!, $winners: [ID!]!, $game: ID!, $scores: [Int!]) {
+	recordPlay(players: $players, winners: $winners, game: $game, scores: $scores) {
+		... NewPlayFragment
+	}
+}
+
+fragment NewPlayFragment on Play {
+	id
+}

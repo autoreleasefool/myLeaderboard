@@ -7,15 +7,14 @@
 //
 
 import UIKit
+import Loaf
 
 class RecordPlayViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: RecordPlayViewModel!
 
-	private var playCreated: ((GamePlay) -> Void)?
+	private var playCreated: ((NewPlay) -> Void)?
 
-	init(api: LeaderboardAPI, onSuccess: ((GamePlay) -> Void)? = nil) {
-		self.api = api
+	init(onSuccess: ((NewPlay) -> Void)? = nil) {
 		self.playCreated = onSuccess
 		super.init()
 	}
@@ -26,11 +25,11 @@ class RecordPlayViewController: FTDViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		viewModel = RecordPlayViewModel(api: api) { [weak self] action in
+		viewModel = RecordPlayViewModel { [weak self] action in
 			switch action {
-			case .playUpdated, .userErrors:
+			case .dataChanged, .userErrors:
 				self?.render()
-			case .apiError(let error):
+			case .graphQLError(let error):
 				self?.presentError(error)
 			case .playCreated(let play):
 				self?.playCreated?(play)
@@ -104,8 +103,8 @@ class RecordPlayViewController: FTDViewController {
 		presentModal(playerPicker)
 	}
 
-	private func presentError(_ error: Error) {
-		print("Error recording play: \(error)")
+	private func presentError(_ error: GraphAPIError) {
+		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 }
 

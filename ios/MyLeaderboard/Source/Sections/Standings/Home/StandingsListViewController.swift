@@ -10,12 +10,10 @@ import UIKit
 import Loaf
 
 class StandingsListViewController: FTDViewController {
-	private var api: LeaderboardAPI
 	private var viewModel: StandingsListViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(api: LeaderboardAPI) {
-		self.api = api
+	override init() {
 		super.init()
 		refreshable = true
 	}
@@ -96,8 +94,10 @@ class StandingsListViewController: FTDViewController {
 	}
 
 	private func showRecordPlay() {
-		presentModal(RecordPlayViewController(api: api) { _ in
+		presentModal(RecordPlayViewController { [weak self] _ in
+			guard let self = self else { return }
 			Loaf("Play recorded!", state: .success, sender: self).show()
+			self.viewModel.postViewAction(.reload)
 		})
 	}
 
