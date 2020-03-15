@@ -59,8 +59,7 @@ class PlaysListViewModel: ViewModel {
 			first: 25,
 			offset: 0,
 			game: filterGameID,
-			players: filterPlayerIDs,
-			reverse: true
+			players: filterPlayerIDs
 		).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):

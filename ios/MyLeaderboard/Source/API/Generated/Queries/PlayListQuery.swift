@@ -8,15 +8,13 @@ public extension MyLeaderboardAPI {
 			public let offset: Int
 			public let game: GraphID?
 			public let players: [GraphID]?
-			public let reverse: Bool
 
 		// MARK: - Initializer
-		public init(first: Int, offset: Int, game: GraphID? = nil, players: [GraphID]? = nil, reverse: Bool) {
+		public init(first: Int, offset: Int, game: GraphID? = nil, players: [GraphID]? = nil) {
 				self.first = first
 				self.offset = offset
 				self.game = game
 				self.players = players
-				self.reverse = reverse
 		}
 
 		// MARK: - Helpers
@@ -28,13 +26,12 @@ public extension MyLeaderboardAPI {
 				case offset
 				case game
 				case players
-				case reverse
 		}
 
 		public typealias Response = PlayListResponse
 
 		public let queryString: String = """
-		fragment PlayListItem on Play { __typename id playedOn scores game { __typename image name } players { __typename displayName ... OpponentFragment } winners { __typename id } } fragment OpponentFragment on BasicPlayer { __typename id avatar } query PlayList($first: Int!, $offset: Int!, $game: ID, $players: [ID!], $reverse: Boolean!) { __typename plays(first: $first, offset: $offset, game: $game, players: $players, reverse: $reverse) { __typename ... PlayListItem } }
+		fragment PlayListItem on Play { __typename id playedOn scores game { __typename image name } players { __typename displayName ... OpponentFragment } winners { __typename id } } fragment OpponentFragment on BasicPlayer { __typename id avatar } query PlayList($first: Int!, $offset: Int!, $game: ID, $players: [ID!]) { __typename plays(first: $first, offset: $offset, game: $game, players: $players, reverse: true) { __typename ... PlayListItem } }
 		"""
 	}
 }

@@ -57,8 +57,6 @@ extension Player {
 	private static let preferredOpponentsKey = "Settings.PreferredOpponents"
 
 	static var preferred: Player? {
-		// SwiftLint reporting this line is an error
-		// swiftlint:disable:next implicit_getter
 		get {
 			if let data = UserDefaults.group.value(forKey: Player.preferredPlayerKey) as? Data,
 				let player = try? JSONDecoder().decode(Player.self, from: data) {
@@ -79,8 +77,6 @@ extension Player {
 	static var preferredOpponentsLimit: Int = 2
 
 	static var preferredOpponents: [Player] {
-		// SwiftLint reporting this line is an error
-		// swiftlint:disable:next implicit_getter
 		get {
 			if let data = UserDefaults.group.value(forKey: Player.preferredOpponentsKey) as? Data,
 				let opponents = try? JSONDecoder().decode([Player].self, from: data) {
