@@ -51,11 +51,8 @@ class RootTabBarController: UITabBarController {
 		]
 	}()
 
-	private var api: LeaderboardAPI!
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.api = LeaderboardAPI()
 		self.viewControllers = createTabBarItems()
 		self.tabBar.tintColor = .tab
 	}
