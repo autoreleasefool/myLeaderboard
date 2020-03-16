@@ -16,6 +16,7 @@ class StandingsListViewController: FTDViewController {
 	override init() {
 		super.init()
 		refreshable = true
+		paginated = true
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -80,12 +81,17 @@ class StandingsListViewController: FTDViewController {
 			return
 		}
 
-		let sections = StandingsListBuilder.sections(
+		var sections = StandingsListBuilder.sections(
 			games: viewModel.games,
 			standings: viewModel.standings,
 			builder: spreadsheetBuilder,
 			actionable: self
 		)
+
+		if viewModel.loadingMore {
+			sections.append(LoadingCell.section(style: .medium, backgroundColor: .primary))
+		}
+
 		tableData.renderAndDiff(sections)
 	}
 

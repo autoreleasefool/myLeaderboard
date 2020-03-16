@@ -22,6 +22,7 @@ enum StandingsListViewAction: BaseViewAction {
 	case initialize
 	case willAppear
 	case reload
+	case loadMore
 	case recordPlay
 	case selectGame(GraphID)
 	case selectPlayer(GraphID)
@@ -33,10 +34,18 @@ enum StandingsListViewAction: BaseViewAction {
 class StandingsListViewModel: ViewModel {
 	typealias StandingsQuery = MyLeaderboardAPI.StandingsQuery
 	typealias ActionHandler = (_ action: StandingsListAction) -> Void
+	private static let pageSize = 10
 
 	var handleAction: ActionHandler
 
 	private(set) var dataLoading: Bool = false {
+		didSet {
+			handleAction(.dataChanged)
+		}
+	}
+
+	private(set) var hasMore: Bool = false
+	private(set) var loadingMore: Bool = false {
 		didSet {
 			handleAction(.dataChanged)
 		}
@@ -59,6 +68,9 @@ class StandingsListViewModel: ViewModel {
 		switch viewAction {
 		case .initialize, .reload:
 			loadData()
+		case .loadMore:
+			guard !dataLoading && !loadingMore && hasMore else { return }
+			loadData(offset: games.count)
 		case .willAppear:
 			if shouldCheckForPreferredPlayer {
 				hasCheckedForPreferredPlayer = true
@@ -79,22 +91,37 @@ class StandingsListViewModel: ViewModel {
 		}
 	}
 
-	private func loadData() {
+	private func loadData(offset: Int = 0) {
 		dataLoading = true
-		StandingsQuery(first: 25, offset: 0).perform { [weak self] in
+		if offset > 0 {
+			loadingMore = true
+		}
+
+		StandingsQuery(first: StandingsListViewModel.pageSize, offset: offset).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			case .success(let response):
-				self?.handle(response: response)
+				self?.handle(response: response, offset: offset)
 			}
 
 			self?.dataLoading = false
+			if offset > 0 {
+				self?.loadingMore = false
+			}
 		}
 	}
 
-	private func handle(response: StandingsQuery.Response) {
-		self.games = response.games.map { $0.asStandingsGameFragmentFragment }
+	private func handle(response: StandingsQuery.Response, offset: Int) {
+		let newGames = response.games.map { $0.asStandingsGameFragmentFragment }
+		hasMore = newGames.count == StandingsListViewModel.pageSize
+
+		if offset > 0 {
+			self.games.append(contentsOf: newGames)
+		} else {
+			self.games = newGames
+		}
+
 		self.games.enumerated().forEach { (index, game) in
 			self.standings[game] = response.games[index].asStandingsFragmentFragment
 		}
