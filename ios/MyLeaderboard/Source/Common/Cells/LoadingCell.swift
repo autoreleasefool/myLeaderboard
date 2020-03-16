@@ -55,6 +55,7 @@ class LoadingCellView: UIView {
 }
 
 struct LoadingCellState: ViewState {
+	let style: UIActivityIndicatorView.Style
 	let loading: Bool
 
 	static func updateView(_ view: LoadingCellView, state: LoadingCellState?) {
@@ -67,15 +68,18 @@ struct LoadingCellState: ViewState {
 }
 
 extension LoadingCell {
-	static func section() -> TableSection {
-		return TableSection(key: "Loading", rows: [loadingCell()])
+	static func section(
+		style: UIActivityIndicatorView.Style = .large,
+		backgroundColor: UIColor = .primaryDark
+	) -> TableSection {
+		return TableSection(key: "Loading", rows: [loadingCell(style: style, backgroundColor: backgroundColor)])
 	}
 
-	private static func loadingCell() -> CellConfigType {
+	private static func loadingCell(style: UIActivityIndicatorView.Style, backgroundColor: UIColor) -> CellConfigType {
 		return LoadingCell(
 			key: "Loading",
-			style: CellStyle(backgroundColor: .primaryDark),
-			state: LoadingCellState(loading: true),
+			style: CellStyle(backgroundColor: backgroundColor),
+			state: LoadingCellState(style: style, loading: true),
 			cellUpdater: LoadingCellState.updateView
 		)
 	}

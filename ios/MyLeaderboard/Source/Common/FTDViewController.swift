@@ -24,6 +24,8 @@ class FTDViewController: UIViewController {
 		}
 	}
 
+	var paginated: Bool = false
+
 	init() {
 		super.init(nibName: nil, bundle: nil)
 		refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
@@ -56,13 +58,29 @@ class FTDViewController: UIViewController {
 
 	private func setupTableData() {
 		tableData.tableView = tableView
+		tableData.scrollViewDidScroll = { [weak self] scrollView in
+			let height = scrollView.frame.size.height
+			let contentYoffset = scrollView.contentOffset.y
+			let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+			if distanceFromBottom < height {
+				self?.loadMore()
+			}
+		}
 	}
 
 	@objc private func didPullToRefresh(_ sender: Any) {
 		refresh()
 	}
 
-	func refresh() { }
+	func refresh() {
+		guard refreshable else { return }
+		fatalError("You must override refresh() if the controller is refreshable")
+	}
+
+	func loadMore() {
+		guard paginated else { return }
+		fatalError("You must override loadMore() if the controller is paginated")
+	}
 
 	func finishRefresh() {
 		refreshControl.endRefreshing()

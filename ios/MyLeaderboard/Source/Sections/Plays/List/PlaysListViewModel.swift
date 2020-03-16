@@ -16,12 +16,14 @@ enum PlaysListAction: BaseAction {
 enum PlaysListViewAction: BaseViewAction {
 	case initialize
 	case reload
+	case loadMore
 }
 
 class PlaysListViewModel: ViewModel {
 	typealias PlayListQuery = MyLeaderboardAPI.PlayListQuery
 	typealias ActionHandler = (_ action: PlaysListAction) -> Void
 	static let defaultTitle = "Filtered plays"
+	static let pageSize = 25
 
 	var handleAction: ActionHandler
 
@@ -32,6 +34,14 @@ class PlaysListViewModel: ViewModel {
 			handleAction(.dataChanged)
 		}
 	}
+
+	private(set) var loadingMore: Bool = false {
+		didSet {
+			handleAction(.dataChanged)
+		}
+	}
+
+	private(set) var hasMore: Bool = false
 
 	private(set) var plays: [PlayListItem] = []
 	private(set) var title: String = PlaysListViewModel.defaultTitle
@@ -45,14 +55,21 @@ class PlaysListViewModel: ViewModel {
 		switch viewAction {
 		case .initialize, .reload:
 			loadData()
+		case .loadMore:
+			guard !loadingMore && hasMore else { return }
+			loadData(offset: plays.count)
 		}
 	}
 
-	private func loadData() {
+	private func loadData(offset: Int = 0) {
 		dataLoading = true
+		if offset > 0 {
+			loadingMore = true
+		}
+
 		PlayListQuery(
-			first: 25,
-			offset: 0,
+			first: PlaysListViewModel.pageSize,
+			offset: offset,
 			game: filter.gameID,
 			players: filter.playerIDs
 		).perform { [weak self] in
@@ -60,10 +77,13 @@ class PlaysListViewModel: ViewModel {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			case .success(let response):
-				self?.handle(response: response)
+				self?.handle(response: response, offset: offset)
 			}
 
 			self?.dataLoading = false
+			if offset > 0 {
+				self?.loadingMore = false
+			}
 		}
 	}
 
@@ -71,8 +91,15 @@ class PlaysListViewModel: ViewModel {
 		return play.players.first(where: { $0.id == playerID })?.displayName
 	}
 
-	private func handle(response: PlayListQuery.Response) {
-		self.plays = response.plays.map { $0.asPlayListItemFragment }
+	private func handle(response: PlayListQuery.Response, offset: Int) {
+		let newPlays = response.plays.map { $0.asPlayListItemFragment }
+		hasMore = newPlays.count == PlaysListViewModel.pageSize
+
+		if offset > 0 {
+			self.plays.append(contentsOf: newPlays)
+		} else {
+			self.plays = newPlays
+		}
 
 		guard let firstPlay = plays.first else {
 			self.title = PlaysListViewModel.defaultTitle

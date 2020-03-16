@@ -16,6 +16,7 @@ class PlaysListViewController: FTDViewController {
 	init(filter: PlayListFilter) {
 		super.init()
 		refreshable = true
+		paginated = true
 
 		viewModel = PlaysListViewModel(filter: filter) { [weak self] action in
 			guard let self = self else { return }
@@ -47,7 +48,7 @@ class PlaysListViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections: [TableSection]
+		var sections: [TableSection]
 
 		if viewModel.plays.count == 0 {
 			if viewModel.dataLoading {
@@ -65,6 +66,10 @@ class PlaysListViewController: FTDViewController {
 			sections = PlaysListBuilder.sections(plays: viewModel.plays, actionable: self)
 		}
 
+		if viewModel.loadingMore {
+			sections.append(LoadingCell.section(style: .medium, backgroundColor: .primary))
+		}
+
 		tableData.renderAndDiff(sections)
 	}
 
@@ -74,6 +79,10 @@ class PlaysListViewController: FTDViewController {
 
 	override func refresh() {
 		viewModel.postViewAction(.reload)
+	}
+
+	override func loadMore() {
+		viewModel.postViewAction(.loadMore)
 	}
 }
 
