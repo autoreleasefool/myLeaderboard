@@ -15,6 +15,7 @@ class GameListViewController: FTDViewController {
 	override init() {
 		super.init()
 		refreshable = true
+		paginated = true
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -51,9 +52,15 @@ class GameListViewController: FTDViewController {
 	}
 
 	private func render() {
-		let sections = viewModel.games.count > 0 || !viewModel.dataLoading
-			? GameListBuilder.sections(games: viewModel.games, actionable: self)
-			: [LoadingCell.section()]
+		guard viewModel.games.count > 0 || !viewModel.dataLoading else {
+			return tableData.renderAndDiff([LoadingCell.section()])
+		}
+
+		var sections = GameListBuilder.sections(games: viewModel.games, actionable: self)
+		if viewModel.loadingMore {
+			sections.append(LoadingCell.section(style: .medium, backgroundColor: .primary))
+		}
+
 		tableData.renderAndDiff(sections)
 	}
 
@@ -80,6 +87,10 @@ class GameListViewController: FTDViewController {
 
 	override func refresh() {
 		viewModel.postViewAction(.reload)
+	}
+
+	override func loadMore() {
+		viewModel.postViewAction(.loadMore)
 	}
 }
 
