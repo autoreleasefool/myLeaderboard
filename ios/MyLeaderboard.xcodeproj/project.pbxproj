@@ -82,6 +82,7 @@
 		CA6E045923551BCB000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045823551BCB000CB3E0 /* FunctionalTableData */; };
 		CA7BAF14241F888500D4D7B8 /* SpreadsheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */; };
 		CA7BAF15241F9BED00D4D7B8 /* SpreadsheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */; };
+		CA7BAF17241FB8C100D4D7B8 /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF16241FB8C100D4D7B8 /* GamePlay.swift */; };
 		CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
 		CA834B87230A1D8500A48C9B /* StandingsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D93992308E601003FF844 /* StandingsListViewController.swift */; };
 		CA834B88230A1D8900A48C9B /* StandingsListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */; };
@@ -326,6 +327,7 @@
 		CA6D05DD240D147900412D54 /* MyLeaderboardAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyLeaderboardAPI.swift; sourceTree = "<group>"; };
 		CA6D05DF240D147900412D54 /* GraphApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphApi.swift; sourceTree = "<group>"; };
 		CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetLayout.swift; sourceTree = "<group>"; };
+		CA7BAF16241FB8C100D4D7B8 /* GamePlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlay.swift; sourceTree = "<group>"; };
 		CA80CD912310174400C0D30C /* MyLeaderboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyLeaderboard.entitlements; sourceTree = "<group>"; };
 		CA834B8D230A1E4D00A48C9B /* SpreadsheetRowConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetRowConfig.swift; sourceTree = "<group>"; };
 		CA834B8F230A1EB900A48C9B /* SpreadsheetColumnConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetColumnConfig.swift; sourceTree = "<group>"; };
@@ -909,6 +911,7 @@
 				CABA3EAB22D4B81F00960758 /* MVVM */,
 				CA5FC5F323CA0F890029DD61 /* Avatar.swift */,
 				CABA3EA922D4B4DB00960758 /* FTDViewController.swift */,
+				CA7BAF16241FB8C100D4D7B8 /* GamePlay.swift */,
 				CAAE778723024565001A37DC /* LoadingHUD.swift */,
 				CABA3EAC22D4B83D00960758 /* ImageLoader.swift */,
 				F55AE95922F1049500BCEE5B /* Identifiable.swift */,
@@ -1461,6 +1464,7 @@
 				CA9715F7241D7DA700EA58E9 /* PlayListItem+Extensions.swift in Sources */,
 				CA97160A241E1FB400EA58E9 /* GameDetailsPlayerRecordFragment.swift in Sources */,
 				CAAE778E2302DB0A001A37DC /* CreatePlayerBuilder.swift in Sources */,
+				CA7BAF17241FB8C100D4D7B8 /* GamePlay.swift in Sources */,
 				CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */,
 				CA834B9A230A298300A48C9B /* SpreadsheetConfig.swift in Sources */,
 				CAB88E3A230DF4590022281D /* GameDetailsViewModel.swift in Sources */,

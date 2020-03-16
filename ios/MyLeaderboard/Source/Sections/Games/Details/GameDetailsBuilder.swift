@@ -16,12 +16,6 @@ protocol GameDetailsActionable: AnyObject {
 
 enum GameDetailsBuilder {
 	private static let avatarImageSize: CGFloat = 32
-	private static let dateFormatter: DateFormatter = {
-		let formatter = DateFormatter()
-		formatter.timeStyle = .none
-		formatter.dateStyle = .long
-		return formatter
-	}()
 
 	static func sections(
 		game: GameDetails,
@@ -71,7 +65,7 @@ enum GameDetailsBuilder {
 		recentPlays.forEach {
 			if let playCell = Cells.playCell(for: $0, players: players, actionable: actionable) {
 				if let date = $0.playedOnDay, date != lastDatePlayed {
-					rows.append(Cells.dateCell(for: date))
+					rows.append(Cells.dateCell(for: $0))
 					lastDatePlayed = date
 				}
 				rows.append(playCell)
@@ -189,8 +183,8 @@ enum GameDetailsBuilder {
 			)
 		}
 
-		static func dateCell(for date: Date) -> CellConfigType {
-			let dateString = GameDetailsBuilder.dateFormatter.string(from: date)
+		static func dateCell(for play: GamePlay) -> CellConfigType {
+			let dateString = play.formattedDate
 			return LabelCell(
 				key: "Date-\(dateString)",
 				state: LabelState(

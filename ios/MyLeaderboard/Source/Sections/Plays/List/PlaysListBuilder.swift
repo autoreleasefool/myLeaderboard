@@ -14,13 +14,6 @@ protocol PlaysListActionable: AnyObject {
 }
 
 enum PlaysListBuilder {
-	private static let dateFormatter: DateFormatter = {
-		let formatter = DateFormatter()
-		formatter.timeStyle = .none
-		formatter.dateStyle = .long
-		return formatter
-	}()
-
 	static func sections(
 		forPlayer playerID: GraphID,
 		plays: [PlayListItem],
@@ -45,7 +38,7 @@ enum PlaysListBuilder {
 			}
 
 			if let date = play.playedOnDay, date != lastDatePlayed {
-				rows.append(dateCell(for: date))
+				rows.append(dateCell(for: play))
 				lastDatePlayed = date
 			}
 
@@ -75,7 +68,7 @@ enum PlaysListBuilder {
 				play.players.count == 2 else { return }
 
 			if let date = play.playedOnDay, date != lastDatePlayed {
-				rows.append(dateCell(for: date))
+				rows.append(dateCell(for: play))
 				lastDatePlayed = date
 			}
 
@@ -116,8 +109,8 @@ enum PlaysListBuilder {
 		)
 	}
 
-	static func dateCell(for date: Date) -> CellConfigType {
-		let dateString = PlaysListBuilder.dateFormatter.string(from: date)
+	static func dateCell(for play: GamePlay) -> CellConfigType {
+		let dateString = play.formattedDate
 		return LabelCell(
 			key: "Date-\(dateString)",
 			state: LabelState(
