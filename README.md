@@ -31,13 +31,13 @@ iLeaderboard, meet myLeaderboard
 
 ### API
 
-* node 10.15+
-* yarn 1.16+
+* node (tested with 10.15+)
+* yarn (tested with 1.22+)
 * ngrok
 
 ### Dashboard
 
-* yarn 1.16+
+* yarn (tested with 1.22+)
 
 ### iOS
 
@@ -50,19 +50,15 @@ Clone the repo and follow the steps below for the component you're interested in
 
 ### API
 
-
-1. Make your changes and run `yarn lint` to ensure there are no lint issues.
-2. Open a PR with your changes (don't include ngrok URLs) 🎉
+1. Make your changes and run `yarn lint` to ensure there are no lint errors
+1. Open a PR with your changes (don't include ngrok URLs) 🎉
 
 ### Dashboard
 
-
-1. Make your changes and run `yarn lint` to ensure there are no lint issues.
-2. `yarn build`
-3. Open a PR with your changes (include all `site` changes) 🎉
+1. Make your changes and run `yarn lint` to ensure there are no lint errors
+1. Open a PR with your changes 🎉
 
 ### iOS
 
-
-1. Make your changes and run `swiftlint` to ensure there are no lint issues.
-2. Open a PR with your changes 🎉
+1. Make your changes and run `swiftlint` to ensure there are no lint warnings or errors
+1. Open a PR with your changes 🎉
