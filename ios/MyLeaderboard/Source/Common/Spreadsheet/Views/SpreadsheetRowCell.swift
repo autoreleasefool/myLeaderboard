@@ -20,6 +20,7 @@ extension Spreadsheet {
 	class RowCellView: UIView {
 		var spreadsheetKey: String?
 		let collectionView: UICollectionView
+		let layout: SpreadsheetLayout
 
 		private let topBorder = UIView()
 		private let topBorderHeightConstraint: NSLayoutConstraint
@@ -34,10 +35,7 @@ extension Spreadsheet {
 		fileprivate let heightConstraint: NSLayoutConstraint
 
 		override init(frame: CGRect) {
-			let layout = UICollectionViewFlowLayout()
-			layout.scrollDirection = .horizontal
-			layout.minimumInteritemSpacing = 0
-			layout.minimumLineSpacing = 0
+			layout = SpreadsheetLayout()
 
 			collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 			collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -206,6 +204,12 @@ extension Spreadsheet {
 
 				return view
 			}
+
+			view.layout.stickyItems = Set(
+				state.columns
+					.filter { $0.value.sticky }
+					.map { IndexPath(item: $0.key, section: 0) }
+			)
 
 			view.collectionData.renderAndDiff([TableSection(key: "Row", rows: rows)])
 		}

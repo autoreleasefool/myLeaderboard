@@ -278,11 +278,12 @@ enum StandingsListBuilder {
 		static func columns(cells: [[GridCellConfig]]) -> [Int: Spreadsheet.ColumnConfig] {
 			var columnConfigs: [Int: Spreadsheet.ColumnConfig] = [:]
 			cells.first?.enumerated().forEach { index, _ in
-				let leftBorder = index == 0 ? Spreadsheet.BorderConfig(color: .standingsBorder) : nil
+				let leftBorder = index == 0 || index == 1 ? Spreadsheet.BorderConfig(color: .standingsBorder) : nil
 				columnConfigs[index] = Spreadsheet.ColumnConfig(
 					columnWidth: 96,
 					leftBorder: leftBorder,
-					rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder)
+					rightBorder: Spreadsheet.BorderConfig(color: .standingsBorder),
+					sticky: index == 0
 				)
 			}
 			return columnConfigs

@@ -80,6 +80,8 @@
 		CA6D05E4240D147900412D54 /* GraphApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6D05DF240D147900412D54 /* GraphApi.swift */; };
 		CA6E045723551BC1000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045623551BC1000CB3E0 /* FunctionalTableData */; };
 		CA6E045923551BCB000CB3E0 /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA6E045823551BCB000CB3E0 /* FunctionalTableData */; };
+		CA7BAF14241F888500D4D7B8 /* SpreadsheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */; };
+		CA7BAF15241F9BED00D4D7B8 /* SpreadsheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */; };
 		CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D939B2308E6A2003FF844 /* StandingsListViewModel.swift */; };
 		CA834B87230A1D8500A48C9B /* StandingsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D93992308E601003FF844 /* StandingsListViewController.swift */; };
 		CA834B88230A1D8900A48C9B /* StandingsListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */; };
@@ -323,6 +325,7 @@
 		CA6D05DB240D147900412D54 /* PlayerListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerListItem.swift; sourceTree = "<group>"; };
 		CA6D05DD240D147900412D54 /* MyLeaderboardAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyLeaderboardAPI.swift; sourceTree = "<group>"; };
 		CA6D05DF240D147900412D54 /* GraphApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphApi.swift; sourceTree = "<group>"; };
+		CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetLayout.swift; sourceTree = "<group>"; };
 		CA80CD912310174400C0D30C /* MyLeaderboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyLeaderboard.entitlements; sourceTree = "<group>"; };
 		CA834B8D230A1E4D00A48C9B /* SpreadsheetRowConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetRowConfig.swift; sourceTree = "<group>"; };
 		CA834B8F230A1EB900A48C9B /* SpreadsheetColumnConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetColumnConfig.swift; sourceTree = "<group>"; };
@@ -777,6 +780,7 @@
 				CA834B9D230A344E00A48C9B /* Views */,
 				CA834B95230A282500A48C9B /* Spreadsheet.swift */,
 				CA834B9B230A335600A48C9B /* SpreadsheetBuilder.swift */,
+				CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */,
 			);
 			path = Spreadsheet;
 			sourceTree = "<group>";
@@ -1371,6 +1375,7 @@
 				CA27F9D0232EE7510023924A /* LabelState.swift in Sources */,
 				CA27F9D3232EE76D0023924A /* Metrics.swift in Sources */,
 				CAC6685F241EE0000020D9B4 /* TodayViewGameFragment.swift in Sources */,
+				CA7BAF15241F9BED00D4D7B8 /* SpreadsheetLayout.swift in Sources */,
 				CA27F9BF232E931B0023924A /* ViewModel.swift in Sources */,
 				CAC66847241EDC0C0020D9B4 /* StandingsPlayerGameRecordFragment.swift in Sources */,
 				CA27F9D6232EE8FA0023924A /* ViewState.swift in Sources */,
@@ -1415,6 +1420,7 @@
 				CA9715C4241827CE00EA58E9 /* GameListQuery.swift in Sources */,
 				CA971604241E172900EA58E9 /* StandingsFragment+Extensions.swift in Sources */,
 				CABA3EB122D58D8700960758 /* Colors.swift in Sources */,
+				CA7BAF14241F888500D4D7B8 /* SpreadsheetLayout.swift in Sources */,
 				CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */,
 				CA519464230F98580041105B /* SettingsViewController.swift in Sources */,
 				CAC66835241EDAE10020D9B4 /* TodayViewRecordFragment.swift in Sources */,

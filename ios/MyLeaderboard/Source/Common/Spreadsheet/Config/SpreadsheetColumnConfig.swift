@@ -13,14 +13,18 @@ extension Spreadsheet {
 		let columnWidth: CGFloat
 		let leftBorder: BorderConfig?
 		let rightBorder: BorderConfig?
+		let sticky: Bool
 
 		init(
 			columnWidth: CGFloat = 48,
 			leftBorder: BorderConfig? = BorderConfig(),
-			rightBorder: BorderConfig? = BorderConfig()) {
+			rightBorder: BorderConfig? = BorderConfig(),
+			sticky: Bool = false
+		) {
 			self.columnWidth = columnWidth
 			self.leftBorder = leftBorder
 			self.rightBorder = rightBorder
+			self.sticky = sticky
 		}
 	}
 }
