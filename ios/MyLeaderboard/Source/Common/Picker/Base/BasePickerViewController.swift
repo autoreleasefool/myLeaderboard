@@ -26,6 +26,8 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 	) {
 		self.finishedSelection = completion
 		super.init()
+		refreshable = true
+		paginated = true
 
 		self.viewModel = BasePickerViewModel(
 			initiallySelected: initiallySelected,
@@ -69,12 +71,17 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 		}
 
 		let renderedItems = renderItems(viewModel.items)
-		let sections = BasePickerBuilder.sections(
+		var sections = BasePickerBuilder.sections(
 			items: renderedItems,
 			selectedItems:
 			viewModel.selectedItems,
 			actionable: self
 		)
+
+		if viewModel.loadingMore {
+			sections.append(LoadingCell.section(style: .medium, backgroundColor: .primary))
+		}
+
 		tableData.renderAndDiff(sections)
 	}
 
@@ -103,6 +110,14 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 	private func finish(with selectedItems: [Item]) {
 		self.finishedSelection(selectedItems)
 		dismiss(animated: true)
+	}
+
+	override func refresh() {
+		viewModel.postViewAction(.refresh)
+	}
+
+	override func loadMore() {
+		viewModel.postViewAction(.loadMore)
 	}
 }
 

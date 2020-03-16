@@ -22,8 +22,8 @@ enum PlaysListViewAction: BaseViewAction {
 class PlaysListViewModel: ViewModel {
 	typealias PlayListQuery = MyLeaderboardAPI.PlayListQuery
 	typealias ActionHandler = (_ action: PlaysListAction) -> Void
-	static let defaultTitle = "Filtered plays"
-	static let pageSize = 25
+	private static let defaultTitle = "Filtered plays"
+	private static let pageSize = 25
 
 	var handleAction: ActionHandler
 
@@ -35,13 +35,12 @@ class PlaysListViewModel: ViewModel {
 		}
 	}
 
+	private(set) var hasMore: Bool = false
 	private(set) var loadingMore: Bool = false {
 		didSet {
 			handleAction(.dataChanged)
 		}
 	}
-
-	private(set) var hasMore: Bool = false
 
 	private(set) var plays: [PlayListItem] = []
 	private(set) var title: String = PlaysListViewModel.defaultTitle
@@ -56,7 +55,7 @@ class PlaysListViewModel: ViewModel {
 		case .initialize, .reload:
 			loadData()
 		case .loadMore:
-			guard !loadingMore && hasMore else { return }
+			guard !dataLoading && !loadingMore && hasMore else { return }
 			loadData(offset: plays.count)
 		}
 	}

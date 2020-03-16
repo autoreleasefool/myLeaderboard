@@ -12,7 +12,7 @@ protocol PickerItemQueryable {
 	associatedtype Query: GraphApiQuery & ResponseAssociable
 	associatedtype Item: Identifiable
 
-	func query(completion: @escaping (Query.ResponseResult) -> Void)
+	func query(pageSize: Int, offset: Int, completion: @escaping (Query.ResponseResult) -> Void)
 	func pickerItems(from: Query.Response) -> [Item]
 }
 
@@ -26,12 +26,14 @@ enum PickerAction<Item: Identifiable>: BaseAction {
 enum PickerViewAction<Item: Identifiable>: BaseViewAction {
 	case initialize
 	case refresh
+	case loadMore
 	case finish
 	case itemSelected(GraphID, Bool)
 }
 
 class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where Queryable.Item == Item {
 	typealias ActionHandler = (_ action: PickerAction<Item>) -> Void
+	private let pageSize = 25
 
 	private let multiSelect: Bool
 	private let limit: Int?
@@ -59,6 +61,13 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		return false
 	}
 
+	private(set) var hasMore: Bool = false
+	private(set) var loadingMore: Bool = false {
+		didSet {
+			handleAction(.dataChanged)
+		}
+	}
+
 	init(
 		initiallySelected: Set<GraphID>,
 		multiSelect: Bool,
@@ -77,6 +86,9 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		switch viewAction {
 		case .initialize, .refresh:
 			loadItems()
+		case .loadMore:
+			guard !dataLoading && !loadingMore && hasMore else { return }
+			loadItems(offset: items.count)
 		case .itemSelected(let itemID, let selected):
 			selectItem(itemID, selected: selected)
 		case .finish:
@@ -84,17 +96,33 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 		}
 	}
 
-	private func loadItems() {
+	private func loadItems(offset: Int = 0) {
 		dataLoading = true
-		queryable.query { [weak self] result in
+		if offset > 0 {
+			loadingMore = true
+		}
+
+		queryable.query(pageSize: pageSize, offset: offset) { [weak self] result in
 			switch result {
 			case .success(let response):
-				self?.items = self?.queryable.pickerItems(from: response) ?? []
+				self?.handle(items: self?.queryable.pickerItems(from: response) ?? [], offset: offset)
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			}
 
 			self?.dataLoading = false
+			if offset > 0 {
+				self?.loadingMore = false
+			}
+		}
+	}
+
+	private func handle(items: [Item], offset: Int) {
+		hasMore = items.count == pageSize
+		if offset > 0 {
+			self.items.append(contentsOf: items)
+		} else {
+			self.items = items
 		}
 	}
 

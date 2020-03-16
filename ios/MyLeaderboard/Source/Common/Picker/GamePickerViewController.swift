@@ -12,8 +12,8 @@ struct GameListQueryable: PickerItemQueryable {
 	typealias Query = MyLeaderboardAPI.GameListQuery
 	typealias Response = MyLeaderboardAPI.GameListResponse
 
-	func query(completion: @escaping (Query.ResponseResult) -> Void) {
-		Query(first: 25, offset: 0).perform(callback: completion)
+	func query(pageSize: Int, offset: Int, completion: @escaping (Query.ResponseResult) -> Void) {
+		Query(first: pageSize, offset: offset).perform(callback: completion)
 	}
 
 	func pickerItems(from: Response) -> [GameListItem] {
