@@ -18,6 +18,7 @@ enum PlayerListAction: BaseAction {
 enum PlayerListViewAction: BaseViewAction {
 	case initialize
 	case reload
+	case loadMore
 	case selectPlayer(GraphID)
 	case addPlayer
 }
@@ -25,10 +26,18 @@ enum PlayerListViewAction: BaseViewAction {
 class PlayerListViewModel: ViewModel {
 	typealias PlayerListQuery = MyLeaderboardAPI.PlayerListQuery
 	typealias ActionHandler = (_ action: PlayerListAction) -> Void
+	private static let pageSize = 25
 
 	var handleAction: ActionHandler
 
 	private(set) var dataLoading: Bool = false {
+		didSet {
+			handleAction(.dataChanged)
+		}
+	}
+
+	private(set) var hasMore: Bool = false
+	private(set) var loadingMore: Bool = false {
 		didSet {
 			handleAction(.dataChanged)
 		}
@@ -44,6 +53,9 @@ class PlayerListViewModel: ViewModel {
 		switch viewAction {
 		case .initialize, .reload:
 			loadPlayerList()
+		case .loadMore:
+			guard !dataLoading && !loadingMore && hasMore else { return }
+			loadPlayerList(offset: players.count)
 		case .selectPlayer(let playerID):
 			handleAction(.playerSelected(playerID))
 		case .addPlayer:
@@ -51,17 +63,35 @@ class PlayerListViewModel: ViewModel {
 		}
 	}
 
-	private func loadPlayerList() {
+	private func loadPlayerList(offset: Int = 0) {
 		dataLoading = true
-		PlayerListQuery(first: 25, offset: 0).perform { [weak self] in
+		if offset > 0 {
+			loadingMore = true
+		}
+
+		PlayerListQuery(first: PlayerListViewModel.pageSize, offset: offset).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			case .success(let response):
-				self?.players = response.players.map { $0.asPlayerListItemFragment }
+				self?.handle(response: response, offset: offset)
 			}
 
 			self?.dataLoading = false
+			if offset > 0 {
+				self?.loadingMore = false
+			}
+		}
+	}
+
+	private func handle(response: PlayerListQuery.Response, offset: Int) {
+		let newPlayers = response.players.map { $0.asPlayerListItemFragment }
+		hasMore = newPlayers.count == PlayerListViewModel.pageSize
+
+		if offset > 0 {
+			self.players.append(contentsOf: newPlayers)
+		} else {
+			self.players = newPlayers
 		}
 	}
 }
