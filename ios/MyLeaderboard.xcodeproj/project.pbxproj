@@ -1608,7 +1608,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = MyLeaderboardTodayExtension/MyLeaderboardTodayExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboardTodayExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1630,7 +1630,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = MyLeaderboardTodayExtension/MyLeaderboardTodayExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboardTodayExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1770,7 +1770,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MyLeaderboard/MyLeaderboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1792,7 +1792,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MyLeaderboard/MyLeaderboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
