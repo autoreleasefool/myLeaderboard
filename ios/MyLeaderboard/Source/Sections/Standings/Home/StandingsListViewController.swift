@@ -178,6 +178,10 @@ class StandingsListViewController: FTDViewController {
 	override func refresh() {
 		viewModel.postViewAction(.reload)
 	}
+
+	override func loadMore() {
+		viewModel.postViewAction(.loadMore)
+	}
 }
 
 extension StandingsListViewController: StandingsListActionable {
