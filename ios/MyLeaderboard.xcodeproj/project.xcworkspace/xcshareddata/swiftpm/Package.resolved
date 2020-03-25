@@ -15,17 +15,17 @@
         "repositoryURL": "https://github.com/Shopify/FunctionalTableData.git",
         "state": {
           "branch": "master",
-          "revision": "5e88bc6cbd8eaac9a77613c5b1f44ae41ea1d394",
+          "revision": "c2bf900ca1b5855a95b192fd9c9cfb4823e6bea9",
           "version": null
         }
       },
       {
         "package": "Loaf",
-        "repositoryURL": "https://github.com/schmidyy/Loaf.git",
+        "repositoryURL": "https://github.com/schmidyy/loaf.git",
         "state": {
-          "branch": "master",
-          "revision": "3d0991dc2e36b43d6ffb6934ec2436275cfb8ca3",
-          "version": null
+          "branch": null,
+          "revision": "31f3b3fff28918c49d69ee76be72b041161b67c7",
+          "version": "0.6.0"
         }
       }
     ]
