@@ -129,7 +129,7 @@ struct PlayerGamePlayState: ViewState {
 
 		if let gameImage = state.gameImage {
 			view.gameImage.image = ImageLoader.shared.fetch(string: gameImage) { result in
-				if case .success(let url, let image) = result, url.absoluteString == gameImage {
+				if case .success((let url, let image)) = result, url.absoluteString == gameImage {
 					view.gameImage.image = image
 				}
 			}
@@ -137,7 +137,7 @@ struct PlayerGamePlayState: ViewState {
 
 		if let avatar = state.opponentAvatar {
 			view.opponent.image = ImageLoader.shared.fetch(string: avatar) { result in
-				if case .success(let url, let image) = result, url.absoluteString == avatar {
+				if case .success((let url, let image)) = result, url.absoluteString == avatar {
 					view.opponent.image = image
 				}
 			}

@@ -23,7 +23,7 @@ enum Avatar: Equatable {
 			imageView.image = image
 		case .url(let urlString):
 			imageView.image = ImageLoader.shared.fetch(string: urlString) { [weak imageView] result in
-				if case .success(let url, let image) = result, url.absoluteString == urlString {
+				if case .success((let url, let image)) = result, url.absoluteString == urlString {
 					imageView?.image = image
 				}
 			}

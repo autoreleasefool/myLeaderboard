@@ -130,7 +130,7 @@ struct ImageState: ViewState {
 
 		if let url = state.url {
 			view.image = ImageLoader.shared.fetch(url: url) { result in
-				if case .success(let url, let image) = result, url == state.url {
+				if case .success((let url, let image)) = result, url == state.url {
 					view.image = image
 				}
 			}

@@ -120,7 +120,7 @@ struct PlayerPlayCellState: ViewState {
 
 		if let avatar = state.avatar {
 			view.avatar.image = ImageLoader.shared.fetch(string: avatar) { result in
-				if case .success(let url, let image) = result, url.absoluteString == avatar {
+				if case .success((let url, let image)) = result, url.absoluteString == avatar {
 					view.avatar.image = image
 				}
 			}
