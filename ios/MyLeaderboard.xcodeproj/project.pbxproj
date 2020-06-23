@@ -1807,7 +1807,6 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = MyLeaderboardTodayExtension/MyLeaderboardTodayExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboardTodayExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1815,7 +1814,6 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations.MyLeaderboardTodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1829,7 +1827,6 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = MyLeaderboardTodayExtension/MyLeaderboardTodayExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboardTodayExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1837,7 +1834,6 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations.MyLeaderboardTodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1910,6 +1906,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BASE_VERSION_NUMBER = 8;
+				BASE_VERSION_STRING = 1.4.0;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1972,6 +1970,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BASE_VERSION_NUMBER = 8;
+				BASE_VERSION_STRING = 1.4.0;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2031,14 +2031,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MyLeaderboard/MyLeaderboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -2053,14 +2051,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MyLeaderboard/MyLeaderboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
