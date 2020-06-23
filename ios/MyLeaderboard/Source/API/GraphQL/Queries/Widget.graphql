@@ -1,0 +1,49 @@
+query SmallWidget($player: ID!) {
+	player(id: $player) {
+		records(first: 2) {
+			... SmallWidgetRecordFragment
+		}
+	}
+}
+
+query MediumWidget($player: ID!) {
+	player(id: $player) {
+		records(first: 2) {
+			... MediumWidgetRecordFragment
+		}
+	}
+}
+
+fragment SmallWidgetRecordFragment on PlayerGameRecord {
+	game {
+		... WidgetGameFragment
+	}
+	overallRecord {
+		... RecordFragment
+	}
+	records {
+		opponent {
+			... OpponentFragment
+		}
+		record {
+			... RecordFragment
+		}
+	}
+}
+
+fragment MediumWidgetRecordFragment on PlayerGameRecord {
+	... SmallWidgetRecordFragment
+	records {
+		opponent {
+			... OpponentFragment
+		}
+		record {
+			... RecordFragment
+		}
+	}
+}
+
+fragment WidgetGameFragment on BasicGame {
+	id
+	image
+}
