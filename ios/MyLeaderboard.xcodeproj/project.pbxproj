@@ -235,6 +235,13 @@
 		CAE9CF6D230F3E1300D4850E /* ScoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE9CF6C230F3E1300D4850E /* ScoreCell.swift */; };
 		CAED76B422FA78CF000A2281 /* PlayerPlayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED76B322FA78CF000A2281 /* PlayerPlayCell.swift */; };
 		CAED76B622FC4FCE000A2281 /* KeyedErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED76B522FC4FCE000A2281 /* KeyedErrors.swift */; };
+		CAF7B20624A1801B00307B01 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAF7B20524A1801B00307B01 /* WidgetKit.framework */; };
+		CAF7B20824A1801B00307B01 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAF7B20724A1801B00307B01 /* SwiftUI.framework */; };
+		CAF7B20B24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B20A24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift */; };
+		CAF7B20E24A1801F00307B01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAF7B20D24A1801F00307B01 /* Assets.xcassets */; };
+		CAF7B21024A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */; };
+		CAF7B21124A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */; };
+		CAF7B21424A1801F00307B01 /* MyLeaderboardWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -274,6 +281,13 @@
 			remoteGlobalIDString = CAC9066822D0F70B0075B033;
 			remoteInfo = MyLeaderboard;
 		};
+		CAF7B21224A1801F00307B01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CAC9066122D0F70B0075B033 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CAF7B20324A1801B00307B01;
+			remoteInfo = MyLeaderboardWidgetExtensionExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -283,6 +297,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				CAF7B21424A1801F00307B01 /* MyLeaderboardWidgetExtension.appex in Embed App Extensions */,
 				CA27F9AC232D59A40023924A /* MyLeaderboardTodayExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -476,6 +491,13 @@
 		CAE9CF6C230F3E1300D4850E /* ScoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScoreCell.swift; path = MyLeaderboard/Source/Common/Cells/ScoreCell.swift; sourceTree = SOURCE_ROOT; };
 		CAED76B322FA78CF000A2281 /* PlayerPlayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayerPlayCell.swift; path = MyLeaderboard/Source/Sections/Standings/Record/PlayerPlayCell.swift; sourceTree = SOURCE_ROOT; };
 		CAED76B522FC4FCE000A2281 /* KeyedErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyedErrors.swift; sourceTree = "<group>"; };
+		CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyLeaderboardWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAF7B20524A1801B00307B01 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		CAF7B20724A1801B00307B01 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		CAF7B20A24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardWidgetExtension.swift; sourceTree = "<group>"; };
+		CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = MyLeaderboardWidgetExtension.intentdefinition; sourceTree = "<group>"; };
+		CAF7B20D24A1801F00307B01 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CAF7B20F24A1801F00307B01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -517,6 +539,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAF7B20124A1801B00307B01 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAF7B20824A1801B00307B01 /* SwiftUI.framework in Frameworks */,
+				CAF7B20624A1801B00307B01 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,9 +604,9 @@
 		CA27F9A3232D59A40023924A /* MyLeaderboardTodayExtension */ = {
 			isa = PBXGroup;
 			children = (
+				CA27F9A9232D59A40023924A /* Info.plist */,
 				CA27F9DB232EEDA40023924A /* MyLeaderboardTodayExtension.entitlements */,
 				CA27F9B8232E8FE70023924A /* Source */,
-				CA27F9A9232D59A40023924A /* Info.plist */,
 			);
 			path = MyLeaderboardTodayExtension;
 			sourceTree = "<group>";
@@ -963,6 +994,8 @@
 			isa = PBXGroup;
 			children = (
 				CA27F9A1232D59A40023924A /* NotificationCenter.framework */,
+				CAF7B20524A1801B00307B01 /* WidgetKit.framework */,
+				CAF7B20724A1801B00307B01 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1049,6 +1082,7 @@
 				CAC9068022D0F70F0075B033 /* MyLeaderboardTests */,
 				CAC9068B22D0F70F0075B033 /* MyLeaderboardUITests */,
 				CA27F9A3232D59A40023924A /* MyLeaderboardTodayExtension */,
+				CAF7B20924A1801B00307B01 /* MyLeaderboardWidgetExtension */,
 				CA45F9A5242B5864007EC94D /* MyLeaderboardKit */,
 				CAC9066A22D0F70B0075B033 /* Products */,
 				CAB3872A22D22DA100349B1F /* Frameworks */,
@@ -1063,6 +1097,7 @@
 				CAC9068822D0F70F0075B033 /* MyLeaderboardUITests.xctest */,
 				CA27F9A0232D59A40023924A /* MyLeaderboardTodayExtension.appex */,
 				CA45F9A4242B5864007EC94D /* MyLeaderboardKit.framework */,
+				CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1168,6 +1203,25 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		CAF7B20924A1801B00307B01 /* MyLeaderboardWidgetExtension */ = {
+			isa = PBXGroup;
+			children = (
+				CAF7B20F24A1801F00307B01 /* Info.plist */,
+				CAF7B20D24A1801F00307B01 /* Assets.xcassets */,
+				CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */,
+				CAF7B21824A1804C00307B01 /* Source */,
+			);
+			path = MyLeaderboardWidgetExtension;
+			sourceTree = "<group>";
+		};
+		CAF7B21824A1804C00307B01 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CAF7B20A24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1239,6 +1293,7 @@
 			dependencies = (
 				CA27F9AB232D59A40023924A /* PBXTargetDependency */,
 				CA45F9B1242B588F007EC94D /* PBXTargetDependency */,
+				CAF7B21324A1801F00307B01 /* PBXTargetDependency */,
 			);
 			name = MyLeaderboard;
 			packageProductDependencies = (
@@ -1286,13 +1341,30 @@
 			productReference = CAC9068822D0F70F0075B033 /* MyLeaderboardUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		CAF7B20324A1801B00307B01 /* MyLeaderboardWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CAF7B21524A1801F00307B01 /* Build configuration list for PBXNativeTarget "MyLeaderboardWidgetExtension" */;
+			buildPhases = (
+				CAF7B20024A1801B00307B01 /* Sources */,
+				CAF7B20124A1801B00307B01 /* Frameworks */,
+				CAF7B20224A1801B00307B01 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MyLeaderboardWidgetExtension;
+			productName = MyLeaderboardWidgetExtensionExtension;
+			productReference = CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		CAC9066122D0F70B0075B033 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1020;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Joseph Roque";
 				TargetAttributes = {
@@ -1318,6 +1390,9 @@
 						CreatedOnToolsVersion = 10.2;
 						TestTargetID = CAC9066822D0F70B0075B033;
 					};
+					CAF7B20324A1801B00307B01 = {
+						CreatedOnToolsVersion = 12.0;
+					};
 				};
 			};
 			buildConfigurationList = CAC9066422D0F70B0075B033 /* Build configuration list for PBXProject "MyLeaderboard" */;
@@ -1342,6 +1417,7 @@
 				CAC9068722D0F70F0075B033 /* MyLeaderboardUITests */,
 				CA27F99F232D59A40023924A /* MyLeaderboardTodayExtension */,
 				CA45F9A3242B5864007EC94D /* MyLeaderboardKit */,
+				CAF7B20324A1801B00307B01 /* MyLeaderboardWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1393,6 +1469,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAF7B20224A1801B00307B01 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAF7B20E24A1801F00307B01 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1613,6 +1697,7 @@
 				CAC66823241EC95A0020D9B4 /* NewPlayer+Extensions.swift in Sources */,
 				CAC66831241EDACA0020D9B4 /* TodayViewResponse.swift in Sources */,
 				CAB88E38230DF4500022281D /* GameDetailsViewController.swift in Sources */,
+				CAF7B21124A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */,
 				CA6D05E0240D147900412D54 /* PlayerListQuery.swift in Sources */,
 				F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */,
 				CA9715D224198BE300EA58E9 /* GameListItem+Extensions.swift in Sources */,
@@ -1661,6 +1746,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CAF7B20024A1801B00307B01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAF7B21024A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */,
+				CAF7B20B24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1688,6 +1782,11 @@
 			isa = PBXTargetDependency;
 			target = CAC9066822D0F70B0075B033 /* MyLeaderboard */;
 			targetProxy = CAC9068922D0F70F0075B033 /* PBXContainerItemProxy */;
+		};
+		CAF7B21324A1801F00307B01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CAF7B20324A1801B00307B01 /* MyLeaderboardWidgetExtension */;
+			targetProxy = CAF7B21224A1801F00307B01 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2051,6 +2150,50 @@
 			};
 			name = Release;
 		};
+		CAF7B21624A1801F00307B01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3UBRXR267C;
+				INFOPLIST_FILE = MyLeaderboardWidgetExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations.MyLeaderboardWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CAF7B21724A1801F00307B01 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3UBRXR267C;
+				INFOPLIST_FILE = MyLeaderboardWidgetExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations.MyLeaderboardWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2104,6 +2247,15 @@
 			buildConfigurations = (
 				CAC9069822D0F70F0075B033 /* Debug */,
 				CAC9069922D0F70F0075B033 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CAF7B21524A1801F00307B01 /* Build configuration list for PBXNativeTarget "MyLeaderboardWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAF7B21624A1801F00307B01 /* Debug */,
+				CAF7B21724A1801F00307B01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
