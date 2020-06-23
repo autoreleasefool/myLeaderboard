@@ -253,6 +253,10 @@
 		CAF7B23624A18F6600307B01 /* MyLeaderboardAPI+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardAPI+Networking.swift */; };
 		CAF7B23724A18F7500307B01 /* OpponentFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715ED241C268F00EA58E9 /* OpponentFragment.swift */; };
 		CAF7B23824A18F7C00307B01 /* RecordFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715B9241624A900EA58E9 /* RecordFragment.swift */; };
+		CAF7B23C24A1932D00307B01 /* GameSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23B24A1932D00307B01 /* GameSummary.swift */; };
+		CAF7B23E24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23D24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift */; };
+		CAF7B24024A1944E00307B01 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23F24A1944E00307B01 /* RemoteImage.swift */; };
+		CAF7B24124A1946200307B01 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EAC22D4B83D00960758 /* ImageLoader.swift */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -517,6 +521,9 @@
 		CAF7B22824A18F0300307B01 /* SmallWidgetQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallWidgetQuery.swift; sourceTree = "<group>"; };
 		CAF7B22D24A18F3600307B01 /* MediumWidgetResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediumWidgetResponse.swift; sourceTree = "<group>"; };
 		CAF7B22E24A18F3600307B01 /* SmallWidgetResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallWidgetResponse.swift; sourceTree = "<group>"; };
+		CAF7B23B24A1932D00307B01 /* GameSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSummary.swift; sourceTree = "<group>"; };
+		CAF7B23D24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyLeaderboardAPI+WidgetExtensions.swift"; sourceTree = "<group>"; };
+		CAF7B23F24A1944E00307B01 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1244,9 +1251,28 @@
 		CAF7B21824A1804C00307B01 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				CAF7B23A24A1931600307B01 /* Models */,
+				CAF7B23924A1931100307B01 /* Views */,
 				CAF7B20A24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		CAF7B23924A1931100307B01 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CAF7B23B24A1932D00307B01 /* GameSummary.swift */,
+				CAF7B23F24A1944E00307B01 /* RemoteImage.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CAF7B23A24A1931600307B01 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CAF7B23D24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1775,15 +1801,19 @@
 			files = (
 				CAF7B23624A18F6600307B01 /* MyLeaderboardAPI+Networking.swift in Sources */,
 				CAF7B21024A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */,
+				CAF7B23C24A1932D00307B01 /* GameSummary.swift in Sources */,
+				CAF7B24024A1944E00307B01 /* RemoteImage.swift in Sources */,
 				CAF7B23824A18F7C00307B01 /* RecordFragment.swift in Sources */,
 				CAF7B23124A18F4600307B01 /* GraphApi.swift in Sources */,
 				CAF7B22624A18ED700307B01 /* WidgetGameFragment.swift in Sources */,
 				CAF7B23224A18F4900307B01 /* CustomScalarResolver.swift in Sources */,
 				CAF7B20B24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift in Sources */,
 				CAF7B23724A18F7500307B01 /* OpponentFragment.swift in Sources */,
+				CAF7B23E24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift in Sources */,
 				CAF7B22B24A18F1300307B01 /* MediumWidgetQuery.swift in Sources */,
 				CAF7B22524A18ED700307B01 /* MediumWidgetRecordFragment.swift in Sources */,
 				CAF7B23024A18F3600307B01 /* SmallWidgetResponse.swift in Sources */,
+				CAF7B24124A1946200307B01 /* ImageLoader.swift in Sources */,
 				CAF7B23424A18F5E00307B01 /* GraphQL.swift in Sources */,
 				CAF7B22F24A18F3600307B01 /* MediumWidgetResponse.swift in Sources */,
 				CAF7B22C24A18F2400307B01 /* SmallWidgetQuery.swift in Sources */,
