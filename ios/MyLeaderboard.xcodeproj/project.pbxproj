@@ -19,6 +19,7 @@
 		CA018494240FA9A20080A5B8 /* MyLeaderboardAPI+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardAPI+Networking.swift */; };
 		CA0184982415941E0080A5B8 /* PlayerDetailsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0184972415941E0080A5B8 /* PlayerDetailsQuery.swift */; };
 		CA01849C241594370080A5B8 /* PlayerDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA01849B241594370080A5B8 /* PlayerDetailsResponse.swift */; };
+		CA148F6E24A260B70060BDF6 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
 		CA1D97E42406EE650011786E /* PlayerList.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA1D97E32406EE650011786E /* PlayerList.graphql */; };
 		CA27F9A2232D59A40023924A /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA27F9A1232D59A40023924A /* NotificationCenter.framework */; };
 		CA27F9A5232D59A40023924A /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9A4232D59A40023924A /* TodayViewController.swift */; };
@@ -257,6 +258,13 @@
 		CAF7B23E24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23D24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift */; };
 		CAF7B24024A1944E00307B01 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23F24A1944E00307B01 /* RemoteImage.swift */; };
 		CAF7B24124A1946200307B01 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EAC22D4B83D00960758 /* ImageLoader.swift */; };
+		CAF7B24224A19A7900307B01 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EB022D58D8700960758 /* Colors.swift */; };
+		CAF7B24324A19B2D00307B01 /* RecordFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */; };
+		CAF7B24524A1A16C00307B01 /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B24424A1A16C00307B01 /* Placeholder.swift */; };
+		CAF7B24824A22A9600307B01 /* GameSummaryProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B24724A22A9600307B01 /* GameSummaryProvider.swift */; };
+		CAF7B24A24A22E0900307B01 /* RecordEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B24924A22E0900307B01 /* RecordEntry.swift */; };
+		CAF7B24C24A2376A00307B01 /* GameRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B24B24A2376A00307B01 /* GameRecords.swift */; };
+		CAF7B24D24A23AE700307B01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
 		F55AE95A22F1049500BCEE5B /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55AE95922F1049500BCEE5B /* Identifiable.swift */; };
 /* End PBXBuildFile section */
 
@@ -524,6 +532,10 @@
 		CAF7B23B24A1932D00307B01 /* GameSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSummary.swift; sourceTree = "<group>"; };
 		CAF7B23D24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyLeaderboardAPI+WidgetExtensions.swift"; sourceTree = "<group>"; };
 		CAF7B23F24A1944E00307B01 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
+		CAF7B24424A1A16C00307B01 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
+		CAF7B24724A22A9600307B01 /* GameSummaryProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSummaryProvider.swift; sourceTree = "<group>"; };
+		CAF7B24924A22E0900307B01 /* RecordEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEntry.swift; sourceTree = "<group>"; };
+		CAF7B24B24A2376A00307B01 /* GameRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecords.swift; sourceTree = "<group>"; };
 		F55AE95922F1049500BCEE5B /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1251,9 +1263,11 @@
 		CAF7B21824A1804C00307B01 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				CAF7B24624A22A8100307B01 /* Extensions */,
 				CAF7B23A24A1931600307B01 /* Models */,
 				CAF7B23924A1931100307B01 /* Views */,
 				CAF7B20A24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift */,
+				CAF7B24724A22A9600307B01 /* GameSummaryProvider.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -1261,7 +1275,9 @@
 		CAF7B23924A1931100307B01 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CAF7B24B24A2376A00307B01 /* GameRecords.swift */,
 				CAF7B23B24A1932D00307B01 /* GameSummary.swift */,
+				CAF7B24424A1A16C00307B01 /* Placeholder.swift */,
 				CAF7B23F24A1944E00307B01 /* RemoteImage.swift */,
 			);
 			path = Views;
@@ -1270,9 +1286,17 @@
 		CAF7B23A24A1931600307B01 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CAF7B23D24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift */,
+				CAF7B24924A22E0900307B01 /* RecordEntry.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		CAF7B24624A22A8100307B01 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CAF7B23D24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1530,6 +1554,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAF7B24D24A23AE700307B01 /* Assets.xcassets in Resources */,
 				CAF7B20E24A1801F00307B01 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1800,17 +1825,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAF7B23624A18F6600307B01 /* MyLeaderboardAPI+Networking.swift in Sources */,
+				CAF7B24224A19A7900307B01 /* Colors.swift in Sources */,
 				CAF7B21024A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */,
+				CAF7B24324A19B2D00307B01 /* RecordFragment+Extensions.swift in Sources */,
 				CAF7B23C24A1932D00307B01 /* GameSummary.swift in Sources */,
+				CAF7B24A24A22E0900307B01 /* RecordEntry.swift in Sources */,
+				CAF7B24824A22A9600307B01 /* GameSummaryProvider.swift in Sources */,
 				CAF7B24024A1944E00307B01 /* RemoteImage.swift in Sources */,
 				CAF7B23824A18F7C00307B01 /* RecordFragment.swift in Sources */,
 				CAF7B23124A18F4600307B01 /* GraphApi.swift in Sources */,
 				CAF7B22624A18ED700307B01 /* WidgetGameFragment.swift in Sources */,
+				CA148F6E24A260B70060BDF6 /* Metrics.swift in Sources */,
 				CAF7B23224A18F4900307B01 /* CustomScalarResolver.swift in Sources */,
 				CAF7B20B24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift in Sources */,
 				CAF7B23724A18F7500307B01 /* OpponentFragment.swift in Sources */,
 				CAF7B23E24A1939D00307B01 /* MyLeaderboardAPI+WidgetExtensions.swift in Sources */,
 				CAF7B22B24A18F1300307B01 /* MediumWidgetQuery.swift in Sources */,
+				CAF7B24C24A2376A00307B01 /* GameRecords.swift in Sources */,
+				CAF7B24524A1A16C00307B01 /* Placeholder.swift in Sources */,
 				CAF7B22524A18ED700307B01 /* MediumWidgetRecordFragment.swift in Sources */,
 				CAF7B23024A18F3600307B01 /* SmallWidgetResponse.swift in Sources */,
 				CAF7B24124A1946200307B01 /* ImageLoader.swift in Sources */,

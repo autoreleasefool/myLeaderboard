@@ -22,7 +22,7 @@ public extension MyLeaderboardAPI {
 		public typealias Response = MediumWidgetResponse
 
 		public let queryString: String = """
-		fragment MediumWidgetRecordFragment on PlayerGameRecord { __typename ... SmallWidgetRecordFragment records { __typename opponent { __typename ... OpponentFragment } record { __typename ... RecordFragment } } } fragment SmallWidgetRecordFragment on PlayerGameRecord { __typename game { __typename ... WidgetGameFragment } overallRecord { __typename ... RecordFragment } } fragment WidgetGameFragment on BasicGame { __typename id image } fragment RecordFragment on Record { __typename wins losses ties isBest isWorst } fragment OpponentFragment on BasicPlayer { __typename id avatar displayName } query MediumWidget($player: ID!) { __typename player(id: $player) { __typename records(first: 2) { __typename ... MediumWidgetRecordFragment } } }
+		fragment MediumWidgetRecordFragment on PlayerGameRecord { __typename ... SmallWidgetRecordFragment records { __typename opponent { __typename ... OpponentFragment } record { __typename ... RecordFragment } } } fragment SmallWidgetRecordFragment on PlayerGameRecord { __typename game { __typename ... WidgetGameFragment } overallRecord { __typename ... RecordFragment } } fragment WidgetGameFragment on BasicGame { __typename id image name } fragment RecordFragment on Record { __typename wins losses ties isBest isWorst } fragment OpponentFragment on BasicPlayer { __typename id avatar displayName } query MediumWidget($player: ID!) { __typename player(id: $player) { __typename records(first: 2) { __typename ... MediumWidgetRecordFragment } } }
 		"""
 	}
 }

@@ -38,4 +38,5 @@ fragment MediumWidgetRecordFragment on PlayerGameRecord {
 fragment WidgetGameFragment on BasicGame {
 	id
 	image
+	name
 }

@@ -47,7 +47,11 @@ struct RemoteImage: View {
 	private let placeholder: UIImage
 
 	init(url: URL?, placeholder: UIImage = UIImage()) {
-		self.placeholder = placeholder
+		if let url = url {
+			self.placeholder = ImageLoader.shared.cached(url: url) ?? placeholder
+		} else {
+			self.placeholder = placeholder
+		}
 		self.imageFetcher = RemoteImageFetcher(url: url)
 		self.imageFetcher.fetch()
 	}

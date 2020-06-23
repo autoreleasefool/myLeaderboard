@@ -37,6 +37,25 @@ class ImageLoader {
 		self.queryIfCached = queryIfCached
 	}
 
+	func bulkPreFetch(_ strings: [String], completion: @escaping () -> Void) {
+		bulkPreFetch(strings.map { URL(string: $0) }.compactMap { $0 }, completion: completion)
+	}
+
+	func bulkPreFetch(_ urls: [URL], completion: @escaping () -> Void) {
+		DispatchQueue.global().async {
+			let group = DispatchGroup()
+			urls.forEach {
+				group.enter()
+				self.fetch(url: $0) { _ in
+					group.leave()
+				}
+			}
+
+			group.wait()
+			completion()
+		}
+	}
+
 	@discardableResult
 	func fetch(string: String) -> ImageLoaderFuture {
 		fetch(url: URL(string: string))

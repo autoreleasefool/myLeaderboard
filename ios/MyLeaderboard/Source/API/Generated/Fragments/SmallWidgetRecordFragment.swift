@@ -42,6 +42,15 @@ struct SmallWidgetRecordFragment: GraphApiResponse, Equatable {
 					asWidgetGameFragmentFragment.image = newValue
 				}
 			}
+			/// Name of the game.
+			public var name: String {
+				get {
+					return asWidgetGameFragmentFragment.name
+				}
+				set {
+					asWidgetGameFragmentFragment.name = newValue
+				}
+			}
 			public var asWidgetGameFragmentFragment: MyLeaderboardAPI.WidgetGameFragment
 		// MARK: - Helpers
 		public let __typename: String

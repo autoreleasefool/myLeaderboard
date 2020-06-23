@@ -8,6 +8,8 @@ struct WidgetGameFragment: GraphApiResponse, Equatable {
 		public var id: GraphID
 		/// Image for the game.
 		public var image: String?
+		/// Name of the game.
+		public var name: String
 
 	// MARK: - Helpers
 	public let __typename: String
@@ -15,9 +17,10 @@ struct WidgetGameFragment: GraphApiResponse, Equatable {
 	public static let customDecoder: JSONDecoder = MyLeaderboardAPI.customDecoder
 	public static let customEncoder: JSONEncoder = MyLeaderboardAPI.customEncoder
 
-	public init(id: GraphID, image: String?) {
+	public init(id: GraphID, image: String?, name: String) {
 			self.id = id
 			self.image = image
+			self.name = name
 			self.__typename = "BasicGame"
 	}
 
