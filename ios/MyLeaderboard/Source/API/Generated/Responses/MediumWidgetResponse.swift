@@ -34,6 +34,15 @@ struct MediumWidgetResponse: GraphApiResponse, Equatable {
 			// MARK: - Nested Types
 				public struct Records: GraphApiResponse, Equatable {
 			// MARK: - Response Fields
+				/// Records against other players.
+				public var records: [MyLeaderboardAPI.MediumWidgetRecordFragment.Records] {
+					get {
+						return asMediumWidgetRecordFragmentFragment.records
+					}
+					set {
+						asMediumWidgetRecordFragmentFragment.records = newValue
+					}
+				}
 				public var asMediumWidgetRecordFragmentFragment: MyLeaderboardAPI.MediumWidgetRecordFragment
 			// MARK: - Helpers
 			public let __typename: String

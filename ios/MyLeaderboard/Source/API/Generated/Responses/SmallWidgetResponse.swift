@@ -52,15 +52,6 @@ struct SmallWidgetResponse: GraphApiResponse, Equatable {
 						asSmallWidgetRecordFragmentFragment.overallRecord = newValue
 					}
 				}
-				/// Records against other players.
-				public var records: [MyLeaderboardAPI.SmallWidgetRecordFragment.Records] {
-					get {
-						return asSmallWidgetRecordFragmentFragment.records
-					}
-					set {
-						asSmallWidgetRecordFragmentFragment.records = newValue
-					}
-				}
 				public var asSmallWidgetRecordFragmentFragment: MyLeaderboardAPI.SmallWidgetRecordFragment
 			// MARK: - Helpers
 			public let __typename: String

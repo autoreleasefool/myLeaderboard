@@ -21,14 +21,6 @@ fragment SmallWidgetRecordFragment on PlayerGameRecord {
 	overallRecord {
 		... RecordFragment
 	}
-	records {
-		opponent {
-			... OpponentFragment
-		}
-		record {
-			... RecordFragment
-		}
-	}
 }
 
 fragment MediumWidgetRecordFragment on PlayerGameRecord {
