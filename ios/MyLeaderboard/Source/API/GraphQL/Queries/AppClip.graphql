@@ -1,0 +1,5 @@
+query SingleGameListItem($id: ID!) {
+	game(id: $id) {
+		... GameListItem
+	}
+}

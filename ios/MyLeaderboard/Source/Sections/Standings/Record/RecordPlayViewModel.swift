@@ -23,17 +23,26 @@ enum RecordPlayViewAction: BaseViewAction {
 	case selectPlayers([PlayerListItem])
 	case editGame
 	case selectGame(GameListItem?)
+	case selectGameByID(GraphID)
 	case selectWinner(GraphID, Bool)
 	case setPlayerScore(GraphID, Int)
 	case submit
 }
 
 class RecordPlayViewModel: ViewModel {
+	typealias GameListItemQuery = MyLeaderboardAPI.SingleGameListItemQuery
 	typealias RecordPlayMutation = MyLeaderboardAPI.RecordPlayMutation
 	typealias ActionHandler = (_ action: RecordPlayAction) -> Void
 
 	var handleAction: ActionHandler
 
+	private(set) var selectedGameId: GraphID? = nil {
+		didSet {
+			if let id = selectedGameId {
+				fetchGameDetails(for: id)
+			}
+		}
+	}
 	private(set) var selectedGame: GameListItem? = nil {
 		didSet {
 			handleAction(.dataChanged)
@@ -100,6 +109,9 @@ class RecordPlayViewModel: ViewModel {
 		case .selectGame(let game):
 			selectedGame = game
 			updateErrors(for: RecordPlayBuilder.Keys.gameSection.rawValue)
+		case .selectGameByID(let id):
+			selectedGameId = id
+			updateErrors(for: RecordPlayBuilder.Keys.gameSection.rawValue)
 		case .selectPlayers(let players):
 			selectedPlayers = players
 			updateErrors(for: RecordPlayBuilder.Keys.playerSection.rawValue)
@@ -155,6 +167,19 @@ class RecordPlayViewModel: ViewModel {
 		return errors
 	}
 
+	private func fetchGameDetails(for id: GraphID) {
+		GameListItemQuery(id: id).perform { [weak self] result in
+			switch result {
+			case .success(let response):
+				if self?.selectedGame == nil {
+					self?.selectedGame = response.game?.asGameListItemFragment
+				}
+			case .failure(let error):
+				self?.handleAction(.graphQLError(error))
+			}
+		}
+	}
+
 	private func createPlay() {
 		let updatedErrors = findErrors()
 		guard let game = selectedGame, updatedErrors.isEmpty else {
@@ -184,6 +209,7 @@ class RecordPlayViewModel: ViewModel {
 			switch $0 {
 			case .success(let response):
 				if let newPlay = response.recordPlay?.asNewPlayFragmentFragment {
+					self?.resetState()
 					self?.handleAction(.playCreated(newPlay))
 				} else {
 					self?.handleAction(.graphQLError(.invalidResponse))
@@ -192,5 +218,14 @@ class RecordPlayViewModel: ViewModel {
 				self?.handleAction(.graphQLError(error))
 			}
 		}
+	}
+
+	private func resetState() {
+		selectedGameId = nil
+		selectedGame = nil
+		selectedPlayers = []
+		winners = []
+		scores = [:]
+		errors = KeyedErrors()
 	}
 }
