@@ -38,8 +38,8 @@ class RecordPlayViewModel: ViewModel {
 
 	private(set) var selectedGameId: GraphID? = nil {
 		didSet {
-			if let id = selectedGameId {
-				fetchGameDetails(for: id)
+			if let gameId = selectedGameId {
+				fetchGameDetails(for: gameId)
 			}
 		}
 	}
@@ -109,8 +109,8 @@ class RecordPlayViewModel: ViewModel {
 		case .selectGame(let game):
 			selectedGame = game
 			updateErrors(for: RecordPlayBuilder.Keys.gameSection.rawValue)
-		case .selectGameByID(let id):
-			selectedGameId = id
+		case .selectGameByID(let gameId):
+			selectedGameId = gameId
 			updateErrors(for: RecordPlayBuilder.Keys.gameSection.rawValue)
 		case .selectPlayers(let players):
 			selectedPlayers = players
@@ -167,8 +167,8 @@ class RecordPlayViewModel: ViewModel {
 		return errors
 	}
 
-	private func fetchGameDetails(for id: GraphID) {
-		GameListItemQuery(id: id).perform { [weak self] result in
+	private func fetchGameDetails(for gameId: GraphID) {
+		GameListItemQuery(id: gameId).perform { [weak self] result in
 			switch result {
 			case .success(let response):
 				if self?.selectedGame == nil {

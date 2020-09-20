@@ -137,7 +137,7 @@ extension RecordPlayViewController: RecordPlayActionable {
 }
 
 extension RecordPlayViewController {
-	func selectGame(withId id: GraphID) {
-		viewModel.postViewAction(.selectGameByID(id))
+	func selectGame(withId gameId: GraphID) {
+		viewModel.postViewAction(.selectGameByID(gameId))
 	}
 }

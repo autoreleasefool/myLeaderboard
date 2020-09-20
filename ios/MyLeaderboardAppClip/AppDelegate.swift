@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
-	private let recordPlayController = RecordPlayViewController() { _ in }
+	private let recordPlayController = RecordPlayViewController { _ in }
 
 	private lazy var navigationController: UINavigationController = {
 		UINavigationController(rootViewController: recordPlayController)
@@ -52,8 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
 			let endOfPath = components.path?.split(separator: "/").last else { return }
 
-		let id = GraphID(rawValue: String(endOfPath))
-		recordPlayController.selectGame(withId: id)
+		let gameId = GraphID(rawValue: String(endOfPath))
+		recordPlayController.selectGame(withId: gameId)
 	}
 
 	private func setupCompletionScreen() {
