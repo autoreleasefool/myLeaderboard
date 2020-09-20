@@ -15,7 +15,7 @@
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
-	<string>XPC!</string>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(BASE_VERSION_STRING)</string>
 	<key>CFBundleVersion</key>
@@ -23,9 +23,7 @@
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.widget-extension</string>
-		<key>NSExtensionPrincipalClass</key>
-		<string>TodayViewController</string>
+		<string>com.apple.widgetkit-extension</string>
 	</dict>
 </dict>
 </plist>

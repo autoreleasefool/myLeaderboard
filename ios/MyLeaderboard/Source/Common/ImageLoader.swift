@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import UIKit
 
@@ -18,6 +19,8 @@ enum ImageLoaderError: Error {
 }
 
 typealias ImageLoaderResult = Result<(URL, UIImage), ImageLoaderError>
+typealias ImageLoaderFuture = Future<(URL, UIImage), ImageLoaderError>
+typealias ImageLoaderPromise = ImageLoaderFuture.Promise
 
 class ImageLoader {
 	typealias Completion = (ImageLoaderResult) -> Void
@@ -32,6 +35,54 @@ class ImageLoader {
 
 	init(queryIfCached: Bool = false) {
 		self.queryIfCached = queryIfCached
+	}
+
+	func bulkPreFetch(_ strings: [String], completion: @escaping () -> Void) {
+		bulkPreFetch(strings.map { URL(string: $0) }.compactMap { $0 }, completion: completion)
+	}
+
+	func bulkPreFetch(_ urls: [URL], completion: @escaping () -> Void) {
+		DispatchQueue.global().async {
+			let group = DispatchGroup()
+			urls.forEach {
+				group.enter()
+				self.fetch(url: $0) { _ in
+					group.leave()
+				}
+			}
+
+			group.wait()
+			completion()
+		}
+	}
+
+	@discardableResult
+	func fetch(string: String) -> ImageLoaderFuture {
+		fetch(url: URL(string: string))
+	}
+
+	@discardableResult
+	func fetch(url: URL?) -> ImageLoaderFuture {
+		Future { [unowned self] promise in
+			guard let url = url else {
+				return promise(.failure(.invalidURL))
+			}
+
+			if let cachedImage = self.cached(url: url) {
+				return promise(.success((url, cachedImage)))
+			}
+
+			DispatchQueue.global(qos: .background).async { [unowned self] in
+				self.performFetch(for: url) { result in
+					switch result {
+					case .success((let url, let image)):
+						promise(.success((url, image)))
+					case .failure(let error):
+						promise(.failure(error))
+					}
+				}
+			}
+		}
 	}
 
 	@discardableResult

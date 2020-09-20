@@ -12,10 +12,10 @@ import Loaf
 class RecordPlayViewController: FTDViewController {
 	private var viewModel: RecordPlayViewModel!
 
-	private var playCreated: ((NewPlay) -> Void)?
+	var onSuccess: ((NewPlay?) -> Void)?
 
-	init(onSuccess: ((NewPlay) -> Void)? = nil) {
-		self.playCreated = onSuccess
+	init(onSuccess: ((NewPlay?) -> Void)? = nil) {
+		self.onSuccess = onSuccess
 		super.init()
 	}
 
@@ -32,8 +32,10 @@ class RecordPlayViewController: FTDViewController {
 			case .graphQLError(let error):
 				self?.presentError(error)
 			case .playCreated(let play):
-				self?.playCreated?(play)
+				self?.onSuccess?(play)
+				#if !APPCLIP
 				self?.dismiss(animated: true)
+				#endif
 			case .openGamePicker:
 				self?.presentGamePicker()
 			case .openPlayerPicker:
@@ -42,11 +44,15 @@ class RecordPlayViewController: FTDViewController {
 		}
 
 		self.title = "Record"
+
+		#if !APPCLIP
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
 			barButtonSystemItem: .cancel,
 			target: self,
 			action: #selector(cancel)
 		)
+		#endif
+
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
 			barButtonSystemItem: .done,
 			target: self,
@@ -74,7 +80,7 @@ class RecordPlayViewController: FTDViewController {
 	}
 
 	@objc private func submit() {
-		viewModel.postViewAction(.submit)
+		onSuccess?(nil)
 	}
 
 	private func presentGamePicker() {
@@ -127,5 +133,11 @@ extension RecordPlayViewController: RecordPlayActionable {
 
 	func setScore(for playerID: GraphID, score: Int) {
 		viewModel.postViewAction(.setPlayerScore(playerID, score))
+	}
+}
+
+extension RecordPlayViewController {
+	func selectGame(withId gameId: GraphID) {
+		viewModel.postViewAction(.selectGameByID(gameId))
 	}
 }
