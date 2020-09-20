@@ -8,11 +8,12 @@
 
 import Combine
 import Foundation
+import MyLeaderboardApi
 import WidgetKit
 
 struct GameSummaryProvider: TimelineProvider {
-	typealias SmallQuery = MyLeaderboardAPI.SmallWidgetQuery
-	typealias MediumQuery = MyLeaderboardAPI.MediumWidgetQuery
+	typealias SmallQuery = MyLeaderboardApi.SmallWidgetQuery
+	typealias MediumQuery = MyLeaderboardApi.MediumWidgetQuery
 
 	var cancellable: AnyCancellable?
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 enum StandingsListAction: BaseAction {
 	case dataChanged
@@ -32,7 +33,7 @@ enum StandingsListViewAction: BaseViewAction {
 }
 
 class StandingsListViewModel: ViewModel {
-	typealias StandingsQuery = MyLeaderboardAPI.StandingsQuery
+	typealias StandingsQuery = MyLeaderboardApi.StandingsQuery
 	typealias ActionHandler = (_ action: StandingsListAction) -> Void
 	private static let pageSize = 10
 

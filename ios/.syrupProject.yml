@@ -1,4 +1,4 @@
-moduleName: MyLeaderboardAPI
+moduleName: MyLeaderboardApi
 header: |
         // Syrup auto-generated file
         import Foundation

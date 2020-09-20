@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 enum RecordPlayAction: BaseAction {
 	case dataChanged
@@ -30,8 +31,8 @@ enum RecordPlayViewAction: BaseViewAction {
 }
 
 class RecordPlayViewModel: ViewModel {
-	typealias GameListItemQuery = MyLeaderboardAPI.SingleGameListItemQuery
-	typealias RecordPlayMutation = MyLeaderboardAPI.RecordPlayMutation
+	typealias GameListItemQuery = MyLeaderboardApi.SingleGameListItemQuery
+	typealias RecordPlayMutation = MyLeaderboardApi.RecordPlayMutation
 	typealias ActionHandler = (_ action: RecordPlayAction) -> Void
 
 	var handleAction: ActionHandler

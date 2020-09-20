@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 protocol RouteHandler {
 	func openRoute(_ route: Route)

@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 struct GameListQueryable: PickerItemQueryable {
-	typealias Query = MyLeaderboardAPI.GameListQuery
-	typealias Response = MyLeaderboardAPI.GameListResponse
+	typealias Query = MyLeaderboardApi.GameListQuery
+	typealias Response = MyLeaderboardApi.GameListResponse
 
 	func query(pageSize: Int, offset: Int, completion: @escaping (Query.ResponseResult) -> Void) {
 		Query(first: pageSize, offset: offset).perform(callback: completion)

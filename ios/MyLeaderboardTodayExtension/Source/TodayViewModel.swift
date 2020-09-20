@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 enum TodayAction: BaseAction {
 	case noPreferredPlayer(TodayCompletionHandler?)
@@ -26,7 +27,7 @@ enum TodayViewAction: BaseViewAction {
 }
 
 class TodayViewModel: ViewModel {
-	typealias TodayViewQuery = MyLeaderboardAPI.TodayViewQuery
+	typealias TodayViewQuery = MyLeaderboardApi.TodayViewQuery
 	typealias ActionHandler = (_ action: TodayAction) -> Void
 
 	var handleAction: ActionHandler

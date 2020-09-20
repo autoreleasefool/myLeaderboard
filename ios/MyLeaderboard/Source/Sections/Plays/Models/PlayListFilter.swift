@@ -6,6 +6,8 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import MyLeaderboardApi
+
 struct PlayListFilter {
 	let gameID: GraphID?
 	let playerIDs: [GraphID]

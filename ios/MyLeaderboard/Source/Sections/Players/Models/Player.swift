@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 enum Player {
 	private static let preferredPlayerKey = "Settings.PreferredPlayer"

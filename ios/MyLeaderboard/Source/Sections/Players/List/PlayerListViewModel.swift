@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 enum PlayerListAction: BaseAction {
 	case dataChanged
@@ -24,7 +25,7 @@ enum PlayerListViewAction: BaseViewAction {
 }
 
 class PlayerListViewModel: ViewModel {
-	typealias PlayerListQuery = MyLeaderboardAPI.PlayerListQuery
+	typealias PlayerListQuery = MyLeaderboardApi.PlayerListQuery
 	typealias ActionHandler = (_ action: PlayerListAction) -> Void
 	private static let pageSize = 25
 

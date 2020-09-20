@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 enum PlaysListAction: BaseAction {
 	case dataChanged
@@ -20,7 +21,7 @@ enum PlaysListViewAction: BaseViewAction {
 }
 
 class PlaysListViewModel: ViewModel {
-	typealias PlayListQuery = MyLeaderboardAPI.PlayListQuery
+	typealias PlayListQuery = MyLeaderboardApi.PlayListQuery
 	typealias ActionHandler = (_ action: PlaysListAction) -> Void
 	private static let defaultTitle = "Filtered plays"
 	private static let pageSize = 25

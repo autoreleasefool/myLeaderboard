@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import MyLeaderboardApi
 import UIKit
 
 enum CreateGameAction {
@@ -24,7 +25,7 @@ enum CreateGameViewAction {
 }
 
 class CreateGameViewModel {
-	typealias CreateGameMutation = MyLeaderboardAPI.CreateGameMutation
+	typealias CreateGameMutation = MyLeaderboardApi.CreateGameMutation
 	typealias ActionHandler = (_ action: CreateGameAction) -> Void
 
 	var handleAction: ActionHandler

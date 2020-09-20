@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import MyLeaderboardApi
 import UIKit
 
 enum CreatePlayerAction {
@@ -23,7 +24,7 @@ enum CreatePlayerViewAction {
 }
 
 class CreatePlayerViewModel {
-	typealias CreatePlayerMutation = MyLeaderboardAPI.CreatePlayerMutation
+	typealias CreatePlayerMutation = MyLeaderboardApi.CreatePlayerMutation
 	typealias ActionHandler = (_ action: CreatePlayerAction) -> Void
 
 	var handleAction: ActionHandler

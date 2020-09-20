@@ -7,14 +7,15 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 import WidgetKit
 
 struct RecordEntry: TimelineEntry {
 	enum Content {
 		case preview
 		case noPreferredPlayer
-		case small(MyLeaderboardAPI.SmallWidgetResponse)
-		case medium(MyLeaderboardAPI.MediumWidgetResponse)
+		case small(MyLeaderboardApi.SmallWidgetResponse)
+		case medium(MyLeaderboardApi.MediumWidgetResponse)
 	}
 
 	let date: Date
@@ -34,9 +35,9 @@ struct RecordEntry: TimelineEntry {
 
 	init?(from response: GraphApiResponse) {
 		self.date = Date()
-		if let smallResponse = response as? MyLeaderboardAPI.SmallWidgetResponse {
+		if let smallResponse = response as? MyLeaderboardApi.SmallWidgetResponse {
 			self.content = .small(smallResponse)
-		} else if let mediumResponse = response as? MyLeaderboardAPI.MediumWidgetResponse {
+		} else if let mediumResponse = response as? MyLeaderboardApi.MediumWidgetResponse {
 			self.content = .medium(mediumResponse)
 		} else {
 			return nil
@@ -55,12 +56,12 @@ extension RecordEntry {
 		}
 	}
 
-	var summaries: [(MyLeaderboardAPI.WidgetGameFragment, MyLeaderboardAPI.RecordFragment)] {
+	var summaries: [(MyLeaderboardApi.WidgetGameFragment, MyLeaderboardApi.RecordFragment)] {
 		guard isValidEntry else { return [] }
 		return Array(zip(games, overallRecords))
 	}
 
-	var games: [MyLeaderboardAPI.WidgetGameFragment] {
+	var games: [MyLeaderboardApi.WidgetGameFragment] {
 		guard isValidEntry else { return [] }
 		switch content {
 		case .preview, .noPreferredPlayer:
@@ -76,7 +77,7 @@ extension RecordEntry {
 		}
 	}
 
-	var overallRecords: [MyLeaderboardAPI.RecordFragment] {
+	var overallRecords: [MyLeaderboardApi.RecordFragment] {
 		guard isValidEntry else { return [] }
 		switch content {
 		case .preview, .noPreferredPlayer:

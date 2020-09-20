@@ -6,7 +6,7 @@ disabled_rules:
   - type_body_length
   - cyclomatic_complexity
 excluded:
-  - MyLeaderboard/Source/API/Generated
+  - MyLeaderboardApi/Source
 
 trailing_comma:
   mandatory_comma: true

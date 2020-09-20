@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 
 enum GameDetailsAction: BaseAction {
 	case dataChanged
@@ -23,7 +24,7 @@ enum GameDetailsViewAction: BaseViewAction {
 }
 
 class GameDetailsViewModel: ViewModel {
-	typealias GameDetailsQuery = MyLeaderboardAPI.GameDetailsQuery
+	typealias GameDetailsQuery = MyLeaderboardApi.GameDetailsQuery
 	typealias ActionHandler = (_ action: GameDetailsAction) -> Void
 
 	var handleAction: ActionHandler
@@ -70,7 +71,7 @@ class GameDetailsViewModel: ViewModel {
 		}
 	}
 
-	private func handle(response: MyLeaderboardAPI.GameDetailsResponse) {
+	private func handle(response: MyLeaderboardApi.GameDetailsResponse) {
 		guard let game = response.game?.asGameDetailsFragmentFragment else {
 			return handleAction(.graphQLError(.missingData))
 		}

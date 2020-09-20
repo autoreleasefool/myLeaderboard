@@ -6,12 +6,13 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import MyLeaderboardApi
 import SwiftUI
 import WidgetKit
 
 struct GameSummary: View {
-	let game: MyLeaderboardAPI.WidgetGameFragment
-	let record: MyLeaderboardAPI.RecordFragment
+	let game: MyLeaderboardApi.WidgetGameFragment
+	let record: MyLeaderboardApi.RecordFragment
 
 	var body: some View {
 		HStack(spacing: Metrics.Spacing.small) {
