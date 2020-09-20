@@ -14,19 +14,14 @@ struct GameSummary: View {
 	let record: MyLeaderboardAPI.RecordFragment
 
 	var body: some View {
-		VStack(alignment: .leading, spacing: 0) {
-			Text(game.name)
-				.foregroundColor(Color(.text))
-				.font(.system(.caption2))
-			HStack(spacing: Metrics.Spacing.small) {
-				RemoteImage(url: URL(string: game.image ?? ""))
-					.frame(width: Metrics.Image.medium, height: Metrics.Image.medium)
-				Text(record.formatted)
-					.lineLimit(1)
-					.foregroundColor(Color(record.backgroundColor ?? .text))
-					.font(.system(.caption))
-				Spacer()
-			}
+		HStack(spacing: Metrics.Spacing.small) {
+			RemoteImage(url: URL(string: game.image ?? ""))
+				.frame(width: Metrics.Image.medium, height: Metrics.Image.medium)
+			Text(record.formatted)
+				.lineLimit(1)
+				.foregroundColor(Color(record.backgroundColor ?? .text))
+				.font(.system(.caption))
+			Spacer()
 		}
 	}
 }

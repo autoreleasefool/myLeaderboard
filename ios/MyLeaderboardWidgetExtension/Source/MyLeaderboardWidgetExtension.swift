@@ -14,14 +14,12 @@ struct MyLeaderboardWidgetExtension: Widget {
 	private let kind: String = "MyLeaderboardWidgetExtension"
 
 	public var body: some WidgetConfiguration {
-		StaticConfiguration(kind: kind,
-			provider: GameSummaryProvider(),
-			placeholder: Placeholder()
+		StaticConfiguration(
+			kind: kind,
+			provider: GameSummaryProvider()
 		) { entry in
-			ZStack {
-				GameRecords(entry: entry)
-			}
-			.background(Color(.primary))
+			MyLeaderboardWidget(entry: entry)
+				.background(Color(UIColor.systemBackground))
 		}
 		.configurationDisplayName("Game Records")
 		.description("An overview of your MyLeaderboard game records.")

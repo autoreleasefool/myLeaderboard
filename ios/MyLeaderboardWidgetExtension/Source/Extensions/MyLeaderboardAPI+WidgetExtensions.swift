@@ -25,9 +25,14 @@ extension MyLeaderboardAPI.SmallWidgetRecordFragment: Identifiable {
 // MARK: - Mocks
 
 extension MyLeaderboardAPI.SmallWidgetResponse {
+	// swiftlint:disable line_length
 	static var preview: MyLeaderboardAPI.SmallWidgetResponse {
-		fatalError()
+		.init(player: .init(records: [
+			MyLeaderboardAPI.SmallWidgetResponse.Player.Records(smallWidgetRecordFragmentFragment: .init(game: .init(widgetGameFragmentFragment: .init(id: GraphID(rawValue: "0"), image: "#HivePreview", name: "Hive")), overallRecord: .init(recordFragmentFragment: .init(wins: 12, losses: 2, ties: 1, isBest: true, isWorst: false)))),
+			MyLeaderboardAPI.SmallWidgetResponse.Player.Records(smallWidgetRecordFragmentFragment: .init(game: .init(widgetGameFragmentFragment: .init(id: GraphID(rawValue: "1"), image: "#PatchworkPreview", name: "Hive")), overallRecord: .init(recordFragmentFragment: .init(wins: 29, losses: 3, ties: 0, isBest: false, isWorst: false)))),
+		]))
 	}
+	// swiftlint:enable line_length
 }
 
 extension MyLeaderboardAPI.MediumWidgetResponse {

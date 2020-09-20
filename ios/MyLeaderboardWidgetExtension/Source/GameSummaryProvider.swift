@@ -17,26 +17,31 @@ struct GameSummaryProvider: TimelineProvider {
 	var queryResults: [WidgetFamily: GraphApiResponse] = [:]
 	var cancellable: AnyCancellable?
 
-	public func snapshot(with context: Context, completion: @escaping (RecordEntry) -> Void) {
+	func placeholder(in context: Context) -> RecordEntry {
+		RecordEntry(content: .preview)
+	}
+
+	func getSnapshot(in context: Context, completion: @escaping (RecordEntry) -> Void) {
 		var entry: RecordEntry?
 		if let data = queryResults[context.family] {
 			entry = RecordEntry(from: data)
 		}
 
-		completion(entry ?? RecordEntry.preview(family: context.family))
+		completion(entry ?? placeholder(in: context))
 	}
 
-	public func timeline(with context: Context, completion: @escaping (Timeline<RecordEntry>) -> Void) {
+	func getTimeline(in context: Context, completion: @escaping (Timeline<RecordEntry>) -> Void) {
 		func onFinish(entry: RecordEntry?) {
 			let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
-			let timeline = Timeline(entries: [entry].compactMap { $0 }, policy: .after(nextUpdateDate))
+			let timeline = Timeline(entries: [entry ?? placeholder(in: context)], policy: .after(nextUpdateDate))
 			completion(timeline)
 		}
 
 		switch context.family {
-		case .systemSmall: performSmallQuery(completion: onFinish)
-		case .systemMedium: performMediumQuery(completion: onFinish)
-		default: fatalError("WidgetFamily \(context.family) not supported")
+		case .systemSmall:
+			performSmallQuery(completion: onFinish)
+		default:
+			fatalError("WidgetFamily \(context.family) not supported")
 		}
 	}
 

@@ -11,12 +11,20 @@ import WidgetKit
 
 struct RecordEntry: TimelineEntry {
 	enum Content {
+		case preview
 		case small(MyLeaderboardAPI.SmallWidgetResponse)
 		case medium(MyLeaderboardAPI.MediumWidgetResponse)
 	}
 
 	let date: Date
 	let content: Content
+
+	var isPreview: Bool {
+		switch content {
+		case .preview: return true
+		default: return false
+		}
+	}
 
 	init(content: Content) {
 		self.date = Date()
@@ -40,6 +48,7 @@ struct RecordEntry: TimelineEntry {
 extension RecordEntry {
 	var isValidEntry: Bool {
 		switch content {
+		case .preview: return true
 		case .small(let response): return response.player != nil
 		case .medium(let response): return response.player != nil
 		}
@@ -53,6 +62,8 @@ extension RecordEntry {
 	var games: [MyLeaderboardAPI.WidgetGameFragment] {
 		guard isValidEntry else { return [] }
 		switch content {
+		case .preview:
+			return []
 		case .small(let response):
 			return response.player!.records.map {
 				$0.game.asWidgetGameFragmentFragment
@@ -65,7 +76,10 @@ extension RecordEntry {
 	}
 
 	var overallRecords: [MyLeaderboardAPI.RecordFragment] {
+		guard isValidEntry else { return [] }
 		switch content {
+		case .preview:
+			return []
 		case .small(let response):
 			return response.player!.records.map {
 				$0.asSmallWidgetRecordFragmentFragment
@@ -79,23 +93,6 @@ extension RecordEntry {
 					.overallRecord
 					.asRecordFragmentFragment
 			}
-		}
-	}
-}
-
-// MARK: RecordEntry preview
-
-extension RecordEntry {
-	static func preview(family: WidgetFamily) -> RecordEntry {
-		switch family {
-		case .systemSmall:
-			return RecordEntry(content: .small(.preview))
-		case .systemMedium:
-			return RecordEntry(content: .medium(.preview))
-		case .systemLarge:
-			fatalError("WidgetFamily \(family) not supported")
-		@unknown default:
-			return RecordEntry(content: .small(.preview))
 		}
 	}
 }
