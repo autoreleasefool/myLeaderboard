@@ -218,6 +218,12 @@
 		CAAE778C2302DB01001A37DC /* CreatePlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE778B2302DB01001A37DC /* CreatePlayerViewModel.swift */; };
 		CAAE778E2302DB0A001A37DC /* CreatePlayerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE778D2302DB0A001A37DC /* CreatePlayerBuilder.swift */; };
 		CAB20C8A2517C95700271FC2 /* MyLeaderboardWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB20C892517C95700271FC2 /* MyLeaderboardWidget.swift */; };
+		CAB20CAC2517D4CA00271FC2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9C22D7677A003347AF /* Player.swift */; };
+		CAB20CB22517D4DC00271FC2 /* PlayerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6D05DB240D147900412D54 /* PlayerListItem.swift */; };
+		CAB20CB82517D4F200271FC2 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9DC232EEE410023924A /* UserDefaults+Extensions.swift */; };
+		CAB20CBE2517D52100271FC2 /* PlayerListItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715D324198C4B00EA58E9 /* PlayerListItem+Extensions.swift */; };
+		CAB20CC42517D52A00271FC2 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FC5F323CA0F890029DD61 /* Avatar.swift */; };
+		CAB20CCB2517D61900271FC2 /* NoPreferredPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB20CCA2517D61900271FC2 /* NoPreferredPlayer.swift */; };
 		CAB3871022D186CE00349B1F /* GameListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3870F22D186CE00349B1F /* GameListViewController.swift */; };
 		CAB3871922D18E2100349B1F /* GameListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871822D18E2100349B1F /* GameListViewModel.swift */; };
 		CAB3871C22D1907A00349B1F /* ViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB3871B22D1907A00349B1F /* ViewAction.swift */; };
@@ -559,6 +565,8 @@
 		CAAE778B2302DB01001A37DC /* CreatePlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlayerViewModel.swift; path = MyLeaderboard/Source/Sections/Players/Create/CreatePlayerViewModel.swift; sourceTree = SOURCE_ROOT; };
 		CAAE778D2302DB0A001A37DC /* CreatePlayerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlayerBuilder.swift; path = MyLeaderboard/Source/Sections/Players/Create/CreatePlayerBuilder.swift; sourceTree = SOURCE_ROOT; };
 		CAB20C892517C95700271FC2 /* MyLeaderboardWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardWidget.swift; sourceTree = "<group>"; };
+		CAB20CCA2517D61900271FC2 /* NoPreferredPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPreferredPlayer.swift; sourceTree = "<group>"; };
+		CAB20CD12517D7A400271FC2 /* MyLeaderboardWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyLeaderboardWidgetExtension.entitlements; sourceTree = "<group>"; };
 		CAB3870F22D186CE00349B1F /* GameListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewController.swift; sourceTree = "<group>"; };
 		CAB3871822D18E2100349B1F /* GameListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewModel.swift; sourceTree = "<group>"; };
 		CAB3871B22D1907A00349B1F /* ViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAction.swift; sourceTree = "<group>"; };
@@ -1399,6 +1407,7 @@
 		CAF7B20924A1801B00307B01 /* MyLeaderboardWidgetExtension */ = {
 			isa = PBXGroup;
 			children = (
+				CAB20CD12517D7A400271FC2 /* MyLeaderboardWidgetExtension.entitlements */,
 				CAF7B20F24A1801F00307B01 /* Info.plist */,
 				CAF7B20D24A1801F00307B01 /* Assets.xcassets */,
 				CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */,
@@ -1426,6 +1435,7 @@
 				CAF7B23B24A1932D00307B01 /* GameSummary.swift */,
 				CAF7B23F24A1944E00307B01 /* RemoteImage.swift */,
 				CAB20C892517C95700271FC2 /* MyLeaderboardWidget.swift */,
+				CAB20CCA2517D61900271FC2 /* NoPreferredPlayer.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2082,10 +2092,14 @@
 				CAF7B23C24A1932D00307B01 /* GameSummary.swift in Sources */,
 				CAF7B24A24A22E0900307B01 /* RecordEntry.swift in Sources */,
 				CAB20C8A2517C95700271FC2 /* MyLeaderboardWidget.swift in Sources */,
+				CAB20CCB2517D61900271FC2 /* NoPreferredPlayer.swift in Sources */,
 				CAF7B24824A22A9600307B01 /* GameSummaryProvider.swift in Sources */,
 				CAF7B24024A1944E00307B01 /* RemoteImage.swift in Sources */,
+				CAB20CB22517D4DC00271FC2 /* PlayerListItem.swift in Sources */,
 				CAF7B23824A18F7C00307B01 /* RecordFragment.swift in Sources */,
 				CAF7B23124A18F4600307B01 /* GraphApi.swift in Sources */,
+				CAB20CAC2517D4CA00271FC2 /* Player.swift in Sources */,
+				CAB20CBE2517D52100271FC2 /* PlayerListItem+Extensions.swift in Sources */,
 				CAF7B22624A18ED700307B01 /* WidgetGameFragment.swift in Sources */,
 				CA148F6E24A260B70060BDF6 /* Metrics.swift in Sources */,
 				CAF7B23224A18F4900307B01 /* CustomScalarResolver.swift in Sources */,
@@ -2095,12 +2109,14 @@
 				CAF7B22B24A18F1300307B01 /* MediumWidgetQuery.swift in Sources */,
 				CAF7B24C24A2376A00307B01 /* GameRecords.swift in Sources */,
 				CAF7B22524A18ED700307B01 /* MediumWidgetRecordFragment.swift in Sources */,
+				CAB20CB82517D4F200271FC2 /* UserDefaults+Extensions.swift in Sources */,
 				CAF7B23024A18F3600307B01 /* SmallWidgetResponse.swift in Sources */,
 				CAF7B24124A1946200307B01 /* ImageLoader.swift in Sources */,
 				CAF7B23424A18F5E00307B01 /* GraphQL.swift in Sources */,
 				CAF7B22F24A18F3600307B01 /* MediumWidgetResponse.swift in Sources */,
 				CAF7B22C24A18F2400307B01 /* SmallWidgetQuery.swift in Sources */,
 				CAF7B23324A18F5500307B01 /* MyLeaderboardAPI.swift in Sources */,
+				CAB20CC42517D52A00271FC2 /* Avatar.swift in Sources */,
 				CAF7B22424A18ED700307B01 /* SmallWidgetRecordFragment.swift in Sources */,
 				CAF7B23524A18F6300307B01 /* Syrup+Extensions.swift in Sources */,
 			);
@@ -2564,6 +2580,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MyLeaderboardWidgetExtension/MyLeaderboardWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboardWidgetExtension/Info.plist;
@@ -2586,6 +2603,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MyLeaderboardWidgetExtension/MyLeaderboardWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				INFOPLIST_FILE = MyLeaderboardWidgetExtension/Info.plist;

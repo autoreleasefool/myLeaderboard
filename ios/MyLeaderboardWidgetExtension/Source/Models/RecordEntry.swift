@@ -12,6 +12,7 @@ import WidgetKit
 struct RecordEntry: TimelineEntry {
 	enum Content {
 		case preview
+		case noPreferredPlayer
 		case small(MyLeaderboardAPI.SmallWidgetResponse)
 		case medium(MyLeaderboardAPI.MediumWidgetResponse)
 	}
@@ -48,7 +49,7 @@ struct RecordEntry: TimelineEntry {
 extension RecordEntry {
 	var isValidEntry: Bool {
 		switch content {
-		case .preview: return true
+		case .preview, .noPreferredPlayer: return true
 		case .small(let response): return response.player != nil
 		case .medium(let response): return response.player != nil
 		}
@@ -62,7 +63,7 @@ extension RecordEntry {
 	var games: [MyLeaderboardAPI.WidgetGameFragment] {
 		guard isValidEntry else { return [] }
 		switch content {
-		case .preview:
+		case .preview, .noPreferredPlayer:
 			return []
 		case .small(let response):
 			return response.player!.records.map {
@@ -78,7 +79,7 @@ extension RecordEntry {
 	var overallRecords: [MyLeaderboardAPI.RecordFragment] {
 		guard isValidEntry else { return [] }
 		switch content {
-		case .preview:
+		case .preview, .noPreferredPlayer:
 			return []
 		case .small(let response):
 			return response.player!.records.map {

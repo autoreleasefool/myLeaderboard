@@ -14,7 +14,6 @@ struct GameSummaryProvider: TimelineProvider {
 	typealias SmallQuery = MyLeaderboardAPI.SmallWidgetQuery
 	typealias MediumQuery = MyLeaderboardAPI.MediumWidgetQuery
 
-	var queryResults: [WidgetFamily: GraphApiResponse] = [:]
 	var cancellable: AnyCancellable?
 
 	func placeholder(in context: Context) -> RecordEntry {
@@ -22,12 +21,7 @@ struct GameSummaryProvider: TimelineProvider {
 	}
 
 	func getSnapshot(in context: Context, completion: @escaping (RecordEntry) -> Void) {
-		var entry: RecordEntry?
-		if let data = queryResults[context.family] {
-			entry = RecordEntry(from: data)
-		}
-
-		completion(entry ?? placeholder(in: context))
+		completion(placeholder(in: context))
 	}
 
 	func getTimeline(in context: Context, completion: @escaping (Timeline<RecordEntry>) -> Void) {
@@ -46,7 +40,12 @@ struct GameSummaryProvider: TimelineProvider {
 	}
 
 	private func performSmallQuery(completion: @escaping (RecordEntry?) -> Void) {
-		SmallQuery(player: GraphID("0")).perform {
+		guard let preferredPlayer = Player.preferred else {
+			completion(RecordEntry(content: .noPreferredPlayer))
+			return
+		}
+
+		SmallQuery(player: preferredPlayer.id).perform {
 			switch $0 {
 			case .success(let response):
 				let images = response.player?.records.map { $0.game.image }.compactMap { $0 } ?? []
@@ -60,7 +59,12 @@ struct GameSummaryProvider: TimelineProvider {
 	}
 
 	private func performMediumQuery(completion: @escaping (RecordEntry?) -> Void) {
-		MediumQuery(player: GraphID("0")).perform {
+		guard let preferredPlayer = Player.preferred else {
+			completion(RecordEntry(content: .noPreferredPlayer))
+			return
+		}
+
+		MediumQuery(player: preferredPlayer.id).perform {
 			switch $0 {
 			case .success(let response):
 				let images = response.player?.records.map {

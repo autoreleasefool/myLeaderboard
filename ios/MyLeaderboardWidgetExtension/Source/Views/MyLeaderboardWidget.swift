@@ -12,9 +12,15 @@ import WidgetKit
 struct MyLeaderboardWidget: View {
 	let entry: RecordEntry
 
+	@ViewBuilder
 	var body: some View {
-		GameRecords(entry: entry)
-			.modifier(ConditionalRedactor(isRedacted: entry.isPreview))
+		switch entry.content {
+		case .noPreferredPlayer:
+			NoPreferredPlayer()
+		default:
+			GameRecords(entry: entry)
+				.modifier(ConditionalRedactor(isRedacted: entry.isPreview))
+		}
 	}
 }
 

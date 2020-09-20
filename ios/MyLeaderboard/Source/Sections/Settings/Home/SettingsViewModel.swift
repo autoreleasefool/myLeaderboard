@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import WidgetKit
 
 enum SettingsAction: BaseAction {
 	case playerUpdated
@@ -56,6 +57,9 @@ class SettingsViewModel: ViewModel {
 			handleAction(.openPlayerPicker)
 		case .selectPreferredPlayer(let player):
 			Player.preferred = player
+			if #available(iOS 14.0, *) {
+				WidgetCenter.shared.reloadAllTimelines()
+			}
 			handleAction(.playerUpdated)
 		case .editOpponents:
 			handleAction(.openOpponentPicker)
