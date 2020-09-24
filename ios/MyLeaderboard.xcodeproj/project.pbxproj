@@ -10,7 +10,6 @@
 		CA018487240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
 		CA018494240FA9A20080A5B8 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
 		CA148F6E24A260B70060BDF6 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
-		CA1D97E42406EE650011786E /* PlayerList.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA1D97E32406EE650011786E /* PlayerList.graphql */; };
 		CA27F9A2232D59A40023924A /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA27F9A1232D59A40023924A /* NotificationCenter.framework */; };
 		CA27F9A5232D59A40023924A /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9A4232D59A40023924A /* TodayViewController.swift */; };
 		CA27F9AC232D59A40023924A /* MyLeaderboardTodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CA27F9A0232D59A40023924A /* MyLeaderboardTodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -95,7 +94,6 @@
 		CA484E2824A313DA00BE2128 /* ImageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE56F8922F47AAB00FE0998 /* ImageState.swift */; };
 		CA484E2924A313E500BE2128 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9C22D7677A003347AF /* Player.swift */; };
 		CA484E2B24A3151F00BE2128 /* Loaf in Frameworks */ = {isa = PBXBuildFile; productRef = CA484E2A24A3151F00BE2128 /* Loaf */; };
-		CA484E2E24A3185300BE2128 /* AppClip.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA484E2D24A3185300BE2128 /* AppClip.graphql */; };
 		CA484E3724A31A2400BE2128 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
 		CA484E3924A31D5900BE2128 /* PlayRecordedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA484E3824A31D5900BE2128 /* PlayRecordedViewController.swift */; };
 		CA4BAB8622D6BE69003347AF /* CreateGameBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB8522D6BE69003347AF /* CreateGameBuilder.swift */; };
@@ -196,19 +194,13 @@
 		CA834B9F230A346400A48C9B /* SpreadsheetRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA834B9E230A346400A48C9B /* SpreadsheetRowCell.swift */; };
 		CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220222D592AA00479A0B /* CreateGameViewController.swift */; };
 		CA96220522D592B400479A0B /* CreateGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96220422D592B400479A0B /* CreateGameViewModel.swift */; };
-		CA9715C0241826CE00EA58E9 /* GameList.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA9715BF241826CE00EA58E9 /* GameList.graphql */; };
-		CA9715CA2419880400EA58E9 /* PlayerDetails.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA9715C92419880400EA58E9 /* PlayerDetails.graphql */; };
-		CA9715CD2419884700EA58E9 /* Record.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA9715CC2419884700EA58E9 /* Record.graphql */; };
-		CA9715CF2419885800EA58E9 /* PlayList.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA9715CE2419885800EA58E9 /* PlayList.graphql */; };
 		CA9715D224198BE300EA58E9 /* GameListItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715D124198BE300EA58E9 /* GameListItem+Extensions.swift */; };
 		CA9715D424198C4B00EA58E9 /* PlayerListItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715D324198C4B00EA58E9 /* PlayerListItem+Extensions.swift */; };
 		CA9715DA2419908C00EA58E9 /* RecentPlayFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715D92419908C00EA58E9 /* RecentPlayFragment+Extensions.swift */; };
 		CA9715DC241993A700EA58E9 /* PlayerDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DB241993A700EA58E9 /* PlayerDetails+Extensions.swift */; };
 		CA9715DE241994D700EA58E9 /* RecordFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */; };
-		CA9715E0241A1ED800EA58E9 /* GameDetails.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA9715DF241A1ED800EA58E9 /* GameDetails.graphql */; };
 		CA9715EC241C166300EA58E9 /* GameDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715EB241C166300EA58E9 /* GameDetails+Extensions.swift */; };
 		CA9715F7241D7DA700EA58E9 /* PlayListItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715F6241D7DA700EA58E9 /* PlayListItem+Extensions.swift */; };
-		CA9715F9241E0EE200EA58E9 /* Standings.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CA9715F8241E0EE200EA58E9 /* Standings.graphql */; };
 		CA971602241E126700EA58E9 /* PlayListFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971601241E126700EA58E9 /* PlayListFilter.swift */; };
 		CA971604241E172900EA58E9 /* StandingsFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA971603241E172900EA58E9 /* StandingsFragment+Extensions.swift */; };
 		CA97160E241EA3C900EA58E9 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97160D241EA3C900EA58E9 /* LoadingCell.swift */; };
@@ -245,7 +237,6 @@
 		CAC66823241EC95A0020D9B4 /* NewPlayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66822241EC95A0020D9B4 /* NewPlayer+Extensions.swift */; };
 		CAC66825241ED58F0020D9B4 /* RecordPlay.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CAC66824241ED58F0020D9B4 /* RecordPlay.graphql */; };
 		CAC6682D241ED6750020D9B4 /* NewPlay+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6682C241ED6750020D9B4 /* NewPlay+Extensions.swift */; };
-		CAC6682F241ED99E0020D9B4 /* TodayView.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CAC6682E241ED99D0020D9B4 /* TodayView.graphql */; };
 		CAC66838241EDBE30020D9B4 /* TodayView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC66836241EDB2D0020D9B4 /* TodayView+Extensions.swift */; };
 		CAC66839241EDBED0020D9B4 /* PlayerDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DB241993A700EA58E9 /* PlayerDetails+Extensions.swift */; };
 		CAC66860241EE0600020D9B4 /* RecordFragment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715DD241994D700EA58E9 /* RecordFragment+Extensions.swift */; };
@@ -284,7 +275,6 @@
 		CAF7B21024A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */; };
 		CAF7B21124A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */; };
 		CAF7B21424A1801F00307B01 /* MyLeaderboardWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CAF7B22024A18BC400307B01 /* Widget.graphql in Resources */ = {isa = PBXBuildFile; fileRef = CAF7B21F24A18BC400307B01 /* Widget.graphql */; };
 		CAF7B23624A18F6600307B01 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
 		CAF7B23C24A1932D00307B01 /* GameSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23B24A1932D00307B01 /* GameSummary.swift */; };
 		CAF7B23E24A1939D00307B01 /* MyLeaderboardApi+WidgetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23D24A1939D00307B01 /* MyLeaderboardApi+WidgetExtensions.swift */; };
@@ -1772,20 +1762,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAC6681B241EC8CE0020D9B4 /* CreatePlayer.graphql in Resources */,
-				CAC6682F241ED99E0020D9B4 /* TodayView.graphql in Resources */,
-				CA9715E0241A1ED800EA58E9 /* GameDetails.graphql in Resources */,
 				CAC9067722D0F70F0075B033 /* LaunchScreen.storyboard in Resources */,
-				CA9715CA2419880400EA58E9 /* PlayerDetails.graphql in Resources */,
 				CAC66825241ED58F0020D9B4 /* RecordPlay.graphql in Resources */,
-				CA9715CD2419884700EA58E9 /* Record.graphql in Resources */,
-				CA484E2E24A3185300BE2128 /* AppClip.graphql in Resources */,
 				CAC9067422D0F70F0075B033 /* Assets.xcassets in Resources */,
-				CA9715F9241E0EE200EA58E9 /* Standings.graphql in Resources */,
-				CA1D97E42406EE650011786E /* PlayerList.graphql in Resources */,
 				CAC66811241EC40E0020D9B4 /* CreateGame.graphql in Resources */,
-				CA9715CF2419885800EA58E9 /* PlayList.graphql in Resources */,
-				CA9715C0241826CE00EA58E9 /* GameList.graphql in Resources */,
-				CAF7B22024A18BC400307B01 /* Widget.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
