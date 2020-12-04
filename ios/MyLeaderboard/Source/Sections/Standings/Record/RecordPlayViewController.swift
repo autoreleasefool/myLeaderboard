@@ -81,7 +81,7 @@ class RecordPlayViewController: FTDViewController {
 	}
 
 	@objc private func submit() {
-		onSuccess?(nil)
+		viewModel.postViewAction(.submit)
 	}
 
 	private func presentGamePicker() {
