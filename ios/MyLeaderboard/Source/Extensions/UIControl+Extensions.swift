@@ -27,7 +27,7 @@ public final class ControlAction<T: UIControl>: NSObject {
 		self.action = action
 	}
 
-	@objc dynamic fileprivate func performAction(sender: Any) {
+	@objc dynamic fileprivate func invoke(sender: Any) {
 		guard let sender = sender as? T else { return }
 		action(sender)
 	}
@@ -52,11 +52,11 @@ public extension UIControlClosureAction where Self: UIControl {
 	func setActions(_ actions: [ControlAction<Self>]) {
 		if let oldActions = self.actions as? [ControlAction<Self>] {
 			oldActions.forEach {
-				removeTarget($0, action: #selector(ControlAction<Self>.performAction(sender:)), for: $0.events)
+				removeTarget($0, action: #selector(ControlAction<Self>.invoke(sender:)), for: $0.events)
 			}
 		}
 		actions.forEach {
-			addTarget($0, action: #selector(ControlAction<Self>.performAction(sender:)), for: $0.events)
+			addTarget($0, action: #selector(ControlAction<Self>.invoke(sender:)), for: $0.events)
 		}
 		self.actions = actions
 	}
@@ -65,7 +65,7 @@ public extension UIControlClosureAction where Self: UIControl {
 	///
 	/// - Parameter actions: The action to add
 	func addAction(_ action: ControlAction<Self>) {
-		addTarget(action, action: #selector(ControlAction<Self>.performAction(sender:)), for: action.events)
+		addTarget(action, action: #selector(ControlAction<Self>.invoke(sender:)), for: action.events)
 		actions.append(action)
 	}
 }
