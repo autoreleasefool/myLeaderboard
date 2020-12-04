@@ -30,11 +30,11 @@ enum Theme {
 	private static var interfaceStyleKey = "Settings.Theme.InterfaceStyle"
 
 	static var interfaceStyle: UIUserInterfaceStyle {
-		set {
-			UserDefaults.group.set(newValue.stringValue, forKey: Theme.interfaceStyleKey)
-		}
 		get {
 			return UIUserInterfaceStyle.init(from: UserDefaults.group.string(forKey: Theme.interfaceStyleKey))
+		}
+		set {
+			UserDefaults.group.set(newValue.stringValue, forKey: Theme.interfaceStyleKey)
 		}
 	}
 }
