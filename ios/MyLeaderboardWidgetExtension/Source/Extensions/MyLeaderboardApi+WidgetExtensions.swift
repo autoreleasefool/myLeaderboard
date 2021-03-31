@@ -41,14 +41,3 @@ extension MyLeaderboardApi.MediumWidgetResponse {
 		fatalError()
 	}
 }
-
-//let smallPreviewGames = [
-//	SmallRecord(
-//		game: .init(widgetGameFragmentFragment: .init(id: GraphID(rawValue: "1"), image: "HivePreview")),
-//		overallRecord: .init(recordFragmentFragment: .init(wins: 12, losses: 8, ties: 2, isBest: true, isWorst: false))
-//	),
-//	SmallRecord(
-//		game: .init(widgetGameFragmentFragment: .init(id: GraphID(rawValue: "2"), image: "PatchworkPreview")),
-//		overallRecord: .init(recordFragmentFragment: .init(wins: 12, losses: 8, ties: 2, isBest: true, isWorst: false))
-//	),
-//]

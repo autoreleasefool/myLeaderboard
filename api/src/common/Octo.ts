@@ -56,7 +56,7 @@ class Octo {
     }
 
     private static instance: Octo | undefined;
-    private static branch = 'master';
+    private static branch = 'main';
     private static token: string | undefined;
     private static useLocal = false;
 
