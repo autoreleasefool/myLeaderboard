@@ -1,4 +1,4 @@
-location: https://myleaderboard.josephroque.dev/graphql/introspection
+location: https://myleaderboardapi.josephroque.dev/graphql/introspection
 customScalars:
 - graphType: DateTime
   nativeType: Date

@@ -2,7 +2,7 @@
   "name": "my-leaderboard",
   "version": "5.0.4",
   "private": true,
-  "homepage": "https://josephroque.dev/myLeaderboard/site",
+  "homepage": "https://myleaderboard.josephroque.dev/",
   "scripts": {
     "start": "yarn copy-common && react-scripts start",
     "pre-build": "rm -rf ../site",

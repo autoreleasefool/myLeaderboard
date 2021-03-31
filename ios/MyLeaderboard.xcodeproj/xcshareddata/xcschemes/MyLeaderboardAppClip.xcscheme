@@ -53,7 +53,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCAppClipURL"
-            value = "https://myleaderboard.josephroque.dev/record/1"
+            value = "https://myleaderboardapi.josephroque.dev/record/1"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
