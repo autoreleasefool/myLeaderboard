@@ -15,8 +15,8 @@ class ContributorsListViewController: FTDViewController {
 		PlayerListItem(
 			id: GraphID(rawValue: "0"),
 			displayName: "Joseph Roque",
-			username: "josephroquedev",
-			avatar: "https://github.com/josephroquedev.png"
+			username: "autoreleasefool",
+			avatar: "https://github.com/autoreleasefool.png"
 		),
 		PlayerListItem(
 			id: GraphID(rawValue: "1"),

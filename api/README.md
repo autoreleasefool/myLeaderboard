@@ -131,7 +131,7 @@ Returns the list of players. Optionally include the players' avatars in the resp
     {
         "id": 0,
         "displayName": "Joseph Roque",
-        "username": "josephroquedev",
+        "username": "autoreleasefool",
         "avatar": "https://example.com/image/JosephRoque.png"
     }
 ]
@@ -149,7 +149,7 @@ Creates a new player.
 ```
 {
     "name": "Joseph Roque",
-    "username": "josephroquedev"
+    "username": "autoreleasefool"
 }
 ```
 
@@ -162,7 +162,7 @@ Creates a new player.
 {
     "id": 1,
     "displayName": "Joseph Roque",
-    "username": "josephroquedev"
+    "username": "autoreleasefool"
 }
 ```
 

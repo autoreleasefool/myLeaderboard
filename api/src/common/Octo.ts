@@ -65,7 +65,7 @@ class Octo {
 
     private constructor(token: string | undefined) {
         this.octo = Octokat.default({ token });
-        this.repo = this.octo.repos('josephroquedev', 'myLeaderboard');
+        this.repo = this.octo.repos('autoreleasefool', 'myLeaderboard');
     }
 
     // Users

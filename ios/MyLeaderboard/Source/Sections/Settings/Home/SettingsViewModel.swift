@@ -78,7 +78,7 @@ class SettingsViewModel: ViewModel {
 	}
 
 	private func viewSource() {
-		if let url = URL(string: "https://github.com/josephroquedev/myLeaderboard") {
+		if let url = URL(string: "https://github.com/autoreleasefool/myLeaderboard") {
 			handleAction(.openURL(url))
 		}
 	}

@@ -62,7 +62,7 @@ enum CreatePlayerBuilder {
 		let usernameLabel = LabelState(text: .attributed(NSAttributedString(string: "Username", textColor: .text)))
 		let usernameInput = TextInputCellState(
 			text: username,
-			placeholder: "josephroquedev"
+			placeholder: "autoreleasefool"
 		) { [weak actionable] text in
 			guard let text = text else { return }
 			actionable?.updatedPlayerUsername(username: text)
