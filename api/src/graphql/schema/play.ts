@@ -12,6 +12,7 @@ import playerBasic from './playerBasic';
 import { SchemaContext } from '../schema';
 import gameBasic from './gameBasic';
 import { GraphQLDateTime } from 'graphql-iso-date';
+import board from './board';
 
 export async function playToGraphQL(play: Play, loader: MyLeaderboardLoader): Promise<PlayGQL> {
     const players = await loader.playerLoader.loadMany(play.players);
@@ -54,8 +55,10 @@ export default new GraphQLObjectType<Play, SchemaContext, {}>({
             description: 'Unique ID.',
         },
         board: {
-            type: GraphQLNonNull(GraphQLID),
-            description: 'Board the game was played on.'
+            type: GraphQLNonNull(board),
+            description: 'Board the game was played on.',
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (play, _, {loader}) => loader.boardLoader.load(play.board),
         },
         playedOn: {
             type: GraphQLNonNull(GraphQLDateTime),

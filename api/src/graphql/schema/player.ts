@@ -17,6 +17,7 @@ import play from './play';
 import Plays from '../../db/plays';
 import { DEFAULT_PAGE_SIZE } from '../schema';
 import Games from '../../db/games';
+import board from './board';
 
 interface QueryContext {
     loader: MyLeaderboardLoader;
@@ -33,8 +34,10 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
             description: 'Unique ID.',
         },
         board: {
-            type: GraphQLNonNull(GraphQLID),
+            type: GraphQLNonNull(board),
             description: 'Board the player belongs to.',
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (play, _, {loader}) => loader.boardLoader.load(play.board),
         },
         username: {
             type: GraphQLNonNull(GraphQLString),

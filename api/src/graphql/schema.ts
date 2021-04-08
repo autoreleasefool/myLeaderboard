@@ -9,6 +9,7 @@ import {
     GraphQLString
 } from 'graphql';
 
+import board from './schema/board';
 import player from './schema/player';
 import game from './schema/game';
 import Players from '../db/players';
@@ -23,6 +24,7 @@ import { recordPlay } from '../plays/record';
 import { MyLeaderboardLoader } from './DataLoader';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import { ListQueryArguments } from '../lib/types';
+import { addBoard } from '../boards/new';
 
 export const DEFAULT_PAGE_SIZE = 25;
 
@@ -205,6 +207,10 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
     }),
 });
 
+interface CreateBoardArgs {
+    boardName: string;
+}
+
 interface CreatePlayerArgs {
     board: string;
     displayName: string;
@@ -229,6 +235,17 @@ const RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
     description: 'Realize Root Mutation',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
+        createBoard: {
+            type: board,
+            description: 'Create a new board.',
+            args: {
+                boardName: {
+                    type: GraphQLNonNull(GraphQLString),
+                },
+            },
+            resolve: async (_, {boardName}: CreateBoardArgs) => addBoard(boardName),
+        },
+
         createPlayer: {
             type: player,
             description: 'Create a new player.',
