@@ -11,6 +11,11 @@ export interface GitHubUser {
     avatarUrl: string;
 }
 
+export interface ListQueryArguments {
+    first?: number;
+    offset?: number;
+}
+
 // Games
 
 export interface Game extends Identifiable {

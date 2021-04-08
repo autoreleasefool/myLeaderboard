@@ -9,8 +9,8 @@ import {
 } from 'graphql';
 import gameRecord, { gameRecordToGraphQL } from './gameRecord';
 import { gameStandings as generateGameStandings } from '../../games/standings';
-import { Game } from '../../lib/types';
-import { SchemaContext, ListQueryArguments, DEFAULT_PAGE_SIZE} from '../schema';
+import { Game, ListQueryArguments } from '../../lib/types';
+import { SchemaContext, DEFAULT_PAGE_SIZE} from '../schema';
 import play from './play';
 import Plays from '../../db/plays';
 

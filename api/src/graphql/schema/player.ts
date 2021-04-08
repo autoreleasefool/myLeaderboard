@@ -11,11 +11,11 @@ import playerBasic from './playerBasic';
 
 import { playerRecord as generatePlayerRecord } from '../../players/record';
 import { playerRecordToGraphQL } from './playerGameRecord';
-import { Player } from '../../lib/types';
+import { ListQueryArguments, Player } from '../../lib/types';
 import { MyLeaderboardLoader } from '../DataLoader';
 import play from './play';
 import Plays from '../../db/plays';
-import { ListQueryArguments, DEFAULT_PAGE_SIZE } from '../schema';
+import { DEFAULT_PAGE_SIZE } from '../schema';
 import Games from '../../db/games';
 
 interface QueryContext {

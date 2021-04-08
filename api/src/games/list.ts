@@ -2,14 +2,14 @@ import Games from '../db/games';
 import { Game } from '../lib/types';
 import DataLoader from '../graphql/DataLoader';
 import { Request } from 'express';
-import { getListParams, isGame } from '../common/utils';
+import { getListQueryParams, isGame } from '../common/utils';
 
 export default async function list(req: Request): Promise<Array<Game>> {
-    const [first, offset] = getListParams(req);
+    const listQueryArgs = getListQueryParams(req);
     const loader = DataLoader();
 
     const games = await loader.gameLoader.loadMany(
-        Games.getInstance().allIds({first, offset})
+        Games.getInstance().allIds(listQueryArgs)
     );
     return games.filter(game => isGame(game)) as Game[];
 }

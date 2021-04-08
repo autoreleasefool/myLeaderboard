@@ -22,6 +22,7 @@ import { addPlayer } from '../players/new';
 import { recordPlay } from '../plays/record';
 import { MyLeaderboardLoader } from './DataLoader';
 import { GraphQLDateTime } from 'graphql-iso-date';
+import { ListQueryArguments } from '../lib/types';
 
 export const DEFAULT_PAGE_SIZE = 25;
 
