@@ -13,9 +13,15 @@ import { Game, ListQueryArguments } from '../../lib/types';
 import { SchemaContext, DEFAULT_PAGE_SIZE} from '../schema';
 import play from './play';
 import Plays from '../../db/plays';
+import { parseID } from '../../common/utils';
 
 interface StandingsArguments {
+    board: string;
     ignoreBanished?: boolean;
+}
+
+interface MostRecentPlayArguments extends ListQueryArguments {
+    board: string;
 }
 
 export default new GraphQLObjectType<Game, SchemaContext, any>({
@@ -43,15 +49,18 @@ export default new GraphQLObjectType<Game, SchemaContext, any>({
             type: GraphQLNonNull(gameRecord),
             description: 'Player vs player records, and score statistics for the game.',
             args: {
+                board: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
                 ignoreBanished: {
                     type: GraphQLBoolean,
                 },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (game, {ignoreBanished}: StandingsArguments, {loader}) =>
+            resolve: async (game, {board, ignoreBanished}: StandingsArguments, {loader}) =>
                 gameRecordToGraphQL(
                     game.id,
-                    await generateGameStandings(game.id, ignoreBanished ?? false, loader),
+                    await generateGameStandings(game.id, parseID(board), ignoreBanished ?? false, loader),
                     loader
                 ),
         },
@@ -64,15 +73,19 @@ export default new GraphQLObjectType<Game, SchemaContext, any>({
                 },
                 offset: {
                     type: GraphQLInt,
-                }
+                },
+                board: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (game, {first, offset}: ListQueryArguments, {loader}) => {
+            resolve: async (game, {first, offset, board}: MostRecentPlayArguments, {loader}) => {
+                const boardId = parseID(board);
                 const plays = Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
                     reverse: true,
-                    filter: play => play.game === game.id
+                    filter: play => play.game === game.id && play.board === boardId,
                 });
                 for (const play of plays) {
                     loader.playLoader.prime(play.id, play);

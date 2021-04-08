@@ -17,8 +17,8 @@ class Players extends Table<Player> {
         super('players');
     }
 
-    public isUsernameTaken(username: string): boolean {
-        for (const player of this.all({first: -1, offset: 0})) {
+    public isUsernameTaken(username: string, board: number): boolean {
+        for (const player of this.all({first: -1, offset: 0, filter: player => player.board === board})) {
             if (player.username === username) {
                 return true;
             }

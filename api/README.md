@@ -1,5 +1,30 @@
 # API Reference
 
+## Boards
+
+**POST** `/boards/new`
+
+Creates a new board.
+
+<summary>Example input</summary>
+<details>
+```
+{
+    "name": "Some Name"
+}
+```
+</details>
+
+<summary>Example response</summary>
+<details>
+```
+{
+    "id": 1,
+    "boardName": "Some Name"
+}
+```
+</details>
+
 ## Games
 
 **GET** `/games/list`
@@ -51,7 +76,7 @@ Creates a new game.
 
 </details>
 
-**GET** `/games/standings/:gameId`
+**GET** `/games/standings/:boardId/:gameId`
 
 Returns the standings for a game, given by ID.
 
@@ -119,9 +144,9 @@ Returns the standings for a game, given by ID.
 
 ## Players
 
-**GET** `/players/list?withAvatars=<Bool>`
+**GET** `/players/list/:boardId?withAvatars=<Bool>`
 
-Returns the list of players. Optionally include the players' avatars in the response.
+Returns the list of players in the board. Optionally include the players' avatars in the response.
 
 <summary>Example response</summary>
 <details>
@@ -130,6 +155,7 @@ Returns the list of players. Optionally include the players' avatars in the resp
 [
     {
         "id": 0,
+        "board": 0,
         "displayName": "Joseph Roque",
         "username": "autoreleasefool",
         "avatar": "https://example.com/image/JosephRoque.png"
@@ -149,7 +175,8 @@ Creates a new player.
 ```
 {
     "name": "Joseph Roque",
-    "username": "autoreleasefool"
+    "username": "autoreleasefool",
+    "board": 0,
 }
 ```
 
@@ -163,6 +190,7 @@ Creates a new player.
     "id": 1,
     "displayName": "Joseph Roque",
     "username": "autoreleasefool"
+    "board": 0,
 }
 ```
 
@@ -204,7 +232,7 @@ Get the record for a single player, for a single game.
 
 ## Plays
 
-**GET** `/plays/list`
+**GET** `/plays/list/:boardId`
 
 Returns the list of plays.
 
@@ -215,6 +243,7 @@ Returns the list of plays.
 [
     {
         "id": 0,
+        "board": 0,
         "game": 0,
         "playedOn": "2019-07-01T00:00:00.000Z",
         "players": [1, 9],
@@ -222,6 +251,7 @@ Returns the list of plays.
     },
     {
         "id": 245,
+        "board": 0,
         "game": 1,
         "playedOn": "2019-08-21T21:07:43.038Z",
         "players": [5, 6],
@@ -245,7 +275,8 @@ Record a new play of a game.
     "players": [0,1],
     "winners": [0],
     "scores": [25,33],
-    "game": 0
+    "game": 0,
+    "board": 0
 }
 ```
 
@@ -257,6 +288,7 @@ Record a new play of a game.
 ```
 {
     "id": 1,
+    "board": 0,
     "players": [0,1],
     "winners": [0],
     "scores": [25,33],

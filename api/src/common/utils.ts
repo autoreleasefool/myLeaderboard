@@ -1,4 +1,4 @@
-import { Play, Player, Game, ListQueryArguments } from '../lib/types';
+import { Play, Player, Game, Board, ListQueryArguments } from '../lib/types';
 import { Request } from 'express';
 
 export function parseID(id: string): number {
@@ -52,6 +52,10 @@ export function isGame(item: any): item is Game {
 
 export function isPlay(item: any): item is Play {
     return item.game !== undefined && item.players !== undefined;
+}
+
+export function isBoard(item: any): item is Board {
+    return item.boardName !== undefined;
 }
 
 export function getNumberQueryParam(name: string, req: Request, minValue: number, defaultValue: number): number {

@@ -51,6 +51,7 @@ const tokenExtraction: RequestHandler = (req, _, next): void => {
     next();
 };
 
+import applyBoardsRouter from './boards/router';
 import applyGamesRouter from './games/router';
 import applyMiscRouter from './misc/router';
 import applyPlayersRouter from './players/router';
@@ -59,6 +60,7 @@ import applyGraphQLRouter from './graphql/router';
 
 app.use(express.static('./static'));
 app.use(tokenExtraction);
+applyBoardsRouter(app);
 applyGamesRouter(app);
 applyPlayersRouter(app);
 applyPlaysRouter(app);
@@ -94,10 +96,12 @@ if (process.env.SSL_ENABLED) {
     });
 }
 
+import Boards from './db/boards';
 import Games from './db/games';
 import Players from './db/players';
 import Plays from './db/plays';
 
+Boards.getInstance().refreshData();
 Games.getInstance().refreshData();
 Players.getInstance().refreshData();
 Plays.getInstance().refreshData();

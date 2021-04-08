@@ -53,6 +53,10 @@ export default new GraphQLObjectType<Play, SchemaContext, {}>({
             type: GraphQLNonNull(GraphQLID),
             description: 'Unique ID.',
         },
+        board: {
+            type: GraphQLNonNull(GraphQLID),
+            description: 'Board the game was played on.'
+        },
         playedOn: {
             type: GraphQLNonNull(GraphQLDateTime),
             description: 'Date and time the play was recorded.',

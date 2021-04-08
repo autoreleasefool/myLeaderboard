@@ -13,7 +13,7 @@ router.post('/new', (req, res, next) => {
     });
 });
 
-router.get('/list', (req, res, next) => {
+router.get('/list/:boardId', (req, res, next) => {
     listPlayers(req).then(players => {
         res.json(players);
     }).catch(error => {

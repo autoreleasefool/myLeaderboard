@@ -32,6 +32,10 @@ export default new GraphQLObjectType<Player, QueryContext, any>({
             type: GraphQLNonNull(GraphQLID),
             description: 'Unique ID.',
         },
+        board: {
+            type: GraphQLNonNull(GraphQLID),
+            description: 'Board the player belongs to.',
+        },
         username: {
             type: GraphQLNonNull(GraphQLString),
             description: 'GitHub username of the player.',

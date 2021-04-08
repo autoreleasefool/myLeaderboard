@@ -21,14 +21,15 @@ interface RecordHighlight {
 
 export default async function generateGameStandings(req: Request): Promise<GameRecord> {
     const gameId = parseID(req.params.id);
+    const boardId = parseID(req.params.boardId);
     const loader = DataLoader();
-    return gameStandings(gameId, false, loader);
+    return gameStandings(gameId, boardId, false, loader);
 }
 
-export async function gameStandings(gameId: number, ignoreBanished: boolean, loader: MyLeaderboardLoader): Promise<GameRecord> {
+export async function gameStandings(gameId: number, boardId: number, ignoreBanished: boolean, loader: MyLeaderboardLoader): Promise<GameRecord> {
     const game = await loader.gameLoader.load(gameId);
 
-    const gameStandings = await buildStandings(game);
+    const gameStandings = await buildStandings(game, boardId);
     const allPlayers = Players.getInstance().allIds({first: -1, offset: 0});
     const players = allPlayers.filter(id => {
         const playerRecord = gameStandings.records[id];
@@ -39,7 +40,7 @@ export async function gameStandings(gameId: number, ignoreBanished: boolean, loa
     return gameStandings;
 }
 
-async function buildStandings(game: Game): Promise<GameRecord> {
+async function buildStandings(game: Game, boardId: number): Promise<GameRecord> {
     const gameStandings: GameRecord = { records: {}};
 
     let totalGames = 0;
@@ -51,7 +52,7 @@ async function buildStandings(game: Game): Promise<GameRecord> {
     const plays = Plays.getInstance().all({
         first: -1,
         offset: 0,
-        filter: play => play.game === game.id,
+        filter: play => play.game === game.id && play.board === boardId,
     });
     plays.forEach(play => {
             totalGames += 1;

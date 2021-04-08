@@ -8,13 +8,14 @@ export default async function record(req: Request): Promise<Play> {
     const playerIds: Array<number> = typeof(req.body.players) === 'string' ? JSON.parse(req.body.players) : req.body.players;
     const winnerIds: Array<number> = typeof(req.body.winners) === 'string' ? JSON.parse(req.body.winners) : req.body.winners;
     const scores: Array<number> | undefined = req.body.scores != null ? (typeof(req.body.scores) === 'string' ? JSON.parse(req.body.scores) : req.body.scores) : undefined;
+    const board: number = req.body.board;
     const game: number = req.body.game;
     const loader = DataLoader();
 
-    return recordPlay(playerIds, winnerIds, scores, game, loader);
+    return recordPlay(playerIds, winnerIds, scores, game, board, loader);
 }
 
-export async function recordPlay(playerIds: Array<number>, winnerIds: Array<number>, scores: Array<number> | undefined, game: number, loader: MyLeaderboardLoader): Promise<Play> {
+export async function recordPlay(playerIds: Array<number>, winnerIds: Array<number>, scores: Array<number> | undefined, game: number, board: number, loader: MyLeaderboardLoader): Promise<Play> {
     if (playerIds.length === 0) {
         throw new Error('No players.');
     } else if (winnerIds.length === 0) {
@@ -22,7 +23,8 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
     }
 
     await validateGameExists(game, loader);
-    await validatePlayersExist(playerIds, loader);
+    await validatePlayersExist(playerIds, board, loader);
+    await validateBoardExists(board, loader);
     validateWinnersExist(winnerIds, playerIds);
 
     const players = (await loader.playerLoader.loadMany(playerIds))
@@ -32,6 +34,7 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
 
     const newPlay = {
         game,
+        board,
         id,
         playedOn: new Date().toISOString(),
         players: playerIds,
@@ -49,10 +52,10 @@ export async function recordPlay(playerIds: Array<number>, winnerIds: Array<numb
     return newPlay;
 }
 
-async function validatePlayersExist(winners: Array<number>, loader: MyLeaderboardLoader): Promise<void> {
+async function validatePlayersExist(winners: Array<number>, board: number, loader: MyLeaderboardLoader): Promise<void> {
     const players = await loader.playerLoader.loadMany(winners);
     for (const player of players) {
-        if (!isPlayer(player)) {
+        if (!isPlayer(player) || player.board !== board) {
             throw player;
         }
     }
@@ -76,4 +79,8 @@ function validateWinnersExist(winners: Array<number>, players: Array<number>): v
 
 async function validateGameExists(id: number, loader: MyLeaderboardLoader): Promise<void> {
     await loader.gameLoader.load(id);
+}
+
+async function validateBoardExists(id: number, loader: MyLeaderboardLoader): Promise<void> {
+    await loader.boardLoader.load(id);
 }

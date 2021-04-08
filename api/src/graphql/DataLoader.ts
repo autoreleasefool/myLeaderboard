@@ -2,12 +2,18 @@ import Games from '../db/games';
 import Players from '../db/players';
 import Plays from '../db/plays';
 import DataLoader from 'dataloader';
-import { Player, Game, Play } from '../lib/types';
+import Boards from '../db/boards';
+import { Player, Game, Play, Board } from '../lib/types';
 
 export interface MyLeaderboardLoader {
+    boardLoader: DataLoader<number, Board>;
     playerLoader: DataLoader<number, Player>;
     gameLoader: DataLoader<number, Game>;
     playLoader: DataLoader<number, Play>;
+}
+
+async function batchBoards(keys: readonly number[]): Promise<Array<Board>> {
+    return Boards.getInstance().allByIds(keys);
 }
 
 async function batchPlayers(keys: readonly number[]): Promise<Array<Player>> {
@@ -23,6 +29,9 @@ async function batchPlays(keys: readonly number[]): Promise<Array<Play>> {
 }
 
 export default (): MyLeaderboardLoader => ({
+    boardLoader: new DataLoader<number, Board>(
+        async keys => await batchBoards(keys)
+    ),
     playerLoader: new DataLoader<number, Player>(
         async keys => await batchPlayers(keys)
     ),

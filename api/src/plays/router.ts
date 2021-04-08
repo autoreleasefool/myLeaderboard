@@ -12,7 +12,7 @@ router.post('/record', (req, res, next) => {
     });
 });
 
-router.get('/list', (req, res, next) => {
+router.get('/list/:boardId', (req, res, next) => {
     listPlays(req).then(plays => {
         res.json(plays);
     }).catch(error => {

@@ -21,7 +21,7 @@ router.get('/list', (req, res, next) => {
     });
 });
 
-router.get('/standings/:id', (req, res, next) => {
+router.get('/standings/:boardId/:id', (req, res, next) => {
     gameStandings(req).then(standings => {
         res.json(standings);
     }).catch(error => {

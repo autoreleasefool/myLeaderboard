@@ -27,6 +27,7 @@ export interface Game extends Identifiable {
 // Players
 
 export interface Player extends Identifiable {
+    board: number;
     avatar?: string;
     displayName: string;
     username: string;
@@ -35,11 +36,18 @@ export interface Player extends Identifiable {
 // Plays
 
 export interface Play extends Identifiable {
+    board: number;
     game: number;
     playedOn: string;
     players: number[];
     winners: number[];
     scores?: number[];
+}
+
+// Boards
+
+export interface Board extends Identifiable {
+    boardName: string;
 }
 
 // Standings

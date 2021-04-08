@@ -38,12 +38,12 @@ interface HasUpdatesQueryArgs {
     since: string;
 }
 
-export interface ListQueryArguments {
-    first?: number;
-    offset?: number;
+export interface PlayerFilterArguments extends ListQueryArguments {
+    board: string;
 }
 
 interface PlayFilterArguments extends ListQueryArguments {
+    board: string;
     game?: string;
     players?: string[];
     reverse?: boolean
@@ -71,6 +71,9 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
             type: GraphQLNonNull(GraphQLList(GraphQLNonNull(player))),
             description: `Get a list of players, ordered by ID ascending. Default page size is ${DEFAULT_PAGE_SIZE}.`,
             args: {
+                board: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
                 first: {
                     type: GraphQLInt,
                 },
@@ -79,10 +82,12 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 }
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {first, offset}: ListQueryArguments, {loader}) => {
+            resolve: async (_, {board, first, offset}: PlayerFilterArguments , {loader}) => {
+                const boardId = parseID(board);
                 const players = await Players.getInstance().allWithAvatars({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
+                    filter: player => player.board === boardId,
                 });
                 for (const player of players) {
                     loader.playerLoader.prime(player.id, player);
@@ -149,6 +154,9 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 offset: {
                     type: GraphQLInt,
                 },
+                board: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
                 game: {
                     type: GraphQLID,
                 },
@@ -160,13 +168,19 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
                 },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {first, offset, game, players, reverse}: PlayFilterArguments, {loader}) => {
+            resolve: async (_, {first, offset, board, game, players, reverse}: PlayFilterArguments, {loader}) => {
+                const boardID = board ? parseID(board) : undefined;
+                if (boardID === undefined) {
+                    return [];
+                }
+
                 const gameID = game ? parseID(game) : undefined;
                 const playerIDs = players && players.length > 0 ? players.map(id => parseID(id)) : undefined;
                 const plays = await Plays.getInstance().all({
                     first: first ? first : DEFAULT_PAGE_SIZE,
                     offset: offset ? offset : 0,
-                    filter: play => (gameID === undefined || play.game === gameID) &&
+                    filter: play => play.board === boardID &&
+                        (gameID === undefined || play.game === gameID) &&
                         (!playerIDs || playHasPlayers(play, playerIDs)),
                     reverse,
                 });
@@ -192,6 +206,7 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
 });
 
 interface CreatePlayerArgs {
+    board: string;
     displayName: string;
     username: string;
 }
@@ -205,6 +220,7 @@ interface RecordPlayArgs {
     players: Array<string>;
     winners: Array<string>;
     game: string;
+    board: string;
     scores?: Array<number>;
 }
 
@@ -217,6 +233,9 @@ const RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
             type: player,
             description: 'Create a new player.',
             args: {
+                board: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
                 displayName: {
                     type: GraphQLNonNull(GraphQLString),
                 },
@@ -225,7 +244,7 @@ const RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
                 },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {displayName, username}: CreatePlayerArgs) => addPlayer(displayName, username),
+            resolve: async (_, {board, displayName, username}: CreatePlayerArgs) => addPlayer(displayName, username, parseID(board)),
         },
 
         createGame: {
@@ -256,17 +275,21 @@ const RootMutation = new GraphQLObjectType<any, SchemaContext, any>({
                 game: {
                     type: GraphQLNonNull(GraphQLID),
                 },
+                board: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
                 scores: {
                     type: GraphQLList(GraphQLNonNull(GraphQLInt)),
                 },
             },
             // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
-            resolve: async (_, {players, winners, game, scores}: RecordPlayArgs, {loader}) => {
+            resolve: async (_, {players, winners, game, board, scores}: RecordPlayArgs, {loader}) => {
                 return await recordPlay(
                     players.map(player => parseID(player)),
                     winners.map(winner => parseID(winner)),
                     scores,
                     parseID(game),
+                    parseID(board),
                     loader
                 );
             }
