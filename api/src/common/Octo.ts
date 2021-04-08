@@ -82,7 +82,6 @@ class Octo {
 
     public async contents(filename: string): Promise<string> {
         if (Octo.useLocal) {
-            console.log(fs.readFileSync(`../${filename}`, 'utf8').toString());
             return fs.readFileSync(`../${filename}`, 'utf8').toString();
         } else {
             return await this.repo.contents(filename).read({ ref: Octo.branch });
@@ -120,12 +119,18 @@ class Octo {
 
     public async write(writeables: Array<Writeable>): Promise<void> {
         for (const writeable of writeables) {
-            await this.repo.contents(writeable.path)
-                .add({
-                    content: base64encode(writeable.content),
-                    message: (writeable.message != null) ? writeable.message : `Updating ${writeable.path}`,
-                    sha: writeable.sha,
-                });
+            const message = writeable.message != null ? writeable.message : `Updating ${writeable.path}`;
+            if (Octo.useLocal) {
+                console.log(`Writing to ${writeable.path}, "${message}"`)
+                return fs.writeFileSync(writeable.path, writeable.content);
+            } else {
+                await this.repo.contents(writeable.path)
+                    .add({
+                        content: base64encode(writeable.content),
+                        sha: writeable.sha,
+                        message,
+                    });
+            }
         }
     }
 }
