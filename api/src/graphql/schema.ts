@@ -25,6 +25,7 @@ import { MyLeaderboardLoader } from './DataLoader';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import { ListQueryArguments } from '../lib/types';
 import { addBoard } from '../boards/new';
+import Boards from '../db/boards';
 
 export const DEFAULT_PAGE_SIZE = 25;
 
@@ -34,6 +35,10 @@ export interface SchemaContext {
 
 interface ItemQueryArgs {
     id: string;
+}
+
+interface BoardQueryArgs {
+    boardName: string;
 }
 
 interface HasUpdatesQueryArgs {
@@ -56,6 +61,30 @@ const RootQuery = new GraphQLObjectType<any, SchemaContext, any>({
     description: 'Realize Root Query',
     // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
     fields: () => ({
+
+        board: {
+            type: board,
+            description: 'Find a single board.',
+            args: {
+                id: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {id}: ItemQueryArgs, {loader}) => loader.boardLoader.load(parseID(id)),
+        },
+
+        findBoardByName: {
+            type: board,
+            description: 'Find a board that matches a given name.',
+            args: {
+                boardName: {
+                    type: GraphQLNonNull(GraphQLString),
+                },
+            },
+            // eslint-disable-next-line  @typescript-eslint/explicit-function-return-type
+            resolve: async (_, {boardName}: BoardQueryArgs) => Boards.getInstance().findByName(boardName),
+        },
 
         player: {
             type: player,
