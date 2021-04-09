@@ -16,7 +16,7 @@ protocol GameListActionable: AnyObject {
 
 enum GameListBuilder {
 	static func sections(games: [GameListItem], actionable: GameListActionable) -> [TableSection] {
-		let rows: [CellConfigType] = games.map { game in
+		var rows: [CellConfigType] = games.map { game in
 			return GameListItemCell(
 				key: "game-\(game.id)",
 				style: CellStyle(highlight: true),
@@ -27,6 +27,17 @@ enum GameListBuilder {
 				state: GameListItemState(name: game.name, image: game.image),
 				cellUpdater: GameListItemState.updateView
 			)
+		}
+
+		if rows.isEmpty {
+			rows.append(LabelCell(
+				key: "no-games",
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: "No games found", textColor: .text)),
+					size: Metrics.Text.title
+				),
+				cellUpdater: LabelState.updateView
+			))
 		}
 
 		return [TableSection(key: "games", rows: rows)]
