@@ -27,6 +27,7 @@ class CreatePlayerViewModel {
 	typealias CreatePlayerMutation = MyLeaderboardApi.CreatePlayerMutation
 	typealias ActionHandler = (_ action: CreatePlayerAction) -> Void
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 	var imageLoader = ImageLoader(queryIfCached: true)
 
@@ -87,7 +88,8 @@ class CreatePlayerViewModel {
 		return trimmedDisplayName.count > 0 && trimmedUsername.count > 0 && usernameValid
 	}
 
-	init(handleAction: @escaping ActionHandler) {
+	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
+		self.boardId = boardId
 		self.handleAction = handleAction
 	}
 
@@ -196,7 +198,11 @@ class CreatePlayerViewModel {
 
 		isLoading = true
 
-		CreatePlayerMutation(displayName: trimmedDisplayName, username: trimmedUsername).perform { [weak self] in
+		CreatePlayerMutation(
+			displayName: trimmedDisplayName,
+			username: trimmedUsername,
+			board: boardId
+		).perform { [weak self] in
 			self?.isLoading = false
 			switch $0 {
 			case .success(let response):

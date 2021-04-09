@@ -14,9 +14,9 @@ class GameDetailsViewController: FTDViewController {
 	private var viewModel: GameDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(gameID: GraphID, withGameName gameName: String? = nil) {
+	init(gameID: GraphID, boardId: GraphID, withGameName gameName: String? = nil) {
 		super.init()
-		setup(withID: gameID)
+		setup(withID: gameID, boardId: boardId)
 		self.title = gameName
 	}
 
@@ -24,7 +24,7 @@ class GameDetailsViewController: FTDViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup(withID gameID: GraphID) {
+	private func setup(withID gameID: GraphID, boardId: GraphID) {
 		refreshable = true
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 
@@ -44,7 +44,7 @@ class GameDetailsViewController: FTDViewController {
 			}
 		}
 
-		viewModel = GameDetailsViewModel(gameID: gameID, handleAction: handleAction)
+		viewModel = GameDetailsViewModel(gameID: gameID, boardId: boardId, handleAction: handleAction)
 	}
 
 	override func viewDidLoad() {
@@ -80,11 +80,18 @@ class GameDetailsViewController: FTDViewController {
 
 	private func showPlayerDetails(for playerID: GraphID) {
 		let playerName = viewModel.players.first { $0.id == playerID }?.displayName
-		show(PlayerDetailsViewController(playerID: playerID, withPlayerName: playerName), sender: self)
+		show(
+			PlayerDetailsViewController(
+				playerID: playerID,
+				boardId: viewModel.boardId,
+				withPlayerName: playerName
+			),
+			sender: self
+		)
 	}
 
 	private func openPlayerPlays(filter: PlayListFilter) {
-		show(PlaysListViewController(filter: filter), sender: self)
+		show(PlaysListViewController(boardId: viewModel.boardId, filter: filter), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {

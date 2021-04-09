@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import MyLeaderboardApi
 import UIKit
 
 enum TabType {
@@ -34,22 +35,33 @@ struct TabItem {
 }
 
 class RootTabBarController: UITabBarController {
+	private let boardId: GraphID
+
 	private lazy var tabItems: [TabItem] = {
 		return [
 			TabItem(
 				type: .standings,
-				controller: UINavigationController(rootViewController: StandingsListViewController())
+				controller: UINavigationController(rootViewController: StandingsListViewController(boardId: boardId))
 			),
 			TabItem(
 				type: .games,
-				controller: UINavigationController(rootViewController: GameListViewController())
+				controller: UINavigationController(rootViewController: GameListViewController(boardId: boardId))
 			),
 			TabItem(
 				type: .players,
-				controller: UINavigationController(rootViewController: PlayerListViewController())
+				controller: UINavigationController(rootViewController: PlayerListViewController(boardId: boardId))
 			),
 		]
 	}()
+
+	init(boardId: GraphID) {
+		self.boardId = boardId
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()

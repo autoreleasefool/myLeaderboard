@@ -13,19 +13,12 @@ import Loaf
 class GameListViewController: FTDViewController {
 	private var viewModel: GameListViewModel!
 
-	override init() {
+	init(boardId: GraphID) {
 		super.init()
 		refreshable = true
 		paginated = true
-	}
 
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		viewModel = GameListViewModel { [weak self] action in
+		viewModel = GameListViewModel(boardId: boardId) { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .dataChanged:
@@ -40,6 +33,14 @@ class GameListViewController: FTDViewController {
 				self.presentError(error)
 			}
 		}
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
 		self.title = "Games"
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -79,7 +80,14 @@ class GameListViewController: FTDViewController {
 
 	private func showGameDetails(for gameID: GraphID) {
 		let gameName = viewModel.games.first(where: { $0.id == gameID })?.name
-		show(GameDetailsViewController(gameID: gameID, withGameName: gameName), sender: self)
+		show(
+			GameDetailsViewController(
+				gameID: gameID,
+				boardId: viewModel.boardId,
+				withGameName: gameName
+			),
+			sender: self
+		)
 	}
 
 	private func presentError(_ error: GraphAPIError) {
@@ -107,6 +115,6 @@ extension GameListViewController: RouteHandler {
 			return
 		}
 
-		show(GameDetailsViewController(gameID: gameID), sender: self)
+		show(GameDetailsViewController(gameID: gameID, boardId: viewModel.boardId), sender: self)
 	}
 }

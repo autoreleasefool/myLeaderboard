@@ -26,6 +26,7 @@ class PlaysListViewModel: ViewModel {
 	private static let defaultTitle = "Filtered plays"
 	private static let pageSize = 25
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 
 	let filter: PlayListFilter
@@ -46,7 +47,8 @@ class PlaysListViewModel: ViewModel {
 	private(set) var plays: [PlayListItem] = []
 	private(set) var title: String = PlaysListViewModel.defaultTitle
 
-	init(filter: PlayListFilter, handleAction: @escaping ActionHandler) {
+	init(boardId: GraphID, filter: PlayListFilter, handleAction: @escaping ActionHandler) {
+		self.boardId = boardId
 		self.filter = filter
 		self.handleAction = handleAction
 	}
@@ -71,6 +73,7 @@ class PlaysListViewModel: ViewModel {
 			first: PlaysListViewModel.pageSize,
 			offset: offset,
 			game: filter.gameID,
+			board: boardId,
 			players: filter.playerIDs
 		).perform { [weak self] in
 			switch $0 {

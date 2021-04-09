@@ -29,6 +29,7 @@ class PlayerDetailsViewModel: ViewModel {
 	typealias PlayerDetailsQuery = MyLeaderboardApi.PlayerDetailsQuery
 	typealias ActionHandler = (_ action: PlayerDetailsAction) -> Void
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 
 	private(set) var dataLoading: Bool = false {
@@ -44,8 +45,9 @@ class PlayerDetailsViewModel: ViewModel {
 	private(set) var records: [PlayerDetailsRecord] = []
 	private(set) var plays: [RecentPlay] = []
 
-	init(playerID: GraphID, handleAction: @escaping ActionHandler) {
+	init(playerID: GraphID, boardId: GraphID, handleAction: @escaping ActionHandler) {
 		self.playerID = playerID
+		self.boardId = boardId
 		self.player = nil
 		self.handleAction = handleAction
 	}

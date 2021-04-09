@@ -29,6 +29,7 @@ class PlayerListViewModel: ViewModel {
 	typealias ActionHandler = (_ action: PlayerListAction) -> Void
 	private static let pageSize = 25
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 
 	private(set) var dataLoading: Bool = false {
@@ -46,7 +47,8 @@ class PlayerListViewModel: ViewModel {
 
 	private(set) var players: [PlayerListItem] = []
 
-	init(handleAction: @escaping ActionHandler) {
+	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
+		self.boardId = boardId
 		self.handleAction = handleAction
 	}
 
@@ -70,7 +72,11 @@ class PlayerListViewModel: ViewModel {
 			loadingMore = true
 		}
 
-		PlayerListQuery(first: PlayerListViewModel.pageSize, offset: offset).perform { [weak self] in
+		PlayerListQuery(
+			board: boardId,
+			first: PlayerListViewModel.pageSize,
+			offset: offset
+		).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))

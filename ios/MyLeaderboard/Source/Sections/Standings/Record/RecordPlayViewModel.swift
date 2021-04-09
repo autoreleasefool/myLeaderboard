@@ -35,6 +35,7 @@ class RecordPlayViewModel: ViewModel {
 	typealias RecordPlayMutation = MyLeaderboardApi.RecordPlayMutation
 	typealias ActionHandler = (_ action: RecordPlayAction) -> Void
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 
 	private(set) var selectedGameId: GraphID? = nil {
@@ -93,7 +94,8 @@ class RecordPlayViewModel: ViewModel {
 			selectedPlayerGraphIDs.isDisjoint(with: winnerGraphIDs) == false
 	}
 
-	init(handleAction: @escaping ActionHandler) {
+	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
+		self.boardId = boardId
 		self.handleAction = handleAction
 
 		if let preferredPlayer = Player.preferred {
@@ -204,6 +206,7 @@ class RecordPlayViewModel: ViewModel {
 			players: self.selectedPlayers.map { $0.id },
 			winners: self.winners,
 			game: game.id,
+			board: boardId,
 			scores: finalScores.isEmpty ? nil : finalScores
 		).perform { [weak self] in
 			self?.isLoading = false

@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		Theme.apply()
 
 		let window = UIWindow(frame: UIScreen.main.bounds)
-		let rootViewController = RootTabBarController()
+		let rootViewController = UIViewController() // RootTabBarController()
 		window.rootViewController = rootViewController
 		window.makeKeyAndVisible()
 		window.overrideUserInterfaceStyle = Theme.interfaceStyle

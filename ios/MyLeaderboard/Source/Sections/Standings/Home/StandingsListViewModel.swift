@@ -37,6 +37,7 @@ class StandingsListViewModel: ViewModel {
 	typealias ActionHandler = (_ action: StandingsListAction) -> Void
 	private static let pageSize = 10
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 
 	private(set) var dataLoading: Bool = false {
@@ -61,7 +62,8 @@ class StandingsListViewModel: ViewModel {
 		return !hasCheckedForPreferredPlayer && Player.preferred == nil
 	}
 
-	init(handleAction: @escaping ActionHandler) {
+	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
+		self.boardId = boardId
 		self.handleAction = handleAction
 	}
 
@@ -98,7 +100,11 @@ class StandingsListViewModel: ViewModel {
 			loadingMore = true
 		}
 
-		StandingsQuery(first: StandingsListViewModel.pageSize, offset: offset).perform { [weak self] in
+		StandingsQuery(
+			board: boardId,
+			first: StandingsListViewModel.pageSize,
+			offset: offset
+		).perform { [weak self] in
 			switch $0 {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))

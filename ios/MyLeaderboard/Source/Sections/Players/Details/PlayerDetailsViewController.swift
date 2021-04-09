@@ -14,9 +14,9 @@ class PlayerDetailsViewController: FTDViewController {
 	private var viewModel: PlayerDetailsViewModel!
 	private var spreadsheetBuilder: SpreadsheetBuilder!
 
-	init(playerID: GraphID, withPlayerName playerName: String? = nil) {
+	init(playerID: GraphID, boardId: GraphID, withPlayerName playerName: String? = nil) {
 		super.init()
-		setup(withID: playerID)
+		setup(withID: playerID, boardId: boardId)
 		self.title = playerName
 	}
 
@@ -24,7 +24,7 @@ class PlayerDetailsViewController: FTDViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup(withID playerID: GraphID) {
+	private func setup(withID playerID: GraphID, boardId: GraphID) {
 		refreshable = true
 		self.spreadsheetBuilder = SpreadsheetBuilder(tableData: tableData)
 
@@ -46,7 +46,7 @@ class PlayerDetailsViewController: FTDViewController {
 			}
 		}
 
-		viewModel = PlayerDetailsViewModel(playerID: playerID, handleAction: handleAction)
+		viewModel = PlayerDetailsViewModel(playerID: playerID, boardId: boardId, handleAction: handleAction)
 	}
 
 	override func viewDidLoad() {
@@ -80,16 +80,30 @@ class PlayerDetailsViewController: FTDViewController {
 
 	private func showGameDetails(for gameID: GraphID) {
 		let gameName = viewModel.records.first(where: { $0.game.id == gameID })?.game.name
-		show(GameDetailsViewController(gameID: gameID, withGameName: gameName), sender: self)
+		show(
+			GameDetailsViewController(
+				gameID: gameID,
+				boardId: viewModel.boardId,
+				withGameName: gameName
+			),
+			sender: self
+		)
 	}
 
 	private func showPlayerDetails(for playerID: GraphID) {
 		let playerName = viewModel.players.first { $0.id == playerID }?.displayName
-		show(PlayerDetailsViewController(playerID: playerID, withPlayerName: playerName), sender: self)
+		show(
+			PlayerDetailsViewController(
+				playerID: playerID,
+				boardId: viewModel.boardId,
+				withPlayerName: playerName
+			),
+			sender: self
+		)
 	}
 
 	private func openPlays(filter: PlayListFilter) {
-		show(PlaysListViewController(filter: filter), sender: self)
+		show(PlaysListViewController(boardId: viewModel.boardId, filter: filter), sender: self)
 	}
 
 	private func presentError(_ error: GraphAPIError) {

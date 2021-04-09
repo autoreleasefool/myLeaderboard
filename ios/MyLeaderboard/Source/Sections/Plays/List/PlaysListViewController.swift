@@ -9,16 +9,17 @@
 import UIKit
 import FunctionalTableData
 import Loaf
+import MyLeaderboardApi
 
 class PlaysListViewController: FTDViewController {
 	private var viewModel: PlaysListViewModel!
 
-	init(filter: PlayListFilter) {
+	init(boardId: GraphID, filter: PlayListFilter) {
 		super.init()
 		refreshable = true
 		paginated = true
 
-		viewModel = PlaysListViewModel(filter: filter) { [weak self] action in
+		viewModel = PlaysListViewModel(boardId: boardId, filter: filter) { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .dataChanged:

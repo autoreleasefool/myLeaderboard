@@ -13,8 +13,14 @@ struct PlayerListQueryable: PickerItemQueryable {
 	typealias Query = MyLeaderboardApi.PlayerListQuery
 	typealias Response = MyLeaderboardApi.PlayerListResponse
 
+	private let boardId: GraphID
+
+	init(boardId: GraphID) {
+		self.boardId = boardId
+	}
+
 	func query(pageSize: Int, offset: Int, completion: @escaping (Query.ResponseResult) -> Void) {
-		Query(first: pageSize, offset: offset).perform(callback: completion)
+		Query(board: boardId, first: pageSize, offset: offset).perform(callback: completion)
 	}
 
 	func pickerItems(from: Response) -> [PlayerListItem] {
@@ -26,12 +32,13 @@ typealias PlayerPicker = BasePickerViewController<PlayerListItem, PlayerListItem
 
 class PlayerPickerViewController: PlayerPicker {
 	init(
+		boardId: GraphID,
 		multiSelect: Bool = true,
 		limit: Int? = nil,
 		initiallySelected: Set<GraphID>,
 		completion: @escaping PlayerPicker.FinishedSelection
 	) {
-		let queryable = PlayerListQueryable()
+		let queryable = PlayerListQueryable(boardId: boardId)
 		super.init(
 			initiallySelected: initiallySelected,
 			multiSelect: multiSelect,

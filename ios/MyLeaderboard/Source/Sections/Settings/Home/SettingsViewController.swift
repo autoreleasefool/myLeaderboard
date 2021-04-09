@@ -13,24 +13,10 @@ import Loaf
 class SettingsViewController: FTDViewController {
 	private var viewModel: SettingsViewModel!
 
-	override init() {
+	init(boardId: GraphID) {
 		super.init()
-	}
 
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		self.title = "Settings"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-			barButtonSystemItem: .done,
-			target: self,
-			action: #selector(finish)
-		)
-
-		viewModel = SettingsViewModel { [weak self] action in
+		viewModel = SettingsViewModel(boardId: boardId) { [weak self] action in
 			switch action {
 			case .playerUpdated, .opponentsUpdated:
 				self?.render()
@@ -48,6 +34,20 @@ class SettingsViewController: FTDViewController {
 				self?.updateInterfaceStyle()
 			}
 		}
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		self.title = "Settings"
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .done,
+			target: self,
+			action: #selector(finish)
+		)
 
 		viewModel.postViewAction(.initialize)
 		render()
@@ -90,6 +90,7 @@ class SettingsViewController: FTDViewController {
 		}
 
 		let playerPicker = PlayerPickerViewController(
+			boardId: viewModel.boardId,
 			multiSelect: false,
 			initiallySelected: initiallySelected
 		) { [weak self] selectedPlayers in
@@ -102,6 +103,7 @@ class SettingsViewController: FTDViewController {
 	private func openOpponentPicker() {
 		let initiallySelected = Set(viewModel.preferredOpponents.map { $0.graphID })
 		let opponentPicker = PlayerPickerViewController(
+			boardId: viewModel.boardId,
 			multiSelect: true,
 			limit: Player.preferredOpponentsLimit,
 			initiallySelected: initiallySelected

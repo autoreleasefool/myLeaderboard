@@ -13,19 +13,12 @@ import Loaf
 class PlayerListViewController: FTDViewController {
 	private var viewModel: PlayerListViewModel!
 
-	override init() {
+	init(boardId: GraphID) {
 		super.init()
 		refreshable = true
 		paginated = true
-	}
 
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		viewModel = PlayerListViewModel { [weak self] action in
+		viewModel = PlayerListViewModel(boardId: boardId) { [weak self] action in
 			guard let self = self else { return }
 			switch action {
 			case .dataChanged:
@@ -40,6 +33,14 @@ class PlayerListViewController: FTDViewController {
 				self.showCreatePlayer()
 			}
 		}
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
 		self.title = "Players"
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -70,7 +71,7 @@ class PlayerListViewController: FTDViewController {
 	}
 
 	private func showCreatePlayer() {
-		presentModal(CreatePlayerViewController { [weak self] player in
+		presentModal(CreatePlayerViewController(boardId: viewModel.boardId) { [weak self] player in
 			guard let self = self else { return }
 			Loaf("\(player.displayName) added!", state: .success, sender: self).show()
 			self.viewModel.postViewAction(.reload)
@@ -79,7 +80,14 @@ class PlayerListViewController: FTDViewController {
 
 	private func showPlayerDetails(for playerID: GraphID) {
 		let playerName = viewModel.players.first { $0.id == playerID }?.displayName
-		show(PlayerDetailsViewController(playerID: playerID, withPlayerName: playerName), sender: self)
+		show(
+			PlayerDetailsViewController(
+				playerID: playerID,
+				boardId: viewModel.boardId,
+				withPlayerName: playerName
+			),
+			sender: self
+		)
 	}
 
 	private func presentError(_ error: GraphAPIError) {
@@ -107,6 +115,6 @@ extension PlayerListViewController: RouteHandler {
 			return
 		}
 
-		show(PlayerDetailsViewController(playerID: playerID), sender: self)
+		show(PlayerDetailsViewController(playerID: playerID, boardId: viewModel.boardId), sender: self)
 	}
 }

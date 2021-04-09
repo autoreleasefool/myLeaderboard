@@ -29,6 +29,7 @@ class GameListViewModel: ViewModel {
 	typealias ActionHandler = (_ action: GameListAction) -> Void
 	private static let pageSize = 25
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 
 	private(set) var dataLoading: Bool = false {
@@ -46,7 +47,8 @@ class GameListViewModel: ViewModel {
 
 	private(set) var games: [GameListItem] = []
 
-	init(handleAction: @escaping ActionHandler) {
+	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
+		self.boardId = boardId
 		self.handleAction = handleAction
 	}
 

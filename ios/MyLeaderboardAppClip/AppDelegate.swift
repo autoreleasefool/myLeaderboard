@@ -14,7 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
-	private let recordPlayController = RecordPlayViewController { _ in }
+	// TODO: need to set to proper board id
+	private lazy var recordPlayController = RecordPlayViewController(boardId: GraphID(rawValue: "0")) { _ in }
 
 	private lazy var navigationController: UINavigationController = {
 		UINavigationController(rootViewController: recordPlayController)

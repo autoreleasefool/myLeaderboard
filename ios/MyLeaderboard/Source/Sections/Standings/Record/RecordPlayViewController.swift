@@ -15,18 +15,11 @@ class RecordPlayViewController: FTDViewController {
 
 	var onSuccess: ((NewPlay?) -> Void)?
 
-	init(onSuccess: ((NewPlay?) -> Void)? = nil) {
+	init(boardId: GraphID, onSuccess: ((NewPlay?) -> Void)? = nil) {
 		self.onSuccess = onSuccess
 		super.init()
-	}
 
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		viewModel = RecordPlayViewModel { [weak self] action in
+		viewModel = RecordPlayViewModel(boardId: boardId) { [weak self] action in
 			switch action {
 			case .dataChanged, .userErrors:
 				self?.render()
@@ -43,6 +36,14 @@ class RecordPlayViewController: FTDViewController {
 				self?.presentPlayerPicker()
 			}
 		}
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
 		self.title = "Record"
 
@@ -103,6 +104,7 @@ class RecordPlayViewController: FTDViewController {
 
 	private func presentPlayerPicker() {
 		let playerPicker = PlayerPickerViewController(
+			boardId: viewModel.boardId,
 			initiallySelected: viewModel.selectedPlayerGraphIDs
 		) { [weak self] selectedPlayers in
 			self?.viewModel.postViewAction(.selectPlayers(selectedPlayers))

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MyLeaderboardApi
 import WidgetKit
 
 enum SettingsAction: BaseAction {
@@ -35,6 +36,7 @@ enum SettingsViewAction: BaseViewAction {
 class SettingsViewModel: ViewModel {
 	typealias ActionHandler = (_ action: SettingsAction) -> Void
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 
 	var preferredPlayer: PlayerListItem? {
@@ -45,7 +47,8 @@ class SettingsViewModel: ViewModel {
 		return Player.preferredOpponents
 	}
 
-	init(handleAction: @escaping ActionHandler) {
+	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
+		self.boardId = boardId
 		self.handleAction = handleAction
 	}
 

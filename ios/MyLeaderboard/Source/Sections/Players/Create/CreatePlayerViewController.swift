@@ -8,24 +8,18 @@
 
 import UIKit
 import Loaf
+import MyLeaderboardApi
 
 class CreatePlayerViewController: FTDViewController {
 	private var viewModel: CreatePlayerViewModel!
 
 	private var playerCreated: ((NewPlayer) -> Void)?
 
-	init(onSuccess: ((NewPlayer) -> Void)? = nil) {
+	init(boardId: GraphID, onSuccess: ((NewPlayer) -> Void)? = nil) {
 		self.playerCreated = onSuccess
 		super.init()
-	}
 
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		viewModel = CreatePlayerViewModel { [weak self] action in
+		viewModel = CreatePlayerViewModel(boardId: boardId) { [weak self] action in
 			switch action {
 			case .playerUpdated, .userErrors:
 				self?.render()
@@ -36,6 +30,14 @@ class CreatePlayerViewController: FTDViewController {
 				self?.presentError(error)
 			}
 		}
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
 		self.title = "Create Player"
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(

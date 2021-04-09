@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		CA018487240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
+		CA0E1BA9261FEB2400F1C1BC /* BoardDetailsByNameQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC6261FDC4C00BDF1B7 /* BoardDetailsByNameQuery.swift */; };
+		CA0E1BAF261FEB2600F1C1BC /* BoardDetailsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC5261FDC4C00BDF1B7 /* BoardDetailsQuery.swift */; };
+		CA0E1BB5261FEB4400F1C1BC /* BoardDetailsByNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC4261FDC3F00BDF1B7 /* BoardDetailsByNameResponse.swift */; };
+		CA0E1BBB261FEB4700F1C1BC /* BoardDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC3261FDC3E00BDF1B7 /* BoardDetailsResponse.swift */; };
+		CA0E1BC1261FEB5A00F1C1BC /* CreateBoardMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DA3261FC52E00BDF1B7 /* CreateBoardMutation.swift */; };
+		CA0E1BC7261FEB6500F1C1BC /* CreateBoardResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DB5261FC56900BDF1B7 /* CreateBoardResponse.swift */; };
+		CA0E1BCD261FEB7A00F1C1BC /* NewBoardFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DAA261FC53E00BDF1B7 /* NewBoardFragment.swift */; };
 		CA148F6E24A260B70060BDF6 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
 		CA27F9DD232EEE410023924A /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9DC232EEE410023924A /* UserDefaults+Extensions.swift */; };
 		CA27F9E223306E820023924A /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9E123306E820023924A /* Route.swift */; };
@@ -176,6 +183,7 @@
 		CAAE778A2302DAF0001A37DC /* CreatePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE77892302DAF0001A37DC /* CreatePlayerViewController.swift */; };
 		CAAE778C2302DB01001A37DC /* CreatePlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE778B2302DB01001A37DC /* CreatePlayerViewModel.swift */; };
 		CAAE778E2302DB0A001A37DC /* CreatePlayerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE778D2302DB0A001A37DC /* CreatePlayerBuilder.swift */; };
+		CAAF5DD6261FDFE900BDF1B7 /* BoardDetailsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DD5261FDFE900BDF1B7 /* BoardDetailsFragment.swift */; };
 		CAB20C8A2517C95700271FC2 /* MyLeaderboardWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB20C892517C95700271FC2 /* MyLeaderboardWidget.swift */; };
 		CAB20CAC2517D4CA00271FC2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9C22D7677A003347AF /* Player.swift */; };
 		CAB20CB82517D4F200271FC2 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9DC232EEE410023924A /* UserDefaults+Extensions.swift */; };
@@ -488,6 +496,7 @@
 		CAAF5DC4261FDC3F00BDF1B7 /* BoardDetailsByNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsByNameResponse.swift; sourceTree = "<group>"; };
 		CAAF5DC5261FDC4C00BDF1B7 /* BoardDetailsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsQuery.swift; sourceTree = "<group>"; };
 		CAAF5DC6261FDC4C00BDF1B7 /* BoardDetailsByNameQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsByNameQuery.swift; sourceTree = "<group>"; };
+		CAAF5DD5261FDFE900BDF1B7 /* BoardDetailsFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsFragment.swift; sourceTree = "<group>"; };
 		CAB20C892517C95700271FC2 /* MyLeaderboardWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardWidget.swift; sourceTree = "<group>"; };
 		CAB20CCA2517D61900271FC2 /* NoPreferredPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPreferredPlayer.swift; sourceTree = "<group>"; };
 		CAB20CD12517D7A400271FC2 /* MyLeaderboardWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyLeaderboardWidgetExtension.entitlements; sourceTree = "<group>"; };
@@ -940,6 +949,7 @@
 		CA6D05DA240D147900412D54 /* Fragments */ = {
 			isa = PBXGroup;
 			children = (
+				CAAF5DD5261FDFE900BDF1B7 /* BoardDetailsFragment.swift */,
 				CA9715E2241A20B700EA58E9 /* GameDetailsFragment.swift */,
 				CA971608241E1FB400EA58E9 /* GameDetailsPlayerRecordFragment.swift */,
 				CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */,
@@ -1763,6 +1773,7 @@
 			files = (
 				CA5564BC2517DAB40009778A /* CreatePlayerMutation.swift in Sources */,
 				CA5564922517DAAC0009778A /* NewGameFragment.swift in Sources */,
+				CA0E1BAF261FEB2600F1C1BC /* BoardDetailsQuery.swift in Sources */,
 				CA55652D2517DAC90009778A /* SingleGameListItemResponse.swift in Sources */,
 				CA5564C52517DABA0009778A /* PlayListQuery.swift in Sources */,
 				CA5564CC2517DABA0009778A /* PlayerListQuery.swift in Sources */,
@@ -1781,17 +1792,22 @@
 				CA5564A52517DAAC0009778A /* PlayListItem.swift in Sources */,
 				CA55649C2517DAAC0009778A /* MediumWidgetRecordFragment.swift in Sources */,
 				CA5565282517DAC90009778A /* SmallWidgetResponse.swift in Sources */,
+				CA0E1BCD261FEB7A00F1C1BC /* NewBoardFragment.swift in Sources */,
 				CA5564A02517DAAC0009778A /* TodayViewRecordFragment.swift in Sources */,
 				CA5564552517DAA10009778A /* GraphApi.swift in Sources */,
 				CA55649E2517DAAC0009778A /* PlayerDetailsRecordFragment.swift in Sources */,
 				CA55649A2517DAAC0009778A /* GameDetailsStandingsFragment.swift in Sources */,
 				CA5564A92517DAAC0009778A /* SmallWidgetRecordFragment.swift in Sources */,
+				CA0E1BA9261FEB2400F1C1BC /* BoardDetailsByNameQuery.swift in Sources */,
 				CA55652A2517DAC90009778A /* StandingsResponse.swift in Sources */,
 				CA5564962517DAAC0009778A /* PlayerDetailsFragment.swift in Sources */,
 				CA55649D2517DAAC0009778A /* RecordFragment.swift in Sources */,
 				CA5564CD2517DABA0009778A /* StandingsQuery.swift in Sources */,
+				CA0E1BC7261FEB6500F1C1BC /* CreateBoardResponse.swift in Sources */,
 				CA5564932517DAAC0009778A /* OpponentFragment.swift in Sources */,
 				CA5565322517DAC90009778A /* PlayListResponse.swift in Sources */,
+				CAAF5DD6261FDFE900BDF1B7 /* BoardDetailsFragment.swift in Sources */,
+				CA0E1BB5261FEB4400F1C1BC /* BoardDetailsByNameResponse.swift in Sources */,
 				CA5565292517DAC90009778A /* RecordPlayResponse.swift in Sources */,
 				CA5565312517DAC90009778A /* PlayerListResponse.swift in Sources */,
 				CA5564982517DAAC0009778A /* GameDetailsFragment.swift in Sources */,
@@ -1799,9 +1815,11 @@
 				CA55652C2517DAC90009778A /* MediumWidgetResponse.swift in Sources */,
 				CA5564A12517DAAC0009778A /* WidgetGameFragment.swift in Sources */,
 				CA5564A42517DAAC0009778A /* GameListItem.swift in Sources */,
+				CA0E1BBB261FEB4700F1C1BC /* BoardDetailsResponse.swift in Sources */,
 				CA5564A82517DAAC0009778A /* StandingsFragment.swift in Sources */,
 				CA5564A72517DAAC0009778A /* PlayerListItem.swift in Sources */,
 				CA5564BD2517DAB40009778A /* RecordPlayMutation.swift in Sources */,
+				CA0E1BC1261FEB5A00F1C1BC /* CreateBoardMutation.swift in Sources */,
 				CA5564C62517DABA0009778A /* PlayerDetailsQuery.swift in Sources */,
 				CA55649F2517DAAC0009778A /* StandingsGameFragment.swift in Sources */,
 				CA55652B2517DAC90009778A /* GameDetailsResponse.swift in Sources */,

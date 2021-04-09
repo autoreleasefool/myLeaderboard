@@ -27,6 +27,7 @@ class GameDetailsViewModel: ViewModel {
 	typealias GameDetailsQuery = MyLeaderboardApi.GameDetailsQuery
 	typealias ActionHandler = (_ action: GameDetailsAction) -> Void
 
+	let boardId: GraphID
 	var handleAction: ActionHandler
 
 	private(set) var dataLoading: Bool = false {
@@ -41,8 +42,9 @@ class GameDetailsViewModel: ViewModel {
 	private(set) var players: [Opponent] = []
 	private(set) var standings: GameDetailsStandings?
 
-	init(gameID: GraphID, handleAction: @escaping ActionHandler) {
+	init(gameID: GraphID, boardId: GraphID, handleAction: @escaping ActionHandler) {
 		self.gameID = gameID
+		self.boardId = boardId
 		self.handleAction = handleAction
 	}
 
@@ -59,7 +61,7 @@ class GameDetailsViewModel: ViewModel {
 
 	private func loadData(retry: Bool = true) {
 		self.dataLoading = true
-		GameDetailsQuery(id: gameID, ignoreBanished: true).perform { [weak self] result in
+		GameDetailsQuery(id: gameID, board: boardId, ignoreBanished: true).perform { [weak self] result in
 			switch result {
 			case .success(let response):
 				self?.handle(response: response)
