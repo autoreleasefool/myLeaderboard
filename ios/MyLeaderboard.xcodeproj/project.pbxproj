@@ -8,13 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		CA018487240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
+		CA0E1BA3261FE50800F1C1BC /* ChangeBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E1BA2261FE50800F1C1BC /* ChangeBoardViewModel.swift */; };
 		CA0E1BA9261FEB2400F1C1BC /* BoardDetailsByNameQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC6261FDC4C00BDF1B7 /* BoardDetailsByNameQuery.swift */; };
 		CA0E1BAF261FEB2600F1C1BC /* BoardDetailsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC5261FDC4C00BDF1B7 /* BoardDetailsQuery.swift */; };
 		CA0E1BB5261FEB4400F1C1BC /* BoardDetailsByNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC4261FDC3F00BDF1B7 /* BoardDetailsByNameResponse.swift */; };
 		CA0E1BBB261FEB4700F1C1BC /* BoardDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC3261FDC3E00BDF1B7 /* BoardDetailsResponse.swift */; };
 		CA0E1BC1261FEB5A00F1C1BC /* CreateBoardMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DA3261FC52E00BDF1B7 /* CreateBoardMutation.swift */; };
 		CA0E1BC7261FEB6500F1C1BC /* CreateBoardResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DB5261FC56900BDF1B7 /* CreateBoardResponse.swift */; };
-		CA0E1BCD261FEB7A00F1C1BC /* NewBoardFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DAA261FC53E00BDF1B7 /* NewBoardFragment.swift */; };
+		CA0E1BD4262000BB00F1C1BC /* ChangeBoardBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E1BD3262000BB00F1C1BC /* ChangeBoardBuilder.swift */; };
+		CA0E1BE02620118E00F1C1BC /* ChangeBoardBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E1BDF2620118E00F1C1BC /* ChangeBoardBaseViewController.swift */; };
 		CA148F6E24A260B70060BDF6 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
 		CA27F9DD232EEE410023924A /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9DC232EEE410023924A /* UserDefaults+Extensions.swift */; };
 		CA27F9E223306E820023924A /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9E123306E820023924A /* Route.swift */; };
@@ -183,7 +185,10 @@
 		CAAE778A2302DAF0001A37DC /* CreatePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE77892302DAF0001A37DC /* CreatePlayerViewController.swift */; };
 		CAAE778C2302DB01001A37DC /* CreatePlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE778B2302DB01001A37DC /* CreatePlayerViewModel.swift */; };
 		CAAE778E2302DB0A001A37DC /* CreatePlayerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE778D2302DB0A001A37DC /* CreatePlayerBuilder.swift */; };
+		CAAF5DCF261FDED800BDF1B7 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DCE261FDED800BDF1B7 /* Board.swift */; };
 		CAAF5DD6261FDFE900BDF1B7 /* BoardDetailsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DD5261FDFE900BDF1B7 /* BoardDetailsFragment.swift */; };
+		CAAF5DDD261FE18A00BDF1B7 /* BoardDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DDC261FE18A00BDF1B7 /* BoardDetails+Extensions.swift */; };
+		CAAF5DE6261FE27200BDF1B7 /* ChangeBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DE5261FE27200BDF1B7 /* ChangeBoardViewController.swift */; };
 		CAB20C8A2517C95700271FC2 /* MyLeaderboardWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB20C892517C95700271FC2 /* MyLeaderboardWidget.swift */; };
 		CAB20CAC2517D4CA00271FC2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9C22D7677A003347AF /* Player.swift */; };
 		CAB20CB82517D4F200271FC2 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA27F9DC232EEE410023924A /* UserDefaults+Extensions.swift */; };
@@ -380,6 +385,9 @@
 		CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyLeaderboardApi+Networking.swift"; sourceTree = "<group>"; };
 		CA0184972415941E0080A5B8 /* PlayerDetailsQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailsQuery.swift; sourceTree = "<group>"; };
 		CA01849B241594370080A5B8 /* PlayerDetailsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailsResponse.swift; sourceTree = "<group>"; };
+		CA0E1BA2261FE50800F1C1BC /* ChangeBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardViewModel.swift; sourceTree = "<group>"; };
+		CA0E1BD3262000BB00F1C1BC /* ChangeBoardBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardBuilder.swift; sourceTree = "<group>"; };
+		CA0E1BDF2620118E00F1C1BC /* ChangeBoardBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardBaseViewController.swift; sourceTree = "<group>"; };
 		CA1D97E32406EE650011786E /* PlayerList.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PlayerList.graphql; sourceTree = "<group>"; };
 		CA1F20CA2309F8880060957B /* StandingsListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsListBuilder.swift; sourceTree = "<group>"; };
 		CA27F9A1232D59A40023924A /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -489,14 +497,16 @@
 		CAAE778D2302DB0A001A37DC /* CreatePlayerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlayerBuilder.swift; path = MyLeaderboard/Source/Sections/Players/Create/CreatePlayerBuilder.swift; sourceTree = SOURCE_ROOT; };
 		CAAF5DA2261FC37100BDF1B7 /* CreateBoard.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateBoard.graphql; sourceTree = "<group>"; };
 		CAAF5DA3261FC52E00BDF1B7 /* CreateBoardMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBoardMutation.swift; sourceTree = "<group>"; };
-		CAAF5DAA261FC53E00BDF1B7 /* NewBoardFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardFragment.swift; sourceTree = "<group>"; };
 		CAAF5DB5261FC56900BDF1B7 /* CreateBoardResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardResponse.swift; sourceTree = "<group>"; };
 		CAAF5DB7261FDB4500BDF1B7 /* BoardDetails.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BoardDetails.graphql; sourceTree = "<group>"; };
 		CAAF5DC3261FDC3E00BDF1B7 /* BoardDetailsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsResponse.swift; sourceTree = "<group>"; };
 		CAAF5DC4261FDC3F00BDF1B7 /* BoardDetailsByNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsByNameResponse.swift; sourceTree = "<group>"; };
 		CAAF5DC5261FDC4C00BDF1B7 /* BoardDetailsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsQuery.swift; sourceTree = "<group>"; };
 		CAAF5DC6261FDC4C00BDF1B7 /* BoardDetailsByNameQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsByNameQuery.swift; sourceTree = "<group>"; };
+		CAAF5DCE261FDED800BDF1B7 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		CAAF5DD5261FDFE900BDF1B7 /* BoardDetailsFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsFragment.swift; sourceTree = "<group>"; };
+		CAAF5DDC261FE18A00BDF1B7 /* BoardDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BoardDetails+Extensions.swift"; sourceTree = "<group>"; };
+		CAAF5DE5261FE27200BDF1B7 /* ChangeBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardViewController.swift; sourceTree = "<group>"; };
 		CAB20C892517C95700271FC2 /* MyLeaderboardWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardWidget.swift; sourceTree = "<group>"; };
 		CAB20CCA2517D61900271FC2 /* NoPreferredPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPreferredPlayer.swift; sourceTree = "<group>"; };
 		CAB20CD12517D7A400271FC2 /* MyLeaderboardWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyLeaderboardWidgetExtension.entitlements; sourceTree = "<group>"; };
@@ -764,6 +774,7 @@
 		CA4BAB9722D7670B003347AF /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				CAAF5DCC261FDDAA00BDF1B7 /* Boards */,
 				CAB3870E22D17F1B00349B1F /* Games */,
 				CAE9CF5F230F071800D4850E /* Plays */,
 				CA4BAB9822D76741003347AF /* Players */,
@@ -880,6 +891,7 @@
 		CA5564452517DA820009778A /* API */ = {
 			isa = PBXGroup;
 			children = (
+				CAAF5DDC261FE18A00BDF1B7 /* BoardDetails+Extensions.swift */,
 				CA9715EB241C166300EA58E9 /* GameDetails+Extensions.swift */,
 				CA9715D124198BE300EA58E9 /* GameListItem+Extensions.swift */,
 				CAC66816241EC6510020D9B4 /* NewGame+Extensions.swift */,
@@ -955,7 +967,6 @@
 				CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */,
 				CA9715C1241827C300EA58E9 /* GameListItem.swift */,
 				CAF7B22224A18ED600307B01 /* MediumWidgetRecordFragment.swift */,
-				CAAF5DAA261FC53E00BDF1B7 /* NewBoardFragment.swift */,
 				CAC66814241EC6270020D9B4 /* NewGameFragment.swift */,
 				CAC66820241EC93A0020D9B4 /* NewPlayerFragment.swift */,
 				CAC6682A241ED65B0020D9B4 /* NewPlayFragment.swift */,
@@ -1082,6 +1093,34 @@
 				CAAF5DB7261FDB4500BDF1B7 /* BoardDetails.graphql */,
 			);
 			path = Boards;
+			sourceTree = "<group>";
+		};
+		CAAF5DCC261FDDAA00BDF1B7 /* Boards */ = {
+			isa = PBXGroup;
+			children = (
+				CAAF5DE4261FE24C00BDF1B7 /* Change */,
+				CAAF5DCD261FDDD500BDF1B7 /* Models */,
+			);
+			path = Boards;
+			sourceTree = "<group>";
+		};
+		CAAF5DCD261FDDD500BDF1B7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CAAF5DCE261FDED800BDF1B7 /* Board.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CAAF5DE4261FE24C00BDF1B7 /* Change */ = {
+			isa = PBXGroup;
+			children = (
+				CA0E1BD3262000BB00F1C1BC /* ChangeBoardBuilder.swift */,
+				CAAF5DE5261FE27200BDF1B7 /* ChangeBoardViewController.swift */,
+				CA0E1BA2261FE50800F1C1BC /* ChangeBoardViewModel.swift */,
+				CA0E1BDF2620118E00F1C1BC /* ChangeBoardBaseViewController.swift */,
+			);
+			path = Change;
 			sourceTree = "<group>";
 		};
 		CAB3870E22D17F1B00349B1F /* Games */ = {
@@ -1792,7 +1831,6 @@
 				CA5564A52517DAAC0009778A /* PlayListItem.swift in Sources */,
 				CA55649C2517DAAC0009778A /* MediumWidgetRecordFragment.swift in Sources */,
 				CA5565282517DAC90009778A /* SmallWidgetResponse.swift in Sources */,
-				CA0E1BCD261FEB7A00F1C1BC /* NewBoardFragment.swift in Sources */,
 				CA5564A02517DAAC0009778A /* TodayViewRecordFragment.swift in Sources */,
 				CA5564552517DAA10009778A /* GraphApi.swift in Sources */,
 				CA55649E2517DAAC0009778A /* PlayerDetailsRecordFragment.swift in Sources */,
@@ -1850,6 +1888,7 @@
 				CA7BAF14241F888500D4D7B8 /* SpreadsheetLayout.swift in Sources */,
 				CA4BAB9422D76016003347AF /* UIViewController+Extensions.swift in Sources */,
 				CA519464230F98580041105B /* SettingsViewController.swift in Sources */,
+				CAAF5DE6261FE27200BDF1B7 /* ChangeBoardViewController.swift in Sources */,
 				CA4BAB8922D6CED1003347AF /* TextInputCell.swift in Sources */,
 				CAE56F8822F4712500FE0998 /* CombinedView.swift in Sources */,
 				CAE9CF66230F074A00D4850E /* PlaysListBuilder.swift in Sources */,
@@ -1867,12 +1906,15 @@
 				CAC9066F22D0F70B0075B033 /* RootTabBarController.swift in Sources */,
 				CAE56F9C22F9C28E00FE0998 /* PlayerListItemView.swift in Sources */,
 				CAE9CF64230F074300D4850E /* PlaysListViewModel.swift in Sources */,
+				CA0E1BA3261FE50800F1C1BC /* ChangeBoardViewModel.swift in Sources */,
+				CAAF5DDD261FE18A00BDF1B7 /* BoardDetails+Extensions.swift in Sources */,
 				CA4BABA422D77103003347AF /* PlayerListBuilder.swift in Sources */,
 				CAE9CF5E230EEBAC00D4850E /* GamePlayCell.swift in Sources */,
 				CA51946B230FA8720041105B /* ContributorsListViewController.swift in Sources */,
 				CA27F9DD232EEE410023924A /* UserDefaults+Extensions.swift in Sources */,
 				CA4BAB9022D6DC2F003347AF /* UIControl+Extensions.swift in Sources */,
 				CA362F79230EBE41001063B9 /* PlayerDetailsViewController.swift in Sources */,
+				CAAF5DCF261FDED800BDF1B7 /* Board.swift in Sources */,
 				CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */,
 				CA97160E241EA3C900EA58E9 /* LoadingCell.swift in Sources */,
 				CA9715F7241D7DA700EA58E9 /* PlayListItem+Extensions.swift in Sources */,
@@ -1910,6 +1952,7 @@
 				CA9715DE241994D700EA58E9 /* RecordFragment+Extensions.swift in Sources */,
 				CAB3871922D18E2100349B1F /* GameListViewModel.swift in Sources */,
 				CA96220522D592B400479A0B /* CreateGameViewModel.swift in Sources */,
+				CA0E1BE02620118E00F1C1BC /* ChangeBoardBaseViewController.swift in Sources */,
 				CA4BAB9D22D7677A003347AF /* Player.swift in Sources */,
 				CAED76B622FC4FCE000A2281 /* KeyedErrors.swift in Sources */,
 				CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */,
@@ -1929,6 +1972,7 @@
 				CA9715DA2419908C00EA58E9 /* RecentPlayFragment+Extensions.swift in Sources */,
 				CA5FC5F423CA0F890029DD61 /* Avatar.swift in Sources */,
 				CAAE778A2302DAF0001A37DC /* CreatePlayerViewController.swift in Sources */,
+				CA0E1BD4262000BB00F1C1BC /* ChangeBoardBuilder.swift in Sources */,
 				CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */,
 				CA9715D424198C4B00EA58E9 /* PlayerListItem+Extensions.swift in Sources */,
 				CA9D412722FA5DD50027E2D0 /* RecordPlayViewController.swift in Sources */,

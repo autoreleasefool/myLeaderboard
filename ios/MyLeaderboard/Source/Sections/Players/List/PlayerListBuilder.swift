@@ -15,7 +15,7 @@ protocol PlayerListActionable: AnyObject {
 
 enum PlayerListBuilder {
 	static func sections(players: [PlayerListItem], actionable: PlayerListActionable) -> [TableSection] {
-		let rows = players.map { player in
+		var rows: [CellConfigType] = players.map { player in
 			PlayerListItemCell(
 				key: "player-\(player.id)",
 				style: CellStyle(highlight: true),
@@ -30,6 +30,17 @@ enum PlayerListBuilder {
 				),
 				cellUpdater: PlayerListItemState.updateView
 			)
+		}
+
+		if rows.isEmpty {
+			rows.append(LabelCell(
+				key: "no-players",
+				state: LabelState(
+					text: .attributed(NSAttributedString(string: "No players found", textColor: .text)),
+					size: Metrics.Text.title
+				),
+				cellUpdater: LabelState.updateView
+			))
 		}
 
 		return [TableSection(key: "players", rows: rows)]

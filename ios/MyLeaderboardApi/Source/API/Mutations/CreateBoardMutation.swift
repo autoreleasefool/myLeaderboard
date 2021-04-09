@@ -22,7 +22,7 @@ public extension MyLeaderboardApi {
 		public typealias Response = CreateBoardResponse
 
 		public let queryString: String = """
-		fragment NewBoardFragment on Board { __typename id boardName } mutation CreateBoard($boardName: String!) { __typename createBoard(boardName: $boardName) { __typename ... NewBoardFragment } }
+		fragment BoardDetailsFragment on Board { __typename id boardName } mutation CreateBoard($boardName: String!) { __typename createBoard(boardName: $boardName) { __typename ... BoardDetailsFragment } }
 		"""
 	}
 }

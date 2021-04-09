@@ -20,7 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		Theme.apply()
 
 		let window = UIWindow(frame: UIScreen.main.bounds)
-		let rootViewController = UIViewController() // RootTabBarController()
+		let rootViewController: UIViewController
+		if let lastBoardUsed = Board.lastUsedBoard {
+			rootViewController = RootTabBarController(boardId: lastBoardUsed.graphID)
+		} else {
+			rootViewController = ChangeBoardBaseViewController()
+		}
 		window.rootViewController = rootViewController
 		window.makeKeyAndVisible()
 		window.overrideUserInterfaceStyle = Theme.interfaceStyle

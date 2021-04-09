@@ -24,45 +24,45 @@ struct CreateBoardResponse: GraphApiResponse, Equatable {
 			/// Unique ID.
 			public var id: GraphID {
 				get {
-					return asNewBoardFragmentFragment.id
+					return asBoardDetailsFragmentFragment.id
 				}
 				set {
-					asNewBoardFragmentFragment.id = newValue
+					asBoardDetailsFragmentFragment.id = newValue
 				}
 			}
 			/// Name of the board.
 			public var boardName: String {
 				get {
-					return asNewBoardFragmentFragment.boardName
+					return asBoardDetailsFragmentFragment.boardName
 				}
 				set {
-					asNewBoardFragmentFragment.boardName = newValue
+					asBoardDetailsFragmentFragment.boardName = newValue
 				}
 			}
-			public var asNewBoardFragmentFragment: MyLeaderboardApi.NewBoardFragment
+			public var asBoardDetailsFragmentFragment: MyLeaderboardApi.BoardDetailsFragment
 		// MARK: - Helpers
 		public let __typename: String
 		public static let customDecoder: JSONDecoder = MyLeaderboardApi.customDecoder
 		public static let customEncoder: JSONEncoder = MyLeaderboardApi.customEncoder
 			private enum CodingKeys: String, CodingKey {
 				case __typename
-					case asNewBoardFragmentFragment = "fragment:asNewBoardFragmentFragment"
+					case asBoardDetailsFragmentFragment = "fragment:asBoardDetailsFragmentFragment"
 			}
 			public init(from decoder: Decoder) throws {
 				let container = try decoder.container(keyedBy: CodingKeys.self)
 				self.__typename = try container.decode(String.self, forKey: .__typename)
 					do {
-						self.asNewBoardFragmentFragment = try MyLeaderboardApi.NewBoardFragment(from: decoder)
+						self.asBoardDetailsFragmentFragment = try MyLeaderboardApi.BoardDetailsFragment(from: decoder)
 					} catch let originalError {
 						do {
-							self.asNewBoardFragmentFragment = try container.decode(MyLeaderboardApi.NewBoardFragment.self, forKey: .asNewBoardFragmentFragment)
+							self.asBoardDetailsFragmentFragment = try container.decode(MyLeaderboardApi.BoardDetailsFragment.self, forKey: .asBoardDetailsFragmentFragment)
 						} catch {
 								throw originalError
 						}
 					}
 			}
-		public init(newBoardFragmentFragment: MyLeaderboardApi.NewBoardFragment) {
-				self.asNewBoardFragmentFragment = newBoardFragmentFragment
+		public init(boardDetailsFragmentFragment: MyLeaderboardApi.BoardDetailsFragment) {
+				self.asBoardDetailsFragmentFragment = boardDetailsFragmentFragment
 				self.__typename = "Board"
 		}
 	}

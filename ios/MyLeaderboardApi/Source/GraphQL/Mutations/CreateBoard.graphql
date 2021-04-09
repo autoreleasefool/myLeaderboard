@@ -1,10 +1,5 @@
 mutation CreateBoard($boardName: String!) {
 	createBoard(boardName: $boardName) {
-		... NewBoardFragment
+		... BoardDetailsFragment
 	}
-}
-
-fragment NewBoardFragment on Board {
-	id
-	boardName
 }
