@@ -1,0 +1,16 @@
+query BoardDetails($id: ID!) {
+	board(id: $id) {
+		... BoardDetailsFragment
+	}
+}
+
+query BoardDetailsByName($boardName: String!) {
+	findBoardByName(boardName: $boardName) {
+		... BoardDetailsFragment
+	}
+}
+
+fragment BoardDetailsFragment on Board {
+	id
+	boardName
+}

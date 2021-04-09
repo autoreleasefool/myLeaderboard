@@ -1,4 +1,4 @@
-query Standings($first: Int!, $offset: Int!) {
+query Standings($board: ID!, $first: Int!, $offset: Int!) {
 	games(first: $first, offset: $offset) {
 		... StandingsGameFragment
 		... StandingsFragment
@@ -12,7 +12,7 @@ fragment StandingsGameFragment on Game {
 }
 
 fragment StandingsFragment on Game {
-	standings {
+	standings(board: $board) {
 		records {
 			... StandingsPlayerRecordFragment
 		}

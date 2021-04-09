@@ -1,5 +1,5 @@
-mutation CreatePlayer($displayName: String!, $username: String!) {
-	createPlayer(displayName: $displayName, username: $username) {
+mutation CreatePlayer($displayName: String!, $username: String!, $board: ID!) {
+	createPlayer(displayName: $displayName, username: $username, board: $board) {
 		... NewPlayerFragment
 	}
 }

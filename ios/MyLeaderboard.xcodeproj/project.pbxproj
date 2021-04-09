@@ -479,6 +479,15 @@
 		CAAE77892302DAF0001A37DC /* CreatePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlayerViewController.swift; path = MyLeaderboard/Source/Sections/Players/Create/CreatePlayerViewController.swift; sourceTree = SOURCE_ROOT; };
 		CAAE778B2302DB01001A37DC /* CreatePlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlayerViewModel.swift; path = MyLeaderboard/Source/Sections/Players/Create/CreatePlayerViewModel.swift; sourceTree = SOURCE_ROOT; };
 		CAAE778D2302DB0A001A37DC /* CreatePlayerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlayerBuilder.swift; path = MyLeaderboard/Source/Sections/Players/Create/CreatePlayerBuilder.swift; sourceTree = SOURCE_ROOT; };
+		CAAF5DA2261FC37100BDF1B7 /* CreateBoard.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateBoard.graphql; sourceTree = "<group>"; };
+		CAAF5DA3261FC52E00BDF1B7 /* CreateBoardMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBoardMutation.swift; sourceTree = "<group>"; };
+		CAAF5DAA261FC53E00BDF1B7 /* NewBoardFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoardFragment.swift; sourceTree = "<group>"; };
+		CAAF5DB5261FC56900BDF1B7 /* CreateBoardResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardResponse.swift; sourceTree = "<group>"; };
+		CAAF5DB7261FDB4500BDF1B7 /* BoardDetails.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BoardDetails.graphql; sourceTree = "<group>"; };
+		CAAF5DC3261FDC3E00BDF1B7 /* BoardDetailsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsResponse.swift; sourceTree = "<group>"; };
+		CAAF5DC4261FDC3F00BDF1B7 /* BoardDetailsByNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsByNameResponse.swift; sourceTree = "<group>"; };
+		CAAF5DC5261FDC4C00BDF1B7 /* BoardDetailsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsQuery.swift; sourceTree = "<group>"; };
+		CAAF5DC6261FDC4C00BDF1B7 /* BoardDetailsByNameQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailsByNameQuery.swift; sourceTree = "<group>"; };
 		CAB20C892517C95700271FC2 /* MyLeaderboardWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardWidget.swift; sourceTree = "<group>"; };
 		CAB20CCA2517D61900271FC2 /* NoPreferredPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPreferredPlayer.swift; sourceTree = "<group>"; };
 		CAB20CD12517D7A400271FC2 /* MyLeaderboardWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyLeaderboardWidgetExtension.entitlements; sourceTree = "<group>"; };
@@ -643,6 +652,7 @@
 				CA484E2D24A3185300BE2128 /* AppClip.graphql */,
 				CAC6682E241ED99D0020D9B4 /* TodayView.graphql */,
 				CAF7B21F24A18BC400307B01 /* Widget.graphql */,
+				CAAF5DB6261FDB2800BDF1B7 /* Boards */,
 				CAC6680C241EC3BE0020D9B4 /* Games */,
 				CAC6680E241EC3CD0020D9B4 /* Plays */,
 				CAC6680D241EC3C70020D9B4 /* Players */,
@@ -654,6 +664,7 @@
 		CA1D97E22406EE430011786E /* Mutations */ = {
 			isa = PBXGroup;
 			children = (
+				CAAF5DA2261FC37100BDF1B7 /* CreateBoard.graphql */,
 				CAC66810241EC40E0020D9B4 /* CreateGame.graphql */,
 				CAC6681A241EC8CE0020D9B4 /* CreatePlayer.graphql */,
 				CAC66824241ED58F0020D9B4 /* RecordPlay.graphql */,
@@ -879,6 +890,8 @@
 		CA6D05D5240D147900412D54 /* Queries */ = {
 			isa = PBXGroup;
 			children = (
+				CAAF5DC6261FDC4C00BDF1B7 /* BoardDetailsByNameQuery.swift */,
+				CAAF5DC5261FDC4C00BDF1B7 /* BoardDetailsQuery.swift */,
 				CA484E2F24A318B400BE2128 /* SingleGameListItemQuery.swift */,
 				CA9715E7241A20CF00EA58E9 /* GameDetailsQuery.swift */,
 				CA9715C3241827CE00EA58E9 /* GameListQuery.swift */,
@@ -904,7 +917,9 @@
 		CA6D05D8240D147900412D54 /* Responses */ = {
 			isa = PBXGroup;
 			children = (
-				CA484E3124A318BC00BE2128 /* SingleGameListItemResponse.swift */,
+				CAAF5DC4261FDC3F00BDF1B7 /* BoardDetailsByNameResponse.swift */,
+				CAAF5DC3261FDC3E00BDF1B7 /* BoardDetailsResponse.swift */,
+				CAAF5DB5261FC56900BDF1B7 /* CreateBoardResponse.swift */,
 				CAC66818241EC7AF0020D9B4 /* CreateGameResponse.swift */,
 				CAC6681C241EC9270020D9B4 /* CreatePlayerResponse.swift */,
 				CA9715E9241A20D800EA58E9 /* GameDetailsResponse.swift */,
@@ -914,6 +929,7 @@
 				CA6D05D9240D147900412D54 /* PlayerListResponse.swift */,
 				CA9715F3241D7C1A00EA58E9 /* PlayListResponse.swift */,
 				CAC66826241ED6460020D9B4 /* RecordPlayResponse.swift */,
+				CA484E3124A318BC00BE2128 /* SingleGameListItemResponse.swift */,
 				CAF7B22E24A18F3600307B01 /* SmallWidgetResponse.swift */,
 				CA9715FA241E11C100EA58E9 /* StandingsResponse.swift */,
 				CAC66830241EDAC90020D9B4 /* TodayViewResponse.swift */,
@@ -929,6 +945,7 @@
 				CA9715E3241A20B700EA58E9 /* GameDetailsStandingsFragment.swift */,
 				CA9715C1241827C300EA58E9 /* GameListItem.swift */,
 				CAF7B22224A18ED600307B01 /* MediumWidgetRecordFragment.swift */,
+				CAAF5DAA261FC53E00BDF1B7 /* NewBoardFragment.swift */,
 				CAC66814241EC6270020D9B4 /* NewGameFragment.swift */,
 				CAC66820241EC93A0020D9B4 /* NewPlayerFragment.swift */,
 				CAC6682A241ED65B0020D9B4 /* NewPlayFragment.swift */,
@@ -955,6 +972,7 @@
 		CA6D05DC240D147900412D54 /* Mutations */ = {
 			isa = PBXGroup;
 			children = (
+				CAAF5DA3261FC52E00BDF1B7 /* CreateBoardMutation.swift */,
 				CAC66812241EC61D0020D9B4 /* CreateGameMutation.swift */,
 				CAC6681E241EC9300020D9B4 /* CreatePlayerMutation.swift */,
 				CAC66828241ED6510020D9B4 /* RecordPlayMutation.swift */,
@@ -1046,6 +1064,14 @@
 				CAAE778B2302DB01001A37DC /* CreatePlayerViewModel.swift */,
 			);
 			path = Create;
+			sourceTree = "<group>";
+		};
+		CAAF5DB6261FDB2800BDF1B7 /* Boards */ = {
+			isa = PBXGroup;
+			children = (
+				CAAF5DB7261FDB4500BDF1B7 /* BoardDetails.graphql */,
+			);
+			path = Boards;
 			sourceTree = "<group>";
 		};
 		CAB3870E22D17F1B00349B1F /* Games */ = {

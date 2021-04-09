@@ -6,11 +6,13 @@ public extension MyLeaderboardApi {
 		// MARK: - Query Variables
 			public let displayName: String
 			public let username: String
+			public let board: GraphID
 
 		// MARK: - Initializer
-		public init(displayName: String, username: String) {
+		public init(displayName: String, username: String, board: GraphID) {
 				self.displayName = displayName
 				self.username = username
+				self.board = board
 		}
 
 		// MARK: - Helpers
@@ -20,12 +22,13 @@ public extension MyLeaderboardApi {
 		private enum CodingKeys: CodingKey {
 				case displayName
 				case username
+				case board
 		}
 
 		public typealias Response = CreatePlayerResponse
 
 		public let queryString: String = """
-		fragment NewPlayerFragment on Player { __typename id displayName } mutation CreatePlayer($displayName: String!, $username: String!) { __typename createPlayer(displayName: $displayName, username: $username) { __typename ... NewPlayerFragment } }
+		fragment NewPlayerFragment on Player { __typename id displayName } mutation CreatePlayer($displayName: String!, $username: String!, $board: ID!) { __typename createPlayer(displayName: $displayName, username: $username, board: $board) { __typename ... NewPlayerFragment } }
 		"""
 	}
 }

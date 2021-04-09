@@ -1,5 +1,5 @@
-query PlayerList($first: Int!, $offset: Int!) {
-	players(first: $first, offset: $offset) {
+query PlayerList($board: ID!, $first: Int!, $offset: Int!) {
+	players(first: $first, offset: $offset, board: $board) {
 		... PlayerListItem
 	}
 }

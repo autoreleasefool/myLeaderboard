@@ -1,0 +1,10 @@
+mutation CreateBoard($boardName: String!) {
+	createBoard(boardName: $boardName) {
+		... NewBoardFragment
+	}
+}
+
+fragment NewBoardFragment on Board {
+	id
+	boardName
+}
