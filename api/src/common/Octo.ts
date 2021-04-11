@@ -122,7 +122,7 @@ class Octo {
             const message = writeable.message != null ? writeable.message : `Updating ${writeable.path}`;
             if (Octo.useLocal) {
                 console.log(`Writing to ${writeable.path}, "${message}"`)
-                return fs.writeFileSync(writeable.path, writeable.content);
+                return fs.writeFileSync(`../${writeable.path}`, writeable.content);
             } else {
                 await this.repo.contents(writeable.path)
                     .add({

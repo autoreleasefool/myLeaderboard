@@ -76,15 +76,15 @@ class Table<Row extends Identifiable> {
     }
 
     public async add(row: Row, message?: string): Promise<void> {
+        if (this.blobOutdated) {
+            await this.refreshData();
+        }
+
         this.rows.push(row);
         this.rowsById[row.id] = row;
 
         if (message == null) {
             message = `Adding row ${row.id}`;
-        }
-
-        if (this.blobOutdated) {
-            await this.refreshData();
         }
 
         this.latestUpdate = new Date();
