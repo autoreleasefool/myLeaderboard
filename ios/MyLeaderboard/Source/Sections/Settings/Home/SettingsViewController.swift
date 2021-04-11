@@ -26,6 +26,8 @@ class SettingsViewController: FTDViewController {
 				self?.openPlayerPicker()
 			case .openOpponentPicker:
 				self?.openOpponentPicker()
+			case .openBoardChanger:
+				self?.openBoardChanger()
 			case .openLicenses:
 				self?.openLicenses()
 			case .openContributors:
@@ -59,6 +61,7 @@ class SettingsViewController: FTDViewController {
 
 	private func render() {
 		let sections = SettingsBuilder.sections(
+			currentBoard: viewModel.currentBoard,
 			preferredPlayer: viewModel.preferredPlayer,
 			preferredOpponents: viewModel.preferredOpponents,
 			interfaceStyle: Theme.interfaceStyle,
@@ -114,6 +117,23 @@ class SettingsViewController: FTDViewController {
 		presentModal(opponentPicker)
 	}
 
+	private func openBoardChanger() {
+		let changeController = ChangeBoardViewController { [weak self] board in
+			self?.dismiss(animated: true)
+			guard let board = board else { return }
+			if let delegate = UIApplication.shared.delegate as? AppDelegate {
+				delegate.window?.rootViewController = RootTabBarController(boardId: board.graphID)
+			}
+		}
+
+		changeController.isModalInPresentation = true
+		let controller = UINavigationController(rootViewController: changeController)
+
+		DispatchQueue.main.async {
+			self.present(controller, animated: true)
+		}
+	}
+
 	private func updateInterfaceStyle() {
 		switch Theme.interfaceStyle {
 		case .dark: Theme.interfaceStyle = .light
@@ -137,6 +157,10 @@ extension SettingsViewController: SettingsActionable {
 
 	func changePreferredOpponents() {
 		viewModel.postViewAction(.editOpponents)
+	}
+
+	func changeBoard() {
+		viewModel.postViewAction(.changeBoard)
 	}
 
 	func viewSource() {

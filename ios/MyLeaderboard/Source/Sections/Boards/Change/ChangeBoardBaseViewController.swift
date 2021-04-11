@@ -17,6 +17,7 @@ class ChangeBoardBaseViewController: UIViewController {
 		let changeBoardController = ChangeBoardViewController { board in
 			guard let board = board else { fatalError("Board was not selected") }
 			DispatchQueue.main.async {
+				self.dismiss(animated: true)
 				if let delegate = UIApplication.shared.delegate as? AppDelegate {
 					delegate.window?.rootViewController = RootTabBarController(boardId: board.graphID)
 				}

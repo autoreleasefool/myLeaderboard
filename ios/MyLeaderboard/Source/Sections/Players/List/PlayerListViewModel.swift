@@ -40,7 +40,7 @@ class PlayerListViewModel: ViewModel {
 	private var hasCheckedForPreferredPlayer: Bool = false
 
 	private var shouldCheckForPreferredPlayer: Bool {
-		return !hasCheckedForPreferredPlayer && hasFetchedPlayers && Player.preferred == nil
+		return !hasCheckedForPreferredPlayer && hasFetchedPlayers && players.count > 0 && Player.preferred == nil
 	}
 
 	private(set) var dataLoading: Bool = false {

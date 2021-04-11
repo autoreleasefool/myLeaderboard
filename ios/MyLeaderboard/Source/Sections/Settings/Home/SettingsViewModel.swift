@@ -19,6 +19,7 @@ enum SettingsAction: BaseAction {
 	case openContributors
 	case updateInterfaceStyle
 	case openOpponentPicker
+	case openBoardChanger
 }
 
 enum SettingsViewAction: BaseViewAction {
@@ -27,6 +28,7 @@ enum SettingsViewAction: BaseViewAction {
 	case selectPreferredPlayer(PlayerListItem?)
 	case editOpponents
 	case selectPreferredOpponents([PlayerListItem])
+	case changeBoard
 	case viewSource
 	case viewLicenses
 	case viewContributors
@@ -39,12 +41,16 @@ class SettingsViewModel: ViewModel {
 	let boardId: GraphID
 	var handleAction: ActionHandler
 
+	var currentBoard: BoardDetailsFragment? {
+		Board.lastUsedBoard
+	}
+
 	var preferredPlayer: PlayerListItem? {
-		return Player.preferred
+		Player.preferred
 	}
 
 	var preferredOpponents: [PlayerListItem] {
-		return Player.preferredOpponents
+		Player.preferredOpponents
 	}
 
 	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
@@ -56,6 +62,8 @@ class SettingsViewModel: ViewModel {
 		switch viewAction {
 		case .initialize:
 			break
+		case .changeBoard:
+			handleAction(.openBoardChanger)
 		case .editPlayer:
 			handleAction(.openPlayerPicker)
 		case .selectPreferredPlayer(let player):

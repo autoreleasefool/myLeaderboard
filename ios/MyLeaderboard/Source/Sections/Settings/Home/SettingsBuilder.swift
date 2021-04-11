@@ -12,6 +12,7 @@ import FunctionalTableData
 protocol SettingsActionable: AnyObject {
 	func changePreferredPlayer()
 	func changePreferredOpponents()
+	func changeBoard()
 	func viewSource()
 	func viewLicenses()
 	func viewContributors()
@@ -20,17 +21,66 @@ protocol SettingsActionable: AnyObject {
 
 enum SettingsBuilder {
 	static func sections(
+		currentBoard: BoardDetailsFragment?,
 		preferredPlayer: PlayerListItem?,
 		preferredOpponents: [PlayerListItem],
 		interfaceStyle: UIUserInterfaceStyle,
 		actionable: SettingsActionable
 	) -> [TableSection] {
 		return [
+			boardSection(currentBoard: currentBoard, actionable: actionable),
 			playerSection(preferredPlayer: preferredPlayer, actionable: actionable),
 			opponentsSection(preferredOpponents: preferredOpponents, actionable: actionable),
 			settingsSection(interfaceStyle: interfaceStyle, actionable: actionable),
 			aboutSection(actionable: actionable),
 		]
+	}
+
+	private static func boardSection(
+		currentBoard: BoardDetailsFragment?,
+		actionable: SettingsActionable
+	) -> TableSection {
+		var rows: [CellConfigType] = []
+
+		if let currentBoard = currentBoard {
+			let labelState = LabelState(
+				text: .plain("Current board:"),
+				textColor: .textSecondary,
+				size: Metrics.Text.body
+			)
+
+			let boardState = LabelState(
+				text: .plain(currentBoard.boardName),
+				textColor: .text,
+				size: Metrics.Text.body
+			)
+
+			rows.append(contentsOf: [
+				Cells.header(key: "Header", title: "Board"),
+				CombinedCell<UILabel, LabelState, UILabel, LabelState, LayoutMarginsTableItemLayout>(
+					key: "current-board",
+					style: CellStyle(highlight: true, accessoryType: .disclosureIndicator),
+					actions: CellActions(selectionAction: { [weak actionable] _ in
+						actionable?.changeBoard()
+						return .deselected
+					}),
+					state: CombinedState(state1: labelState, state2: boardState),
+					cellUpdater: { view, state in
+						if state == nil {
+							view.view1.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+							view.stackView.spacing = 0
+						} else {
+							view.view1.setContentHuggingPriority(.required, for: .horizontal)
+							view.stackView.spacing = Metrics.Spacing.small
+						}
+
+						CombinedState<LabelState, LabelState>.updateView(view, state: state)
+					}
+				),
+			])
+		}
+
+		return TableSection(key: "CurrentBoard", rows: rows)
 	}
 
 	private static func playerSection(

@@ -66,7 +66,6 @@ class ChangeBoardViewController: FTDViewController {
 
 	@objc private func cancel() {
 		onChange(nil)
-		dismiss(animated: true) // TODO: change depending on style
 	}
 
 	private func presentError(_ error: GraphAPIError) {
