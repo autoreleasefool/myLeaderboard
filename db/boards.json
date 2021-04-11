@@ -1,4 +1,5 @@
 [
     {"id":0,"boardName":"Public"},
-    {"id":1,"boardName":"Shopify Mobile"}
+    {"id":1,"boardName":"Shopify Mobile"},
+    {"id":2,"boardName":"My Private Board"}
 ]

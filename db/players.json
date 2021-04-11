@@ -14,5 +14,8 @@
     {"displayName":"Salim Batlouni","board":1,"id":12,"username":"batlounis"},
     {"displayName":"Santos Gagbegnon","board":1,"id":13,"username":"santosgagbegnon"},
     {"displayName":"Guillian Balisi","board":1,"id":14,"username":"guillianbalisi"},
-    {"id":15,"board":1,"displayName":"George Antonious","username":"gantonious"}
+    {"id":15,"board":1,"displayName":"George Antonious","username":"gantonious"},
+    {"id":16,"displayName":"Joseph","username":"Autoreleasefool","board":0},
+    {"id":17,"displayName":"Scott","username":"Campbell-Scott","board":0},
+    {"id":18,"displayName":"George","username":"gantonious","board":0}
 ]
