@@ -65,7 +65,7 @@ enum StandingsListBuilder {
 					key: "no-recent-plays",
 					state: LabelState(
 						text: .attributed(NSAttributedString(string: "No recent plays", textColor: .text)),
-						size: Metrics.Text.title
+						size: Metrics.Text.body
 					),
 					cellUpdater: LabelState.updateView
 				))

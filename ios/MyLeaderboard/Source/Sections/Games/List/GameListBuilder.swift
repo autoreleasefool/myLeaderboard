@@ -34,7 +34,7 @@ enum GameListBuilder {
 				key: "no-games",
 				state: LabelState(
 					text: .attributed(NSAttributedString(string: "No games found", textColor: .text)),
-					size: Metrics.Text.title
+					size: Metrics.Text.body
 				),
 				cellUpdater: LabelState.updateView
 			))

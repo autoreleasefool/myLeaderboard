@@ -37,7 +37,7 @@ enum PlayerListBuilder {
 				key: "no-players",
 				state: LabelState(
 					text: .attributed(NSAttributedString(string: "No players found", textColor: .text)),
-					size: Metrics.Text.title
+					size: Metrics.Text.body
 				),
 				cellUpdater: LabelState.updateView
 			))

@@ -25,8 +25,21 @@ enum BasePickerBuilder {
 		selectedItems: Set<GraphID>,
 		actionable: BasePickerActionable
 	) -> [TableSection] {
-		let rows = items.map {
+		var rows = items.map {
 			cell(for: $0, selected: selectedItems.contains($0.graphID), actionable: actionable)
+		}
+
+		if rows.isEmpty {
+			rows.append(LabelCell(
+				key: "no-items",
+				state: LabelState(
+					text: .plain("There doesn't seem to be anything here 😿"),
+					textColor: .text,
+					truncationStyle: .multiline,
+					size: Metrics.Text.body
+				),
+				cellUpdater: LabelState.updateView
+			))
 		}
 
 		return [TableSection(key: "Picker", rows: rows)]
