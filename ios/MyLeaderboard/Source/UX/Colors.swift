@@ -18,6 +18,7 @@ extension UIColor {
 
 	static let text = UIColor(named: "Text")!
 	static let textSecondary = UIColor(named: "TextSecondary")!
+	static let textAction = UIColor(named: "TextAction")!
 
 	static let selection = UIColor(named: "Selection")!
 	static let error = UIColor(named: "Error")!
