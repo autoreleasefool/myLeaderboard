@@ -72,9 +72,9 @@ class StandingsListViewController: FTDViewController {
 		render()
 	}
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		viewModel.postViewAction(.willAppear)
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		viewModel.postViewAction(.didAppear)
 	}
 
 	private func render() {

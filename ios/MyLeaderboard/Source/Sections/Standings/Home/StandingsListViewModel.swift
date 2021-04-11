@@ -21,7 +21,7 @@ enum StandingsListAction: BaseAction {
 
 enum StandingsListViewAction: BaseViewAction {
 	case initialize
-	case willAppear
+	case didAppear
 	case reload
 	case loadMore
 	case recordPlay
@@ -33,6 +33,7 @@ enum StandingsListViewAction: BaseViewAction {
 }
 
 class StandingsListViewModel: ViewModel {
+	typealias PlayerListQuery = MyLeaderboardApi.PlayerListQuery
 	typealias StandingsQuery = MyLeaderboardApi.StandingsQuery
 	typealias ActionHandler = (_ action: StandingsListAction) -> Void
 	private static let pageSize = 10
@@ -74,10 +75,10 @@ class StandingsListViewModel: ViewModel {
 		case .loadMore:
 			guard !dataLoading && !loadingMore && hasMore else { return }
 			loadData(offset: games.count)
-		case .willAppear:
+		case .didAppear:
 			if shouldCheckForPreferredPlayer {
 				hasCheckedForPreferredPlayer = true
-				handleAction(.showPreferredPlayerSelection)
+				performCheckForPreferredPlayer()
 			}
 		case .recordPlay:
 			handleAction(.openRecordPlay)
@@ -131,6 +132,18 @@ class StandingsListViewModel: ViewModel {
 
 		self.games.enumerated().forEach { (index, game) in
 			self.standings[game] = response.games[index].asStandingsFragmentFragment
+		}
+	}
+
+	private func performCheckForPreferredPlayer() {
+		PlayerListQuery(board: boardId, first: 1, offset: 0).perform { [weak self] in
+			switch $0 {
+			case .success(let response):
+				guard !response.players.isEmpty else { return }
+				self?.handleAction(.showPreferredPlayerSelection)
+			case .failure:
+				break
+			}
 		}
 	}
 }
