@@ -74,6 +74,7 @@ class RecordPlayViewController: FTDViewController {
 			errors: viewModel.errors,
 			actionable: self
 		)
+
 		tableData.renderAndDiff(sections)
 	}
 

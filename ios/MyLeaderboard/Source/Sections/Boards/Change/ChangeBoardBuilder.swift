@@ -13,6 +13,7 @@ import UIKit
 protocol ChangeBoardActionable: AnyObject {
 	func updatedBoardName(to name: String)
 	func findBoard(withName name: String)
+	func joinBoard(withName name: String)
 	func createBoard(withName name: String)
 	func openPublicBoard()
 }
@@ -20,16 +21,37 @@ protocol ChangeBoardActionable: AnyObject {
 enum ChangeBoardBuilder {
 	static func sections(
 		boardName: String,
+		boardState: BoardState,
 		actionable: ChangeBoardActionable
 	) -> [TableSection] {
-		let rows: [CellConfigType] = [
+		return [
+			inputSection(boardName: boardName, boardState: boardState, actionable: actionable),
+			publicBoardSection(actionable: actionable),
+		]
+	}
+
+	static func inputSection(
+		boardName: String,
+		boardState: BoardState,
+		actionable: ChangeBoardActionable
+	) -> TableSection {
+		var rows: [CellConfigType] = [
 			LabelCell(
-				key: "Introduction",
-				state: LabelState(text: .plain("MyLeaderboard allows you to record")),
+				key: "introduction",
+				style: CellStyle(bottomSeparator: .full, separatorColor: .separator),
+				state: LabelState(
+					text: .plain("To start using MyLeaderboard, first you'll need to select a Board to " +
+								"participate in. You can join an existing Board, if you know its name, or " +
+								"create your own below."
+					),
+					textColor: .text,
+					truncationStyle: .multiline,
+					alignment: .center
+				),
 				cellUpdater: LabelState.updateView
 			),
 			TextInputCell(
-				key: "BoardName",
+				key: "board-name",
 				state: TextInputCellState(
 					text: boardName,
 					placeholder: "Board"
@@ -39,29 +61,97 @@ enum ChangeBoardBuilder {
 				},
 				cellUpdater: TextInputCellState.updateView
 			),
-			ButtonCell(
-				key: "JoinBoard",
-				state: ButtonState(title: "Join") { [weak actionable] _ in
-					actionable?.findBoard(withName: boardName)
-				},
-				cellUpdater: ButtonState.updateView
-			),
-			ButtonCell(
-				key: "CreateBoard",
-				state: ButtonState(title: "Create") { [weak actionable] _ in
+		]
+
+		switch boardState {
+		case .isCreatable:
+			rows.append(LabelCell(
+				key: "create-board",
+				style: CellStyle(highlight: true),
+				actions: CellActions(selectionAction: { [weak actionable] _ in
+					guard boardState == .isCreatable else { return .deselected }
 					actionable?.createBoard(withName: boardName)
-				},
-				cellUpdater: ButtonState.updateView
+					return .deselected
+				}),
+				state: LabelState(
+					text: .plain("Create"),
+					textColor: .textAction,
+					alignment: .center,
+					size: Metrics.Text.action
+				),
+				cellUpdater: LabelState.updateView
+			))
+		case .isJoinable:
+			rows.append(LabelCell(
+				key: "join-board",
+				style: CellStyle(highlight: true),
+				actions: CellActions(selectionAction: { [weak actionable] _ in
+					guard boardState == .isJoinable else { return .deselected }
+					actionable?.joinBoard(withName: boardName)
+					return .deselected
+				}),
+				state: LabelState(
+					text: .plain("Join"),
+					textColor: .textAction,
+					alignment: .center,
+					size: Metrics.Text.action
+				),
+				cellUpdater: LabelState.updateView
+			))
+		case .undetermined:
+			if boardName.count > 0 {
+				rows.append(LabelCell(
+					key: "check-board",
+					style: CellStyle(highlight: true),
+					actions: CellActions(selectionAction: { [weak actionable] _ in
+						actionable?.findBoard(withName: boardName)
+						return .deselected
+					}),
+					state: LabelState(
+						text: .plain("Check for board"),
+						textColor: .textAction,
+						alignment: .center,
+						size: Metrics.Text.action
+					),
+					cellUpdater: LabelState.updateView
+				))
+			}
+		}
+
+		return TableSection(key: "Input", rows: rows)
+	}
+
+	static func publicBoardSection(actionable: ChangeBoardActionable) -> TableSection {
+		let rows: [CellConfigType] = [
+			LabelCell(
+				key: "public-board-info",
+				style: CellStyle(topSeparator: .full, separatorColor: .separator),
+				state: LabelState(
+					text: .plain("If you don't need your own private board, you can join the 'Public' board below."),
+					textColor: .text,
+					truncationStyle: .multiline,
+					alignment: .center,
+					size: Metrics.Text.body
+				),
+				cellUpdater: LabelState.updateView
 			),
-			ButtonCell(
-				key: "JoinPublicBoard",
-				state: ButtonState(title: "Join public board") { [weak actionable] _ in
+			LabelCell(
+				key: "join-public-board",
+				style: CellStyle(highlight: true),
+				actions: CellActions(selectionAction: { [weak actionable] _ in
 					actionable?.openPublicBoard()
-				},
-				cellUpdater: ButtonState.updateView
+					return .deselected
+				}),
+				state: LabelState(
+					text: .plain("Join 'Public' board"),
+					textColor: .textAction,
+					alignment: .center,
+					size: Metrics.Text.action
+				),
+				cellUpdater: LabelState.updateView
 			),
 		]
 
-		return [TableSection(key: "ChangeBoard", rows: rows)]
+		return TableSection(key: "Public", rows: rows)
 	}
 }

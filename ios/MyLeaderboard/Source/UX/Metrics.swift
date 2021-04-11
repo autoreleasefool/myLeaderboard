@@ -27,6 +27,7 @@ enum Metrics {
 	enum Text {
 		static let header: CGFloat = 44
 		static let title: CGFloat = 20
+		static let action: CGFloat = 16
 		static let body: CGFloat = 14
 		static let caption: CGFloat = 12
 	}

@@ -49,12 +49,19 @@ class ChangeBoardViewController: FTDViewController {
 			)
 		}
 
-		render()
+		DispatchQueue.main.async {
+			self.render()
+		}
 	}
 
 	private func render() {
-		let sections = ChangeBoardBuilder.sections(boardName: viewModel.boardName, actionable: self)
-		tableData.renderAndDiff(sections)
+		let sections = ChangeBoardBuilder.sections(
+			boardName: viewModel.boardName,
+			boardState: viewModel.boardState,
+			actionable: self
+		)
+
+		self.tableData.renderAndDiff(sections)
 	}
 
 	@objc private func cancel() {
@@ -87,7 +94,14 @@ extension ChangeBoardViewController: ChangeBoardActionable {
 	}
 
 	func findBoard(withName name: String) {
-		viewModel.postViewAction(.findBoard(name))
+		DispatchQueue.main.async {
+			self.view.endEditing(true)
+			self.viewModel.postViewAction(.findBoard(name))
+		}
+	}
+
+	func joinBoard(withName name: String) {
+		viewModel.postViewAction(.joinBoard(name))
 	}
 
 	func openPublicBoard() {

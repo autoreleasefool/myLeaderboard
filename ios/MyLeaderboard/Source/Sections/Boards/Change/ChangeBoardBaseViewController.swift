@@ -31,9 +31,13 @@ class ChangeBoardBaseViewController: UIViewController {
 	}
 
 	private func render() {
+		self.view.backgroundColor = .primary
+
 		let label = UILabel()
-		label.text = "You need to select or create a board to interact with before proceeding"
+		label.text = "You need to select or create a board to interact with before proceeding."
 		label.translatesAutoresizingMaskIntoConstraints = false
+		label.numberOfLines = 0
+		label.textAlignment = .center
 		view.addSubview(label)
 		NSLayoutConstraint.activate([
 			label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.Spacing.standard),

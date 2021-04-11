@@ -34,3 +34,9 @@ enum Board {
 		}
 	}
 }
+
+enum BoardState {
+	case isJoinable
+	case isCreatable
+	case undetermined
+}

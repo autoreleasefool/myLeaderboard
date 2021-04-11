@@ -19,6 +19,7 @@ enum ChangeBoardAction: BaseAction {
 enum ChangeBoardViewAction: BaseViewAction {
 	case updateBoardName(String)
 	case createBoard(String)
+	case joinBoard(String)
 	case findBoard(String)
 	case selectPublicBoard
 }
@@ -32,6 +33,7 @@ class ChangeBoardViewModel: ViewModel {
 	var handleAction: ActionHandler
 
 	private(set) var boardName: String = ""
+	private(set) var boardState: BoardState = .undetermined
 
 	private var isLoading: Bool = false {
 		didSet {
@@ -52,11 +54,14 @@ class ChangeBoardViewModel: ViewModel {
 		switch viewAction {
 		case .updateBoardName(let name):
 			boardName = name
+			boardState = .undetermined
 			handleAction(.updatedData)
 		case .selectPublicBoard:
-			findBoard(withName: "Public")
+			joinBoard(withName: "Public")
 		case .findBoard(let name):
 			findBoard(withName: name)
+		case .joinBoard(let name):
+			joinBoard(withName: name)
 		case .createBoard(let name):
 			createBoard(withName: name)
 		}
@@ -80,7 +85,7 @@ class ChangeBoardViewModel: ViewModel {
 		}
 	}
 
-	private func findBoard(withName name: String) {
+	private func joinBoard(withName name: String) {
 		isLoading = true
 
 		FindBoardQuery(boardName: name).perform { [weak self] in
@@ -95,6 +100,28 @@ class ChangeBoardViewModel: ViewModel {
 			case .failure(let error):
 				self?.handleAction(.graphQLError(error))
 			}
+		}
+	}
+
+	private func findBoard(withName name: String) {
+		FindBoardQuery(boardName: boardName).perform { [weak self] in
+			guard let self = self else { return }
+
+			// If the board name was updated after the query started, discard the results
+			guard self.boardName == name else { return }
+
+			switch $0 {
+			case .success(let response):
+				if response.findBoardByName?.asBoardDetailsFragmentFragment != nil {
+					self.boardState = .isJoinable
+				} else {
+					self.boardState = .isCreatable
+				}
+			case .failure:
+				self.boardState = .undetermined
+			}
+
+			self.handleAction(.updatedData)
 		}
 	}
 }
