@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 import WidgetKit
 
 enum SettingsAction: BaseAction {

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 enum GameDetailsAction: BaseAction {
 	case dataChanged

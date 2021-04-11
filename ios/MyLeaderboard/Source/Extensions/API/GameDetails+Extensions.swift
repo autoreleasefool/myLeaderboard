@@ -6,7 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import MyLeaderboardApi
+import myLeaderboardApi
 
 public typealias GameDetails = MyLeaderboardApi.GameDetailsFragment
 public typealias GameDetailsStandings = MyLeaderboardApi.GameDetailsStandingsFragment

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 typealias BoardDetailsFragment = MyLeaderboardApi.BoardDetailsFragment
 

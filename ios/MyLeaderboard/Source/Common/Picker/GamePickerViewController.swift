@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 struct GameListQueryable: PickerItemQueryable {
 	typealias Query = MyLeaderboardApi.GameListQuery

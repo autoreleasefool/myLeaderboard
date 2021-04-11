@@ -1,12 +1,12 @@
 {
   "appclips": {
-      "apps": ["3UBRXR267C.ca.josephroque.MyLeaderboard.shop.foundations.Clip"]
+      "apps": ["3UBRXR267C.ca.josephroque.myLeaderboard.Clip"]
   },
   "applinks": {
     "apps": [],
     "details": [
       {
-        "appID": "3UBRXR267C.ca.josephroque.MyLeaderboard.shop.foundations",
+        "appID": "3UBRXR267C.ca.josephroque.myLeaderboard",
         "paths": [
           "/*"
         ]

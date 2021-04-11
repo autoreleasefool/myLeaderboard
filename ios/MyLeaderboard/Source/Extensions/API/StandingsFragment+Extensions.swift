@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 public typealias StandingsFragment = MyLeaderboardApi.StandingsFragment
 public typealias StandingsGame = MyLeaderboardApi.StandingsGameFragment

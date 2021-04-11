@@ -7,7 +7,7 @@
 //
 
 import Loaf
-import MyLeaderboardApi
+import myLeaderboardApi
 import UIKit
 
 enum TabType {

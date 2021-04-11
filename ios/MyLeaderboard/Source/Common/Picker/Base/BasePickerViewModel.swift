@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 protocol PickerItemQueryable {
 	associatedtype Query: GraphApiQuery & ResponseAssociable

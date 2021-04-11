@@ -6,6 +6,6 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import MyLeaderboardApi
+import myLeaderboardApi
 
 typealias NewPlayer = MyLeaderboardApi.NewPlayerFragment

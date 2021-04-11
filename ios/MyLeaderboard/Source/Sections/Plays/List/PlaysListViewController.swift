@@ -9,7 +9,7 @@
 import UIKit
 import FunctionalTableData
 import Loaf
-import MyLeaderboardApi
+import myLeaderboardApi
 
 class PlaysListViewController: FTDViewController {
 	private var viewModel: PlaysListViewModel!

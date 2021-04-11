@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 enum ChangeBoardAction: BaseAction {
 	case updatedData

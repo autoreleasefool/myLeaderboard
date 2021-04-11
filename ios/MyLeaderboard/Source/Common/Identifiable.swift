@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 protocol Identifiable {
 	var graphID: GraphID { get }

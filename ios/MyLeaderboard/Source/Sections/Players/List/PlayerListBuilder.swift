@@ -7,7 +7,7 @@
 //
 
 import FunctionalTableData
-import MyLeaderboardApi
+import myLeaderboardApi
 
 protocol PlayerListActionable: AnyObject {
 	func selectedPlayer(playerID: GraphID)

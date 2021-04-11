@@ -8,7 +8,7 @@
 
 import UIKit
 import FunctionalTableData
-import MyLeaderboardApi
+import myLeaderboardApi
 
 class ContributorsListViewController: FTDViewController {
 	private static let contributors: [PlayerListItem] = [

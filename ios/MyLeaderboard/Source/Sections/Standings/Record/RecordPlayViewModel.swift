@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 enum RecordPlayAction: BaseAction {
 	case dataChanged

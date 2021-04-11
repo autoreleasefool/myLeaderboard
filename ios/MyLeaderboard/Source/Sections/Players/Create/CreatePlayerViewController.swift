@@ -8,7 +8,7 @@
 
 import UIKit
 import Loaf
-import MyLeaderboardApi
+import myLeaderboardApi
 
 class CreatePlayerViewController: FTDViewController {
 	private var viewModel: CreatePlayerViewModel!

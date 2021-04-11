@@ -6,7 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import MyLeaderboardApi
+import myLeaderboardApi
 
 typealias TodayViewRecord = MyLeaderboardApi.TodayViewRecordFragment
 typealias TodayViewGame = MyLeaderboardApi.TodayViewGameFragment

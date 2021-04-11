@@ -8,7 +8,7 @@
 
 import FunctionalTableData
 import Loaf
-import MyLeaderboardApi
+import myLeaderboardApi
 import UIKit
 
 class ChangeBoardViewController: FTDViewController {

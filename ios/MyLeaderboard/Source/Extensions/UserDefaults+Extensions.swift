@@ -10,6 +10,6 @@ import Foundation
 
 public extension UserDefaults {
 	static let group: UserDefaults = {
-		return UserDefaults(suiteName: "group.ca.josephroque.MyLeaderboard") ?? UserDefaults.standard
+		return UserDefaults(suiteName: "group.ca.josephroque.myLeaderboard") ?? UserDefaults.standard
 	}()
 }

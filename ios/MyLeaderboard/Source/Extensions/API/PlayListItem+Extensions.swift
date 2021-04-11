@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 
 public typealias PlayListItem = MyLeaderboardApi.PlayListItem
 

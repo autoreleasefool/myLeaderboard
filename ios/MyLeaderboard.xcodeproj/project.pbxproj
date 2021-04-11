@@ -26,20 +26,20 @@
 		CA45F99C242B4E4C007EC94D /* Loaf in Frameworks */ = {isa = PBXBuildFile; productRef = CA45F99B242B4E4C007EC94D /* Loaf */; };
 		CA45F9A8242B5864007EC94D /* MyLeaderboardKit.h in Headers */ = {isa = PBXBuildFile; fileRef = CA45F9A6242B5864007EC94D /* MyLeaderboardKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA45F9AD242B5878007EC94D /* FunctionalTableData in Frameworks */ = {isa = PBXBuildFile; productRef = CA45F9AC242B5878007EC94D /* FunctionalTableData */; };
-		CA45F9AE242B588F007EC94D /* MyLeaderboardKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA45F9A4242B5864007EC94D /* MyLeaderboardKit.framework */; };
-		CA45F9AF242B588F007EC94D /* MyLeaderboardKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA45F9A4242B5864007EC94D /* MyLeaderboardKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CA45F9AE242B588F007EC94D /* myLeaderboardKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA45F9A4242B5864007EC94D /* myLeaderboardKit.framework */; };
+		CA45F9AF242B588F007EC94D /* myLeaderboardKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA45F9A4242B5864007EC94D /* myLeaderboardKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA484DDB24A310F400BE2128 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA484DDA24A310F400BE2128 /* AppDelegate.swift */; };
 		CA484DE424A310F600BE2128 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA484DE324A310F600BE2128 /* Assets.xcassets */; };
 		CA484DE724A310F600BE2128 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA484DE524A310F600BE2128 /* LaunchScreen.storyboard */; };
-		CA484DEC24A310F600BE2128 /* MyLeaderboardAppClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = CA484DD824A310F400BE2128 /* MyLeaderboardAppClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CA484DEC24A310F600BE2128 /* myLeaderboardAppClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = CA484DD824A310F400BE2128 /* myLeaderboardAppClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CA484DF124A311B900BE2128 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BAB9522D76322003347AF /* Theme.swift */; };
 		CA484DF224A311B900BE2128 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EB022D58D8700960758 /* Colors.swift */; };
 		CA484DF324A311B900BE2128 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA722D4B2BE00960758 /* Metrics.swift */; };
 		CA484DF424A311D900BE2128 /* RecordPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */; };
 		CA484DF524A311D900BE2128 /* RecordPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */; };
 		CA484DF624A311D900BE2128 /* RecordPlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */; };
-		CA484DF724A3122F00BE2128 /* MyLeaderboardKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA45F9A4242B5864007EC94D /* MyLeaderboardKit.framework */; };
-		CA484DF824A3122F00BE2128 /* MyLeaderboardKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA45F9A4242B5864007EC94D /* MyLeaderboardKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CA484DF724A3122F00BE2128 /* myLeaderboardKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA45F9A4242B5864007EC94D /* myLeaderboardKit.framework */; };
+		CA484DF824A3122F00BE2128 /* myLeaderboardKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA45F9A4242B5864007EC94D /* myLeaderboardKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA484DFC24A3124400BE2128 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
 		CA484E0824A3128E00BE2128 /* FTDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABA3EA922D4B4DB00960758 /* FTDViewController.swift */; };
 		CA484E0924A3128E00BE2128 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FC5F323CA0F890029DD61 /* Avatar.swift */; };
@@ -92,8 +92,8 @@
 		CA51946B230FA8720041105B /* ContributorsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946A230FA8720041105B /* ContributorsListViewController.swift */; };
 		CA51946D230FA9F80041105B /* LicensesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51946C230FA9F80041105B /* LicensesListViewController.swift */; };
 		CA55642E2517DA1D0009778A /* MyLeaderboardApi.h in Headers */ = {isa = PBXBuildFile; fileRef = CA55642C2517DA1D0009778A /* MyLeaderboardApi.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CA5564312517DA1D0009778A /* MyLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */; };
-		CA5564322517DA1D0009778A /* MyLeaderboardApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CA5564312517DA1D0009778A /* myLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */; };
+		CA5564322517DA1D0009778A /* myLeaderboardApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA5564522517DA990009778A /* GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018480240D25090080A5B8 /* GraphQL.swift */; };
 		CA5564532517DA990009778A /* Syrup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018482240D25840080A5B8 /* Syrup+Extensions.swift */; };
 		CA5564542517DAA10009778A /* CustomScalarResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018484240D292B0080A5B8 /* CustomScalarResolver.swift */; };
@@ -149,9 +149,9 @@
 		CA5565322517DAC90009778A /* PlayListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715F3241D7C1A00EA58E9 /* PlayListResponse.swift */; };
 		CA5565332517DAC90009778A /* GameListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9715C5241827D500EA58E9 /* GameListResponse.swift */; };
 		CA5565342517DAC90009778A /* PlayerDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA01849B241594370080A5B8 /* PlayerDetailsResponse.swift */; };
-		CA55653B2517DB0A0009778A /* MyLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */; };
-		CA5565452517DB1C0009778A /* MyLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */; };
-		CA5565462517DB1C0009778A /* MyLeaderboardApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CA55653B2517DB0A0009778A /* myLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */; };
+		CA5565452517DB1C0009778A /* myLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */; };
+		CA5565462517DB1C0009778A /* myLeaderboardApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA599E5926220B7100473476 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA599E5826220B7100473476 /* Debouncer.swift */; };
 		CA5FC5F423CA0F890029DD61 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FC5F323CA0F890029DD61 /* Avatar.swift */; };
 		CA7BAF14241F888500D4D7B8 /* SpreadsheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */; };
@@ -249,7 +249,7 @@
 		CAF7B20E24A1801F00307B01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAF7B20D24A1801F00307B01 /* Assets.xcassets */; };
 		CAF7B21024A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */; };
 		CAF7B21124A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B20C24A1801B00307B01 /* MyLeaderboardWidgetExtension.intentdefinition */; };
-		CAF7B21424A1801F00307B01 /* MyLeaderboardWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CAF7B21424A1801F00307B01 /* myLeaderboardWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CAF7B20424A1801B00307B01 /* myLeaderboardWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CAF7B23624A18F6600307B01 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
 		CAF7B23C24A1932D00307B01 /* GameSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23B24A1932D00307B01 /* GameSummary.swift */; };
 		CAF7B23E24A1939D00307B01 /* MyLeaderboardApi+WidgetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7B23D24A1939D00307B01 /* MyLeaderboardApi+WidgetExtensions.swift */; };
@@ -337,7 +337,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				CAF7B21424A1801F00307B01 /* MyLeaderboardWidgetExtension.appex in Embed App Extensions */,
+				CAF7B21424A1801F00307B01 /* myLeaderboardWidgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,7 +348,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
 			dstSubfolderSpec = 16;
 			files = (
-				CA484DEC24A310F600BE2128 /* MyLeaderboardAppClip.app in Embed App Clips */,
+				CA484DEC24A310F600BE2128 /* myLeaderboardAppClip.app in Embed App Clips */,
 			);
 			name = "Embed App Clips";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,8 +359,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CA484DF824A3122F00BE2128 /* MyLeaderboardKit.framework in Embed Frameworks */,
-				CA5565462517DB1C0009778A /* MyLeaderboardApi.framework in Embed Frameworks */,
+				CA484DF824A3122F00BE2128 /* myLeaderboardKit.framework in Embed Frameworks */,
+				CA5565462517DB1C0009778A /* myLeaderboardApi.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,8 +371,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CA45F9AF242B588F007EC94D /* MyLeaderboardKit.framework in Embed Frameworks */,
-				CA5564322517DA1D0009778A /* MyLeaderboardApi.framework in Embed Frameworks */,
+				CA45F9AF242B588F007EC94D /* myLeaderboardKit.framework in Embed Frameworks */,
+				CA5564322517DA1D0009778A /* myLeaderboardApi.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,10 +397,10 @@
 		CA362F78230EBE41001063B9 /* PlayerDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsViewController.swift; sourceTree = "<group>"; };
 		CA362F7A230EBE4B001063B9 /* PlayerDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsViewModel.swift; sourceTree = "<group>"; };
 		CA362F7C230EBE55001063B9 /* PlayerDetailsBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsBuilder.swift; sourceTree = "<group>"; };
-		CA45F9A4242B5864007EC94D /* MyLeaderboardKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MyLeaderboardKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA45F9A4242B5864007EC94D /* myLeaderboardKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = myLeaderboardKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA45F9A6242B5864007EC94D /* MyLeaderboardKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyLeaderboardKit.h; sourceTree = "<group>"; };
 		CA45F9A7242B5864007EC94D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CA484DD824A310F400BE2128 /* MyLeaderboardAppClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLeaderboardAppClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA484DD824A310F400BE2128 /* myLeaderboardAppClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myLeaderboardAppClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA484DDA24A310F400BE2128 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA484DE324A310F600BE2128 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA484DE624A310F600BE2128 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -426,7 +426,7 @@
 		CA519467230F986B0041105B /* SettingsBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBuilder.swift; sourceTree = "<group>"; };
 		CA51946A230FA8720041105B /* ContributorsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsListViewController.swift; sourceTree = "<group>"; };
 		CA51946C230FA9F80041105B /* LicensesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensesListViewController.swift; sourceTree = "<group>"; };
-		CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MyLeaderboardApi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = myLeaderboardApi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA55642C2517DA1D0009778A /* MyLeaderboardApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyLeaderboardApi.h; sourceTree = "<group>"; };
 		CA55642D2517DA1D0009778A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA599E5826220B7100473476 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
@@ -547,16 +547,16 @@
 		CAC66834241EDAE10020D9B4 /* TodayViewRecordFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewRecordFragment.swift; sourceTree = "<group>"; };
 		CAC66836241EDB2D0020D9B4 /* TodayView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+Extensions.swift"; sourceTree = "<group>"; };
 		CAC6685D241EDFD70020D9B4 /* TodayViewGameFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewGameFragment.swift; sourceTree = "<group>"; };
-		CAC9066922D0F70B0075B033 /* MyLeaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLeaderboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAC9066922D0F70B0075B033 /* myLeaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myLeaderboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9066C22D0F70B0075B033 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAC9066E22D0F70B0075B033 /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
 		CAC9067322D0F70F0075B033 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CAC9067622D0F70F0075B033 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CAC9067822D0F70F0075B033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CAC9067D22D0F70F0075B033 /* MyLeaderboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyLeaderboardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAC9067D22D0F70F0075B033 /* myLeaderboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myLeaderboardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9068122D0F70F0075B033 /* MyLeaderboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardTests.swift; sourceTree = "<group>"; };
 		CAC9068322D0F70F0075B033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CAC9068822D0F70F0075B033 /* MyLeaderboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyLeaderboardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAC9068822D0F70F0075B033 /* myLeaderboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myLeaderboardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAC9068C22D0F70F0075B033 /* MyLeaderboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardUITests.swift; sourceTree = "<group>"; };
 		CAC9068E22D0F70F0075B033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerViewController.swift; sourceTree = "<group>"; };
@@ -580,7 +580,7 @@
 		CAE9CF6C230F3E1300D4850E /* ScoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScoreCell.swift; path = MyLeaderboard/Source/Common/Cells/ScoreCell.swift; sourceTree = SOURCE_ROOT; };
 		CAED76B322FA78CF000A2281 /* PlayerPlayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayerPlayCell.swift; path = MyLeaderboard/Source/Sections/Standings/Views/PlayerPlayCell.swift; sourceTree = SOURCE_ROOT; };
 		CAED76B522FC4FCE000A2281 /* KeyedErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyedErrors.swift; sourceTree = "<group>"; };
-		CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyLeaderboardWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAF7B20424A1801B00307B01 /* myLeaderboardWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = myLeaderboardWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAF7B20524A1801B00307B01 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		CAF7B20724A1801B00307B01 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		CAF7B20A24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardWidgetExtension.swift; sourceTree = "<group>"; };
@@ -618,8 +618,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA484E2B24A3151F00BE2128 /* Loaf in Frameworks */,
-				CA5565452517DB1C0009778A /* MyLeaderboardApi.framework in Frameworks */,
-				CA484DF724A3122F00BE2128 /* MyLeaderboardKit.framework in Frameworks */,
+				CA5565452517DB1C0009778A /* myLeaderboardApi.framework in Frameworks */,
+				CA484DF724A3122F00BE2128 /* myLeaderboardKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,8 +635,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA45F99C242B4E4C007EC94D /* Loaf in Frameworks */,
-				CA5564312517DA1D0009778A /* MyLeaderboardApi.framework in Frameworks */,
-				CA45F9AE242B588F007EC94D /* MyLeaderboardKit.framework in Frameworks */,
+				CA5564312517DA1D0009778A /* myLeaderboardApi.framework in Frameworks */,
+				CA45F9AE242B588F007EC94D /* myLeaderboardKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -659,7 +659,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAF7B20824A1801B00307B01 /* SwiftUI.framework in Frameworks */,
-				CA55653B2517DB0A0009778A /* MyLeaderboardApi.framework in Frameworks */,
+				CA55653B2517DB0A0009778A /* myLeaderboardApi.framework in Frameworks */,
 				CAF7B20624A1801B00307B01 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1278,13 +1278,13 @@
 		CAC9066A22D0F70B0075B033 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CAC9066922D0F70B0075B033 /* MyLeaderboard.app */,
-				CAC9067D22D0F70F0075B033 /* MyLeaderboardTests.xctest */,
-				CAC9068822D0F70F0075B033 /* MyLeaderboardUITests.xctest */,
-				CA45F9A4242B5864007EC94D /* MyLeaderboardKit.framework */,
-				CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */,
-				CA484DD824A310F400BE2128 /* MyLeaderboardAppClip.app */,
-				CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */,
+				CAC9066922D0F70B0075B033 /* myLeaderboard.app */,
+				CAC9067D22D0F70F0075B033 /* myLeaderboardTests.xctest */,
+				CAC9068822D0F70F0075B033 /* myLeaderboardUITests.xctest */,
+				CA45F9A4242B5864007EC94D /* myLeaderboardKit.framework */,
+				CAF7B20424A1801B00307B01 /* myLeaderboardWidgetExtension.appex */,
+				CA484DD824A310F400BE2128 /* myLeaderboardAppClip.app */,
+				CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1463,9 +1463,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		CA45F9A3242B5864007EC94D /* MyLeaderboardKit */ = {
+		CA45F9A3242B5864007EC94D /* myLeaderboardKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CA45F9A9242B5864007EC94D /* Build configuration list for PBXNativeTarget "MyLeaderboardKit" */;
+			buildConfigurationList = CA45F9A9242B5864007EC94D /* Build configuration list for PBXNativeTarget "myLeaderboardKit" */;
 			buildPhases = (
 				CA45F99F242B5864007EC94D /* Headers */,
 				CA45F9A0242B5864007EC94D /* Sources */,
@@ -1476,17 +1476,17 @@
 			);
 			dependencies = (
 			);
-			name = MyLeaderboardKit;
+			name = myLeaderboardKit;
 			packageProductDependencies = (
 				CA45F9AC242B5878007EC94D /* FunctionalTableData */,
 			);
 			productName = MyLeaderboardKit;
-			productReference = CA45F9A4242B5864007EC94D /* MyLeaderboardKit.framework */;
+			productReference = CA45F9A4242B5864007EC94D /* myLeaderboardKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		CA484DD724A310F400BE2128 /* MyLeaderboardAppClip */ = {
+		CA484DD724A310F400BE2128 /* myLeaderboardAppClip */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CA484DF024A310F600BE2128 /* Build configuration list for PBXNativeTarget "MyLeaderboardAppClip" */;
+			buildConfigurationList = CA484DF024A310F600BE2128 /* Build configuration list for PBXNativeTarget "myLeaderboardAppClip" */;
 			buildPhases = (
 				CA484DD424A310F400BE2128 /* Sources */,
 				CA484DD524A310F400BE2128 /* Frameworks */,
@@ -1499,17 +1499,17 @@
 				CA484DFA24A3122F00BE2128 /* PBXTargetDependency */,
 				CA5565482517DB1C0009778A /* PBXTargetDependency */,
 			);
-			name = MyLeaderboardAppClip;
+			name = myLeaderboardAppClip;
 			packageProductDependencies = (
 				CA484E2A24A3151F00BE2128 /* Loaf */,
 			);
 			productName = MyLeaderboardAppClip;
-			productReference = CA484DD824A310F400BE2128 /* MyLeaderboardAppClip.app */;
+			productReference = CA484DD824A310F400BE2128 /* myLeaderboardAppClip.app */;
 			productType = "com.apple.product-type.application.on-demand-install-capable";
 		};
-		CA5564292517DA1D0009778A /* MyLeaderboardApi */ = {
+		CA5564292517DA1D0009778A /* myLeaderboardApi */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CA5564352517DA1D0009778A /* Build configuration list for PBXNativeTarget "MyLeaderboardApi" */;
+			buildConfigurationList = CA5564352517DA1D0009778A /* Build configuration list for PBXNativeTarget "myLeaderboardApi" */;
 			buildPhases = (
 				CA5564252517DA1D0009778A /* Headers */,
 				CA5564262517DA1D0009778A /* Sources */,
@@ -1520,14 +1520,14 @@
 			);
 			dependencies = (
 			);
-			name = MyLeaderboardApi;
+			name = myLeaderboardApi;
 			productName = MyLeaderboardApi;
-			productReference = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */;
+			productReference = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		CAC9066822D0F70B0075B033 /* MyLeaderboard */ = {
+		CAC9066822D0F70B0075B033 /* myLeaderboard */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CAC9069122D0F70F0075B033 /* Build configuration list for PBXNativeTarget "MyLeaderboard" */;
+			buildConfigurationList = CAC9069122D0F70F0075B033 /* Build configuration list for PBXNativeTarget "myLeaderboard" */;
 			buildPhases = (
 				CA4BABA722D78496003347AF /* ShellScript */,
 				CAC9066522D0F70B0075B033 /* Sources */,
@@ -1545,17 +1545,17 @@
 				CA484DEB24A310F600BE2128 /* PBXTargetDependency */,
 				CA5564302517DA1D0009778A /* PBXTargetDependency */,
 			);
-			name = MyLeaderboard;
+			name = myLeaderboard;
 			packageProductDependencies = (
 				CA45F99B242B4E4C007EC94D /* Loaf */,
 			);
 			productName = MyLeaderboard;
-			productReference = CAC9066922D0F70B0075B033 /* MyLeaderboard.app */;
+			productReference = CAC9066922D0F70B0075B033 /* myLeaderboard.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CAC9067C22D0F70F0075B033 /* MyLeaderboardTests */ = {
+		CAC9067C22D0F70F0075B033 /* myLeaderboardTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CAC9069422D0F70F0075B033 /* Build configuration list for PBXNativeTarget "MyLeaderboardTests" */;
+			buildConfigurationList = CAC9069422D0F70F0075B033 /* Build configuration list for PBXNativeTarget "myLeaderboardTests" */;
 			buildPhases = (
 				CAC9067922D0F70F0075B033 /* Sources */,
 				CAC9067A22D0F70F0075B033 /* Frameworks */,
@@ -1566,14 +1566,14 @@
 			dependencies = (
 				CAC9067F22D0F70F0075B033 /* PBXTargetDependency */,
 			);
-			name = MyLeaderboardTests;
+			name = myLeaderboardTests;
 			productName = MyLeaderboardTests;
-			productReference = CAC9067D22D0F70F0075B033 /* MyLeaderboardTests.xctest */;
+			productReference = CAC9067D22D0F70F0075B033 /* myLeaderboardTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		CAC9068722D0F70F0075B033 /* MyLeaderboardUITests */ = {
+		CAC9068722D0F70F0075B033 /* myLeaderboardUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CAC9069722D0F70F0075B033 /* Build configuration list for PBXNativeTarget "MyLeaderboardUITests" */;
+			buildConfigurationList = CAC9069722D0F70F0075B033 /* Build configuration list for PBXNativeTarget "myLeaderboardUITests" */;
 			buildPhases = (
 				CAC9068422D0F70F0075B033 /* Sources */,
 				CAC9068522D0F70F0075B033 /* Frameworks */,
@@ -1584,16 +1584,16 @@
 			dependencies = (
 				CAC9068A22D0F70F0075B033 /* PBXTargetDependency */,
 			);
-			name = MyLeaderboardUITests;
+			name = myLeaderboardUITests;
 			packageProductDependencies = (
 			);
 			productName = MyLeaderboardUITests;
-			productReference = CAC9068822D0F70F0075B033 /* MyLeaderboardUITests.xctest */;
+			productReference = CAC9068822D0F70F0075B033 /* myLeaderboardUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		CAF7B20324A1801B00307B01 /* MyLeaderboardWidgetExtension */ = {
+		CAF7B20324A1801B00307B01 /* myLeaderboardWidgetExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CAF7B21524A1801F00307B01 /* Build configuration list for PBXNativeTarget "MyLeaderboardWidgetExtension" */;
+			buildConfigurationList = CAF7B21524A1801F00307B01 /* Build configuration list for PBXNativeTarget "myLeaderboardWidgetExtension" */;
 			buildPhases = (
 				CAF7B20024A1801B00307B01 /* Sources */,
 				CAF7B20124A1801B00307B01 /* Frameworks */,
@@ -1604,9 +1604,9 @@
 			dependencies = (
 				CA55653E2517DB0A0009778A /* PBXTargetDependency */,
 			);
-			name = MyLeaderboardWidgetExtension;
+			name = myLeaderboardWidgetExtension;
 			productName = MyLeaderboardWidgetExtensionExtension;
-			productReference = CAF7B20424A1801B00307B01 /* MyLeaderboardWidgetExtension.appex */;
+			productReference = CAF7B20424A1801B00307B01 /* myLeaderboardWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -1661,13 +1661,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CAC9066822D0F70B0075B033 /* MyLeaderboard */,
-				CAC9067C22D0F70F0075B033 /* MyLeaderboardTests */,
-				CAC9068722D0F70F0075B033 /* MyLeaderboardUITests */,
-				CA484DD724A310F400BE2128 /* MyLeaderboardAppClip */,
-				CAF7B20324A1801B00307B01 /* MyLeaderboardWidgetExtension */,
-				CA45F9A3242B5864007EC94D /* MyLeaderboardKit */,
-				CA5564292517DA1D0009778A /* MyLeaderboardApi */,
+				CAC9066822D0F70B0075B033 /* myLeaderboard */,
+				CAC9067C22D0F70F0075B033 /* myLeaderboardTests */,
+				CAC9068722D0F70F0075B033 /* myLeaderboardUITests */,
+				CA484DD724A310F400BE2128 /* myLeaderboardAppClip */,
+				CAF7B20324A1801B00307B01 /* myLeaderboardWidgetExtension */,
+				CA45F9A3242B5864007EC94D /* myLeaderboardKit */,
+				CA5564292517DA1D0009778A /* myLeaderboardApi */,
 			);
 		};
 /* End PBXProject section */
@@ -2036,47 +2036,47 @@
 /* Begin PBXTargetDependency section */
 		CA45F9B1242B588F007EC94D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CA45F9A3242B5864007EC94D /* MyLeaderboardKit */;
+			target = CA45F9A3242B5864007EC94D /* myLeaderboardKit */;
 			targetProxy = CA45F9B0242B588F007EC94D /* PBXContainerItemProxy */;
 		};
 		CA484DEB24A310F600BE2128 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CA484DD724A310F400BE2128 /* MyLeaderboardAppClip */;
+			target = CA484DD724A310F400BE2128 /* myLeaderboardAppClip */;
 			targetProxy = CA484DEA24A310F600BE2128 /* PBXContainerItemProxy */;
 		};
 		CA484DFA24A3122F00BE2128 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CA45F9A3242B5864007EC94D /* MyLeaderboardKit */;
+			target = CA45F9A3242B5864007EC94D /* myLeaderboardKit */;
 			targetProxy = CA484DF924A3122F00BE2128 /* PBXContainerItemProxy */;
 		};
 		CA5564302517DA1D0009778A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CA5564292517DA1D0009778A /* MyLeaderboardApi */;
+			target = CA5564292517DA1D0009778A /* myLeaderboardApi */;
 			targetProxy = CA55642F2517DA1D0009778A /* PBXContainerItemProxy */;
 		};
 		CA55653E2517DB0A0009778A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CA5564292517DA1D0009778A /* MyLeaderboardApi */;
+			target = CA5564292517DA1D0009778A /* myLeaderboardApi */;
 			targetProxy = CA55653D2517DB0A0009778A /* PBXContainerItemProxy */;
 		};
 		CA5565482517DB1C0009778A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CA5564292517DA1D0009778A /* MyLeaderboardApi */;
+			target = CA5564292517DA1D0009778A /* myLeaderboardApi */;
 			targetProxy = CA5565472517DB1C0009778A /* PBXContainerItemProxy */;
 		};
 		CAC9067F22D0F70F0075B033 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CAC9066822D0F70B0075B033 /* MyLeaderboard */;
+			target = CAC9066822D0F70B0075B033 /* myLeaderboard */;
 			targetProxy = CAC9067E22D0F70F0075B033 /* PBXContainerItemProxy */;
 		};
 		CAC9068A22D0F70F0075B033 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CAC9066822D0F70B0075B033 /* MyLeaderboard */;
+			target = CAC9066822D0F70B0075B033 /* myLeaderboard */;
 			targetProxy = CAC9068922D0F70F0075B033 /* PBXContainerItemProxy */;
 		};
 		CAF7B21324A1801F00307B01 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CAF7B20324A1801B00307B01 /* MyLeaderboardWidgetExtension */;
+			target = CAF7B20324A1801B00307B01 /* myLeaderboardWidgetExtension */;
 			targetProxy = CAF7B21224A1801F00307B01 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2120,7 +2120,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboardKit;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboardKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -2150,7 +2150,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboardKit;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboardKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -2175,7 +2175,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations.Clip;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboard.Clip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG APPCLIP";
 				SWIFT_VERSION = 5.0;
@@ -2197,7 +2197,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations.Clip;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboard.Clip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = APPCLIP;
 				SWIFT_VERSION = 5.0;
@@ -2224,7 +2224,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboardApi;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboardApi;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -2254,7 +2254,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboardApi;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboardApi;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -2401,7 +2401,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2422,7 +2422,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2442,7 +2442,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboardTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboardTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2463,7 +2463,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboardTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboardTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2483,7 +2483,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboardUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboardUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2503,7 +2503,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboardUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboardUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2526,7 +2526,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations.MyLeaderboardWidgetExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboard.MyLeaderboardWidgetExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2549,7 +2549,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.MyLeaderboard.shop.foundations.MyLeaderboardWidgetExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboard.MyLeaderboardWidgetExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2560,7 +2560,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CA45F9A9242B5864007EC94D /* Build configuration list for PBXNativeTarget "MyLeaderboardKit" */ = {
+		CA45F9A9242B5864007EC94D /* Build configuration list for PBXNativeTarget "myLeaderboardKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA45F9AA242B5864007EC94D /* Debug */,
@@ -2569,7 +2569,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CA484DF024A310F600BE2128 /* Build configuration list for PBXNativeTarget "MyLeaderboardAppClip" */ = {
+		CA484DF024A310F600BE2128 /* Build configuration list for PBXNativeTarget "myLeaderboardAppClip" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA484DEE24A310F600BE2128 /* Debug */,
@@ -2578,7 +2578,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CA5564352517DA1D0009778A /* Build configuration list for PBXNativeTarget "MyLeaderboardApi" */ = {
+		CA5564352517DA1D0009778A /* Build configuration list for PBXNativeTarget "myLeaderboardApi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA5564332517DA1D0009778A /* Debug */,
@@ -2596,7 +2596,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CAC9069122D0F70F0075B033 /* Build configuration list for PBXNativeTarget "MyLeaderboard" */ = {
+		CAC9069122D0F70F0075B033 /* Build configuration list for PBXNativeTarget "myLeaderboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CAC9069222D0F70F0075B033 /* Debug */,
@@ -2605,7 +2605,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CAC9069422D0F70F0075B033 /* Build configuration list for PBXNativeTarget "MyLeaderboardTests" */ = {
+		CAC9069422D0F70F0075B033 /* Build configuration list for PBXNativeTarget "myLeaderboardTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CAC9069522D0F70F0075B033 /* Debug */,
@@ -2614,7 +2614,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CAC9069722D0F70F0075B033 /* Build configuration list for PBXNativeTarget "MyLeaderboardUITests" */ = {
+		CAC9069722D0F70F0075B033 /* Build configuration list for PBXNativeTarget "myLeaderboardUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CAC9069822D0F70F0075B033 /* Debug */,
@@ -2623,7 +2623,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CAF7B21524A1801F00307B01 /* Build configuration list for PBXNativeTarget "MyLeaderboardWidgetExtension" */ = {
+		CAF7B21524A1801F00307B01 /* Build configuration list for PBXNativeTarget "myLeaderboardWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CAF7B21624A1801F00307B01 /* Debug */,

@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CA484DD724A310F400BE2128"
-               BuildableName = "MyLeaderboardAppClip.app"
-               BlueprintName = "MyLeaderboardAppClip"
+               BuildableName = "myLeaderboardAppClip.app"
+               BlueprintName = "myLeaderboardAppClip"
                ReferencedContainer = "container:MyLeaderboard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CA484DD724A310F400BE2128"
-            BuildableName = "MyLeaderboardAppClip.app"
-            BlueprintName = "MyLeaderboardAppClip"
+            BuildableName = "myLeaderboardAppClip.app"
+            BlueprintName = "myLeaderboardAppClip"
             ReferencedContainer = "container:MyLeaderboard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -69,8 +69,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CA484DD724A310F400BE2128"
-            BuildableName = "MyLeaderboardAppClip.app"
-            BlueprintName = "MyLeaderboardAppClip"
+            BuildableName = "myLeaderboardAppClip.app"
+            BlueprintName = "myLeaderboardAppClip"
             ReferencedContainer = "container:MyLeaderboard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

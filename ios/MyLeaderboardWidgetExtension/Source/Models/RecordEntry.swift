@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 import WidgetKit
 
 struct RecordEntry: TimelineEntry {

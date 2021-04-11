@@ -6,7 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
-import MyLeaderboardApi
+import myLeaderboardApi
 import UIKit
 import FunctionalTableData
 import Loaf

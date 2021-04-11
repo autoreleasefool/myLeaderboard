@@ -7,7 +7,7 @@
 //
 
 import FunctionalTableData
-import MyLeaderboardApi
+import myLeaderboardApi
 import UIKit
 
 protocol ChangeBoardActionable: AnyObject {

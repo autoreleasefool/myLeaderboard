@@ -8,7 +8,7 @@
 
 import Combine
 import Foundation
-import MyLeaderboardApi
+import myLeaderboardApi
 import WidgetKit
 
 struct GameSummaryProvider: TimelineProvider {
