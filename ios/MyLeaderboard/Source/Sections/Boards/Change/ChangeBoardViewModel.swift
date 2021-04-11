@@ -32,7 +32,10 @@ class ChangeBoardViewModel: ViewModel {
 
 	var handleAction: ActionHandler
 
-	private(set) var boardName: String = ""
+	private(set) var boardName: String = {
+		// Allows initial name to be set for testing
+		ProcessInfo.processInfo.environment["initialBoardName"] ?? ""
+	}()
 	private(set) var boardState: BoardState = .undetermined
 
 	private var isLoading: Bool = false {

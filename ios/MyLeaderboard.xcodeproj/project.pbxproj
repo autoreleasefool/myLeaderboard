@@ -153,6 +153,7 @@
 		CA5565452517DB1C0009778A /* myLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */; };
 		CA5565462517DB1C0009778A /* myLeaderboardApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA599E5926220B7100473476 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA599E5826220B7100473476 /* Debouncer.swift */; };
+		CA599E742623292200473476 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA599E732623292200473476 /* SnapshotHelper.swift */; };
 		CA5FC5F423CA0F890029DD61 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FC5F323CA0F890029DD61 /* Avatar.swift */; };
 		CA7BAF14241F888500D4D7B8 /* SpreadsheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */; };
 		CA7BAF17241FB8C100D4D7B8 /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF16241FB8C100D4D7B8 /* GamePlay.swift */; };
@@ -221,7 +222,7 @@
 		CAC9067422D0F70F0075B033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067322D0F70F0075B033 /* Assets.xcassets */; };
 		CAC9067722D0F70F0075B033 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAC9067522D0F70F0075B033 /* LaunchScreen.storyboard */; };
 		CAC9068222D0F70F0075B033 /* MyLeaderboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9068122D0F70F0075B033 /* MyLeaderboardTests.swift */; };
-		CAC9068D22D0F70F0075B033 /* MyLeaderboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9068C22D0F70F0075B033 /* MyLeaderboardUITests.swift */; };
+		CAC9068D22D0F70F0075B033 /* AppStoreSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC9068C22D0F70F0075B033 /* AppStoreSnapshotTests.swift */; };
 		CAE16DFB22F44C5600F1304C /* BasePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */; };
 		CAE16DFD22F44D9B00F1304C /* BasePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */; };
 		CAE16DFF22F45FCE00F1304C /* BasePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE16DFE22F45FCE00F1304C /* BasePickerBuilder.swift */; };
@@ -430,6 +431,7 @@
 		CA55642C2517DA1D0009778A /* MyLeaderboardApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyLeaderboardApi.h; sourceTree = "<group>"; };
 		CA55642D2517DA1D0009778A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA599E5826220B7100473476 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
+		CA599E732623292200473476 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = MyLeaderboardUITests/Source/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		CA5FC5F323CA0F890029DD61 /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		CA6D05D6240D147900412D54 /* PlayerListQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerListQuery.swift; sourceTree = "<group>"; };
 		CA6D05D9240D147900412D54 /* PlayerListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerListResponse.swift; sourceTree = "<group>"; };
@@ -557,7 +559,7 @@
 		CAC9068122D0F70F0075B033 /* MyLeaderboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardTests.swift; sourceTree = "<group>"; };
 		CAC9068322D0F70F0075B033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAC9068822D0F70F0075B033 /* myLeaderboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myLeaderboardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CAC9068C22D0F70F0075B033 /* MyLeaderboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLeaderboardUITests.swift; sourceTree = "<group>"; };
+		CAC9068C22D0F70F0075B033 /* AppStoreSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSnapshotTests.swift; sourceTree = "<group>"; };
 		CAC9068E22D0F70F0075B033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAE16DFA22F44C5600F1304C /* BasePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerViewController.swift; sourceTree = "<group>"; };
 		CAE16DFC22F44D9B00F1304C /* BasePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerViewModel.swift; sourceTree = "<group>"; };
@@ -908,6 +910,15 @@
 				CAC66836241EDB2D0020D9B4 /* TodayView+Extensions.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		CA599E7F2623293100473476 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CAC9068C22D0F70F0075B033 /* AppStoreSnapshotTests.swift */,
+				CA599E732623292200473476 /* SnapshotHelper.swift */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		CA6D05D5240D147900412D54 /* Queries */ = {
@@ -1312,7 +1323,7 @@
 		CAC9068B22D0F70F0075B033 /* MyLeaderboardUITests */ = {
 			isa = PBXGroup;
 			children = (
-				CAC9068C22D0F70F0075B033 /* MyLeaderboardUITests.swift */,
+				CA599E7F2623293100473476 /* Source */,
 				CAC9068E22D0F70F0075B033 /* Info.plist */,
 			);
 			path = MyLeaderboardUITests;
@@ -2001,7 +2012,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAC9068D22D0F70F0075B033 /* MyLeaderboardUITests.swift in Sources */,
+				CAC9068D22D0F70F0075B033 /* AppStoreSnapshotTests.swift in Sources */,
+				CA599E742623292200473476 /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

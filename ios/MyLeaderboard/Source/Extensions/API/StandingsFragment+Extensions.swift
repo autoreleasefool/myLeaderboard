@@ -24,6 +24,14 @@ extension StandingsPlayerGameRecord {
 	static let staleLimit: Double = 21
 	static let veryFreshLimit: Double = 7
 	static let dateFormatter = ISO8601DateFormatter()
+	static let isFreshnessEnabled: Bool = {
+		if let disableFreshnessString = ProcessInfo.processInfo.environment["disableFreshness"],
+			 let disableFreshness = Bool(disableFreshnessString) {
+			return disableFreshness
+		}
+
+		return true
+	}()
 
 	var lastPlayedDay: Date? {
 		guard let lastPlayed = self.lastPlayed else { return nil }
@@ -37,6 +45,10 @@ extension StandingsPlayerGameRecord {
 
 	var freshness: Double {
 		guard let lastPlayed = self.lastPlayedDay else { return 0 }
+
+		// For allowing all values to be considered fresh for testing
+		guard StandingsPlayerGameRecord.isFreshnessEnabled else { return 1 }
+
 		let seconds = Date().timeIntervalSince(lastPlayed)
 		let daysSinceLastPlayed = floor(seconds / 86400)
 
