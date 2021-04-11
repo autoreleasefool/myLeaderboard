@@ -49,12 +49,16 @@ class LoadingHUD {
 	}
 
 	func show() {
-		loadingView.startAnimating()
-		window.makeKeyAndVisible()
+		DispatchQueue.main.async {
+			self.loadingView.startAnimating()
+			self.window.makeKeyAndVisible()
+		}
 	}
 
 	func hide() {
-		window.isHidden = true
-		loadingView.stopAnimating()
+		DispatchQueue.main.async {
+			self.window.isHidden = true
+			self.loadingView.stopAnimating()
+		}
 	}
 }
