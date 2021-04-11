@@ -12,9 +12,38 @@ import FunctionalTableData
 typealias TextInputCell = HostCell<TextInputCellView, TextInputCellState, LayoutMarginsTableItemLayout>
 
 class TextInputCellView: UITextField {
+	private static let textInsets = UIEdgeInsets(
+		top: Metrics.Spacing.small,
+		left: Metrics.Spacing.standard,
+		bottom: Metrics.Spacing.small,
+		right: Metrics.Spacing.standard
+	)
+
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		layer.cornerRadius = Metrics.Spacing.tiny
+		layer.borderColor = UIColor.primaryLight.cgColor
+		layer.borderWidth = 1
+		backgroundColor = .primaryDark
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
 	fileprivate func prepareForReuse() {
 		text = nil
 		setActions([])
+	}
+
+	override func textRect(forBounds bounds: CGRect) -> CGRect {
+		let rect = super.textRect(forBounds: bounds)
+		return rect.inset(by: Self.textInsets)
+	}
+
+	override func editingRect(forBounds bounds: CGRect) -> CGRect {
+		let rect = super.editingRect(forBounds: bounds)
+		return rect.inset(by: Self.textInsets)
 	}
 }
 
