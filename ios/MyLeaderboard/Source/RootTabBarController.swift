@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Loaf
 import MyLeaderboardApi
 import UIKit
 
@@ -67,6 +68,14 @@ class RootTabBarController: UITabBarController {
 		super.viewDidLoad()
 		self.viewControllers = createTabBarItems()
 		self.tabBar.tintColor = .tab
+	}
+
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		DispatchQueue.main.async {
+			guard let board = Board.lastUsedBoard else { return }
+			Loaf("Joined '\(board.boardName)' board", state: .info, sender: self).show()
+		}
 	}
 
 	private func createTabBarItems() -> [UIViewController] {
