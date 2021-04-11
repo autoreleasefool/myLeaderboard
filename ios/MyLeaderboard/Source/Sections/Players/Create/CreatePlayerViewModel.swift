@@ -30,6 +30,7 @@ class CreatePlayerViewModel {
 	let boardId: GraphID
 	var handleAction: ActionHandler
 	var imageLoader = ImageLoader(queryIfCached: true)
+	private let debouncer = Debouncer(debounceTime: 0.4)
 
 	private(set) var displayName: String = "" {
 		didSet {
@@ -56,15 +57,15 @@ class CreatePlayerViewModel {
 		return URL(string: "https://github.com/\(trimmedUsername).png")
 	}
 
-	private(set) var validatingUsername: Bool = false {
+	private(set) var isValidatingUsername: Bool = false {
 		didSet {
-			updateErrors(for: CreatePlayerBuilder.Keys.previewSection.rawValue)
+			updateErrors()
 		}
 	}
 
-	private(set) var usernameValid: Bool = false {
+	private(set) var isUsernameValid: Bool = false {
 		didSet {
-			updateErrors(for: CreatePlayerBuilder.Keys.previewSection.rawValue)
+			updateErrors()
 		}
 	}
 
@@ -85,7 +86,7 @@ class CreatePlayerViewModel {
 	}
 
 	var playerIsValid: Bool {
-		return trimmedDisplayName.count > 0 && trimmedUsername.count > 0 && usernameValid
+		return trimmedDisplayName.count > 0 && trimmedUsername.count > 0 && isUsernameValid
 	}
 
 	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
@@ -100,17 +101,19 @@ class CreatePlayerViewModel {
 		case .initialize: break
 		case .updateName(let name):
 			displayName = name
-			updateErrors(for: CreatePlayerBuilder.Keys.createPlayerSection.rawValue)
+			updateErrors()
 		case .updateUsername(let name):
 			username = name
-			updateErrors(for: CreatePlayerBuilder.Keys.createPlayerSection.rawValue)
-			validateUsername()
+			isUsernameValid = false
+			updateErrors()
+
+			debounceValidateUsername(name: name)
 		case .submit(let context):
 			submit(with: context)
 		}
 	}
 
-	private func updateErrors(for key: String) {
+	private func updateErrors() {
 		self.errors = findErrors()
 	}
 
@@ -130,12 +133,12 @@ class CreatePlayerViewModel {
 				] = "Username must contain at least 1 character."
 			}
 
-			if validatingUsername {
+			if isValidatingUsername {
 				errors[
 					CreatePlayerBuilder.Keys.previewSection.rawValue,
 					CreatePlayerBuilder.Keys.Preview.error.rawValue
 				] = "Finding '\(trimmedUsername)'..."
-			} else if !usernameValid {
+			} else if !isUsernameValid {
 				errors[
 					CreatePlayerBuilder.Keys.previewSection.rawValue,
 					CreatePlayerBuilder.Keys.Preview.error.rawValue
@@ -146,16 +149,26 @@ class CreatePlayerViewModel {
 		return errors
 	}
 
-	private func validateUsername() {
-		usernameValid = false
-		validatingUsername = true
+	private func debounceValidateUsername(name: String) {
+		debouncer.debounce { [weak self] in
+			self?.validateUsername(name: name)
+		}
+	}
+
+	private func validateUsername(name: String) {
+		isValidatingUsername = true
 		if let url = avatarURL {
 			imageLoader.fetch(url: url) { [weak self] result in
+				guard let self = self else { return }
+
+				// If the board name was updated after the query started, discard the results
+				guard self.username == name else { return }
+
 				switch result {
 				case .success(let received):
-					if received.0 == self?.avatarURL {
-						self?.usernameValid = true
-						self?.validatingUsername = false
+					if received.0 == self.avatarURL {
+						self.isUsernameValid = true
+						self.isValidatingUsername = false
 					}
 				case .failure(let error):
 					switch error {
@@ -163,16 +176,18 @@ class CreatePlayerViewModel {
 						.invalidHTTPResponse(let url, _),
 						.invalidResponse(let url),
 						.networkingError(let url, _):
-						if url == self?.avatarURL {
-							self?.usernameValid = false
+						if url == self.avatarURL {
+							self.isUsernameValid = false
 						}
-						self?.validatingUsername = false
+						self.isValidatingUsername = false
 					case .invalidURL: break
 					}
 				}
+
+				self.updateErrors()
 			}
 		} else {
-			validatingUsername = false
+			isValidatingUsername = false
 		}
 	}
 

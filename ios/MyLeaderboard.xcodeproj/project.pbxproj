@@ -152,6 +152,7 @@
 		CA55653B2517DB0A0009778A /* MyLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */; };
 		CA5565452517DB1C0009778A /* MyLeaderboardApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */; };
 		CA5565462517DB1C0009778A /* MyLeaderboardApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CA599E5926220B7100473476 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA599E5826220B7100473476 /* Debouncer.swift */; };
 		CA5FC5F423CA0F890029DD61 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FC5F323CA0F890029DD61 /* Avatar.swift */; };
 		CA7BAF14241F888500D4D7B8 /* SpreadsheetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF13241F888500D4D7B8 /* SpreadsheetLayout.swift */; };
 		CA7BAF17241FB8C100D4D7B8 /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7BAF16241FB8C100D4D7B8 /* GamePlay.swift */; };
@@ -428,6 +429,7 @@
 		CA55642A2517DA1D0009778A /* MyLeaderboardApi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MyLeaderboardApi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA55642C2517DA1D0009778A /* MyLeaderboardApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyLeaderboardApi.h; sourceTree = "<group>"; };
 		CA55642D2517DA1D0009778A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA599E5826220B7100473476 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
 		CA5FC5F323CA0F890029DD61 /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		CA6D05D6240D147900412D54 /* PlayerListQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerListQuery.swift; sourceTree = "<group>"; };
 		CA6D05D9240D147900412D54 /* PlayerListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerListResponse.swift; sourceTree = "<group>"; };
@@ -1161,6 +1163,7 @@
 				CABA3EAB22D4B81F00960758 /* MVVM */,
 				CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */,
 				CA5FC5F323CA0F890029DD61 /* Avatar.swift */,
+				CA599E5826220B7100473476 /* Debouncer.swift */,
 				CABA3EA922D4B4DB00960758 /* FTDViewController.swift */,
 				CA7BAF16241FB8C100D4D7B8 /* GamePlay.swift */,
 				CAAE778723024565001A37DC /* LoadingHUD.swift */,
@@ -1928,6 +1931,7 @@
 				CA362F7D230EBE55001063B9 /* PlayerDetailsBuilder.swift in Sources */,
 				CA834B9C230A335600A48C9B /* SpreadsheetBuilder.swift in Sources */,
 				CA519466230F98620041105B /* SettingsViewModel.swift in Sources */,
+				CA599E5926220B7100473476 /* Debouncer.swift in Sources */,
 				CA834B90230A1EB900A48C9B /* SpreadsheetColumnConfig.swift in Sources */,
 				CAE9CF62230F073300D4850E /* PlaysListViewController.swift in Sources */,
 				CA4BAB8B22D6CF0C003347AF /* ControlText.swift in Sources */,
