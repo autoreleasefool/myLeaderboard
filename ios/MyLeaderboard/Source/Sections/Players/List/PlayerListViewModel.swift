@@ -14,14 +14,17 @@ enum PlayerListAction: BaseAction {
 	case playerSelected(GraphID)
 	case addPlayer
 	case graphQLError(GraphAPIError)
+	case showPreferredPlayerSelection
 }
 
 enum PlayerListViewAction: BaseViewAction {
 	case initialize
+	case didAppear
 	case reload
 	case loadMore
 	case selectPlayer(GraphID)
 	case addPlayer
+	case selectPreferredPlayer(PlayerListItem?)
 }
 
 class PlayerListViewModel: ViewModel {
@@ -31,6 +34,14 @@ class PlayerListViewModel: ViewModel {
 
 	let boardId: GraphID
 	var handleAction: ActionHandler
+
+	private var hasFetchedPlayers: Bool = false
+	private var hasAppeared: Bool = false
+	private var hasCheckedForPreferredPlayer: Bool = false
+
+	private var shouldCheckForPreferredPlayer: Bool {
+		return !hasCheckedForPreferredPlayer && hasFetchedPlayers && Player.preferred == nil
+	}
 
 	private(set) var dataLoading: Bool = false {
 		didSet {
@@ -56,6 +67,12 @@ class PlayerListViewModel: ViewModel {
 		switch viewAction {
 		case .initialize, .reload:
 			loadPlayerList()
+		case .didAppear:
+			hasAppeared = true
+			if shouldCheckForPreferredPlayer {
+				hasCheckedForPreferredPlayer = true
+				handleAction(.showPreferredPlayerSelection)
+			}
 		case .loadMore:
 			guard !dataLoading && !loadingMore && hasMore else { return }
 			loadPlayerList(offset: players.count)
@@ -63,6 +80,8 @@ class PlayerListViewModel: ViewModel {
 			handleAction(.playerSelected(playerID))
 		case .addPlayer:
 			handleAction(.addPlayer)
+		case .selectPreferredPlayer(let player):
+			Player.preferred = player
 		}
 	}
 
@@ -77,16 +96,24 @@ class PlayerListViewModel: ViewModel {
 			first: PlayerListViewModel.pageSize,
 			offset: offset
 		).perform { [weak self] in
+			guard let self = self else { return }
+			self.hasFetchedPlayers = true
+
 			switch $0 {
 			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
+				self.handleAction(.graphQLError(error))
 			case .success(let response):
-				self?.handle(response: response, offset: offset)
+				self.handle(response: response, offset: offset)
 			}
 
-			self?.dataLoading = false
+			self.dataLoading = false
 			if offset > 0 {
-				self?.loadingMore = false
+				self.loadingMore = false
+			}
+
+			if self.shouldCheckForPreferredPlayer {
+				self.hasCheckedForPreferredPlayer = true
+				self.handleAction(.showPreferredPlayerSelection)
 			}
 		}
 	}

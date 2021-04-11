@@ -31,6 +31,8 @@ class PlayerListViewController: FTDViewController {
 				self.presentError(error)
 			case .addPlayer:
 				self.showCreatePlayer()
+			case .showPreferredPlayerSelection:
+				self.openPreferredPlayerSelection()
 			}
 		}
 	}
@@ -51,6 +53,11 @@ class PlayerListViewController: FTDViewController {
 
 		viewModel.postViewAction(.initialize)
 		render()
+	}
+
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		viewModel.postViewAction(.didAppear)
 	}
 
 	private func render() {
@@ -88,6 +95,39 @@ class PlayerListViewController: FTDViewController {
 			),
 			sender: self
 		)
+	}
+
+	private func openPreferredPlayerSelection() {
+		let alert = UIAlertController(
+			title: "Select a preferred player?",
+			message: "You haven't selected a preferred player yet. " +
+				"Choosing a preferred player makes it easier to record " +
+				"games by automatically adding them (yourself) to games you record! Pick a preferred player now?",
+			preferredStyle: .alert
+		)
+
+		alert.addAction(UIAlertAction(title: "Pick", style: .default) { [weak self] _ in
+			guard let self = self else { return }
+			self.openPreferredPlayerModal()
+		})
+		alert.addAction(UIAlertAction(title: "Later", style: .cancel))
+
+		present(alert, animated: true)
+	}
+
+	private func openPreferredPlayerModal() {
+		var initiallySelected: Set<GraphID> = []
+		if let player = Player.preferred {
+			initiallySelected.insert(player.graphID)
+		}
+
+		presentModal(PlayerPickerViewController(
+			boardId: viewModel.boardId,
+			multiSelect: false,
+			initiallySelected: initiallySelected
+		) { [weak self] selected in
+			self?.viewModel.postViewAction(.selectPreferredPlayer(selected.first))
+		})
 	}
 
 	private func presentError(_ error: GraphAPIError) {

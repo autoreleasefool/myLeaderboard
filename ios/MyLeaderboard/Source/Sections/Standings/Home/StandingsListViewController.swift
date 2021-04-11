@@ -36,8 +36,7 @@ class StandingsListViewController: FTDViewController {
 				self.showPlayerDetails(for: playerID)
 			case .openPlays(let filter):
 				self.openPlays(filter: filter)
-			case .showPreferredPlayerSelection:
-				self.openPreferredPlayerSelection()
+
 			}
 		}
 	}
@@ -70,11 +69,6 @@ class StandingsListViewController: FTDViewController {
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		spreadsheetBuilder.interfaceSize = traitCollection.horizontalSizeClass
 		render()
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		viewModel.postViewAction(.didAppear)
 	}
 
 	private func render() {
@@ -137,24 +131,6 @@ class StandingsListViewController: FTDViewController {
 
 	private func openPlays(filter: PlayListFilter) {
 		show(PlaysListViewController(boardId: viewModel.boardId, filter: filter), sender: self)
-	}
-
-	private func openPreferredPlayerSelection() {
-		let alert = UIAlertController(
-			title: "Select a preferred player?",
-			message: "You haven't selected a preferred player yet. " +
-				"Choosing a preferred player makes it easier to record " +
-				"games by automatically adding them (yourself) to games you record! Pick a preferred player now?",
-			preferredStyle: .alert
-		)
-
-		alert.addAction(UIAlertAction(title: "Pick", style: .default) { [weak self] _ in
-			guard let self = self else { return }
-			self.openPreferredPlayerModal()
-		})
-		alert.addAction(UIAlertAction(title: "Later", style: .cancel))
-
-		present(alert, animated: true)
 	}
 
 	private func openPreferredPlayerModal() {

@@ -16,12 +16,10 @@ enum StandingsListAction: BaseAction {
 	case openGameDetails(GraphID)
 	case openPlayerDetails(GraphID)
 	case openPlays(PlayListFilter)
-	case showPreferredPlayerSelection
 }
 
 enum StandingsListViewAction: BaseViewAction {
 	case initialize
-	case didAppear
 	case reload
 	case loadMore
 	case recordPlay
@@ -57,12 +55,6 @@ class StandingsListViewModel: ViewModel {
 	private(set) var games: [StandingsGame] = []
 	private(set) var standings: [StandingsGame: StandingsFragment] = [:]
 
-	private var hasCheckedForPreferredPlayer: Bool = false
-
-	private var shouldCheckForPreferredPlayer: Bool {
-		return !hasCheckedForPreferredPlayer && Player.preferred == nil
-	}
-
 	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
 		self.boardId = boardId
 		self.handleAction = handleAction
@@ -75,11 +67,6 @@ class StandingsListViewModel: ViewModel {
 		case .loadMore:
 			guard !dataLoading && !loadingMore && hasMore else { return }
 			loadData(offset: games.count)
-		case .didAppear:
-			if shouldCheckForPreferredPlayer {
-				hasCheckedForPreferredPlayer = true
-				performCheckForPreferredPlayer()
-			}
 		case .recordPlay:
 			handleAction(.openRecordPlay)
 		case .selectGame(let game):
@@ -132,18 +119,6 @@ class StandingsListViewModel: ViewModel {
 
 		self.games.enumerated().forEach { (index, game) in
 			self.standings[game] = response.games[index].asStandingsFragmentFragment
-		}
-	}
-
-	private func performCheckForPreferredPlayer() {
-		PlayerListQuery(board: boardId, first: 1, offset: 0).perform { [weak self] in
-			switch $0 {
-			case .success(let response):
-				guard !response.players.isEmpty else { return }
-				self?.handleAction(.showPreferredPlayerSelection)
-			case .failure:
-				break
-			}
 		}
 	}
 }
