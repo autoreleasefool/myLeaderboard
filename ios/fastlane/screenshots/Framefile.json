@@ -1,0 +1,31 @@
+{
+  "device_frame_version": "latest",
+  "default": {
+    "keyword": {
+      "font": "./fonts/Montserrat-Bold.ttf",
+      "color": "#E9F3FD"
+    },
+    "title": {
+      "font": "./fonts/OpenSans-Italic.ttf",
+      "color": "#DFE9F3"
+    },
+    "padding": 50,
+    "show_complete_frame": false,
+    "stack_title": true,
+    "use_platform": "IOS",
+    "background": "./background.jpg"
+  },
+  "data": [{
+      "filter": "Standings"
+    },
+    {
+      "filter": "GameList"
+    },
+    {
+      "filter": "GameDetails"
+    },
+    {
+      "filter": "PlayerDetails"
+    }
+  ]
+}

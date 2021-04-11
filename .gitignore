@@ -66,3 +66,13 @@ Packages/
 Package.pins
 Package.resolved
 .build/
+
+# fastlane
+
+ios/fastlane/report.xml
+ios/fastlane/Preview.html
+ios/fastlane/screenshots/**/*.png
+ios/fastlane/screenshots/fonts
+ios/fastlane/screenshots/screenshots.html
+ios/fastlane/test_output
+ios/appstore-screenshots/
