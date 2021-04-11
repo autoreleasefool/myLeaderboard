@@ -120,6 +120,7 @@ class ImageLoader {
 
 		let cachedImage = cached(url: url)
 		if let cachedImage = cachedImage, !queryIfCached {
+			finishRequest(.success((url, cachedImage)))
 			return cachedImage
 		}
 
