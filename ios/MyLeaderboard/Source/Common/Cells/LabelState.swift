@@ -14,16 +14,19 @@ typealias LabelCell = HostCell<UILabel, LabelState, LayoutMarginsTableItemLayout
 struct LabelState: ViewState {
 	let text: ControlText
 	let truncationStyle: TruncationStyle
+	let textColor: UIColor?
 	let alignment: NSTextAlignment
 	let size: CGFloat
 
 	init(
 		text: ControlText,
+		textColor: UIColor? = nil,
 		truncationStyle: TruncationStyle = .truncate,
 		alignment: NSTextAlignment = .natural,
 		size: CGFloat = Metrics.Text.body
 	) {
 		self.text = text
+		self.textColor = textColor
 		self.truncationStyle = truncationStyle
 		self.alignment = alignment
 		self.size = size
@@ -36,6 +39,7 @@ struct LabelState: ViewState {
 			return
 		}
 
+		view.textColor = state.textColor ?? .label
 		view.textAlignment = state.alignment
 		view.setControlText(state.text)
 		view.font = view.font.withSize(state.size)
