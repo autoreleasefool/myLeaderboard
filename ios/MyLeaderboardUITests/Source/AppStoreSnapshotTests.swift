@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import MyLeaderboard
+@testable import myLeaderboard
 
 class MyLeaderboardUITests: XCTestCase {
 
