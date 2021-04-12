@@ -1,0 +1,13 @@
+#include "./Version.xcconfig"
+#include "./Shared.xcconfig"
+
+ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor
+ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground
+CODE_SIGN_ENTITLEMENTS = MyLeaderboardWidgetExtension/MyLeaderboardWidgetExtension.entitlements
+INFOPLIST_FILE = MyLeaderboardWidgetExtension/Info.plist
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
+PRODUCT_BUNDLE_IDENTIFIER = $(PRODUCT_BUNDLE_IDENTIFIER_$(CONFIGURATION))
+PRODUCT_BUNDLE_IDENTIFIER_Debug = ca.josephroque.myLeaderboard.debug.MyLeaderboardWidgetExtension
+PRODUCT_BUNDLE_IDENTIFIER_Release = ca.josephroque.myLeaderboard.MyLeaderboardWidgetExtension
+PRODUCT_NAME = myLeaderboard Widget
+SKIP_INSTALL = YES

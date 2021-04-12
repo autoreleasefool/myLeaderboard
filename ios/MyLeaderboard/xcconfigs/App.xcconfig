@@ -1,0 +1,9 @@
+#include "./Version.xcconfig"
+#include "./Shared.xcconfig"
+
+ASSETCATALOG_COMPILER_APPICON_NAME = $(ASSETCATALOG_COMPILER_APPICON_NAME_$(CONFIGURATION))
+ASSETCATALOG_COMPILER_APPICON_NAME_Debug = AppIcon
+ASSETCATALOG_COMPILER_APPICON_NAME_Release = AppIcon
+CODE_SIGN_ENTITLEMENTS = MyLeaderboard/Resources/MyLeaderboard.entitlements
+INFOPLIST_FILE = MyLeaderboard/Info.plist
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks

@@ -1,0 +1,9 @@
+#include "./Version.xcconfig"
+#include "./Shared.xcconfig"
+
+INFOPLIST_FILE = MyLeaderboardUITests/Info.plist
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_paths/Frameworks
+PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboard.myLeaderboardUITests
+PRODUCT_NAME = myLeaderboardUITests
+TEST_TARGET_NAME = myLeaderboard
+TARGET_NAME = myLeaderboardUITests

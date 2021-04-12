@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CAF7B20324A1801B00307B01"
-               BuildableName = "myLeaderboardWidgetExtension.appex"
+               BuildableName = "myLeaderboard.appex"
                BlueprintName = "myLeaderboardWidgetExtension"
                ReferencedContainer = "container:MyLeaderboard.xcodeproj">
             </BuildableReference>

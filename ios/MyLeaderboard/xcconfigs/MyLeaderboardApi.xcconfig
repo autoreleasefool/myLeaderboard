@@ -1,0 +1,4 @@
+#include "./Framework.xcconfig"
+
+INFOPLIST_FILE = MyLeaderboardApi/Info.plist
+PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.myLeaderboard.myLeaderboardApi
