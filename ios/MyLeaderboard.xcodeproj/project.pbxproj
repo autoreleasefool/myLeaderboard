@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		CA018487240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
+		CA0688E226646F0D003F3D25 /* Maple in Frameworks */ = {isa = PBXBuildFile; productRef = CA0688E126646F0D003F3D25 /* Maple */; };
+		CA0688E9266473BD003F3D25 /* Maple in Frameworks */ = {isa = PBXBuildFile; productRef = CA0688E8266473BD003F3D25 /* Maple */; };
+		CA0688EB266473C4003F3D25 /* Maple in Frameworks */ = {isa = PBXBuildFile; productRef = CA0688EA266473C4003F3D25 /* Maple */; };
 		CA0E1BA3261FE50800F1C1BC /* ChangeBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E1BA2261FE50800F1C1BC /* ChangeBoardViewModel.swift */; };
 		CA0E1BA9261FEB2400F1C1BC /* BoardDetailsByNameQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC6261FDC4C00BDF1B7 /* BoardDetailsByNameQuery.swift */; };
 		CA0E1BAF261FEB2600F1C1BC /* BoardDetailsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC5261FDC4C00BDF1B7 /* BoardDetailsQuery.swift */; };
@@ -379,6 +382,7 @@
 		CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyLeaderboardApi+Networking.swift"; sourceTree = "<group>"; };
 		CA0184972415941E0080A5B8 /* PlayerDetailsQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailsQuery.swift; sourceTree = "<group>"; };
 		CA01849B241594370080A5B8 /* PlayerDetailsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailsResponse.swift; sourceTree = "<group>"; };
+		CA0688C926646E59003F3D25 /* maple */ = {isa = PBXFileReference; lastKnownFileType = folder; name = maple; path = ../../maple; sourceTree = "<group>"; };
 		CA0E1BA2261FE50800F1C1BC /* ChangeBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardViewModel.swift; sourceTree = "<group>"; };
 		CA0E1BD3262000BB00F1C1BC /* ChangeBoardBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardBuilder.swift; sourceTree = "<group>"; };
 		CA0E1BDF2620118E00F1C1BC /* ChangeBoardBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardBaseViewController.swift; sourceTree = "<group>"; };
@@ -618,6 +622,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA0688E9266473BD003F3D25 /* Maple in Frameworks */,
 				CA484E2B24A3151F00BE2128 /* Loaf in Frameworks */,
 				CA5565452517DB1C0009778A /* myLeaderboardApi.framework in Frameworks */,
 				CA484DF724A3122F00BE2128 /* myLeaderboardKit.framework in Frameworks */,
@@ -635,6 +640,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA0688E226646F0D003F3D25 /* Maple in Frameworks */,
 				CA45F99C242B4E4C007EC94D /* Loaf in Frameworks */,
 				CA5564312517DA1D0009778A /* myLeaderboardApi.framework in Frameworks */,
 				CA45F9AE242B588F007EC94D /* myLeaderboardKit.framework in Frameworks */,
@@ -652,6 +658,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA0688EB266473C4003F3D25 /* Maple in Frameworks */,
 				CAF7B20824A1801B00307B01 /* SwiftUI.framework in Frameworks */,
 				CA55653B2517DB0A0009778A /* myLeaderboardApi.framework in Frameworks */,
 				CAF7B20624A1801B00307B01 /* WidgetKit.framework in Frameworks */,
@@ -1283,6 +1290,7 @@
 		CAC9066022D0F70B0075B033 = {
 			isa = PBXGroup;
 			children = (
+				CA0688C926646E59003F3D25 /* maple */,
 				CAC9066B22D0F70B0075B033 /* MyLeaderboard */,
 				CAC9068B22D0F70F0075B033 /* MyLeaderboardUITests */,
 				CA484DD924A310F400BE2128 /* MyLeaderboardAppClip */,
@@ -1512,6 +1520,7 @@
 			name = myLeaderboardAppClip;
 			packageProductDependencies = (
 				CA484E2A24A3151F00BE2128 /* Loaf */,
+				CA0688E8266473BD003F3D25 /* Maple */,
 			);
 			productName = MyLeaderboardAppClip;
 			productReference = CA484DD824A310F400BE2128 /* myLeaderboard App Clip.app */;
@@ -1558,6 +1567,7 @@
 			name = myLeaderboard;
 			packageProductDependencies = (
 				CA45F99B242B4E4C007EC94D /* Loaf */,
+				CA0688E126646F0D003F3D25 /* Maple */,
 			);
 			productName = MyLeaderboard;
 			productReference = CAC9066922D0F70B0075B033 /* myLeaderboard.app */;
@@ -1597,6 +1607,9 @@
 				CA55653E2517DB0A0009778A /* PBXTargetDependency */,
 			);
 			name = myLeaderboardWidgetExtension;
+			packageProductDependencies = (
+				CA0688EA266473C4003F3D25 /* Maple */,
+			);
 			productName = MyLeaderboardWidgetExtensionExtension;
 			productReference = CAF7B20424A1801B00307B01 /* myLeaderboard Widget.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -2255,6 +2268,18 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CA0688E126646F0D003F3D25 /* Maple */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Maple;
+		};
+		CA0688E8266473BD003F3D25 /* Maple */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Maple;
+		};
+		CA0688EA266473C4003F3D25 /* Maple */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Maple;
+		};
 		CA45F99B242B4E4C007EC94D /* Loaf */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CA45F99A242B4E4C007EC94D /* XCRemoteSwiftPackageReference "loaf" */;

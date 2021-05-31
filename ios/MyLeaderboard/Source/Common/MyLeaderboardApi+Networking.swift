@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Maple
 import myLeaderboardApi
 
 typealias GraphAPIQuery = GraphApiQuery
