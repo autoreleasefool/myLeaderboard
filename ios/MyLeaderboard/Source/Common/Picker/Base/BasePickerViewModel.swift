@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
@@ -13,7 +14,7 @@ protocol PickerItemQueryable {
 	associatedtype Query: GraphApiQuery & ResponseAssociable
 	associatedtype Item: Identifiable
 
-	func query(pageSize: Int, offset: Int, completion: @escaping (Query.ResponseResult) -> Void)
+	func query(pageSize: Int, offset: Int) -> AnyPublisher<Query.Response, MyLeaderboardAPIError>
 	func pickerItems(from: Query.Response) -> [Item]
 }
 
@@ -21,7 +22,7 @@ enum PickerAction<Item: Identifiable>: BaseAction {
 	case dataChanged
 	case limitExceeded(Int)
 	case donePicking([Item])
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 }
 
 enum PickerViewAction<Item: Identifiable>: BaseViewAction {
@@ -40,6 +41,8 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 	private let limit: Int?
 	private var queryable: Queryable
 	var handleAction: ActionHandler
+
+	private var queryCancellable: AnyCancellable?
 
 	private(set) var dataLoading: Bool = false {
 		didSet {
@@ -103,19 +106,19 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 			loadingMore = true
 		}
 
-		queryable.query(pageSize: pageSize, offset: offset) { [weak self] result in
-			switch result {
-			case .success(let response):
-				self?.handle(items: self?.queryable.pickerItems(from: response) ?? [], offset: offset)
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			}
+		queryCancellable = queryable.query(pageSize: pageSize, offset: offset)
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
 
-			self?.dataLoading = false
-			if offset > 0 {
-				self?.loadingMore = false
-			}
-		}
+				self?.dataLoading = false
+				if offset > 0 {
+					self?.loadingMore = false
+				}
+			}, receiveValue: { [weak self] value in
+				self?.handle(items: self?.queryable.pickerItems(from: value) ?? [], offset: offset)
+			})
 	}
 
 	private func handle(items: [Item], offset: Int) {

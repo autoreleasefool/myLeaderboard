@@ -90,7 +90,7 @@ class BasePickerViewController<Item, State: ViewState, Queryable: PickerItemQuer
 		fatalError("Pickers must implement renderItems")
 	}
 
-	private func presentError(_ error: GraphAPIError) {
+	private func presentError(_ error: MyLeaderboardAPIError) {
 		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 

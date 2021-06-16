@@ -9,8 +9,14 @@
 /* Begin PBXBuildFile section */
 		CA018487240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA018486240EFDBD0080A5B8 /* MyLeaderboardApi+Networking.swift */; };
 		CA0688E226646F0D003F3D25 /* Maple in Frameworks */ = {isa = PBXBuildFile; productRef = CA0688E126646F0D003F3D25 /* Maple */; };
+		CA0688E5266472EB003F3D25 /* MyLeaderboard+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0688E4266472EB003F3D25 /* MyLeaderboard+API.swift */; };
+		CA0688E6266472F7003F3D25 /* MyLeaderboard+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0688E4266472EB003F3D25 /* MyLeaderboard+API.swift */; };
+		CA0688E7266472F7003F3D25 /* MyLeaderboard+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0688E4266472EB003F3D25 /* MyLeaderboard+API.swift */; };
 		CA0688E9266473BD003F3D25 /* Maple in Frameworks */ = {isa = PBXBuildFile; productRef = CA0688E8266473BD003F3D25 /* Maple */; };
 		CA0688EB266473C4003F3D25 /* Maple in Frameworks */ = {isa = PBXBuildFile; productRef = CA0688EA266473C4003F3D25 /* Maple */; };
+		CA0688F126692835003F3D25 /* MyLeaderboard+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0688F026692835003F3D25 /* MyLeaderboard+Error.swift */; };
+		CA0688F226692835003F3D25 /* MyLeaderboard+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0688F026692835003F3D25 /* MyLeaderboard+Error.swift */; };
+		CA0688F326692835003F3D25 /* MyLeaderboard+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0688F026692835003F3D25 /* MyLeaderboard+Error.swift */; };
 		CA0E1BA3261FE50800F1C1BC /* ChangeBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E1BA2261FE50800F1C1BC /* ChangeBoardViewModel.swift */; };
 		CA0E1BA9261FEB2400F1C1BC /* BoardDetailsByNameQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC6261FDC4C00BDF1B7 /* BoardDetailsByNameQuery.swift */; };
 		CA0E1BAF261FEB2600F1C1BC /* BoardDetailsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAF5DC5261FDC4C00BDF1B7 /* BoardDetailsQuery.swift */; };
@@ -383,6 +389,8 @@
 		CA0184972415941E0080A5B8 /* PlayerDetailsQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailsQuery.swift; sourceTree = "<group>"; };
 		CA01849B241594370080A5B8 /* PlayerDetailsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailsResponse.swift; sourceTree = "<group>"; };
 		CA0688C926646E59003F3D25 /* maple */ = {isa = PBXFileReference; lastKnownFileType = folder; name = maple; path = ../../maple; sourceTree = "<group>"; };
+		CA0688E4266472EB003F3D25 /* MyLeaderboard+API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyLeaderboard+API.swift"; sourceTree = "<group>"; };
+		CA0688F026692835003F3D25 /* MyLeaderboard+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyLeaderboard+Error.swift"; sourceTree = "<group>"; };
 		CA0E1BA2261FE50800F1C1BC /* ChangeBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardViewModel.swift; sourceTree = "<group>"; };
 		CA0E1BD3262000BB00F1C1BC /* ChangeBoardBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardBuilder.swift; sourceTree = "<group>"; };
 		CA0E1BDF2620118E00F1C1BC /* ChangeBoardBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeBoardBaseViewController.swift; sourceTree = "<group>"; };
@@ -668,6 +676,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA0688E3266472DB003F3D25 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				CA0688E4266472EB003F3D25 /* MyLeaderboard+API.swift */,
+				CA0688F026692835003F3D25 /* MyLeaderboard+Error.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		CA1D97E12406EE3E0011786E /* Queries */ = {
 			isa = PBXGroup;
 			children = (
@@ -1184,6 +1201,7 @@
 		CAB3871A22D1906D00349B1F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CA0688E3266472DB003F3D25 /* API */,
 				CA834B89230A1DCD00A48C9B /* Spreadsheet */,
 				CAE16DF922F44C3800F1304C /* Picker */,
 				CA4BAB8722D6CEBC003347AF /* Cells */,
@@ -1775,6 +1793,7 @@
 				CA484E1424A312FF00BE2128 /* GamePickerViewController.swift in Sources */,
 				CA484E1124A312F400BE2128 /* ViewModel.swift in Sources */,
 				CA484E1624A312FF00BE2128 /* BasePickerViewController.swift in Sources */,
+				CA0688E6266472F7003F3D25 /* MyLeaderboard+API.swift in Sources */,
 				CA484E0924A3128E00BE2128 /* Avatar.swift in Sources */,
 				CA484E2124A3139100BE2128 /* CombinedView.swift in Sources */,
 				CA484E1024A312F300BE2128 /* ViewAction.swift in Sources */,
@@ -1786,6 +1805,7 @@
 				CA484E0B24A3129900BE2128 /* Identifiable.swift in Sources */,
 				CA484E0C24A312AD00BE2128 /* NewPlay+Extensions.swift in Sources */,
 				CA484E2724A313D000BE2128 /* ControlText.swift in Sources */,
+				CA0688F226692835003F3D25 /* MyLeaderboard+Error.swift in Sources */,
 				CA484DF524A311D900BE2128 /* RecordPlayViewModel.swift in Sources */,
 				CA484E0A24A3129500BE2128 /* ImageLoader.swift in Sources */,
 				CA484E2324A313A200BE2128 /* PlayerPlayCell.swift in Sources */,
@@ -1909,6 +1929,7 @@
 				CA51946B230FA8720041105B /* ContributorsListViewController.swift in Sources */,
 				CA27F9DD232EEE410023924A /* UserDefaults+Extensions.swift in Sources */,
 				CA4BAB9022D6DC2F003347AF /* UIControl+Extensions.swift in Sources */,
+				CA0688F126692835003F3D25 /* MyLeaderboard+Error.swift in Sources */,
 				CA362F79230EBE41001063B9 /* PlayerDetailsViewController.swift in Sources */,
 				CAAF5DCF261FDED800BDF1B7 /* Board.swift in Sources */,
 				CAE56F9222F48C8B00FE0998 /* PlayerPickerViewController.swift in Sources */,
@@ -1937,6 +1958,7 @@
 				CAB3872022D2254000349B1F /* Action.swift in Sources */,
 				CA834B8E230A1E4D00A48C9B /* SpreadsheetRowConfig.swift in Sources */,
 				CA51946D230FA9F80041105B /* LicensesListViewController.swift in Sources */,
+				CA0688E5266472EB003F3D25 /* MyLeaderboard+API.swift in Sources */,
 				CA96220322D592AA00479A0B /* CreateGameViewController.swift in Sources */,
 				CA834B92230A1EDD00A48C9B /* SpreadsheetBorderConfig.swift in Sources */,
 				CA834B86230A1D8200A48C9B /* StandingsListViewModel.swift in Sources */,
@@ -1997,10 +2019,12 @@
 			files = (
 				CAF7B23624A18F6600307B01 /* MyLeaderboardApi+Networking.swift in Sources */,
 				CAF7B24224A19A7900307B01 /* Colors.swift in Sources */,
+				CA0688E7266472F7003F3D25 /* MyLeaderboard+API.swift in Sources */,
 				CAF7B21024A1801F00307B01 /* MyLeaderboardWidgetExtension.intentdefinition in Sources */,
 				CAF7B24324A19B2D00307B01 /* RecordFragment+Extensions.swift in Sources */,
 				CAF7B23C24A1932D00307B01 /* GameSummary.swift in Sources */,
 				CAF7B24A24A22E0900307B01 /* RecordEntry.swift in Sources */,
+				CA0688F326692835003F3D25 /* MyLeaderboard+Error.swift in Sources */,
 				CAB20C8A2517C95700271FC2 /* MyLeaderboardWidget.swift in Sources */,
 				CAB20CCB2517D61900271FC2 /* NoPreferredPlayer.swift in Sources */,
 				CAF7B24824A22A9600307B01 /* GameSummaryProvider.swift in Sources */,

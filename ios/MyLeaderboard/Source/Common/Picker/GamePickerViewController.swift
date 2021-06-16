@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
@@ -13,8 +14,8 @@ struct GameListQueryable: PickerItemQueryable {
 	typealias Query = MyLeaderboardApi.GameListQuery
 	typealias Response = MyLeaderboardApi.GameListResponse
 
-	func query(pageSize: Int, offset: Int, completion: @escaping (Query.ResponseResult) -> Void) {
-		Query(first: pageSize, offset: offset).perform(callback: completion)
+	func query(pageSize: Int, offset: Int) -> AnyPublisher<Query.Response, MyLeaderboardAPIError> {
+		MLApi.shared.fetch(query: Query(first: pageSize, offset: offset))
 	}
 
 	func pickerItems(from: Response) -> [GameListItem] {

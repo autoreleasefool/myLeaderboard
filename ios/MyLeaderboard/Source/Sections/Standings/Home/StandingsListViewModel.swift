@@ -6,12 +6,13 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
 enum StandingsListAction: BaseAction {
 	case dataChanged
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 	case openRecordPlay
 	case openGameDetails(GraphID)
 	case openPlayerDetails(GraphID)
@@ -55,6 +56,8 @@ class StandingsListViewModel: ViewModel {
 	private(set) var games: [StandingsGame] = []
 	private(set) var standings: [StandingsGame: StandingsFragment] = [:]
 
+	private var cancellable: AnyCancellable?
+
 	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
 		self.boardId = boardId
 		self.handleAction = handleAction
@@ -88,23 +91,25 @@ class StandingsListViewModel: ViewModel {
 			loadingMore = true
 		}
 
-		StandingsQuery(
+		let query = StandingsQuery(
 			board: boardId,
 			first: StandingsListViewModel.pageSize,
 			offset: offset
-		).perform { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			case .success(let response):
-				self?.handle(response: response, offset: offset)
-			}
+		)
 
-			self?.dataLoading = false
-			if offset > 0 {
-				self?.loadingMore = false
-			}
-		}
+		cancellable = MLApi.shared.fetch(query: query)
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+
+				self?.dataLoading = false
+				if offset > 0 {
+					self?.loadingMore = false
+				}
+			}, receiveValue: { [weak self] value in
+				self?.handle(response: value, offset: offset)
+			})
 	}
 
 	private func handle(response: StandingsQuery.Response, offset: Int) {

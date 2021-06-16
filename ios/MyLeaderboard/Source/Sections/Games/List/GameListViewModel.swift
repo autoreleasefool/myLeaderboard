@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
@@ -13,7 +14,7 @@ enum GameListAction: BaseAction {
 	case dataChanged
 	case gameSelected(GraphID)
 	case addGame
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 }
 
 enum GameListViewAction: BaseViewAction {
@@ -47,6 +48,8 @@ class GameListViewModel: ViewModel {
 
 	private(set) var games: [GameListItem] = []
 
+	private var cancellable: AnyCancellable?
+
 	init(boardId: GraphID, handleAction: @escaping ActionHandler) {
 		self.boardId = boardId
 		self.handleAction = handleAction
@@ -72,19 +75,21 @@ class GameListViewModel: ViewModel {
 			loadingMore = true
 		}
 
-		GameListQuery(first: GameListViewModel.pageSize, offset: offset).perform { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			case .success(let response):
-				self?.handle(response: response, offset: offset)
-			}
+		let query = GameListQuery(first: GameListViewModel.pageSize, offset: offset)
 
-			self?.dataLoading = false
-			if offset > 0 {
-				self?.loadingMore = false
-			}
-		}
+		cancellable = MLApi.shared.fetch(query: query)
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+
+				self?.dataLoading = false
+				if offset > 0 {
+					self?.loadingMore = false
+				}
+			}, receiveValue: { [weak self] value in
+				self?.handle(response: value, offset: offset)
+			})
 	}
 
 	private func handle(response: GameListQuery.Response, offset: Int) {

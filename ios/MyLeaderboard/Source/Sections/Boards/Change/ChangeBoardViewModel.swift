@@ -6,13 +6,14 @@
 //  Copyright © 2021 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
 enum ChangeBoardAction: BaseAction {
 	case updatedData
 	case openBoard(BoardDetailsFragment)
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 	case error(String)
 }
 
@@ -48,6 +49,8 @@ class ChangeBoardViewModel: ViewModel {
 		}
 	}
 
+	private var cancellables: Set<AnyCancellable> = []
+
 	init(handleAction: @escaping ActionHandler) {
 		self.handleAction = handleAction
 	}
@@ -73,58 +76,57 @@ class ChangeBoardViewModel: ViewModel {
 	private func createBoard(withName name: String) {
 		isLoading = true
 
-		CreateBoardMutation(boardName: name).perform { [weak self] in
-			self?.isLoading = false
-			switch $0 {
-			case .success(let response):
-				if let board = response.createBoard?.asBoardDetailsFragmentFragment {
+		MLApi.shared.fetch(query: CreateBoardMutation(boardName: name))
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+				self?.isLoading = false
+			}, receiveValue: { [weak self] value in
+				if let board = value.createBoard?.asBoardDetailsFragmentFragment {
 					self?.handleAction(.openBoard(board))
 				} else {
 					self?.handleAction(.error("Failed to create board"))
 				}
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			}
-		}
+			})
+			.store(in: &cancellables)
 	}
 
 	private func joinBoard(withName name: String) {
 		isLoading = true
 
-		FindBoardQuery(boardName: name).perform { [weak self] in
-			self?.isLoading = false
-			switch $0 {
-			case .success(let response):
-				if let board = response.findBoardByName?.asBoardDetailsFragmentFragment {
+		MLApi.shared.fetch(query: FindBoardQuery(boardName: name))
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+				self?.isLoading = false
+			}, receiveValue: { [weak self] value in
+				if let board = value.findBoardByName?.asBoardDetailsFragmentFragment {
 					self?.handleAction(.openBoard(board))
 				} else {
 					self?.handleAction(.error("'\(name)'not found"))
 				}
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			}
-		}
+			})
+			.store(in: &cancellables)
 	}
 
 	private func findBoard(withName name: String) {
-		FindBoardQuery(boardName: boardName).perform { [weak self] in
-			guard let self = self else { return }
+		MLApi.shared.fetch(query: FindBoardQuery(boardName: name))
+			.sink(receiveCompletion: { [weak self] _ in
+				guard self?.boardName == name else { return }
 
-			// If the board name was updated after the query started, discard the results
-			guard self.boardName == name else { return }
+				self?.boardState = .undetermined
+				self?.handleAction(.updatedData)
+			}, receiveValue: { [weak self] value in
+				guard self?.boardName == name else { return }
 
-			switch $0 {
-			case .success(let response):
-				if response.findBoardByName?.asBoardDetailsFragmentFragment != nil {
-					self.boardState = .isJoinable
+				if value.findBoardByName?.asBoardDetailsFragmentFragment != nil {
+					self?.boardState = .isJoinable
 				} else {
-					self.boardState = .isCreatable
+					self?.boardState = .isCreatable
 				}
-			case .failure:
-				self.boardState = .undetermined
-			}
-
-			self.handleAction(.updatedData)
-		}
+			})
+			.store(in: &cancellables)
 	}
 }

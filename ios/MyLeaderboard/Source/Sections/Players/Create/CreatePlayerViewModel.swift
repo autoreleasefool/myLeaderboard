@@ -6,13 +6,14 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import myLeaderboardApi
 import UIKit
 
 enum CreatePlayerAction {
 	case playerUpdated
 	case playerCreated(NewPlayer)
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 	case userErrors
 }
 
@@ -31,6 +32,8 @@ class CreatePlayerViewModel {
 	var handleAction: ActionHandler
 	var imageLoader = ImageLoader(queryIfCached: true)
 	private let debouncer = Debouncer(debounceTime: 0.4)
+
+	private var cancellable: AnyCancellable?
 
 	private(set) var displayName: String = "" {
 		didSet {
@@ -213,22 +216,25 @@ class CreatePlayerViewModel {
 
 		isLoading = true
 
-		CreatePlayerMutation(
+		let mutation = CreatePlayerMutation(
 			displayName: trimmedDisplayName,
 			username: trimmedUsername,
 			board: boardId
-		).perform { [weak self] in
-			self?.isLoading = false
-			switch $0 {
-			case .success(let response):
-				if let newPlayer = response.createPlayer?.asNewPlayerFragmentFragment {
+		)
+
+		cancellable = MLApi.shared.fetch(query: mutation)
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+
+				self?.isLoading = false
+			}, receiveValue: { [weak self] value in
+				if let newPlayer = value.createPlayer?.asNewPlayerFragmentFragment {
 					self?.handleAction(.playerCreated(newPlayer))
 				} else {
 					self?.handleAction(.graphQLError(.invalidResponse))
 				}
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			}
-		}
+			})
 	}
 }

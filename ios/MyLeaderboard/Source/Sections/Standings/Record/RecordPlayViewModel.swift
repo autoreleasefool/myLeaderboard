@@ -6,12 +6,13 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
 enum RecordPlayAction: BaseAction {
 	case dataChanged
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 	case userErrors
 	case playCreated(NewPlay)
 	case openPlayerPicker
@@ -37,6 +38,9 @@ class RecordPlayViewModel: ViewModel {
 
 	let boardId: GraphID
 	var handleAction: ActionHandler
+
+	private var fetchGameDetailsCancellable: AnyCancellable?
+	private var addPlayCancellable: AnyCancellable?
 
 	private(set) var selectedGameId: GraphID? = nil {
 		didSet {
@@ -171,16 +175,15 @@ class RecordPlayViewModel: ViewModel {
 	}
 
 	private func fetchGameDetails(for gameId: GraphID) {
-		GameListItemQuery(id: gameId).perform { [weak self] result in
-			switch result {
-			case .success(let response):
-				if self?.selectedGame == nil {
-					self?.selectedGame = response.game?.asGameListItemFragment
+		fetchGameDetailsCancellable = MLApi.shared.fetch(query: GameListItemQuery(id: gameId))
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
 				}
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			}
-		}
+			}, receiveValue: { [weak self] value in
+				guard self?.selectedGame == nil else { return }
+				self?.selectedGame = value.game?.asGameListItemFragment
+			})
 	}
 
 	private func createPlay() {
@@ -202,26 +205,28 @@ class RecordPlayViewModel: ViewModel {
 			}
 		}
 
-		RecordPlayMutation(
+		let mutation = RecordPlayMutation(
 			players: self.selectedPlayers.map { $0.id },
 			winners: self.winners,
 			game: game.id,
 			board: boardId,
 			scores: finalScores.isEmpty ? nil : finalScores
-		).perform { [weak self] in
-			self?.isLoading = false
-			switch $0 {
-			case .success(let response):
-				if let newPlay = response.recordPlay?.asNewPlayFragmentFragment {
+		)
+
+		addPlayCancellable = MLApi.shared.fetch(query: mutation)
+			.sink(receiveCompletion: { [weak self] result in
+				self?.isLoading = false
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+			}, receiveValue: { [weak self] value in
+				if let newPlay = value.recordPlay?.asNewPlayFragmentFragment {
 					self?.resetState()
 					self?.handleAction(.playCreated(newPlay))
 				} else {
 					self?.handleAction(.graphQLError(.invalidResponse))
 				}
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			}
-		}
+			})
 	}
 
 	private func resetState() {

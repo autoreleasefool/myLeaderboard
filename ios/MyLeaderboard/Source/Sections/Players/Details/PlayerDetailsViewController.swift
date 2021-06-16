@@ -106,7 +106,7 @@ class PlayerDetailsViewController: FTDViewController {
 		show(PlaysListViewController(boardId: viewModel.boardId, filter: filter), sender: self)
 	}
 
-	private func presentError(_ error: GraphAPIError) {
+	private func presentError(_ error: MyLeaderboardAPIError) {
 		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 

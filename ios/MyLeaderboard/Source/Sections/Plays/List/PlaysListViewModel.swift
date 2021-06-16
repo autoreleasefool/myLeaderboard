@@ -6,12 +6,13 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
 enum PlaysListAction: BaseAction {
 	case dataChanged
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 }
 
 enum PlaysListViewAction: BaseViewAction {
@@ -30,6 +31,8 @@ class PlaysListViewModel: ViewModel {
 	var handleAction: ActionHandler
 
 	let filter: PlayListFilter
+
+	private var cancellable: AnyCancellable?
 
 	private(set) var dataLoading: Bool = false {
 		didSet {
@@ -69,25 +72,27 @@ class PlaysListViewModel: ViewModel {
 			loadingMore = true
 		}
 
-		PlayListQuery(
+		let query = PlayListQuery(
 			first: PlaysListViewModel.pageSize,
 			offset: offset,
 			game: filter.gameID,
 			board: boardId,
 			players: filter.playerIDs
-		).perform { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			case .success(let response):
-				self?.handle(response: response, offset: offset)
-			}
+		)
 
-			self?.dataLoading = false
-			if offset > 0 {
-				self?.loadingMore = false
-			}
-		}
+		cancellable = MLApi.shared.fetch(query: query)
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+
+				self?.dataLoading = false
+				if offset > 0 {
+					self?.loadingMore = false
+				}
+			}, receiveValue: { [weak self] value in
+				self?.handle(response: value, offset: offset)
+			})
 	}
 
 	private func playerName(for playerID: GraphID, from play: PlayListItem) -> String? {

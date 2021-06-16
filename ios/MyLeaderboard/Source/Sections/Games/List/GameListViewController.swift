@@ -90,7 +90,7 @@ class GameListViewController: FTDViewController {
 		)
 	}
 
-	private func presentError(_ error: GraphAPIError) {
+	private func presentError(_ error: MyLeaderboardAPIError) {
 		Loaf(error.shortDescription, state: .error, sender: self).show()
 	}
 

@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
@@ -13,7 +14,7 @@ enum PlayerListAction: BaseAction {
 	case dataChanged
 	case playerSelected(GraphID)
 	case addPlayer
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 	case showPreferredPlayerSelection
 }
 
@@ -42,6 +43,8 @@ class PlayerListViewModel: ViewModel {
 	private var shouldCheckForPreferredPlayer: Bool {
 		return !hasCheckedForPreferredPlayer && hasFetchedPlayers && players.count > 0 && Player.preferred == nil
 	}
+
+	private var cancellable: AnyCancellable?
 
 	private(set) var dataLoading: Bool = false {
 		didSet {
@@ -91,31 +94,33 @@ class PlayerListViewModel: ViewModel {
 			loadingMore = true
 		}
 
-		PlayerListQuery(
+		let query = PlayerListQuery(
 			board: boardId,
 			first: PlayerListViewModel.pageSize,
 			offset: offset
-		).perform { [weak self] in
-			guard let self = self else { return }
-			self.hasFetchedPlayers = true
+		)
 
-			switch $0 {
-			case .failure(let error):
-				self.handleAction(.graphQLError(error))
-			case .success(let response):
-				self.handle(response: response, offset: offset)
-			}
+		cancellable = MLApi.shared.fetch(query: query)
+			.sink(receiveCompletion: { [weak self] result in
+				guard let self = self else { return }
+				self.hasFetchedPlayers = true
 
-			self.dataLoading = false
-			if offset > 0 {
-				self.loadingMore = false
-			}
+				if case let .failure(error) = result {
+					self.handleAction(.graphQLError(error))
+				}
 
-			if self.shouldCheckForPreferredPlayer {
-				self.hasCheckedForPreferredPlayer = true
-				self.handleAction(.showPreferredPlayerSelection)
-			}
-		}
+				self.dataLoading = false
+				if offset > 0 {
+					self.loadingMore = false
+				}
+
+				if self.shouldCheckForPreferredPlayer {
+					self.hasCheckedForPreferredPlayer = true
+					self.handleAction(.showPreferredPlayerSelection)
+				}
+			}, receiveValue: { [weak self] value in
+				self?.handle(response: value, offset: offset)
+			})
 	}
 
 	private func handle(response: PlayerListQuery.Response, offset: Int) {

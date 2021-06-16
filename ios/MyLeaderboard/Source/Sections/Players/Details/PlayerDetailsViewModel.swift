@@ -6,12 +6,13 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import myLeaderboardApi
 
 enum PlayerDetailsAction: BaseAction {
 	case dataChanged
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 	case gameSelected(GraphID)
 	case playerSelected(GraphID)
 	case showPlays(PlayListFilter)
@@ -45,6 +46,8 @@ class PlayerDetailsViewModel: ViewModel {
 	private(set) var records: [PlayerDetailsRecord] = []
 	private(set) var plays: [RecentPlay] = []
 
+	private var cancellable: AnyCancellable?
+
 	init(playerID: GraphID, boardId: GraphID, handleAction: @escaping ActionHandler) {
 		self.playerID = playerID
 		self.boardId = boardId
@@ -65,18 +68,20 @@ class PlayerDetailsViewModel: ViewModel {
 		}
 	}
 
-	private func loadData(retry: Bool = true) {
+	private func loadData() {
 		dataLoading = true
-		PlayerDetailsQuery(id: self.playerID).perform { [weak self] in
-			switch $0 {
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			case .success(let response):
-				self?.handle(response: response)
-			}
 
-			self?.dataLoading = false
-		}
+		let query = PlayerDetailsQuery(id: self.playerID)
+		cancellable = MLApi.shared.fetch(query: query)
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+
+				self?.dataLoading = false
+			}, receiveValue: { [weak self] value in
+				self?.handle(response: value)
+			})
 	}
 
 	private func handle(response: MyLeaderboardApi.PlayerDetailsResponse) {

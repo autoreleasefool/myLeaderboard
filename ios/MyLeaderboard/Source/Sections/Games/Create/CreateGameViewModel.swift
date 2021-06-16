@@ -6,6 +6,7 @@
 //  Copyright © 2019 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import myLeaderboardApi
 import UIKit
 
@@ -13,7 +14,7 @@ enum CreateGameAction {
 	case nameUpdated(String)
 	case hasScoresUpdated(Bool)
 	case gameCreated(NewGame)
-	case graphQLError(GraphAPIError)
+	case graphQLError(MyLeaderboardAPIError)
 	case userErrors
 }
 
@@ -29,6 +30,8 @@ class CreateGameViewModel {
 	typealias ActionHandler = (_ action: CreateGameAction) -> Void
 
 	var handleAction: ActionHandler
+
+	private var cancellable: AnyCancellable?
 
 	private(set) var gameName: String = "" {
 		didSet {
@@ -128,18 +131,20 @@ class CreateGameViewModel {
 
 		isLoading = true
 
-		CreateGameMutation(name: trimmedGameName, hasScores: hasScores).perform { [weak self] in
-			self?.isLoading = false
-			switch $0 {
-			case .success(let response):
-				if let newGame = response.createGame?.asNewGameFragmentFragment {
+		let mutation = CreateGameMutation(name: trimmedGameName, hasScores: hasScores)
+		cancellable = MLApi.shared.fetch(query: mutation)
+			.sink(receiveCompletion: { [weak self] result in
+				if case let .failure(error) = result {
+					self?.handleAction(.graphQLError(error))
+				}
+
+				self?.isLoading = false
+			}, receiveValue: { [weak self] value in
+				if let newGame = value.createGame?.asNewGameFragmentFragment {
 					self?.handleAction(.gameCreated(newGame))
 				} else {
 					self?.handleAction(.graphQLError(.invalidResponse))
 				}
-			case .failure(let error):
-				self?.handleAction(.graphQLError(error))
-			}
-		}
+			})
 	}
 }

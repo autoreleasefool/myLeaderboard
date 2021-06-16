@@ -11,11 +11,11 @@ import Foundation
 import myLeaderboardApi
 import WidgetKit
 
-struct GameSummaryProvider: TimelineProvider {
+class GameSummaryProvider: TimelineProvider {
 	typealias SmallQuery = MyLeaderboardApi.SmallWidgetQuery
 	typealias MediumQuery = MyLeaderboardApi.MediumWidgetQuery
 
-	var cancellable: AnyCancellable?
+	private var cancellable: AnyCancellable?
 
 	func placeholder(in context: Context) -> RecordEntry {
 		RecordEntry(content: .preview)
@@ -46,17 +46,20 @@ struct GameSummaryProvider: TimelineProvider {
 			return
 		}
 
-		SmallQuery(player: preferredPlayer.id).perform {
-			switch $0 {
-			case .success(let response):
-				let images = response.player?.records.map { $0.game.image }.compactMap { $0 } ?? []
-				ImageLoader.shared.bulkPreFetch(images) {
-					completion(RecordEntry(from: response))
+		cancellable = MLApi.shared.fetch(query: SmallQuery(player: preferredPlayer.id))
+			.sink(receiveCompletion: { result in
+				if case .failure = result {
+					completion(nil)
 				}
-			case .failure:
-				completion(nil)
-			}
-		}
+			}, receiveValue: { value in
+				let images = value.player?.records.map {
+					$0.game.image
+				}.compactMap { $0} ?? []
+
+				ImageLoader.shared.bulkPreFetch(images) {
+					completion(RecordEntry(from: value))
+				}
+			})
 	}
 
 	private func performMediumQuery(completion: @escaping (RecordEntry?) -> Void) {
@@ -65,19 +68,19 @@ struct GameSummaryProvider: TimelineProvider {
 			return
 		}
 
-		MediumQuery(player: preferredPlayer.id).perform {
-			switch $0 {
-			case .success(let response):
-				let images = response.player?.records.map {
+		cancellable = MLApi.shared.fetch(query: MediumQuery(player: preferredPlayer.id))
+			.sink(receiveCompletion: { result in
+				if case .failure = result {
+					completion(nil)
+				}
+			}, receiveValue: { value in
+				let images = value.player?.records.map {
 					$0.asMediumWidgetRecordFragmentFragment.game.image
-				}.compactMap { $0 } ?? []
+				}.compactMap { $0} ?? []
 
 				ImageLoader.shared.bulkPreFetch(images) {
-					completion(RecordEntry(from: response))
+					completion(RecordEntry(from: value))
 				}
-			case .failure:
-				completion(nil)
-			}
-		}
+			})
 	}
 }
