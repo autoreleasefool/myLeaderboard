@@ -78,12 +78,12 @@ class ChangeBoardViewModel: ViewModel {
 
 		MLApi.shared.fetch(query: CreateBoardMutation(boardName: name))
 			.sink(receiveCompletion: { [weak self] result in
-				if case let .failure(error) = result {
-					self?.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+					self?.handleAction(.graphQLError(graphError))
 				}
 				self?.isLoading = false
 			}, receiveValue: { [weak self] value in
-				if let board = value.createBoard?.asBoardDetailsFragmentFragment {
+				if let board = value.response?.createBoard?.asBoardDetailsFragmentFragment {
 					self?.handleAction(.openBoard(board))
 				} else {
 					self?.handleAction(.error("Failed to create board"))
@@ -97,12 +97,12 @@ class ChangeBoardViewModel: ViewModel {
 
 		MLApi.shared.fetch(query: FindBoardQuery(boardName: name))
 			.sink(receiveCompletion: { [weak self] result in
-				if case let .failure(error) = result {
-					self?.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+					self?.handleAction(.graphQLError(graphError))
 				}
 				self?.isLoading = false
 			}, receiveValue: { [weak self] value in
-				if let board = value.findBoardByName?.asBoardDetailsFragmentFragment {
+				if let board = value.response?.findBoardByName?.asBoardDetailsFragmentFragment {
 					self?.handleAction(.openBoard(board))
 				} else {
 					self?.handleAction(.error("'\(name)'not found"))
@@ -121,7 +121,7 @@ class ChangeBoardViewModel: ViewModel {
 			}, receiveValue: { [weak self] value in
 				guard self?.boardName == name else { return }
 
-				if value.findBoardByName?.asBoardDetailsFragmentFragment != nil {
+				if value.response?.findBoardByName?.asBoardDetailsFragmentFragment != nil {
 					self?.boardState = .isJoinable
 				} else {
 					self?.boardState = .isCreatable

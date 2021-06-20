@@ -134,13 +134,13 @@ class CreateGameViewModel {
 		let mutation = CreateGameMutation(name: trimmedGameName, hasScores: hasScores)
 		cancellable = MLApi.shared.fetch(query: mutation)
 			.sink(receiveCompletion: { [weak self] result in
-				if case let .failure(error) = result {
-					self?.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+					self?.handleAction(.graphQLError(graphError))
 				}
 
 				self?.isLoading = false
 			}, receiveValue: { [weak self] value in
-				if let newGame = value.createGame?.asNewGameFragmentFragment {
+				if let newGame = value.response?.createGame?.asNewGameFragmentFragment {
 					self?.handleAction(.gameCreated(newGame))
 				} else {
 					self?.handleAction(.graphQLError(.invalidResponse))

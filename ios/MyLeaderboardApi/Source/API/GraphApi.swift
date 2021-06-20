@@ -1,10 +1,11 @@
 // Syrup auto-generated support file
 import Foundation
+import Maple
 #if !os(Linux)
 import os
 #endif
 
-public protocol GraphApiQuery: Encodable, CustomStringConvertible {
+public protocol GraphApiQuery: GraphQuery, Encodable, CustomStringConvertible {
 	var queryString: String { get }
 	static var customEncoder: JSONEncoder { get }
 	static var errorLogger: GraphApiLogger? { get }
@@ -12,7 +13,7 @@ public protocol GraphApiQuery: Encodable, CustomStringConvertible {
 }
 
 public protocol ResponseAssociable {
-	associatedtype Response: GraphApiResponse
+	associatedtype Response: GraphApiResponse & GraphResponse
 }
 
 public extension GraphApiQuery {
@@ -40,7 +41,7 @@ public extension GraphApiQuery {
 	}
 }
 
-public protocol GraphApiResponse: Codable {
+public protocol GraphApiResponse: GraphResponse {
 	static var customDecoder: JSONDecoder { get }
 	static var customEncoder: JSONEncoder { get }
 	static var errorLogger: GraphApiLogger? { get }

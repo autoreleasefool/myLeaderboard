@@ -192,6 +192,10 @@
 		CA9D412522FA55A00027E2D0 /* RecordPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */; };
 		CA9D412722FA5DD50027E2D0 /* RecordPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */; };
 		CA9D412922FA5DEE0027E2D0 /* RecordPlayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */; };
+		CAAE0F20267DA45700FB68ED /* Maple in Frameworks */ = {isa = PBXBuildFile; productRef = CAAE0F1F267DA45700FB68ED /* Maple */; };
+		CAAE0F22267E9C5B00FB68ED /* Maple+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE0F21267E9C5B00FB68ED /* Maple+Extensions.swift */; };
+		CAAE0F23267E9C5B00FB68ED /* Maple+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE0F21267E9C5B00FB68ED /* Maple+Extensions.swift */; };
+		CAAE0F24267E9C5B00FB68ED /* Maple+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE0F21267E9C5B00FB68ED /* Maple+Extensions.swift */; };
 		CAAE778823024565001A37DC /* LoadingHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE778723024565001A37DC /* LoadingHUD.swift */; };
 		CAAE778A2302DAF0001A37DC /* CreatePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE77892302DAF0001A37DC /* CreatePlayerViewController.swift */; };
 		CAAE778C2302DB01001A37DC /* CreatePlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE778B2302DB01001A37DC /* CreatePlayerViewModel.swift */; };
@@ -509,6 +513,7 @@
 		CA9D412422FA55A00027E2D0 /* RecordPlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewModel.swift; sourceTree = "<group>"; };
 		CA9D412622FA5DD50027E2D0 /* RecordPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayViewController.swift; sourceTree = "<group>"; };
 		CA9D412822FA5DEE0027E2D0 /* RecordPlayBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPlayBuilder.swift; sourceTree = "<group>"; };
+		CAAE0F21267E9C5B00FB68ED /* Maple+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maple+Extensions.swift"; sourceTree = "<group>"; };
 		CAAE778723024565001A37DC /* LoadingHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingHUD.swift; sourceTree = "<group>"; };
 		CAAE77892302DAF0001A37DC /* CreatePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlayerViewController.swift; path = MyLeaderboard/Source/Sections/Players/Create/CreatePlayerViewController.swift; sourceTree = SOURCE_ROOT; };
 		CAAE778B2302DB01001A37DC /* CreatePlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlayerViewModel.swift; path = MyLeaderboard/Source/Sections/Players/Create/CreatePlayerViewModel.swift; sourceTree = SOURCE_ROOT; };
@@ -641,6 +646,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAAE0F20267DA45700FB68ED /* Maple in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -804,6 +810,7 @@
 				CA4BAB8F22D6DC2F003347AF /* UIControl+Extensions.swift */,
 				CA4BAB9322D76016003347AF /* UIViewController+Extensions.swift */,
 				CA27F9DC232EEE410023924A /* UserDefaults+Extensions.swift */,
+				CAAE0F21267E9C5B00FB68ED /* Maple+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1558,6 +1565,9 @@
 			dependencies = (
 			);
 			name = myLeaderboardApi;
+			packageProductDependencies = (
+				CAAE0F1F267DA45700FB68ED /* Maple */,
+			);
 			productName = MyLeaderboardApi;
 			productReference = CA55642A2517DA1D0009778A /* myLeaderboardApi.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1786,6 +1796,7 @@
 				CA484E1B24A3134100BE2128 /* UIControl+Extensions.swift in Sources */,
 				CA484E1824A3131C00BE2128 /* GameListItem+Extensions.swift in Sources */,
 				CA484E2524A313BA00BE2128 /* UIViewController+Extensions.swift in Sources */,
+				CAAE0F23267E9C5B00FB68ED /* Maple+Extensions.swift in Sources */,
 				CA484DF224A311B900BE2128 /* Colors.swift in Sources */,
 				CA484E1F24A3137E00BE2128 /* ViewState.swift in Sources */,
 				CA484DF424A311D900BE2128 /* RecordPlayViewController.swift in Sources */,
@@ -1974,6 +1985,7 @@
 				CA0E1BE02620118E00F1C1BC /* ChangeBoardBaseViewController.swift in Sources */,
 				CA4BAB9D22D7677A003347AF /* Player.swift in Sources */,
 				CAED76B622FC4FCE000A2281 /* KeyedErrors.swift in Sources */,
+				CAAE0F22267E9C5B00FB68ED /* Maple+Extensions.swift in Sources */,
 				CAC9066D22D0F70B0075B033 /* AppDelegate.swift in Sources */,
 				CA362F7B230EBE4B001063B9 /* PlayerDetailsViewModel.swift in Sources */,
 				CA834B96230A282500A48C9B /* Spreadsheet.swift in Sources */,
@@ -2034,6 +2046,7 @@
 				CA148F6E24A260B70060BDF6 /* Metrics.swift in Sources */,
 				CAF7B20B24A1801B00307B01 /* MyLeaderboardWidgetExtension.swift in Sources */,
 				CAF7B23E24A1939D00307B01 /* MyLeaderboardApi+WidgetExtensions.swift in Sources */,
+				CAAE0F24267E9C5B00FB68ED /* Maple+Extensions.swift in Sources */,
 				CAF7B24C24A2376A00307B01 /* GameRecords.swift in Sources */,
 				CAB20CB82517D4F200271FC2 /* UserDefaults+Extensions.swift in Sources */,
 				CAF7B24124A1946200307B01 /* ImageLoader.swift in Sources */,
@@ -2318,6 +2331,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA45F99A242B4E4C007EC94D /* XCRemoteSwiftPackageReference "loaf" */;
 			productName = Loaf;
+		};
+		CAAE0F1F267DA45700FB68ED /* Maple */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Maple;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

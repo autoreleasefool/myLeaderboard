@@ -8,13 +8,14 @@
 
 import Combine
 import Foundation
+import Maple
 import myLeaderboardApi
 
 protocol PickerItemQueryable {
 	associatedtype Query: GraphApiQuery & ResponseAssociable
 	associatedtype Item: Identifiable
 
-	func query(pageSize: Int, offset: Int) -> AnyPublisher<Query.Response, MyLeaderboardAPIError>
+	func query(pageSize: Int, offset: Int) -> AnyPublisher<Maple.Result<Query.Response>, GraphError<MyLeaderboardAPIError>>
 	func pickerItems(from: Query.Response) -> [Item]
 }
 
@@ -108,8 +109,8 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 
 		queryCancellable = queryable.query(pageSize: pageSize, offset: offset)
 			.sink(receiveCompletion: { [weak self] result in
-				if case let .failure(error) = result {
-					self?.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+					self?.handleAction(.graphQLError(graphError))
 				}
 
 				self?.dataLoading = false
@@ -117,7 +118,8 @@ class BasePickerViewModel<Item, Queryable: PickerItemQueryable>: ViewModel where
 					self?.loadingMore = false
 				}
 			}, receiveValue: { [weak self] value in
-				self?.handle(items: self?.queryable.pickerItems(from: value) ?? [], offset: offset)
+				guard let response = value.response else { return }
+				self?.handle(items: self?.queryable.pickerItems(from: response) ?? [], offset: offset)
 			})
 	}
 

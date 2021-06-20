@@ -52,12 +52,13 @@ class GameSummaryProvider: TimelineProvider {
 					completion(nil)
 				}
 			}, receiveValue: { value in
-				let images = value.player?.records.map {
+				guard let response = value.response else { return }
+				let images = response.player?.records.map {
 					$0.game.image
 				}.compactMap { $0} ?? []
 
 				ImageLoader.shared.bulkPreFetch(images) {
-					completion(RecordEntry(from: value))
+					completion(RecordEntry(from: response))
 				}
 			})
 	}
@@ -74,12 +75,13 @@ class GameSummaryProvider: TimelineProvider {
 					completion(nil)
 				}
 			}, receiveValue: { value in
-				let images = value.player?.records.map {
+				guard let response = value.response else { return }
+				let images = response.player?.records.map {
 					$0.asMediumWidgetRecordFragmentFragment.game.image
 				}.compactMap { $0} ?? []
 
 				ImageLoader.shared.bulkPreFetch(images) {
-					completion(RecordEntry(from: value))
+					completion(RecordEntry(from: response))
 				}
 			})
 	}

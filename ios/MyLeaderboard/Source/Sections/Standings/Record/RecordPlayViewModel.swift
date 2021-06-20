@@ -177,12 +177,12 @@ class RecordPlayViewModel: ViewModel {
 	private func fetchGameDetails(for gameId: GraphID) {
 		fetchGameDetailsCancellable = MLApi.shared.fetch(query: GameListItemQuery(id: gameId))
 			.sink(receiveCompletion: { [weak self] result in
-				if case let .failure(error) = result {
-					self?.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+					self?.handleAction(.graphQLError(graphError))
 				}
 			}, receiveValue: { [weak self] value in
-				guard self?.selectedGame == nil else { return }
-				self?.selectedGame = value.game?.asGameListItemFragment
+				guard self?.selectedGame == nil, let response = value.response else { return }
+				self?.selectedGame = response.game?.asGameListItemFragment
 			})
 	}
 
@@ -216,11 +216,11 @@ class RecordPlayViewModel: ViewModel {
 		addPlayCancellable = MLApi.shared.fetch(query: mutation)
 			.sink(receiveCompletion: { [weak self] result in
 				self?.isLoading = false
-				if case let .failure(error) = result {
-					self?.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+					self?.handleAction(.graphQLError(graphError))
 				}
 			}, receiveValue: { [weak self] value in
-				if let newPlay = value.recordPlay?.asNewPlayFragmentFragment {
+				if let response = value.response, let newPlay = response.recordPlay?.asNewPlayFragmentFragment {
 					self?.resetState()
 					self?.handleAction(.playCreated(newPlay))
 				} else {

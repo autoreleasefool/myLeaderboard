@@ -105,8 +105,8 @@ class PlayerListViewModel: ViewModel {
 				guard let self = self else { return }
 				self.hasFetchedPlayers = true
 
-				if case let .failure(error) = result {
-					self.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+						self.handleAction(.graphQLError(graphError))
 				}
 
 				self.dataLoading = false
@@ -119,7 +119,8 @@ class PlayerListViewModel: ViewModel {
 					self.handleAction(.showPreferredPlayerSelection)
 				}
 			}, receiveValue: { [weak self] value in
-				self?.handle(response: value, offset: offset)
+				guard let response = value.response else { return }
+				self?.handle(response: response, offset: offset)
 			})
 	}
 

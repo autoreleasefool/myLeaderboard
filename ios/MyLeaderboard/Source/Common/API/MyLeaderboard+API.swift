@@ -14,7 +14,6 @@ import myLeaderboardApi
 class MLApi: NSObject, ObservableObject, URLSessionTaskDelegate {
 	private var session: URLSession!
 	private let requestQueue: DispatchQueue
-	private let operationQueue = OperationQueue()
 
 	static let shared: MLApi = MLApi()
 
@@ -34,10 +33,11 @@ class MLApi: NSObject, ObservableObject, URLSessionTaskDelegate {
 
 	init(
 		configuration: URLSessionConfiguration = .default,
-		queue: DispatchQueue = DispatchQueue(label: "ca.josephroque.myLeaderboard.api.requestQueue")
+		queue: DispatchQueue = DispatchQueue(label: "ca.josephroque.myLeaderboard.api")
 	) {
 		self.requestQueue = queue
-		self.operationQueue.underlyingQueue = requestQueue
+		let operationQueue = OperationQueue()
+		operationQueue.underlyingQueue = requestQueue
 		super.init()
 		self.session = URLSession(
 			configuration: configuration,
@@ -46,9 +46,33 @@ class MLApi: NSObject, ObservableObject, URLSessionTaskDelegate {
 		)
 	}
 
-	func fetch<Q: GraphApiQuery & ResponseAssociable>(
-		query: Q,
-		resultQueue: DispatchQueue = .main
+	func fetch<Q: GraphApiQuery & ResponseAssociable & GraphQuery>(
+		query: Q
+	) -> AnyPublisher<Maple.Result<Q.Response>, GraphError<MyLeaderboardAPIError>> {
+		let networkPublisher: () -> AnyPublisher<Q.Response, MyLeaderboardAPIError> = { [weak self] in
+			self?.performFetch(query: query) ?? Fail(error: .invalidData).eraseToAnyPublisher()
+		}
+
+		guard let graph = maple.graph else {
+			return Fail(error: .unimplemented)
+				.eraseToAnyPublisher()
+		}
+
+		return graph.query(
+			queryable: query,
+			networkPublisher: networkPublisher
+		)
+		.drop {
+			switch $0 {
+			case .cacheMiss: return true
+			case .cacheHit, .cacheUpdate, .networkResponse: return false
+			}
+		}
+		.eraseToAnyPublisher()
+	}
+
+	private func performFetch<Q: GraphApiQuery & ResponseAssociable>(
+		query: Q
 	) -> AnyPublisher<Q.Response, MyLeaderboardAPIError> {
 
 		var request = URLRequest(
@@ -68,7 +92,6 @@ class MLApi: NSObject, ObservableObject, URLSessionTaskDelegate {
 			request.httpBody = try JSONSerialization.data(withJSONObject: payload)
 		} catch {
 			return Fail(error: MyLeaderboardAPIError.encodingError(error))
-				.receive(on: resultQueue)
 				.eraseToAnyPublisher()
 		}
 
@@ -80,7 +103,6 @@ class MLApi: NSObject, ObservableObject, URLSessionTaskDelegate {
 				}
 
 				guard (200..<400).contains(httpResponse.statusCode) else {
-					print("Invalid status code")
 					throw MyLeaderboardAPIError.invalidHTTPResponse(httpResponse.statusCode, message: nil)
 				}
 
@@ -89,9 +111,9 @@ class MLApi: NSObject, ObservableObject, URLSessionTaskDelegate {
 			.decode(type: GraphQLUnwrappable<Q.Response>.self, decoder: decoder)
 			.map { $0.data }
 			.mapError(MyLeaderboardAPIError.networkingError)
-			.receive(on: resultQueue)
 			.eraseToAnyPublisher()
 	}
+
 }
 
 struct GraphQLUnwrappable<Wrapped: Decodable>: Decodable {

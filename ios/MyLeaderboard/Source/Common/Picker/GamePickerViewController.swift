@@ -8,13 +8,17 @@
 
 import Combine
 import Foundation
+import Maple
 import myLeaderboardApi
 
 struct GameListQueryable: PickerItemQueryable {
 	typealias Query = MyLeaderboardApi.GameListQuery
 	typealias Response = MyLeaderboardApi.GameListResponse
 
-	func query(pageSize: Int, offset: Int) -> AnyPublisher<Query.Response, MyLeaderboardAPIError> {
+	func query(
+		pageSize: Int,
+		offset: Int
+	) -> AnyPublisher<Maple.Result<Query.Response>, GraphError<MyLeaderboardAPIError>> {
 		MLApi.shared.fetch(query: Query(first: pageSize, offset: offset))
 	}
 

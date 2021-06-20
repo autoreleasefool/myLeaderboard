@@ -68,13 +68,14 @@ class GameDetailsViewModel: ViewModel {
 		let query = GameDetailsQuery(id: gameID, board: boardId, ignoreBanished: true)
 		cancellable = MLApi.shared.fetch(query: query)
 			.sink(receiveCompletion: { [weak self] result in
-				if case let .failure(error) = result {
-					self?.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+					self?.handleAction(.graphQLError(graphError))
 				}
 
 				self?.dataLoading = false
 			}, receiveValue: { [weak self] value in
-				self?.handle(response: value)
+				guard let response = value.response else { return }
+				self?.handle(response: response)
 			})
 	}
 

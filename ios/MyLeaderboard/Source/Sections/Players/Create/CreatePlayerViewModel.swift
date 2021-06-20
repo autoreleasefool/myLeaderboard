@@ -224,13 +224,13 @@ class CreatePlayerViewModel {
 
 		cancellable = MLApi.shared.fetch(query: mutation)
 			.sink(receiveCompletion: { [weak self] result in
-				if case let .failure(error) = result {
-					self?.handleAction(.graphQLError(error))
+				if case let .failure(error) = result, let graphError = error.graphQLError {
+					self?.handleAction(.graphQLError(graphError))
 				}
 
 				self?.isLoading = false
 			}, receiveValue: { [weak self] value in
-				if let newPlayer = value.createPlayer?.asNewPlayerFragmentFragment {
+				if let newPlayer = value.response?.createPlayer?.asNewPlayerFragmentFragment {
 					self?.handleAction(.playerCreated(newPlayer))
 				} else {
 					self?.handleAction(.graphQLError(.invalidResponse))
